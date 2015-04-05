@@ -1,0 +1,8 @@
+src/**/[Bb]in
+src/**/[Oo]bj
+
+*.sln.*
+*.suo*
+*.user
+.vs
+\artifacts
