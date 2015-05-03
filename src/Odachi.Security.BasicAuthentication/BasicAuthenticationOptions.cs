@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNet.Security;
-using System;
-using System.Security.Claims;
+﻿using Microsoft.AspNet.Authentication;
 
 namespace Odachi.Security.BasicAuthentication
 {
@@ -11,8 +9,8 @@ namespace Odachi.Security.BasicAuthentication
     {
         public BasicAuthenticationOptions()
         {
-            AuthenticationMode = AuthenticationMode.Active;
-            AuthenticationType = "Basic";
+			this.AuthenticationScheme = "Basic";
+			this.AutomaticAuthentication = true;
         }
 
         /// <summary>

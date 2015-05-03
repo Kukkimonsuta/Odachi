@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNet.Http.Security;
-using Microsoft.AspNet.Security;
-using Microsoft.AspNet.Security.Infrastructure;
+﻿using Microsoft.AspNet.Http.Authentication;
+using Microsoft.AspNet.Authentication;
 using System;
 using System.Security.Claims;
 using System.Text;
@@ -42,8 +41,9 @@ namespace Odachi.Security.BasicAuthentication
             if (identity != null)
             {
                 return Task.FromResult(new AuthenticationTicket(
-                    identity,
-                    new AuthenticationProperties()
+                    new ClaimsPrincipal(identity),
+					new AuthenticationProperties(),
+                    Options.AuthenticationScheme
                 ));
             }
 

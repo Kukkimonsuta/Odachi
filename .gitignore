@@ -6,3 +6,4 @@ src/**/[Oo]bj
 *.user
 .vs
 \artifacts
+*.lock.json

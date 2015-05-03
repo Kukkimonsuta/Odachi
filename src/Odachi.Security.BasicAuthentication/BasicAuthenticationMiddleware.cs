@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Security.Infrastructure;
+using Microsoft.AspNet.Authentication;
 using Microsoft.Framework.OptionsModel;
 using System;
+using Microsoft.Framework.Logging;
+using Microsoft.Framework.WebEncoders;
 
 namespace Odachi.Security.BasicAuthentication
 {
@@ -12,10 +14,11 @@ namespace Odachi.Security.BasicAuthentication
     {
         public BasicAuthenticationMiddleware(
             RequestDelegate next,
-            IServiceProvider services,
-            IOptions<BasicAuthenticationOptions> options,
-            ConfigureOptions<BasicAuthenticationOptions> configureOptions)
-            : base(next, services, options, configureOptions)
+            IOptions<BasicAuthenticationOptions> options, 
+			ILoggerFactory loggerFactory,
+			IUrlEncoder encoder,
+			ConfigureOptions<BasicAuthenticationOptions> configureOptions)
+            : base(next, options, loggerFactory, encoder, configureOptions)
         {
             if (string.IsNullOrEmpty(Options.Realm))
                 Options.Realm = BasicAuthenticationDefaults.Realm;

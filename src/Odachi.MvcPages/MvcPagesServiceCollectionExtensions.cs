@@ -7,16 +7,15 @@ namespace Microsoft.Framework.DependencyInjection
 {
 	public static class MvcPagesServiceCollectionExtensions
 	{
-		public static IServiceCollection AddMvcPages(this IServiceCollection services, IConfiguration configuration = null)
+		public static IServiceCollection AddMvcPages(this IServiceCollection services)
 		{
 			services
-				.AddMvc(configuration);
+				.AddMvc();
 
 			services
 				.Configure<MvcOptions>(o =>
 				{
-					o.Filters.Add(new AuthorizeAttribute());
-					o.ApplicationModelConventions.Add(new PagesApplicationModelConvention());
+					o.Conventions.Add(new PagesApplicationModelConvention());
 				});
 
 			services
