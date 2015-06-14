@@ -1,5 +1,4 @@
-﻿using Microsoft.Framework.ConfigurationModel;
-using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Razor;
 using Odachi.MvcPages;
 

@@ -7,7 +7,7 @@
 	"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
 	"dependencies": {
-		"Microsoft.AspNet.Mvc": "6.0.0-beta5-*"
+		"Microsoft.AspNet.Mvc": "6.0.0-beta6-*"
 	},
 
 	"frameworks": {
