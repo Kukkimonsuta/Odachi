@@ -7,9 +7,14 @@ namespace Odachi.Security.BasicAuthentication
     /// </summary>
     public static class BasicAuthenticationDefaults
     {
-        /// <summary>
-        /// The default realm used by basic authentication.
-        /// </summary>
-        public const string Realm = "Protected Area";
+		/// <summary>
+		/// The default authentication scheme used by basic authentication.
+		/// </summary>
+		public const string AuthenticationScheme = "Basic";
+
+		/// <summary>
+		/// The default realm used by basic authentication.
+		/// </summary>
+		public const string Realm = "Protected Area";
     }
 }

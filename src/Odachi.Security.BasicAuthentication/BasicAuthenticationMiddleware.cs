@@ -22,9 +22,6 @@ namespace Odachi.Security.BasicAuthentication
         {
             if (string.IsNullOrEmpty(Options.Realm))
                 Options.Realm = BasicAuthenticationDefaults.Realm;
-
-            if (Options.Authenticator == null)
-                throw new ArgumentException("Options must contain an authenticator");
         }
 
         protected override AuthenticationHandler<BasicAuthenticationOptions> CreateHandler()
