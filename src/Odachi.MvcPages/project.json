@@ -1,24 +1,24 @@
 ﻿{
-	"version": "1.0.0-*",
-	"description": "",
-	"authors": [ "Lukáš Novotný" ],
-	"tags": [ "" ],
-	"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-	"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+    "version": "1.0.0-*",
+    "description": "",
+    "authors": [ "Lukáš Novotný" ],
+    "tags": [ "" ],
+    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
-	"dependencies": {
-		"Microsoft.AspNet.Mvc": "6.0.0-beta6-*"
-	},
+    "dependencies": {
+        "Microsoft.AspNet.Mvc": "6.0.0-beta8-*"
+    },
 
-	"frameworks": {
-		"dnx451": { },
-		"dnxcore50": {
-			"dependencies": {
-				"System.Collections": "4.0.10-beta-*",
-				"System.Linq": "4.0.0-beta-*",
-				"System.Threading": "4.0.10-beta-*",
-				"Microsoft.CSharp": "4.0.0-beta-*"
-			}
-		}
-	}
+    "frameworks": {
+        "dnx46": { },
+        "dnxcore50": {
+            "dependencies": {
+                "System.Collections": "4.0.10-beta-*",
+                "System.Linq": "4.0.0-beta-*",
+                "System.Threading": "4.0.10-beta-*",
+                "Microsoft.CSharp": "4.0.0-beta-*"
+            }
+        }
+    }
 }

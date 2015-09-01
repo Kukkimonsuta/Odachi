@@ -7,3 +7,4 @@ src/**/[Oo]bj
 .vs
 \artifacts
 *.lock.json
+*.tss
