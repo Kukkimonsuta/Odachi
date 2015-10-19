@@ -1,10 +1,15 @@
-src/**/[Bb]in
-src/**/[Oo]bj
+/src/**/[Bb]in
+/src/**/[Oo]bj
+/samples/**/[Bb]in
+/samples/**/[Oo]bj
+/test/**/[Bb]in
+/test/**/[Oo]bj
+/build
 
 *.sln.*
 *.suo*
 *.user
 .vs
-\artifacts
+/artifacts
 *.lock.json
 *.tss

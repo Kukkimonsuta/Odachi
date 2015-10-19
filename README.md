@@ -1,4 +1,4 @@
-# Odachi [![Build Status](https://travis-ci.org/Kukkimonsuta/Odachi.svg?branch=master)](https://travis-ci.org/Kukkimonsuta/Odachi)
+# Odachi [![Build Status](https://travis-ci.org/Kukkimonsuta/Odachi.svg?branch=master)](https://travis-ci.org/Kukkimonsuta/Odachi) [![Build status](https://ci.appveyor.com/api/projects/status/xk0l2iumyrw6613l/branch/master?svg=true)](https://ci.appveyor.com/project/Kukkimonsuta/odachi/branch/master)
 
 Miscellaneous extensions for ASP.NET 5.
 
