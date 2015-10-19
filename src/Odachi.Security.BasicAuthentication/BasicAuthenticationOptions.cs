@@ -11,7 +11,7 @@ namespace Odachi.Security.BasicAuthentication
         {
             AuthenticationScheme = BasicAuthenticationDefaults.AuthenticationScheme;
             AutomaticAuthentication = true;
-            Notifications = new BasicAuthenticationNotifications();
+            Events = new BasicAuthenticationEvents();
         }
 
         /// <summary>
@@ -24,6 +24,6 @@ namespace Odachi.Security.BasicAuthentication
         /// calls methods on the provider which give the application control at certain points where processing is occuring.
         /// If it is not provided a default instance is supplied which does nothing when the methods are called.
         /// </summary>
-        public IBasicAuthenticationNotifications Notifications { get; set; }
+        public IBasicAuthenticationEvents Events { get; set; }
     }
 }

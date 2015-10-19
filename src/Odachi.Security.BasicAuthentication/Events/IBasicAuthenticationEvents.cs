@@ -3,7 +3,7 @@
     /// <summary>
     /// Specifies callback methods which the <see cref="BasicAuthenticationMiddleware"></see> invokes to enable developer control over the authentication process.
     /// </summary>
-    public interface IBasicAuthenticationNotifications
+    public interface IBasicAuthenticationEvents
     {
         /// <summary>
         /// Called when a request came with basic authentication credentials. By implementing this method the credentials can be converted to

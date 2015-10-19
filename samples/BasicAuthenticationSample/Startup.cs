@@ -16,12 +16,14 @@ namespace BasicAuthenticationSample
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseErrorPage();
+            app.UseStatusCodePages();
+            app.UseDeveloperExceptionPage();
+            app.UseIISPlatformHandler();
 
             app.UseBasicAuthentication(options =>
             {
                 options.AutomaticAuthentication = true;
-                options.Notifications = new BasicAuthenticationNotifications()
+                options.Events = new BasicAuthenticationEvents()
                 {
                     OnSignIn = context =>
                     {

@@ -3,16 +3,16 @@
 namespace Odachi.Security.BasicAuthentication
 {
     /// <summary>
-    /// This default implementation of the IBasicAuthenticationNotifications may be used if the
+    /// This default implementation of the <see cref="IBasicAuthenticationEvents"/> may be used if the
     /// application only needs to override a few of the interface methods. This may be used as a base class
     /// or may be instantiated directly.
     /// </summary>
-    public class BasicAuthenticationNotifications : IBasicAuthenticationNotifications
+    public class BasicAuthenticationEvents : IBasicAuthenticationEvents
     {
         /// <summary>
         /// Create a new instance of the default notifications.
         /// </summary>
-        public BasicAuthenticationNotifications()
+        public BasicAuthenticationEvents()
         {
             OnSignIn = context => { };
             OnException = context => { };

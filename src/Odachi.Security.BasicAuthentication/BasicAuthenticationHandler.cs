@@ -4,6 +4,7 @@ using Microsoft.AspNet.Http.Features.Authentication;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Odachi.Security.BasicAuthentication
 {
@@ -21,11 +22,13 @@ namespace Odachi.Security.BasicAuthentication
             AuthenticationTicket ticket = null;
             try
             {
-                var header = Request.Headers[RequestHeader];
-                if (string.IsNullOrEmpty(header))
+                var headers = Request.Headers[RequestHeader];
+                if (headers.Count <= 0)
                     return Task.FromResult<AuthenticationTicket>(null);
 
-                if (!header.StartsWith("Basic "))
+                var header = headers.Where(h => h.StartsWith("Basic ")).FirstOrDefault();
+
+                if (header == null)
                     return Task.FromResult<AuthenticationTicket>(null);
 
                 var encoded = header.Substring(6);
@@ -39,7 +42,7 @@ namespace Odachi.Security.BasicAuthentication
                 var password = decoded.Substring(index + 1);
 
                 var signInContext = new BasicSignInContext(Context, Options, username, password);
-                Options.Notifications.SignIn(signInContext);
+                Options.Events.SignIn(signInContext);
                 if (signInContext.Principal == null)
                     return Task.FromResult<AuthenticationTicket>(null);
 
@@ -50,7 +53,7 @@ namespace Odachi.Security.BasicAuthentication
             catch (Exception ex)
             {
                 var exceptionContext = new BasicExceptionContext(Context, Options, ex, ticket);
-                Options.Notifications.Exception(exceptionContext);
+                Options.Events.Exception(exceptionContext);
                 if (exceptionContext.Rethrow)
                 {
                     throw;

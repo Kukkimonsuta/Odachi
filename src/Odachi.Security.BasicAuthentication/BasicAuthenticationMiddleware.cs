@@ -13,11 +13,10 @@ namespace Odachi.Security.BasicAuthentication
     {
         public BasicAuthenticationMiddleware(
             RequestDelegate next,
-            IOptions<BasicAuthenticationOptions> options,
+            BasicAuthenticationOptions options,
             ILoggerFactory loggerFactory,
-            IUrlEncoder encoder,
-            ConfigureOptions<BasicAuthenticationOptions> configureOptions)
-            : base(next, options, loggerFactory, encoder, configureOptions)
+            IUrlEncoder encoder)
+            : base(next, options, loggerFactory, encoder)
         {
             if (string.IsNullOrEmpty(Options.Realm))
                 Options.Realm = BasicAuthenticationDefaults.Realm;
