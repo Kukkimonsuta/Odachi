@@ -1,5 +1,5 @@
 ﻿{
-	"version": "1.0.0-*",
+	"version": "1.0.0-beta8-*",
 	"description": "ASP.NET 5 middleware for basic authentication.",
 	"authors": [ "Lukáš Novotný" ],
 	"tags": [ "" ],

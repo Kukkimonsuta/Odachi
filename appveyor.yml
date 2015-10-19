@@ -9,6 +9,10 @@ branches:
 
 clone_depth: 1
 
+cache:
+  - C:\Users\appveyor\.dnx\runtimes -> global.json
+  - C:\Users\appveyor\.dnx\packages -> **\project.json
+
 init:
   - git config --global core.autocrlf true
 
