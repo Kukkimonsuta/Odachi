@@ -1,5 +1,4 @@
-﻿using Microsoft.Framework.OptionsModel;
-using Odachi.Security.BasicAuthentication;
+﻿using Odachi.Security.BasicAuthentication;
 using System;
 
 namespace Microsoft.AspNet.Builder
@@ -7,7 +6,7 @@ namespace Microsoft.AspNet.Builder
     /// <summary>
     /// Basic authentication extensions for <see cref="IApplicationBuilder"/>.
     /// </summary>
-    public static class BasicAuthenticationAppBuilderExtensions
+    public static class BasicAppBuilderExtensions
     {
         /// <summary>
         /// Adds a basic authentication middleware to your web application pipeline.
@@ -19,7 +18,7 @@ namespace Microsoft.AspNet.Builder
             if (app == null)
                 throw new ArgumentNullException(nameof(app));
 
-            return app.UseBasicAuthentication(new BasicAuthenticationOptions());
+            return app.UseBasicAuthentication(new BasicOptions());
         }
 
         /// <summary>
@@ -28,12 +27,12 @@ namespace Microsoft.AspNet.Builder
         /// <param name="app">The IApplicationBuilder passed to your configuration method</param>
         /// <param name="configureOptions">Used to configure the options for the middleware</param>
         /// <returns>The original app parameter</returns>
-        public static IApplicationBuilder UseBasicAuthentication(this IApplicationBuilder app, Action<BasicAuthenticationOptions> configureOptions)
+        public static IApplicationBuilder UseBasicAuthentication(this IApplicationBuilder app, Action<BasicOptions> configureOptions)
         {
             if (app == null)
                 throw new ArgumentNullException(nameof(app));
 
-            var options = new BasicAuthenticationOptions();
+            var options = new BasicOptions();
             if (configureOptions != null)
                 configureOptions(options);
 
@@ -46,7 +45,7 @@ namespace Microsoft.AspNet.Builder
         /// <param name="app">The IApplicationBuilder passed to your configuration method</param>
         /// <param name="options">Used to configure the middleware</param>
         /// <returns>The original app parameter</returns>
-        public static IApplicationBuilder UseBasicAuthentication(this IApplicationBuilder app, BasicAuthenticationOptions options)
+        public static IApplicationBuilder UseBasicAuthentication(this IApplicationBuilder app, BasicOptions options)
         {
             if (app == null)
                 throw new ArgumentNullException(nameof(app));
@@ -54,7 +53,7 @@ namespace Microsoft.AspNet.Builder
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
 
-            return app.UseMiddleware<BasicAuthenticationMiddleware>(options);
+            return app.UseMiddleware<BasicMiddleware>(options);
         }
     }
 }

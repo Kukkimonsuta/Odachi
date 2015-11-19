@@ -7,7 +7,7 @@ namespace Odachi.Security.BasicAuthentication
     /// <summary>
     /// Context object used to control flow of basic authentication.
     /// </summary>
-    public class BasicSignInContext : BaseContext<BasicAuthenticationOptions>
+    public class BasicSignInContext : BaseBasicContext
     {
         /// <summary>
         /// Creates a new instance of the context object.
@@ -18,7 +18,7 @@ namespace Odachi.Security.BasicAuthentication
         /// <param name="password">The password</param>
         public BasicSignInContext(
             HttpContext context,
-            BasicAuthenticationOptions options,
+            BasicOptions options,
             string username,
             string password
         )

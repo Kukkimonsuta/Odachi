@@ -1,9 +1,9 @@
 ﻿namespace Odachi.Security.BasicAuthentication
 {
     /// <summary>
-    /// Default values used by <see cref="BasicAuthenticationMiddleware"/> when not defined in <see cref="BasicAuthenticationOptions"/>.
+    /// Default values used by <see cref="BasicMiddleware"/> when not defined in <see cref="BasicOptions"/>.
     /// </summary>
-    public static class BasicAuthenticationDefaults
+    public static class BasicDefaults
     {
         /// <summary>
         /// The default authentication scheme used by basic authentication.

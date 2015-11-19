@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
-using Microsoft.Framework.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Odachi.Security.BasicAuthentication;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace BasicAuthenticationSample
 {
@@ -22,8 +23,7 @@ namespace BasicAuthenticationSample
 
             app.UseBasicAuthentication(options =>
             {
-                options.AutomaticAuthentication = true;
-                options.Events = new BasicAuthenticationEvents()
+				options.Events = new BasicEvents()
                 {
                     OnSignIn = context =>
                     {
@@ -42,6 +42,8 @@ namespace BasicAuthenticationSample
                             // returning null will act in this case as if there were no credentials submitted and user will be asked again
                             context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Options.AuthenticationScheme));
                         }
+
+						return Task.FromResult(0);
                     }
                 };
             });

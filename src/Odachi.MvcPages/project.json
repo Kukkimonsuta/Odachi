@@ -1,5 +1,5 @@
 ﻿{
-    "version": "1.0.0-beta8-*",
+    "version": "1.0.0-rc1-final",
     "description": "Alternative way to structure your ASP.NET MVC project.",
     "authors": [ "Lukáš Novotný" ],
     "tags": [ "" ],
@@ -7,18 +7,12 @@
     "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
     "dependencies": {
-        "Microsoft.AspNet.Mvc": "6.0.0-beta8"
+        "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
+        "Microsoft.AspNet.Mvc.Razor": "6.0.0-rc1-final"
     },
 
     "frameworks": {
         "dnx46": { },
-        "dnxcore50": {
-            "dependencies": {
-                "System.Collections": "4.0.10-beta-*",
-                "System.Linq": "4.0.0-beta-*",
-                "System.Threading": "4.0.10-beta-*",
-                "Microsoft.CSharp": "4.0.0-beta-*"
-            }
-        }
+        "dnxcore50": { }
     }
 }

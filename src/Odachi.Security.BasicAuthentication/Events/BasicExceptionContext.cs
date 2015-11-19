@@ -7,7 +7,7 @@ namespace Odachi.Security.BasicAuthentication
     /// <summary>
     /// Context object used to control flow of basic authentication.
     /// </summary>
-    public class BasicExceptionContext : BaseContext<BasicAuthenticationOptions>
+    public class BasicExceptionContext : BaseControlContext
     {
         /// <summary>
         /// Creates a new instance of the context object.
@@ -18,31 +18,16 @@ namespace Odachi.Security.BasicAuthentication
         /// <param name="ticket">The current ticket, if any.</param>
         public BasicExceptionContext(
             HttpContext context,
-            BasicAuthenticationOptions options,
-            Exception exception,
-            AuthenticationTicket ticket)
-            : base(context, options)
+            BasicOptions options,
+            Exception exception)
+            : base(context)
         {
             Exception = exception;
-            Rethrow = true;
-            Ticket = ticket;
         }
 
         /// <summary>
         /// The exception thrown.
         /// </summary>
         public Exception Exception { get; private set; }
-
-        /// <summary>
-        /// True if the exception should be re-thrown (default), false if it should be suppressed.
-        /// </summary>
-        public bool Rethrow { get; set; }
-
-        /// <summary>
-        /// The current authentication ticket, if any.
-        /// In the AuthenticateAsync code path, if the given exception is not re-thrown then this ticket
-        /// will be returned to the application. The ticket may be replaced if needed.
-        /// </summary>
-        public AuthenticationTicket Ticket { get; set; }
     }
 }

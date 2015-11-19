@@ -1,29 +1,25 @@
 ﻿using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Razor;
+using Microsoft.Extensions.DependencyInjection;
 using Odachi.MvcPages;
 
-namespace Microsoft.Framework.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class MvcPagesServiceCollectionExtensions
-    {
-        public static IServiceCollection AddMvcPages(this IServiceCollection services)
+    public static class MvcBuilderExtensions
+	{
+        public static IMvcBuilder AddPages(this IMvcBuilder mvcBuilder)
         {
-            services
-                .AddMvc();
-
-            services
+			mvcBuilder.Services
                 .Configure<MvcOptions>(o =>
                 {
                     o.Conventions.Add(new PagesApplicationModelConvention());
-                });
-
-            services
+                })
                 .Configure<RazorViewEngineOptions>(o =>
                 {
                     o.ViewLocationExpanders.Add(new PagesViewLocationExpander());
                 });
 
-            return services;
+            return mvcBuilder;
         }
     }
 }

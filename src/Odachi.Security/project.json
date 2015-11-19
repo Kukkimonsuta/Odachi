@@ -1,0 +1,20 @@
+﻿{
+	"version": "1.0.0-rc1-final",
+	"description": "",
+	"authors": [ "Lukáš Novotný" ],
+	"tags": [ "" ],
+	"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+	"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+
+    "dependencies": {
+        "System.Runtime": "4.0.21-*",
+        "System.Security.Claims": "4.0.1-*",
+        "System.Threading": "4.0.11-*",
+        "System.Linq": "4.0.1-*"
+    },
+
+	"frameworks": {
+		"dnx46": { },
+		"dnxcore50": { }
+	}
+}

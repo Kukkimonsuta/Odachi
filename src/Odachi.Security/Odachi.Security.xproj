@@ -6,8 +6,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>2d51ca75-3002-4485-9834-a70bb6b923fd</ProjectGuid>
-    <RootNamespace>Odachi.MvcPages</RootNamespace>
+    <ProjectGuid>7f361ddc-f7bb-4402-acb5-033fa8b1e943</ProjectGuid>
+    <RootNamespace>Odachi.Security</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">..\..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>

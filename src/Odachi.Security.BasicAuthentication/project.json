@@ -1,5 +1,5 @@
 ﻿{
-	"version": "1.0.0-beta8-*",
+	"version": "1.0.0-rc1-final",
 	"description": "ASP.NET 5 middleware for basic authentication.",
 	"authors": [ "Lukáš Novotný" ],
 	"tags": [ "" ],
@@ -7,20 +7,14 @@
 	"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
 	"dependencies": {
-		"Microsoft.Framework.OptionsModel": "1.0.0-beta8",
-		"Microsoft.AspNet.DataProtection": "1.0.0-beta8",
-		"Microsoft.AspNet.Authentication": "1.0.0-beta8"
+		"Microsoft.AspNet.DataProtection": "1.0.0-rc1-final",
+        "Microsoft.AspNet.Authentication": "1.0.0-rc1-final",
+        "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+        "Microsoft.Extensions.WebEncoders": "1.0.0-rc1-final"
 	},
 
 	"frameworks": {
 		"dnx46": { },
-		"dnxcore50": {
-			"dependencies": {
-				"System.Collections": "4.0.10-beta-*",
-				"System.Linq": "4.0.0-beta-*",
-				"System.Threading": "4.0.10-beta-*",
-				"Microsoft.CSharp": "4.0.0-beta-*"
-			}
-		}
+		"dnxcore50": { }
 	}
 }
