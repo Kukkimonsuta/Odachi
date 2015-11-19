@@ -1,5 +1,5 @@
 ﻿{
-    "version": "1.0.0-rc1-final",
+    "version": "1.0.0-rc1-*",
     "description": "Alternative way to structure your ASP.NET MVC project.",
     "authors": [ "Lukáš Novotný" ],
     "tags": [ "" ],
