@@ -5,6 +5,7 @@ skip_tags: true
 branches:
   only:
     - master
+    - preview
     - stable
 
 clone_depth: 1
