@@ -36,3 +36,11 @@ deploy:
     name: GitHub Releases (stable)
     on:
       branch: stable
+  - provider: Environment
+    name: NuGet
+    on:
+      branch: preview
+  - provider: Environment
+    name: NuGet
+    on:
+      branch: stable
