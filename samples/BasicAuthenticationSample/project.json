@@ -16,8 +16,8 @@
     },
 
     "frameworks": {
-        "dnx46": { },
-        "dnxcore50": { }
+        "net451": { },
+        "dotnet5.4": { }
     },
 
     "publishExclude": [
