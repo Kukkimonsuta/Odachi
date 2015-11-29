@@ -1,0 +1,18 @@
+﻿{
+    "version": "1.0.0-rc1-*",
+    "description": "Alternative way to structure your ASP.NET MVC project.",
+    "authors": [ "Lukáš Novotný" ],
+    "tags": [ "" ],
+    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+
+    "dependencies": {
+        "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
+        "Microsoft.AspNet.Mvc.Razor": "6.0.0-rc1-final"
+    },
+
+    "frameworks": {
+        "net451": { },
+        "dotnet5.4": { }
+    }
+}

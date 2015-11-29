@@ -1,0 +1,15 @@
+language: bash
+sudo: required
+dist: trusty
+
+addons:
+  apt:
+    packages:
+      - libunwind8
+
+install:
+  - chmod a+x ./install.sh ./build.sh
+  - source ./install.sh
+
+script:
+  - source ./build.sh

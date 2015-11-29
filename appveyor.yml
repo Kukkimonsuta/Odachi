@@ -1,0 +1,47 @@
+version: '1.0.0-rc1-{build}'
+
+skip_tags: true
+
+branches:
+  only:
+    - master
+    - preview
+    - stable
+
+clone_depth: 1
+
+cache:
+  - C:\Users\appveyor\.dnx\runtimes -> global.json
+  - C:\Users\appveyor\.dnx\packages -> **\project.json
+
+init:
+  - git config --global core.autocrlf true
+
+install:
+  - ps: "& ./install.ps1"
+
+build_script:
+  - ps: "& ./build.ps1"
+
+test: off
+
+artifacts:
+  - path: 'build/Release/*.nupkg'
+
+deploy:
+  - provider: Environment
+    name: GitHub Releases (pre)
+    on:
+      branch: master
+  - provider: Environment
+    name: GitHub Releases (stable)
+    on:
+      branch: stable
+  - provider: Environment
+    name: NuGet
+    on:
+      branch: preview
+  - provider: Environment
+    name: NuGet
+    on:
+      branch: stable
