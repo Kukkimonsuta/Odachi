@@ -2,4 +2,4 @@
 
 dnvm use default
 dnu restore
-dnu build ./src/* ./samples/* --framework dnxcore50 --configuration Release
+dnu build ./src/* ./samples/* --framework dotnet5.4 --configuration Release
