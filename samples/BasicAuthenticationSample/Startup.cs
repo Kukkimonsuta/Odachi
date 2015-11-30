@@ -38,7 +38,7 @@ namespace BasicAuthenticationSample
 		{
 			// this example shows how to configure basic authentication using IOptions
 
-			app.UseBasicAuthentication(app.ApplicationServices.GetRequiredService<IOptions<BasicOptions>>().Value);
+			app.UseBasicAuthentication();
 
 			app.Run(async (context) =>
 			{

@@ -1,5 +1,7 @@
-﻿using Odachi.Security.BasicAuthentication;
+﻿using Microsoft.Extensions.OptionsModel;
+using Odachi.Security.BasicAuthentication;
 using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.AspNet.Builder
 {
@@ -9,7 +11,7 @@ namespace Microsoft.AspNet.Builder
     public static class BasicAppBuilderExtensions
     {
         /// <summary>
-        /// Adds a basic authentication middleware to your web application pipeline.
+        /// Adds a basic authentication middleware to your web application pipeline. This method attempts to obtain options though `IOptions`.
         /// </summary>
         /// <param name="app">The IApplicationBuilder passed to your configuration method</param>
         /// <returns>The original app parameter</returns>
@@ -18,16 +20,18 @@ namespace Microsoft.AspNet.Builder
             if (app == null)
                 throw new ArgumentNullException(nameof(app));
 
-            return app.UseBasicAuthentication(new BasicOptions());
+			var options = app.ApplicationServices.GetService<IOptions<BasicOptions>>();
+
+			return app.UseBasicAuthentication(options?.Value ?? new BasicOptions());
         }
 
-        /// <summary>
-        /// Adds a basic authentication middleware to your web application pipeline.
-        /// </summary>
-        /// <param name="app">The IApplicationBuilder passed to your configuration method</param>
-        /// <param name="configureOptions">Used to configure the options for the middleware</param>
-        /// <returns>The original app parameter</returns>
-        public static IApplicationBuilder UseBasicAuthentication(this IApplicationBuilder app, Action<BasicOptions> configureOptions)
+		/// <summary>
+		/// Adds a basic authentication middleware to your web application pipeline. This method does not attempt to obtain options though `IOptions`.
+		/// </summary>
+		/// <param name="app">The IApplicationBuilder passed to your configuration method</param>
+		/// <param name="configureOptions">Used to configure the options for the middleware</param>
+		/// <returns>The original app parameter</returns>
+		public static IApplicationBuilder UseBasicAuthentication(this IApplicationBuilder app, Action<BasicOptions> configureOptions)
         {
             if (app == null)
                 throw new ArgumentNullException(nameof(app));
@@ -39,13 +43,13 @@ namespace Microsoft.AspNet.Builder
             return app.UseBasicAuthentication(options);
         }
 
-        /// <summary>
-        /// Adds a basic authentication middleware to your web application pipeline.
-        /// </summary>
-        /// <param name="app">The IApplicationBuilder passed to your configuration method</param>
-        /// <param name="options">Used to configure the middleware</param>
-        /// <returns>The original app parameter</returns>
-        public static IApplicationBuilder UseBasicAuthentication(this IApplicationBuilder app, BasicOptions options)
+		/// <summary>
+		/// Adds a basic authentication middleware to your web application pipeline.  This method does not attempt to obtain options though `IOptions`.
+		/// </summary>
+		/// <param name="app">The IApplicationBuilder passed to your configuration method</param>
+		/// <param name="options">Used to configure the middleware</param>
+		/// <returns>The original app parameter</returns>
+		public static IApplicationBuilder UseBasicAuthentication(this IApplicationBuilder app, BasicOptions options)
         {
             if (app == null)
                 throw new ArgumentNullException(nameof(app));
