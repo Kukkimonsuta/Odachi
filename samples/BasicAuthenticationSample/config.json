@@ -1,0 +1,21 @@
+﻿{
+    "BasicAuthentication": {
+        "Realm": "Simple",
+        "Credentials": [
+            {
+                "Username": "service1",
+                "Password": "service1pw",
+                "Claims": [
+                    {
+                        "Type": "foo",
+                        "Value": "bar"
+                    }
+                ]
+            },
+            {
+                "Username": "service2",
+                "Password": "service2pw"
+            }
+        ]
+    }
+}

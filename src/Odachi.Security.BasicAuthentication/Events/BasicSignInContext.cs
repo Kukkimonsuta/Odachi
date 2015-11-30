@@ -37,10 +37,5 @@ namespace Odachi.Security.BasicAuthentication
         /// Contains the password used in basic authentication.
         /// </summary>
         public string Password { get; set; }
-
-        /// <summary>
-        /// Contains the principal that will be returned to the application.
-        /// </summary>
-        public ClaimsPrincipal Principal { get; set; }
     }
 }
