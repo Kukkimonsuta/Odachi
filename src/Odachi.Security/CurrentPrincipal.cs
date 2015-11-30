@@ -37,7 +37,7 @@ namespace Odachi.Security
 			}
 			set
 			{
-				CallContext.LogicalSetData(KeyIsSet, new ObjectHandle(value));
+				CallContext.LogicalSetData(KeyCurrent, new ObjectHandle(value));
 			}
 		}
 #else

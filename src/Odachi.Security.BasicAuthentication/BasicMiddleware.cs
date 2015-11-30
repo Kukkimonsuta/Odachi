@@ -22,6 +22,9 @@ namespace Odachi.Security.BasicAuthentication
 
             if (string.IsNullOrEmpty(Options.Realm))
                 Options.Realm = BasicDefaults.Realm;
+
+			if (Options.Credentials == null)
+				Options.Credentials = new BasicCredential[0];
         }
 
         protected override AuthenticationHandler<BasicOptions> CreateHandler()

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNet.Http.Features.Internal;
+using System.Security.Claims;
 
 namespace Odachi.Security.BasicAuthentication
 {
@@ -55,15 +56,27 @@ namespace Odachi.Security.BasicAuthentication
                 await Options.Events.SignIn(signInContext);
 
 				if (signInContext.HandledResponse)
-					return AuthenticateResult.Success(signInContext.AuthenticationTicket);
-				
+				{
+					if (signInContext.AuthenticationTicket != null)
+						return AuthenticateResult.Success(signInContext.AuthenticationTicket);
+					else
+						return AuthenticateResult.Failed("Invalid basic authentication credentials.");
+				}
+
 				if (signInContext.Skipped)
 					return AuthenticateResult.Success(null);
 
-				if (signInContext.Principal == null)
+				var credentials = Options.Credentials.Where(c => c.Username == username && c.Password == password).FirstOrDefault();
+				if (credentials == null)
 					return AuthenticateResult.Failed("Invalid basic authentication credentials.");
 
-				var ticket = new AuthenticationTicket(signInContext.Principal, new AuthenticationProperties(), Options.AuthenticationScheme);
+				var claims = credentials.Claims.Select(c => new Claim(c.Type, c.Value)).ToList();
+				if (!claims.Any(c => c.Type == ClaimTypes.Name))
+					claims.Add(new Claim(ClaimTypes.Name, username));
+
+				var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, Options.AuthenticationScheme));
+
+				var ticket = new AuthenticationTicket(principal, new AuthenticationProperties(), Options.AuthenticationScheme);
 
                 return AuthenticateResult.Success(ticket);
             }
