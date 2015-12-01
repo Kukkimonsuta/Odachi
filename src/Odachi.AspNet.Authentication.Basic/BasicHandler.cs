@@ -8,7 +8,7 @@ using System.Linq;
 using Microsoft.AspNet.Http.Features.Internal;
 using System.Security.Claims;
 
-namespace Odachi.Security.BasicAuthentication
+namespace Odachi.AspNet.Authentication.Basic
 {
     internal class BasicHandler : AuthenticationHandler<BasicOptions>
     {

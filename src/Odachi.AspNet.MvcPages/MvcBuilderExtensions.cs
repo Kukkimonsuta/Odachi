@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
-using Odachi.MvcPages;
+using Odachi.AspNet.MvcPages;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

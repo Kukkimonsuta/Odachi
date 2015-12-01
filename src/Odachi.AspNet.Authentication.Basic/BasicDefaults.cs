@@ -1,4 +1,4 @@
-﻿namespace Odachi.Security.BasicAuthentication
+﻿namespace Odachi.AspNet.Authentication.Basic
 {
     /// <summary>
     /// Default values used by <see cref="BasicMiddleware"/> when not defined in <see cref="BasicOptions"/>.

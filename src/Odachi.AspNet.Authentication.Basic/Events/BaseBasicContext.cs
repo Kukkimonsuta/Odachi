@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Odachi.Security.BasicAuthentication
+namespace Odachi.AspNet.Authentication.Basic
 {
 	public class BaseBasicContext : BaseControlContext
 	{

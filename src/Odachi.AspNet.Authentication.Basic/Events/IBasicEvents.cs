@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Odachi.Security.BasicAuthentication
+namespace Odachi.AspNet.Authentication.Basic
 {
     /// <summary>
     /// Specifies callback methods which the <see cref="BasicMiddleware"></see> invokes to enable developer control over the authentication process.

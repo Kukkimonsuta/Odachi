@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24627.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{41DA389D-8FD3-4CC0-B012-5825FE714E87}"
 EndProject
@@ -11,9 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NuGet.Config = NuGet.Config
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.MvcPages", "src\Odachi.MvcPages\Odachi.MvcPages.xproj", "{2D51CA75-3002-4485-9834-A70BB6B923FD}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.AspNet.MvcPages", "src\Odachi.AspNet.MvcPages\Odachi.AspNet.MvcPages.xproj", "{2D51CA75-3002-4485-9834-A70BB6B923FD}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.Security.BasicAuthentication", "src\Odachi.Security.BasicAuthentication\Odachi.Security.BasicAuthentication.xproj", "{10C8D582-BA75-4C45-9379-9EC77A28AA2F}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.AspNet.Authentication.Basic", "src\Odachi.AspNet.Authentication.Basic\Odachi.AspNet.Authentication.Basic.xproj", "{10C8D582-BA75-4C45-9379-9EC77A28AA2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{066ADA6B-80D9-4679-BF94-2743B59B5C29}"
 EndProject

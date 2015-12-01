@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System;
 
-namespace Odachi.Security.BasicAuthentication
+namespace Odachi.AspNet.Authentication.Basic
 {
 	/// <summary>
 	/// Contains the options used by the <see cref="BasicMiddleware"/>.
