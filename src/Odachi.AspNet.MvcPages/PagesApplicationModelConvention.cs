@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Mvc.ApplicationModels;
 
-namespace Odachi.MvcPages
+namespace Odachi.AspNet.MvcPages
 {
     public class PagesApplicationModelConvention : IApplicationModelConvention
     {

@@ -3,7 +3,7 @@ using Microsoft.AspNet.Builder;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.WebEncoders;
 
-namespace Odachi.Security.BasicAuthentication
+namespace Odachi.AspNet.Authentication.Basic
 {
     /// <summary>
     /// Middleware for basic authentication.

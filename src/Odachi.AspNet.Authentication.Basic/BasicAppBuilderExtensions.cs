@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.OptionsModel;
-using Odachi.Security.BasicAuthentication;
+using Odachi.AspNet.Authentication.Basic;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 

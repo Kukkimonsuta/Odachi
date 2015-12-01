@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Odachi.Security.BasicAuthentication
+namespace Odachi.AspNet.Authentication.Basic
 {
     /// <summary>
     /// This default implementation of the <see cref="IBasicEvents"/> may be used if the
@@ -32,7 +32,7 @@ namespace Odachi.Security.BasicAuthentication
         /// </summary>
         /// <param name="context"></param>
         public virtual Task SignIn(BasicSignInContext context) => OnSignIn(context);
-        
+
         /// <summary>
         /// Implements the interface method by invoking the related delegate method
         /// </summary>
