@@ -32,7 +32,7 @@ deploy:
   - provider: Environment
     name: GitHub Releases (pre)
     on:
-      branch: master
+      branch: preview
   - provider: Environment
     name: GitHub Releases (stable)
     on:
