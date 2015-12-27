@@ -1,9 +1,4 @@
 ﻿using System;
-#if USE_NET_CURRENT_PRINCIPAL
-using ClaimsPrincipal = System.Security.Claims.ClaimsPrincipal;
-#else
-using ClaimsPrincipal = Odachi.Security.CurrentPrincipalFix;
-#endif
 
 namespace Odachi.Security
 {
@@ -23,15 +18,5 @@ namespace Odachi.Security
         }
 
         public string Name { get; private set; }
-
-        public bool IsGranted()
-        {
-            return ClaimsPrincipal.Current.HasPermission(this);
-        }
-
-        public void Demand()
-        {
-            ClaimsPrincipal.Current.DemandPermission(this);
-        }
     }
 }

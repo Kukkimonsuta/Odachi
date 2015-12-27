@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Mvc.ApplicationModels;
+﻿using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.ApplicationModels;
 
 namespace Odachi.AspNet.MvcPages
 {
@@ -10,17 +11,25 @@ namespace Odachi.AspNet.MvcPages
         {
             foreach (var controller in model.Controllers)
             {
-                var actionName = controller.ControllerName;
+                var ns = controller.ControllerType.Namespace.Split('.');
+				if (ns.Length < 4)
+					continue;
 
-                var ns = controller.ControllerType.Namespace;
-                var index = ns.LastIndexOf('.');
-                var controllerName = ns.Substring(index + 1, ns.Length - index - 1);
+				var actionName = controller.ControllerName;
+				var areas = ns[ns.Length - 4];
+				var areaName = ns[ns.Length - 3];
+				var app = ns[ns.Length - 2];
+				var controllerName = ns[ns.Length - 1];
 
-                foreach (var action in controller.Actions)
-                    action.ActionName = actionName;
+				if (!string.Equals(areas, "areas", System.StringComparison.OrdinalIgnoreCase) || !string.Equals(app, "app", System.StringComparison.OrdinalIgnoreCase))
+					continue;
 
-                controller.ControllerName = controllerName;
-            }
+				controller.RouteConstraints.Add(new AreaAttribute(areaName));
+				controller.ControllerName = controllerName;
+
+				foreach (var action in controller.Actions)
+					action.ActionName = actionName;
+			}
         }
 
         #endregion

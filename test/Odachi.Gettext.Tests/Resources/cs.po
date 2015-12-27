@@ -1,0 +1,38 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: MAINTAINER <EMAIL@ADRESS>\n"
+"POT-Creation-Date: 2015-12-27 20:14+0100\n"
+"PO-Revision-Date: 2015-12-27 21:43+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.6\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Language: cs\n"
+
+msgid "String"
+msgstr "Řetězec"
+
+msgid "Plural string"
+msgid_plural "Plural strings"
+msgstr[0] "Řetězec"
+msgstr[1] "Řetězce"
+msgstr[2] "Řetězců"
+
+msgctxt "context"
+msgid "Particular string"
+msgstr "Specifický řetězec"
+
+msgctxt "context"
+msgid "Particular plural string"
+msgid_plural "Particular plural strings"
+msgstr[0] "Specifický řetězec"
+msgstr[1] "Specifické řetězce"
+msgstr[2] "Specifických řetězců"

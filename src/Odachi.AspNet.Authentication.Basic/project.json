@@ -2,7 +2,7 @@
 	"version": "1.0.0-rc1-*",
 	"description": "ASP.NET 5 middleware for basic authentication.",
 	"authors": [ "Lukáš Novotný" ],
-	"tags": [ "" ],
+	"tags": [ "basic authentication", "middleware", "odachi" ],
 	"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
 	"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
