@@ -7,19 +7,19 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class MvcBuilderExtensions
 	{
-        public static IMvcBuilder AddPages(this IMvcBuilder mvcBuilder)
+        public static IMvcBuilder AddMvcPages(this IMvcBuilder mvcBuilder)
         {
-			mvcBuilder.Services
-                .Configure<MvcOptions>(o =>
+			mvcBuilder
+				.AddMvcOptions(o =>
                 {
                     o.Conventions.Add(new PagesApplicationModelConvention());
                 })
-                .Configure<RazorViewEngineOptions>(o =>
+                .AddRazorOptions(o =>
                 {
                     o.ViewLocationExpanders.Add(new PagesViewLocationExpander());
                 });
 
             return mvcBuilder;
         }
-    }
+	}
 }

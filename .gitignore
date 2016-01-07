@@ -5,6 +5,7 @@
 /test/**/[Bb]in
 /test/**/[Oo]bj
 /build
+/TestResults
 
 *.sln.*
 *.suo*

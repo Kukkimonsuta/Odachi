@@ -1,9 +1,10 @@
 ﻿using System.Security;
 using System.Security.Claims;
+using System.Security.Principal;
 
 namespace Odachi.Security
 {
-    public static class ClaimsPrincipalExtensions
+    public static class PrincipalExtensions
     {
         /// <summary>
         /// Returns whether principal has been granted a permission.
@@ -26,5 +27,15 @@ namespace Odachi.Security
             if (!HasPermission(principal, permission))
                 throw new SecurityException("Principal '" + principal.Identity.Name + "' doesn't have permission '" + permission.Name + "'");
         }
-    }
+
+		public static bool HasPermission(this IPrincipal principal, Permission permission)
+		{
+			return ((ClaimsPrincipal)principal).HasPermission(permission);
+		}
+
+		public static void DemandPermission(this IPrincipal principal, Permission permission)
+		{
+			((ClaimsPrincipal)principal).DemandPermission(permission);
+		}
+	}
 }

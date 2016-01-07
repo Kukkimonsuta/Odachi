@@ -1,8 +1,8 @@
 ﻿{
     "version": "1.0.0-rc1-*",
-    "description": "Alternative way to structure your ASP.NET MVC project.",
+    "description": "Alternative way to structure MVC projects.",
     "authors": [ "Lukáš Novotný" ],
-    "tags": [ "" ],
+    "tags": [ "mvc", "odachi" ],
     "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
     "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 

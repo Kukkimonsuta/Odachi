@@ -1,0 +1,39 @@
+﻿{
+    "version": "1.0.0-rc1-*",
+    "description": "Odachi.Gettext.Tests Class Library",
+    "authors": [ "Lukáš Novotný" ],
+    "tags": [ "" ],
+    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+
+    "resource": [
+        "Resources/**"
+    ],
+
+    "dependencies": {
+        "xunit": "2.1.0",
+        "xunit.runner.dnx": "2.1.0-rc1-*",
+        "xunit.runner.visualstudio": "2.1.0-rc1-*",
+
+        "Odachi.Gettext": ""
+    },
+
+    "commands": {
+        "test": "xunit.runner.dnx"
+    },
+
+    "frameworks": {
+        "dnx451": { },
+        "dnxcore50": {
+            "dependencies": {
+                "Microsoft.CSharp": "4.0.1-beta-23516",
+                "System.Collections": "4.0.11-beta-23516",
+                "System.Linq": "4.0.1-beta-23516",
+                "System.Runtime": "4.0.21-beta-23516",
+                "System.Threading": "4.0.11-beta-23516",
+                "System.Reflection": "4.1.0-beta-23516",
+                "System.Reflection.Extensions": "4.0.1-beta-23516"
+            }
+        }
+    }
+}
