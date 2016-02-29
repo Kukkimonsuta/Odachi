@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNet.Authentication;
-using Microsoft.AspNet.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using System;
 
-namespace Odachi.AspNet.Authentication.Basic
+namespace Odachi.AspNetCore.Authentication.Basic
 {
     /// <summary>
     /// Context object used to control flow of basic authentication.

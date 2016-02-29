@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.ApplicationModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Odachi.AspNet.MvcPages
+namespace Odachi.AspNetCore.MvcPages
 {
     public class PagesApplicationModelConvention : IApplicationModelConvention
     {

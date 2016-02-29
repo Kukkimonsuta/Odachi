@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNet.Authentication;
-using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.WebEncoders;
+using System.Text.Encodings.Web;
 
-namespace Odachi.AspNet.Authentication.Basic
+namespace Odachi.AspNetCore.Authentication.Basic
 {
     /// <summary>
     /// Middleware for basic authentication.
@@ -14,7 +16,7 @@ namespace Odachi.AspNet.Authentication.Basic
             RequestDelegate next,
 			BasicOptions options,
 			ILoggerFactory loggerFactory,
-            IUrlEncoder encoder)
+            UrlEncoder encoder)
             : base(next, options, loggerFactory, encoder)
         {
 			if (Options.Events == null)

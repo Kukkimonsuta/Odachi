@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.OptionsModel;
-using Odachi.AspNet.Authentication.Basic;
+﻿using Microsoft.Extensions.Options;
+using Odachi.AspNetCore.Authentication.Basic;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Microsoft.AspNet.Builder
+namespace Microsoft.AspNetCore.Builder
 {
     /// <summary>
     /// Basic authentication extensions for <see cref="IApplicationBuilder"/>.

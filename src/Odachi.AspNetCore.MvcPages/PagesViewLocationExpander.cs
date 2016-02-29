@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNet.Mvc.Razor;
+﻿using Microsoft.AspNetCore.Mvc.Razor;
 using System.Collections.Generic;
 
-namespace Odachi.AspNet.MvcPages
+namespace Odachi.AspNetCore.MvcPages
 {
     public class PagesViewLocationExpander : IViewLocationExpander
     {

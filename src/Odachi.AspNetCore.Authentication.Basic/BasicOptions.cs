@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNet.Authentication;
-using Microsoft.Extensions.OptionsModel;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Options;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System;
+using Microsoft.AspNetCore.Builder;
 
-namespace Odachi.AspNet.Authentication.Basic
+namespace Odachi.AspNetCore.Authentication.Basic
 {
 	/// <summary>
 	/// Contains the options used by the <see cref="BasicMiddleware"/>.

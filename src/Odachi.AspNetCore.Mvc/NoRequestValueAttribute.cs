@@ -1,15 +1,8 @@
-﻿using Microsoft.AspNet.Mvc.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc.Abstractions;
-using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.ActionConstraints;
-using Microsoft.AspNet.Routing;
-using Microsoft.Extensions.Primitives;
+﻿using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.AspNetCore.Routing;
 
-namespace Odachi.AspNet.Mvc
+namespace Odachi.AspNetCore.Mvc
 {
 	public class NoRequestValueAttribute : ActionMethodSelectorAttribute
 	{

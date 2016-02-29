@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNet.Mvc.Infrastructure;
+﻿using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.AspNetCore.Routing;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc.Abstractions;
-using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.ActionConstraints;
-using Microsoft.AspNet.Routing;
-using Microsoft.Extensions.Primitives;
 
-namespace Odachi.AspNet.Mvc
+namespace Odachi.AspNetCore.Mvc
 {
 	public class RequireRequestValueAttribute : ActionMethodSelectorAttribute
 	{

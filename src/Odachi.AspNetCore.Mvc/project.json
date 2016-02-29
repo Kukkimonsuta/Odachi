@@ -1,5 +1,5 @@
 ﻿{
-    "version": "1.0.0-rc1-*",
+    "version": "1.0.0-rc2-*",
     "description": "ASP.NET MVC extensions and helpers.",
     "authors": [ "Lukáš Novotný" ],
     "tags": [ "mvc", "odachi" ],
@@ -7,7 +7,7 @@
     "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
     "dependencies": {
-        "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final"
+        "Microsoft.AspNetCore.Mvc.Core": "1.0.0-rc2-*"
     },
 
     "frameworks": {

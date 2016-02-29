@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Odachi.AspNet.Authentication.Basic
+namespace Odachi.AspNetCore.Authentication.Basic
 {
     /// <summary>
     /// This default implementation of the <see cref="IBasicEvents"/> may be used if the

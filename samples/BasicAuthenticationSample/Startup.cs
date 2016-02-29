@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
-using Odachi.AspNet.Authentication.Basic;
+using Odachi.AspNetCore.Authentication.Basic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.Extensions.OptionsModel;
-using Microsoft.AspNet.Authentication;
-using Microsoft.AspNet.Http.Authentication;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http.Authentication;
 
 namespace BasicAuthenticationSample
 {
@@ -22,15 +22,16 @@ namespace BasicAuthenticationSample
 				.SetBasePath(applicationEnvironment.ApplicationBasePath)
 				.AddJsonFile("config.json")
 				.Build();
+
+			BasicOptions = Configuration.GetValue<BasicOptions>("BasicAuthentication");
 		}
 
 		public IConfigurationRoot Configuration { get; set; }
+		public BasicOptions BasicOptions { get; set; }
 
 		// For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.Configure<BasicOptions>(Configuration.GetSection("BasicAuthentication"));
-
 			services.AddAuthentication();
 		}
 
@@ -38,7 +39,7 @@ namespace BasicAuthenticationSample
 		{
 			// this example shows how to configure basic authentication using IOptions
 
-			app.UseBasicAuthentication();
+			app.UseBasicAuthentication(BasicOptions);
 
 			app.Run(async (context) =>
 			{
@@ -73,7 +74,7 @@ namespace BasicAuthenticationSample
 							// note that ClaimsIdentity is considered "authenticated" only if it has an "authenticationType"
 							// returning an unauthenticated principal will in this case result in 403 Forbidden
 							// returning null will act in this case as if there were no credentials submitted and user will be asked again
-							context.AuthenticationTicket = new AuthenticationTicket(
+							context.Ticket = new AuthenticationTicket(
 								new ClaimsPrincipal(new ClaimsIdentity(claims, context.Options.AuthenticationScheme)),
 								new AuthenticationProperties(),
 								context.Options.AuthenticationScheme

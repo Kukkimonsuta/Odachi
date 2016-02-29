@@ -1,5 +1,5 @@
 ﻿{
-    "version": "1.0.0-rc1-*",
+    "version": "1.0.0-rc2-*",
     "description": "Gettext file parsing library.",
     "authors": [ "Lukáš Novotný" ],
     "tags": [ "gettext", "odachi" ],
@@ -7,20 +7,18 @@
     "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
     "dependencies": {
+        "System.Runtime": "4.1.0-rc2-23819",
+        "System.Linq": "4.1.0-rc2-23819",
+        "System.Linq.Expressions": "4.0.11-rc2-23819",
+        "System.Globalization": "4.0.11-rc2-23819",
+        "System.Text.RegularExpressions": "4.0.12-rc2-23819",
+        "System.IO": "4.1.0-rc2-23819",
+        "System.IO.FileSystem": "4.0.1-rc2-23819",
+        "System.Runtime.InteropServices": "4.1.0-rc2-23819"
     },
 
     "frameworks": {
-        "net451": { },
-        "dotnet5.4": {
-            "dependencies": {
-                "Microsoft.CSharp": "4.0.1-beta-23516",
-                "System.Collections": "4.0.11-beta-23516",
-                "System.Linq": "4.0.1-beta-23516",
-                "System.Runtime": "4.0.21-beta-23516",
-                "System.Threading": "4.0.11-beta-23516",
-                "System.IO.FileSystem": "4.0.1-beta-23516",
-                "System.Text.RegularExpressions": "4.0.11-beta-23516"
-            }
-        }
+        "net46": { },
+        "dotnet5.4": { }
     }
 }

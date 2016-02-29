@@ -1,18 +1,18 @@
 ﻿{
     "webroot": "wwwroot",
-    "version": "1.0.0-rc1-*",
+    "version": "1.0.0-rc2-*",
 
     "dependencies": {
-        "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
-        "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
-        "Microsoft.AspNet.Server.WebListener": "1.0.0-rc1-final",
-        "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-final",
+        "Microsoft.AspNetCore.IISPlatformHandler": "1.0.0-rc2-*",
+        "Microsoft.AspNetCore.Server.Kestrel": "1.0.0-rc2-*",
+        "Microsoft.AspNetCore.Diagnostics": "1.0.0-rc2-*",
+        "Microsoft.Extensions.Configuration.Binder": "1.0.0-rc2-*",
 
-        "Odachi.AspNet.Authentication.Basic": "1.0.0-rc1-*"
+        "Odachi.AspNetCore.Authentication.Basic": "1.0.0-rc2-*"
     },
 
     "commands": {
-        "web": "Microsoft.AspNet.Server.Kestrel"
+        "web": "Microsoft.AspNetCore.Server.Kestrel"
     },
 
     "frameworks": {

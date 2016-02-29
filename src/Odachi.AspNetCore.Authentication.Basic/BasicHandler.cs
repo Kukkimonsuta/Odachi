@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNet.Authentication;
-using Microsoft.AspNet.Http.Authentication;
-using Microsoft.AspNet.Http.Features.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Http.Features.Authentication;
 using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.AspNet.Http.Features.Internal;
+using Microsoft.AspNetCore.Http.Features.Internal;
 using System.Security.Claims;
 
-namespace Odachi.AspNet.Authentication.Basic
+namespace Odachi.AspNetCore.Authentication.Basic
 {
     internal class BasicHandler : AuthenticationHandler<BasicOptions>
     {
@@ -28,11 +28,11 @@ namespace Odachi.AspNet.Authentication.Basic
 
                 var headers = Request.Headers[RequestHeader];
                 if (headers.Count <= 0)
-					return AuthenticateResult.Failed("No authorization header.");
+					return AuthenticateResult.Fail("No authorization header.");
 
-				var header = headers.Where(h => h.StartsWith(RequestHeaderPrefix)).FirstOrDefault();
+				var header = headers.Where(h => h.StartsWith(RequestHeaderPrefix, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
                 if (header == null)
-					return AuthenticateResult.Failed("Not basic authentication header.");
+					return AuthenticateResult.Fail("Not basic authentication header.");
 
 				var encoded = header.Substring(RequestHeaderPrefix.Length);
 				var decoded = default(string);
@@ -42,12 +42,12 @@ namespace Odachi.AspNet.Authentication.Basic
 				}
 				catch (Exception)
 				{
-					return AuthenticateResult.Failed("Invalid basic authentication header encoding.");
+					return AuthenticateResult.Fail("Invalid basic authentication header encoding.");
 				}
 
                 var index = decoded.IndexOf(':');
                 if (index == -1)
-					return AuthenticateResult.Failed("Invalid basic authentication header format.");
+					return AuthenticateResult.Fail("Invalid basic authentication header format.");
 
 				var username = decoded.Substring(0, index);
                 var password = decoded.Substring(index + 1);
@@ -57,10 +57,10 @@ namespace Odachi.AspNet.Authentication.Basic
 
 				if (signInContext.HandledResponse)
 				{
-					if (signInContext.AuthenticationTicket != null)
-						return AuthenticateResult.Success(signInContext.AuthenticationTicket);
+					if (signInContext.Ticket != null)
+						return AuthenticateResult.Success(signInContext.Ticket);
 					else
-						return AuthenticateResult.Failed("Invalid basic authentication credentials.");
+						return AuthenticateResult.Fail("Invalid basic authentication credentials.");
 				}
 
 				if (signInContext.Skipped)
@@ -68,7 +68,7 @@ namespace Odachi.AspNet.Authentication.Basic
 
 				var credentials = Options.Credentials.Where(c => c.Username == username && c.Password == password).FirstOrDefault();
 				if (credentials == null)
-					return AuthenticateResult.Failed("Invalid basic authentication credentials.");
+					return AuthenticateResult.Fail("Invalid basic authentication credentials.");
 
 				var claims = credentials.Claims.Select(c => new Claim(c.Type, c.Value)).ToList();
 				if (!claims.Any(c => c.Type == ClaimTypes.Name))
@@ -87,7 +87,7 @@ namespace Odachi.AspNet.Authentication.Basic
 				await Options.Events.Exception(exceptionContext);
 
 				if (exceptionContext.HandledResponse)
-					return AuthenticateResult.Success(exceptionContext.AuthenticationTicket);
+					return AuthenticateResult.Success(exceptionContext.Ticket);
 
 				if (exceptionContext.Skipped)
 					return AuthenticateResult.Success(null);
