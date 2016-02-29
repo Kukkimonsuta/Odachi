@@ -8,4 +8,4 @@
 curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | DNX_BRANCH=dev sh && source ~/.dnx/dnvm/dnvm.sh
 
 # dnvm install `grep -oP '(?<=")1.0.0[0-9a-zA-Z\.\-]*(?=")' global.json` -r mono
-dnvm install `grep -oP '(?<=")1.0.0[0-9a-zA-Z\.\-]*(?=")' global.json` -r coreclr -alias default
+dnvm install `grep -oP '(?<=")1.0.0[0-9a-zA-Z\.\-]*(?=")' global.json` -u -r coreclr -alias default

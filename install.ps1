@@ -41,6 +41,6 @@ $version = GetRequiredVersion;
 
 "Installing runtimes $version..."
 ""
-Exec { dnvm install $version -r clr }
-Exec { dnvm install $version -r coreclr -alias default }
+Exec { dnvm install $version -u -r clr }
+Exec { dnvm install $version -u -r coreclr -alias default }
 ""
