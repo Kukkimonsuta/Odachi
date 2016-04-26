@@ -7,26 +7,16 @@
     "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
     "dependencies": {
-        "Microsoft.AspNet.Razor.Runtime": "4.0.0-rc2-*",
-        "Microsoft.CodeAnalysis.CSharp": "1.0.0-rc3-20150529-04"
+        "Microsoft.AspNetCore.Razor.Runtime": "1.0.0-rc2-*",
+        "Microsoft.CodeAnalysis.CSharp": "1.3.0-beta1-20160410-01"
     },
 
-    "frameworks": {
-        "net451": {
+	"frameworks": {
+		"net451": {
             "frameworkAssemblies": {
-                "System.Text.Encoding": "4.0.0.0",
                 "System.Threading.Tasks": "4.0.0.0"
             }
-        },
-        "dotnet5.4": {
-            "dependencies": {
-                "System.Runtime": "4.1.0-rc2-23819",
-                "System.Threading": "4.0.11-rc2-23819",
-                "System.Threading.Tasks": "4.0.11-rc2-23819",
-                "System.Runtime.InteropServices": "4.1.0-rc2-23819",
-                "System.Text.Encoding": "4.0.11-rc2-23819",
-                "System.Xml.ReaderWriter": "4.0.11-rc2-23819"
-            }
-        }
-    }
+		},
+		"netstandard1.5": { }
+	}
 }

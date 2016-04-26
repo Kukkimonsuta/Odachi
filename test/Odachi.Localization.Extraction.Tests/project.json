@@ -7,21 +7,26 @@
     "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
     "dependencies": {
-        "Microsoft.Dnx.TestHost": "1.0.0-rc2-*",
-
         "xunit": "2.1.0",
-        "xunit.runner.dnx": "2.1.0-*",
-        "xunit.runner.visualstudio": "2.1.0-*",
 
-        "Odachi.Localization.Extraction": ""
+        "Odachi.Localization.Extraction": "1.0.0-rc2-*"
     },
 
-    "commands": {
-        "test": "xunit.runner.dnx"
-    },
+    "testRunner": "xunit",
 
     "frameworks": {
-        "dnx451": { },
-        "dnxcore50": { }
+        "netcoreapp1.0": {
+            "imports": [
+                "dnxcore50",
+                "portable-net451+win8"
+            ],
+            "dependencies": {
+                "Microsoft.NETCore.App": {
+                    "version": "1.0.0-*",
+                    "type": "platform"
+                },
+                "dotnet-test-xunit": "1.0.0-*"
+            }
+        }
     }
 }

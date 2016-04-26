@@ -1,22 +1,24 @@
 ﻿{
-    "version": "1.0.0-rc2-*",
-    "description": "Gettext-like localization library.",
-    "authors": [ "Lukáš Novotný" ],
-    "tags": [ "localization", "gettext", "odachi" ],
-    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+	"version": "1.0.0-rc2-*",
+	"description": "Gettext-like localization library.",
+	"authors": [ "Lukáš Novotný" ],
+	"tags": [ "localization", "gettext", "odachi" ],
+	"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+	"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
-    "dependencies": {
-        "System.Runtime": "4.1.0-rc2-23819",
+	"dependencies": {
+		"Microsoft.Extensions.Localization.Abstractions": "1.0.0-rc2-*",
+		"Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc2-*",
 
-        "Microsoft.Extensions.Localization.Abstractions": "1.0.0-rc2-*",
-        "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc2-*",
+		"Odachi.Gettext": "1.0.0-rc2-*"
+	},
 
-        "Odachi.Gettext": ""
-    },
-
-    "frameworks": {
-        "net46": { },
-        "dotnet5.4": { }
-    }
+	"frameworks": {
+		"net451": {
+			"frameworkAssemblies": {
+				"System.Runtime": "4.0.10.0"
+			}
+		},
+		"netstandard1.3": { }
+	}
 }

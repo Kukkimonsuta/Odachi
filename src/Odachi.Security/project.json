@@ -1,19 +1,18 @@
 ﻿{
-    "version": "1.0.0-rc2-*",
-    "description": "Role/Permission definition helpers. This is just a proof of concept, usage is not recommended.",
-    "authors": [ "Lukáš Novotný" ],
-    "tags": [ "odachi" ],
-    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+	"version": "1.0.0-rc2-*",
+	"description": "Role/Permission definition helpers. This is just a proof of concept, usage is not recommended.",
+	"authors": [ "Lukáš Novotný" ],
+	"tags": [ "odachi" ],
+	"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+	"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
-    "dependencies": {
-        "System.Runtime": "4.1.0-rc2-23819",
-        "System.Security.Claims": "4.0.1-rc2-23819",
-        "System.Linq": "4.1.0-rc2-23819"
-    },
-
-    "frameworks": {
-        "net46": { },
-        "dotnet5.6": { }
-    }
+	"frameworks": {
+		"net46": { },
+		"netstandard1.5": { 
+			"dependencies": {
+				"System.Security.Claims": "4.0.1-rc2-*",
+				"System.Linq": "4.1.0-rc2-*"
+			}
+		}
+	}
 }

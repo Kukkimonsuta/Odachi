@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNet.Razor;
-using Microsoft.AspNet.Razor.Parser;
-using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-using Microsoft.AspNet.Razor.Tokenizer.Symbols;
+﻿using Microsoft.AspNetCore.Razor;
+using Microsoft.AspNetCore.Razor.Parser;
+using Microsoft.AspNetCore.Razor.Parser.SyntaxTree;
+using Microsoft.AspNetCore.Razor.Tokenizer.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

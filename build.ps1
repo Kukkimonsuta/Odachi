@@ -15,23 +15,62 @@ function Exec
     }
 }
 
-"Setting up environment..."
-""
-Exec { dnvm use default }
-""
+function Build($path)
+{
+    Exec { pushd $path }
+    Exec { dotnet build --configuration Release }
+    Exec { popd }
+}
 
-"Restoring packages..."
-""
-Exec { dnu restore }
-""
+function Pack($path)
+{
+    Exec { pushd $path }
+    Exec { dotnet pack --output ../../build --configuration Release --version-suffix $buildNumber }
+    Exec { popd }
+}
 
-"Building projects.."
-""
-Exec { dnu build ./src/* ./samples/* --configuration Release }
-""
+function Test($path)
+{
+    Exec { pushd $path }
+    Exec { dotnet test --configuration Release }
+    Exec { popd }
+}
 
-"Deploying.."
-""
-$env:DNX_BUILD_VERSION=$env:APPVEYOR_BUILD_NUMBER
-Exec { dnu pack ./src/* --out build --configuration Release }
-""
+Write-Host
+Write-Host "Display dotnet info.."
+Write-Host
+Exec { dotnet --info }
+
+Write-Host
+Write-Host "Restore packages.."
+Write-Host
+Exec { dotnet restore }
+
+Write-Host
+Write-Host "Build & pack libraries.."
+Write-Host
+$buildNumber = $env:APPVEYOR_BUILD_NUMBER
+if ([string]::IsNullOrEmpty($buildNumber)) {
+    $buildNumber = "local"
+}
+
+Pack(".\src\Odachi.AspNetCore.Authentication.Basic")
+Pack(".\src\Odachi.AspNetCore.Mvc")
+Pack(".\src\Odachi.AspNetCore.MvcPages")
+Pack(".\src\Odachi.Data")
+Pack(".\src\Odachi.Gettext")
+Pack(".\src\Odachi.Localization")
+Pack(".\src\Odachi.Localization.Extraction")
+Pack(".\src\Odachi.Localization.Extraction.Commands")
+Pack(".\src\Odachi.Security")
+
+Write-Host
+Write-Host "Build samples.."
+Write-Host
+Build(".\samples\BasicAuthenticationSample");
+
+Write-Host
+Write-Host "Build & run test.."
+Write-Host
+Test(".\test\Odachi.Gettext.Tests");
+Test(".\test\Odachi.Localization.Extraction.Tests");

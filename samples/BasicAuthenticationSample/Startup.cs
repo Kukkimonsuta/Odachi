@@ -11,6 +11,8 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Authentication;
+using System.IO;
+using System;
 
 namespace BasicAuthenticationSample
 {
@@ -23,7 +25,12 @@ namespace BasicAuthenticationSample
 				.AddJsonFile("config.json")
 				.Build();
 
-			BasicOptions = Configuration.GetValue<BasicOptions>("BasicAuthentication");
+			//BasicOptions = Configuration.GetValue<BasicOptions>("BasicAuthentication");
+			BasicOptions = new BasicOptions();
+			Configuration.GetSection("BasicAuthentication").Bind(BasicOptions);
+			
+			if (BasicOptions == null)
+				throw new InvalidOperationException("Missing BasicAuthentication configuration"); 
 		}
 
 		public IConfigurationRoot Configuration { get; set; }
@@ -104,7 +111,6 @@ namespace BasicAuthenticationSample
 		{
 			app.UseStatusCodePages();
 			app.UseDeveloperExceptionPage();
-			app.UseIISPlatformHandler();
 
 			app.Map("/simple", Run_Simple);
 			app.Map("/custom-authentication-logic", Run_CustomAuthenticationLogic);
@@ -117,4 +123,20 @@ namespace BasicAuthenticationSample
 			});
 		}
 	}
+	
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var host = new WebHostBuilder()
+				.UseKestrel()
+				.UseContentRoot(Directory.GetCurrentDirectory())
+				.UseDefaultHostingConfiguration(args)
+				.UseIISIntegration()
+				.UseStartup<Startup>()
+				.Build();
+
+            host.Run();
+        }
+    }
 }

@@ -6,32 +6,12 @@
     "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
     "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
-    "compilationOptions": {
-        "emitEntryPoint": true
-    },
-
     "dependencies": {
         "Odachi.Localization.Extraction": "1.0.0-rc2-*"
     },
 
-    "commands": {
-        "chi-extract-locale": "Odachi.Localization.Extraction.Commands"
-    },
-
-    "frameworks": {
-        "dnx451": {
-            "frameworkAssemblies": {
-                "System.Runtime": "4.0.10.0",
-                "System.Threading.Tasks": "4.0.0.0",
-                "System.Text.Encoding": "4.0.0.0"
-            }
-        },
-        "dnxcore50": {
-            "dependencies": {
-                "System.Runtime": "4.1.0-rc2-23819",
-                "System.Collections.Concurrent": "4.0.12-rc2-23819",
-                "System.Console": "4.0.0-rc2-23819"
-            }
-        }
-    }
+	"frameworks": {
+		"net451": { },
+		"netstandard1.5": { }
+	}
 }

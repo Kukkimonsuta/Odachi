@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Http.Features.Authentication;
+using Microsoft.AspNetCore.Http.Features;
 using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.AspNetCore.Http.Features.Internal;
 using System.Security.Claims;
 
 namespace Odachi.AspNetCore.Authentication.Basic
