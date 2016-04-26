@@ -1,0 +1,22 @@
+﻿{
+    "version": "1.0.0-rc2-*",
+    "description": "Alternative way to structure MVC projects.",
+    "authors": [ "Lukáš Novotný" ],
+    "tags": [ "mvc", "odachi" ],
+    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+
+    "dependencies": {
+        "Microsoft.AspNetCore.Mvc.Core": "1.0.0-rc2-*",
+        "Microsoft.AspNetCore.Mvc.Razor": "1.0.0-rc2-*"
+    },
+
+    "frameworks": {
+		"net451": { },
+		"netstandard1.5": {
+            "imports": [
+                "portable-net451+win8"
+            ]
+        }
+    }
+}

@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNet.Razor.Parser;
-using Microsoft.AspNet.Razor.Tokenizer.Symbols;
+﻿using Microsoft.AspNetCore.Razor.Parser;
+using Microsoft.AspNetCore.Razor.Tokenizer.Symbols;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Razor.Parser.SyntaxTree;
+using Microsoft.AspNetCore.Razor.Parser.SyntaxTree;
 using System.Globalization;
 using Odachi.Localization.Extraction.External;
 using Odachi.Localization.Extraction.Generation;

@@ -1,11 +1,13 @@
 #!/bin/bash
 
-# sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-# echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
-# sudo apt-get update -qq
-# sudo apt-get install mono-complete -qq
+# source: https://github.com/enricosada/fsharp-dotnet-cli-samples
 
-curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | DNX_BRANCH=dev sh && source ~/.dnx/dnvm/dnvm.sh
+# Download script to install dotnet cli
+curl -L --create-dirs https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/install.sh -o ./tools/install.sh
+find ./tools -name "*.sh" -exec chmod +x {} \;
 
-# dnvm install `grep -oP '(?<=")1.0.0[0-9a-zA-Z\.\-]*(?=")' global.json` -r mono
-dnvm install `grep -oP '(?<=")1.0.0[0-9a-zA-Z\.\-]*(?=")' global.json` -r coreclr -alias default
+export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
+# use bash to workaround bug https://github.com/dotnet/cli/issues/1725
+sudo bash ./tools/install.sh --channel "preview" --install-dir "$DOTNET_INSTALL_DIR" --no-path
+# add dotnet to PATH
+export PATH="$DOTNET_INSTALL_DIR:$PATH"

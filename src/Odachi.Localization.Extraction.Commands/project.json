@@ -1,42 +1,17 @@
 ﻿{
-    "version": "1.0.0-rc1-*",
+    "version": "1.0.0-rc2-*",
     "description": "Command line interface for `Odachi.Localization.Extraction`.",
     "authors": [ "Lukáš Novotný" ],
     "tags": [ "localization", "gettext", "xgettext", "odachi" ],
     "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
     "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
-    "compilationOptions": {
-        "emitEntryPoint": true
-    },
-
     "dependencies": {
-        "Odachi.Localization.Extraction": "1.0.0-rc1-*"
+        "Odachi.Localization.Extraction": "1.0.0-*"
     },
 
-    "commands": {
-        "chi-extract-locale": "Odachi.Localization.Extraction.Commands"
-    },
-
-    "frameworks": {
-        "dnx451": {
-            "frameworkAssemblies": {
-                "System.Runtime": "4.0.10.0",
-                "System.Threading.Tasks": "4.0.0.0",
-                "System.Text.Encoding": "4.0.0.0"
-            }
-        },
-        "dnxcore50": {
-            "dependencies": {
-                "Microsoft.CSharp": "4.0.1-beta-23516",
-                "System.Collections": "4.0.11-beta-23516",
-                "System.Collections.Concurrent": "4.0.11-beta-23516",
-                "System.Linq": "4.0.1-beta-23516",
-                "System.Runtime": "4.0.21-beta-23516",
-                "System.Threading": "4.0.11-beta-23516",
-                "System.IO": "4.0.11-beta-23516",
-                "System.Console": "4.0.0-beta-23516"
-            }
-        }
-    }
+	"frameworks": {
+		"net451": { },
+		"netstandard1.5": { }
+	}
 }

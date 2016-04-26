@@ -1,3 +1,5 @@
+# !! Commands were reworked into tools in RC2, this needs to be updated and doesn't work right now. !!
+
 # Odachi.Localization.Extraction.Commands
 
 `xgettext`-like command line interface using `Odachi.Localization.Extraction`.

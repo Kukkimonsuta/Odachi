@@ -1,0 +1,24 @@
+﻿{
+	"version": "1.0.0-rc2-*",
+	"description": "ASP.NET 5 middleware for basic authentication.",
+	"authors": [ "Lukáš Novotný" ],
+	"tags": [ "basic authentication", "middleware", "odachi" ],
+	"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+	"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+
+	"dependencies": {
+		"Microsoft.AspNetCore.DataProtection": "1.0.0-rc2-*",
+        "Microsoft.AspNetCore.Authentication": "1.0.0-rc2-*",
+        "Microsoft.Extensions.Logging": "1.0.0-rc2-*",
+        "Microsoft.Extensions.WebEncoders": "1.0.0-rc2-*"
+	},
+
+    "frameworks": {
+		"net451": { },
+		"netstandard1.5": {
+            "imports": [
+                "portable-net451+win8"
+            ]
+        }
+    }
+}

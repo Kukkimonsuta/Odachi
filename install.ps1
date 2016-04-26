@@ -15,32 +15,12 @@ function Exec
     }
 }
 
-function GetRequiredVersion()
-{    
-    $captures = gc "global.json" | 
-                select-string -Pattern '"version"\s*:\s*"(?<version>[0-9a-zA-Z\-\.]+)"'
-                 
-    If ($captures.Matches.Count -le 0)
-    {
-        Throw "Cannot resolve required version"
-    }
+# source: https://github.com/enricosada/fsharp-dotnet-cli-samples
 
-    $captures.Matches[0].Groups["version"].Value
-}
+Write-Host "Installing .NET CLI.."
 
-$dnvmInstalled = Get-Command dnvm -erroraction 'silentlycontinue'
-If (!$dnvmInstalled)
-{
-    "Installing DNVM..."
-    ""
-    &{$Branch='dev';iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.ps1'))}
-    ""
-}
-
-$version = GetRequiredVersion;
-
-"Installing runtimes $version..."
-""
-Exec { dnvm install $version -r clr }
-Exec { dnvm install $version -r coreclr -alias default }
-""
+mkdir -Force ".\tools\" | Out-Null
+Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/install.ps1" -OutFile ".\tools\install.ps1"
+$env:DOTNET_INSTALL_DIR = "$pwd\.dotnetcli"
+.\tools\install.ps1 -Channel "preview" -InstallDir "$env:DOTNET_INSTALL_DIR" -NoPath
+$env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"

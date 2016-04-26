@@ -12,9 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.AspNet.MvcPages", "src\Odachi.AspNet.MvcPages\Odachi.AspNet.MvcPages.xproj", "{2D51CA75-3002-4485-9834-A70BB6B923FD}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.AspNetCore.MvcPages", "src\Odachi.AspNetCore.MvcPages\Odachi.AspNetCore.MvcPages.xproj", "{2D51CA75-3002-4485-9834-A70BB6B923FD}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.AspNet.Authentication.Basic", "src\Odachi.AspNet.Authentication.Basic\Odachi.AspNet.Authentication.Basic.xproj", "{10C8D582-BA75-4C45-9379-9EC77A28AA2F}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.AspNetCore.Authentication.Basic", "src\Odachi.AspNetCore.Authentication.Basic\Odachi.AspNetCore.Authentication.Basic.xproj", "{10C8D582-BA75-4C45-9379-9EC77A28AA2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{066ADA6B-80D9-4679-BF94-2743B59B5C29}"
 EndProject
@@ -34,7 +34,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.Localization", "src\
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.Data", "src\Odachi.Data\Odachi.Data.xproj", "{DDF868D0-0B90-459B-B778-0577A9237D88}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.AspNet.Mvc", "src\Odachi.AspNet.Mvc\Odachi.AspNet.Mvc.xproj", "{47A6770F-0AA7-4EA3-AF9B-A4D03304B451}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.AspNetCore.Mvc", "src\Odachi.AspNetCore.Mvc\Odachi.AspNetCore.Mvc.xproj", "{47A6770F-0AA7-4EA3-AF9B-A4D03304B451}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Odachi.Gettext", "src\Odachi.Gettext\Odachi.Gettext.xproj", "{E2E5F56E-C7FC-49AF-9384-2FAA9ECC3604}"
 EndProject

@@ -1,4 +1,4 @@
-version: '1.0.0-rc1-{build}'
+version: '1.0.0-rc2-{build}'
 
 skip_tags: true
 
@@ -11,8 +11,7 @@ branches:
 clone_depth: 1
 
 cache:
-  - C:\Users\appveyor\.dnx\runtimes -> global.json
-  - C:\Users\appveyor\.dnx\packages -> **\project.json
+  - C:\Users\appveyor\.nuget\packages -> **\project.json
 
 init:
   - git config --global core.autocrlf true
