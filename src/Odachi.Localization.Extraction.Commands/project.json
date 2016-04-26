@@ -7,7 +7,7 @@
     "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
     "dependencies": {
-        "Odachi.Localization.Extraction": "1.0.0-rc2-*"
+        "Odachi.Localization.Extraction": "1.0.0-*"
     },
 
 	"frameworks": {

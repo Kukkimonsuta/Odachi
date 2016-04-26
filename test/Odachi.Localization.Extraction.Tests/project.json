@@ -9,7 +9,7 @@
     "dependencies": {
         "xunit": "2.1.0",
 
-        "Odachi.Localization.Extraction": "1.0.0-rc2-*"
+        "Odachi.Localization.Extraction": "1.0.0-*"
     },
 
     "testRunner": "xunit",
