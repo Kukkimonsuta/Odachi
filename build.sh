@@ -2,19 +2,13 @@
 
 function _build {
     pushd $1
-    dotnet build --configuration Release
-    popd
-}
-
-function _pack {
-    pushd $1
-    dotnet pack --output ../../build --configuration Release --version-suffix $buildNumber
+    dotnet build --configuration Release --framework $2
     popd
 }
 
 function _test {
     pushd $1
-    dotnet test --configuration Release
+    dotnet test --configuration Release --framework $2
     popd
 }
 
@@ -32,28 +26,23 @@ echo
 echo "Build & pack libraries.."
 echo
 
-BUILD_NUMBER = $env:APPVEYOR_BUILD_NUMBER
-if [ -z "$BUILD_NUMBER" ]; then
-    BUILD_NUMBER=local
-fi
-
-_pack "./src/Odachi.AspNetCore.Authentication.Basic"
-_pack "./src/Odachi.AspNetCore.Mvc"
-_pack "./src/Odachi.AspNetCore.MvcPages"
-_pack "./src/Odachi.Data"
-_pack "./src/Odachi.Gettext"
-_pack "./src/Odachi.Localization"
-_pack "./src/Odachi.Localization.Extraction"
-_pack "./src/Odachi.Localization.Extraction.Commands"
-_pack "./src/Odachi.Security"
+_build "./src/Odachi.AspNetCore.Authentication.Basic" netstandard15
+_build "./src/Odachi.AspNetCore.Mvc" netstandard15
+_build "./src/Odachi.AspNetCore.MvcPages" netstandard15
+_build "./src/Odachi.Data" netstandard13
+_build "./src/Odachi.Gettext" netstandard13
+_build "./src/Odachi.Localization" netstandard13
+_build "./src/Odachi.Localization.Extraction" netstandard15
+_build "./src/Odachi.Localization.Extraction.Commands" netstandard15
+_build "./src/Odachi.Security" netstandard15
 
 echo
 echo "Build samples.."
 echo
-_build "./samples/BasicAuthenticationSample"
+_build "./samples/BasicAuthenticationSample" netcoreapp10
 
 echo
 echo "Build & run test.."
 echo
-_test "./test/Odachi.Gettext.Tests"
-_test "./test/Odachi.Localization.Extraction.Tests"
+_test "./test/Odachi.Gettext.Tests" netcoreapp10
+_test "./test/Odachi.Localization.Extraction.Tests" netcoreapp10
