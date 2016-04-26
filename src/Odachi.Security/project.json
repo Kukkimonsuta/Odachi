@@ -7,8 +7,8 @@
 	"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
 
 	"frameworks": {
-		"net46": { },
-		"netstandard1.5": {
+		"net451": { },
+		"netstandard1.3": {
 			"dependencies": {
 				"System.Security.Claims": "4.0.1-rc2-*",
 				"System.Linq": "4.1.0-rc2-*"
