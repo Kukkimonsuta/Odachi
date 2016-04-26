@@ -1,13 +1,12 @@
 #!/bin/bash
 
-function _build
-{
+function _build {
     pushd $1
     dotnet build --configuration Release
     popd
 }
 
-function _pack
+function _pack {
     pushd $1
     dotnet pack --output ../../build --configuration Release --version-suffix $buildNumber
     popd
