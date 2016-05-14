@@ -1,10 +1,13 @@
 ﻿{
     "version": "1.0.0-rc2-*",
     "description": "Odachi.Localization.Extraction.Tests Class Library",
-    "authors": [ "Lukáš Novotný" ],
-    "tags": [ "" ],
-    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+
+    "packOptions": {
+        "owners": [ "Lukáš Novotný" ],
+        "tags": [ "" ],
+        "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+        "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+    },
 
     "dependencies": {
         "xunit": "2.1.0",

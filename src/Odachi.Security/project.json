@@ -1,10 +1,13 @@
 ﻿{
 	"version": "1.0.0-rc2-*",
 	"description": "Role/Permission definition helpers. This is just a proof of concept, usage is not recommended.",
-	"authors": [ "Lukáš Novotný" ],
-	"tags": [ "odachi" ],
-	"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-	"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+
+	"packOptions": {
+		"authors": [ "Lukáš Novotný" ],
+		"tags": [ "odachi" ],
+		"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+		"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+	},
 
 	"frameworks": {
 		"net451": { },

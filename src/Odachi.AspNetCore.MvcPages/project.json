@@ -1,10 +1,13 @@
 ﻿{
     "version": "1.0.0-rc2-*",
     "description": "Alternative way to structure MVC projects.",
-    "authors": [ "Lukáš Novotný" ],
-    "tags": [ "mvc", "odachi" ],
-    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+
+    "packOptions": {
+        "owners": [ "Lukáš Novotný" ],
+        "tags": [ "mvc", "odachi" ],
+        "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+        "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+    },
 
     "dependencies": {
         "Microsoft.AspNetCore.Mvc.Core": "1.0.0-rc2-*",

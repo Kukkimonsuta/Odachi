@@ -1,7 +1,8 @@
 ﻿{
 	"webroot": "wwwroot",
 	"version": "1.0.0-rc2-*",
-    "compilationOptions": {
+
+    "buildOptions": {
         "emitEntryPoint": true,
 		"preserveCompilationContext": true
     },
@@ -13,10 +14,6 @@
 		"Microsoft.Extensions.Configuration.Binder": "1.0.0-rc2-*",
 
 		"Odachi.AspNetCore.Authentication.Basic": "1.0.0-*"
-	},
-
-	"commands": {
-		"web": "Microsoft.AspNetCore.Server.Kestrel"
 	},
 
 	"frameworks": {
@@ -34,20 +31,7 @@
 		}
 	},
 
-	"content": [
-		"config.json"
-	],
-
-	"publishExclude": [
-		"node_modules",
-		"bower_components",
-		"**.xproj",
-		"**.user",
-		"**.vspscc"
-	],
-	"exclude": [
-		"wwwroot",
-		"node_modules",
-		"bower_components"
-	]
+	"publishOptions": {
+		"include": [ "wwwroot", "config.json" ]
+	}
 }

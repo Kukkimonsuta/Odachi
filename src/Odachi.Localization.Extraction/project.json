@@ -1,14 +1,17 @@
 ﻿{
     "version": "1.0.0-rc2-*",
     "description": "Xgettext-like tool to extract localized strings from `.cs` and `.cshtml` files to `.pot` or `.resx`.",
-    "authors": [ "Lukáš Novotný" ],
-    "tags": [ "localization", "gettext", "xgettext", "odachi" ],
-    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+
+    "packOptions": {
+        "owners": [ "Lukáš Novotný" ],
+        "tags": [ "localization", "gettext", "xgettext", "odachi" ],
+        "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+        "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+    },
 
     "dependencies": {
         "Microsoft.AspNetCore.Razor.Runtime": "1.0.0-rc2-*",
-        "Microsoft.CodeAnalysis.CSharp": "1.3.0-beta1-20160410-01"
+        "Microsoft.CodeAnalysis.CSharp": "1.3.0-beta1-*"
     },
 
 	"frameworks": {
