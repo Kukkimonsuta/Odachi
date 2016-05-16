@@ -14,7 +14,8 @@
 		"netstandard1.3": {
 			"dependencies": {
 				"System.Security.Claims": "4.0.1-rc2-*",
-				"System.Linq": "4.1.0-rc2-*"
+				"System.Linq": "4.1.0-rc2-*",
+				"System.Text.RegularExpressions": "4.0.12-rc2-*"
 			}
 		}
 	}
