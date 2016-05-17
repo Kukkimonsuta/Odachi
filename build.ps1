@@ -74,3 +74,4 @@ Write-Host "Build & run test.."
 Write-Host
 Test(".\test\Odachi.Gettext.Tests");
 Test(".\test\Odachi.Localization.Extraction.Tests");
+Test(".\test\Odachi.Security.Tests");

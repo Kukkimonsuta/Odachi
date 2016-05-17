@@ -1,10 +1,13 @@
 ﻿{
     "version": "1.0.0-rc2-*",
     "description": "Command line interface for `Odachi.Localization.Extraction`.",
-    "authors": [ "Lukáš Novotný" ],
-    "tags": [ "localization", "gettext", "xgettext", "odachi" ],
-    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+
+    "packOptions": {
+        "owners": [ "Lukáš Novotný" ],
+        "tags": [ "localization", "gettext", "xgettext", "odachi" ],
+        "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+        "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+    },
 
     "dependencies": {
         "Odachi.Localization.Extraction": "1.0.0-*"

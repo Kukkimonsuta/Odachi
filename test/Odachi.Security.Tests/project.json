@@ -1,18 +1,18 @@
 ﻿{
     "version": "1.0.0-rc2-*",
-    "description": "Odachi.Localization.Extraction.Tests Class Library",
+    "description": "Odachi.Security.Tests Class Library",
 
-    "packOptions": {
-        "owners": [ "Lukáš Novotný" ],
-        "tags": [ "" ],
-        "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-        "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
-    },
+	"packOptions": {
+		"owners": [ "Lukáš Novotný" ],
+		"tags": [ "" ],
+		"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+		"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+	},
 
     "dependencies": {
         "xunit": "2.1.0",
 
-        "Odachi.Localization.Extraction": "1.0.0-*"
+        "Odachi.Security": "1.0.0-*"
     },
 
     "testRunner": "xunit",

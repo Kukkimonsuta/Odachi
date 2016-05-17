@@ -1,10 +1,13 @@
 ﻿{
 	"version": "1.0.0-rc2-*",
 	"description": "Gettext-like localization library.",
-	"authors": [ "Lukáš Novotný" ],
-	"tags": [ "localization", "gettext", "odachi" ],
-	"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-	"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE",
+
+	"packOptions": {
+		"owners": [ "Lukáš Novotný" ],
+		"tags": [ "localization", "gettext", "odachi" ],
+		"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+		"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+	},
 
 	"dependencies": {
 		"Microsoft.Extensions.Localization.Abstractions": "1.0.0-rc2-*",

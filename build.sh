@@ -34,7 +34,7 @@ _build "./src/Odachi.Gettext" netstandard13
 _build "./src/Odachi.Localization" netstandard13
 _build "./src/Odachi.Localization.Extraction" netstandard15
 _build "./src/Odachi.Localization.Extraction.Commands" netstandard15
-_build "./src/Odachi.Security" netstandard15
+_build "./src/Odachi.Security" netstandard13
 
 echo
 echo "Build samples.."
@@ -46,3 +46,4 @@ echo "Build & run test.."
 echo
 _test "./test/Odachi.Gettext.Tests" netcoreapp10
 _test "./test/Odachi.Localization.Extraction.Tests" netcoreapp10
+_test "./test/Odachi.Security.Tests" netcoreapp10

@@ -18,19 +18,15 @@ namespace BasicAuthenticationSample
 {
 	public class Startup
 	{
-		public Startup(IHostingEnvironment hostingEnvironment, IApplicationEnvironment applicationEnvironment)
+		public Startup(IHostingEnvironment hostingEnvironment)
 		{
 			Configuration = new ConfigurationBuilder()
-				.SetBasePath(applicationEnvironment.ApplicationBasePath)
+				.SetBasePath(hostingEnvironment.ContentRootPath)
 				.AddJsonFile("config.json")
 				.Build();
 
-			//BasicOptions = Configuration.GetValue<BasicOptions>("BasicAuthentication");
 			BasicOptions = new BasicOptions();
 			Configuration.GetSection("BasicAuthentication").Bind(BasicOptions);
-			
-			if (BasicOptions == null)
-				throw new InvalidOperationException("Missing BasicAuthentication configuration"); 
 		}
 
 		public IConfigurationRoot Configuration { get; set; }
@@ -123,15 +119,21 @@ namespace BasicAuthenticationSample
 			});
 		}
 	}
-	
+
     public class Program
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
+			var config = new ConfigurationBuilder()
+				.AddJsonFile("hosting.json", optional: true)
+				.AddEnvironmentVariables(prefix: "ASPNETCORE_")
+				.AddCommandLine(args)
+				.Build();
+
+			var host = new WebHostBuilder()
 				.UseKestrel()
+				.UseConfiguration(config)
 				.UseContentRoot(Directory.GetCurrentDirectory())
-				.UseDefaultHostingConfiguration(args)
 				.UseIISIntegration()
 				.UseStartup<Startup>()
 				.Build();
