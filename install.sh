@@ -8,6 +8,6 @@ find ./tools -name "*.sh" -exec chmod +x {} \;
 
 export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
 # use bash to workaround bug https://github.com/dotnet/cli/issues/1725
-sudo bash ./tools/dotnet-install.sh --version 1.0.0-preview1-002702 --install-dir "$DOTNET_INSTALL_DIR" --no-path --verbose
+sudo bash ./tools/dotnet-install.sh --install-dir "$DOTNET_INSTALL_DIR" --no-path --verbose
 # add dotnet to PATH
 export PATH="$DOTNET_INSTALL_DIR:$PATH"

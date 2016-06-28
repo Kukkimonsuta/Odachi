@@ -33,7 +33,6 @@ _build "./src/Odachi.Data" netstandard13
 _build "./src/Odachi.Gettext" netstandard13
 _build "./src/Odachi.Localization" netstandard13
 _build "./src/Odachi.Localization.Extraction" netstandard15
-_build "./src/Odachi.Localization.Extraction.Commands" netstandard15
 _build "./src/Odachi.Security" netstandard13
 
 echo
