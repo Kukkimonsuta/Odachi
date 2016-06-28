@@ -1,5 +1,5 @@
 ﻿{
-	"version": "1.0.0-rc2-*",
+	"version": "1.0.0",
 	"description": "Role/Permission definition helpers. This is just a proof of concept, usage is not recommended.",
 
 	"packOptions": {
@@ -13,9 +13,9 @@
 		"net451": { },
 		"netstandard1.3": {
 			"dependencies": {
-				"System.Security.Claims": "4.0.1-rc2-*",
-				"System.Linq": "4.1.0-rc2-*",
-				"System.Text.RegularExpressions": "4.0.12-rc2-*"
+				"System.Security.Claims": "4.0.1",
+				"System.Linq": "4.1.0",
+				"System.Text.RegularExpressions": "4.1.0"
 			}
 		}
 	}

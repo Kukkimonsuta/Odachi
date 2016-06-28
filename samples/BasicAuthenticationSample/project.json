@@ -1,6 +1,6 @@
 ﻿{
 	"webroot": "wwwroot",
-	"version": "1.0.0-rc2-*",
+	"version": "1.0.0",
 
     "buildOptions": {
         "emitEntryPoint": true,
@@ -8,23 +8,20 @@
     },
 
 	"dependencies": {
-		"Microsoft.AspNetCore.Server.IISIntegration": "1.0.0-rc2-*",
-		"Microsoft.AspNetCore.Server.Kestrel": "1.0.0-rc2-*",
-		"Microsoft.AspNetCore.Diagnostics": "1.0.0-rc2-*",
-		"Microsoft.Extensions.Configuration.Binder": "1.0.0-rc2-*",
+		"Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
+		"Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
+		"Microsoft.AspNetCore.Diagnostics": "1.0.0",
+		"Microsoft.Extensions.Configuration.Binder": "1.0.0",
 
-		"Odachi.AspNetCore.Authentication.Basic": "1.0.0-*"
+		"Odachi.AspNetCore.Authentication.Basic": "1.0.0"
 	},
 
 	"frameworks": {
 		"net451": { },
 		"netcoreapp1.0": {
-			"imports": [
-				"portable-net45+wp80+win8+wpa81+dnxcore50"
-			],
 			"dependencies": {
 				"Microsoft.NETCore.App": {
-					"version": "1.0.0-rc2-*",
+					"version": "1.0.0",
 					"type": "platform"
 				}
 			}
