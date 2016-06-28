@@ -72,7 +72,8 @@ namespace Odachi.AspNetCore.MvcPages
 				var controllerName = string.Join("_", ConsumeMany(ns, ref index));
 				var actionName = controller.ControllerName;
 
-				controller.RouteConstraints.Add(new AreaAttribute(areaName));
+
+				controller.RouteValues.Add("area", areaName);
 				controller.ControllerName = controllerName;
 
 				foreach (var action in controller.Actions)

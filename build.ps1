@@ -61,7 +61,6 @@ Pack(".\src\Odachi.Data")
 Pack(".\src\Odachi.Gettext")
 Pack(".\src\Odachi.Localization")
 Pack(".\src\Odachi.Localization.Extraction")
-Pack(".\src\Odachi.Localization.Extraction.Commands")
 Pack(".\src\Odachi.Security")
 
 Write-Host

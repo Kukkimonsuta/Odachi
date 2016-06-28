@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor;
 using Microsoft.AspNetCore.Razor.Parser;
+using Microsoft.AspNetCore.Razor.Parser.Internal;
 using Microsoft.AspNetCore.Razor.Parser.SyntaxTree;
 using Microsoft.AspNetCore.Razor.Tokenizer.Symbols;
 using System;
