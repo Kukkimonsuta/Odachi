@@ -11,7 +11,11 @@ namespace Odachi.Data
 	/// </summary>
 	public sealed class PagingOptions
 	{
-		private PagingOptions(int page, int pageSize, bool total = true, int offset = 0, int? maxPageCount = null)
+		public PagingOptions()
+			: this(0, 10)
+		{
+		}
+		public PagingOptions(int page, int pageSize, bool total = true, int offset = 0, int? maxPageCount = null)
 		{
 			Page = page;
 			PageSize = pageSize;
