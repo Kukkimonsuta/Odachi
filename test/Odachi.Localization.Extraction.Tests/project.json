@@ -1,31 +1,30 @@
-﻿{
-	"version": "1.0.0",
-	"description": "Odachi.Localization.Extraction.Tests Class Library",
+{
+  "version": "1.0.0",
+  "description": "Odachi.Localization.Extraction.Tests Class Library",
+  "authors": [ "Lukáš Novotný" ],
 
-	"packOptions": {
-		"owners": [ "Lukáš Novotný" ],
-		"tags": [ "" ],
-		"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-		"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
-	},
+  "packOptions": {
+    "tags": [ "odachi" ],
+    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+  },
 
-	"dependencies": {
-		"xunit": "2.2.0-beta2-build3300",
+  "dependencies": {
+    "xunit": "2.2.0-beta2-build3300",
+    "Odachi.Localization.Extraction": "1.0.0",
+    "Microsoft.NETCore.App": {
+      "version": "1.0.1",
+      "type": "platform"
+    }
+  },
 
-		"Odachi.Localization.Extraction": "1.0.0"
-	},
+  "testRunner": "xunit",
 
-	"testRunner": "xunit",
-
-	"frameworks": {
-		"netcoreapp1.0": {
-			"dependencies": {
-				"Microsoft.NETCore.App": {
-					"version": "1.0.0",
-					"type": "platform"
-				},
-				"dotnet-test-xunit": "2.2.0-preview2-*"
-			}
-		}
-	}
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "dotnet-test-xunit": "2.2.0-preview2-build1029"
+      }
+    }
+  }
 }

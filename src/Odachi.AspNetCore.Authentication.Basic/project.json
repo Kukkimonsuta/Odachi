@@ -1,26 +1,26 @@
 ﻿{
-	"version": "1.0.0",
-	"description": "ASP.NET 5 middleware for basic authentication.",
+  "version": "1.0.0",
+  "description": "ASP.NET 5 middleware for basic authentication.",
+  "authors": [ "Lukáš Novotný" ],
 
-	"packOptions": {
-		"owners": [ "Lukáš Novotný" ],
-		"tags": [ "basic authentication", "middleware", "odachi" ],
-		"projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-		"licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
-	},
+  "packOptions": {
+    "tags": [ "odachi" ],
+    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+  },
 
-	"dependencies": {
-		"Microsoft.AspNetCore.DataProtection": "1.0.0",
-		"Microsoft.AspNetCore.Authentication": "1.0.0",
-		"Microsoft.Extensions.Logging": "1.0.0",
-		"Microsoft.Extensions.WebEncoders": "1.0.0",
-		"Microsoft.Extensions.Configuration.Json": "1.0.0",
-		"Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
-		"Microsoft.Extensions.Configuration.CommandLine": "1.0.0"
-	},
+  "dependencies": {
+    "Microsoft.AspNetCore.DataProtection": "1.0.0",
+    "Microsoft.AspNetCore.Authentication": "1.0.0",
+    "Microsoft.Extensions.Logging": "1.0.0",
+    "Microsoft.Extensions.WebEncoders": "1.0.0",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
+    "Microsoft.Extensions.Configuration.CommandLine": "1.0.0"
+  },
 
-	"frameworks": {
-		"net451": { },
-		"netstandard1.3": { }
-	}
+  "frameworks": {
+    "net451": {},
+    "netstandard1.3": {}
+  }
 }

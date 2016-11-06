@@ -1,0 +1,28 @@
+﻿{
+  "version": "1.0.0",
+  "description": "Odachi annotations library",
+  "authors": [ "Lukáš Novotný" ],
+
+  "packOptions": {
+    "tags": [ "odachi" ],
+    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+  },
+
+  "dependencies": {
+
+  },
+
+  "frameworks": {
+    "net452": {
+      "frameworkAssemblies": {
+        "System.Runtime": "4.0.10.0"
+      }
+    },
+    "netstandard1.3": {
+      "dependencies": {
+        "System.Runtime": "4.1.0"
+      }
+    }
+  }
+}

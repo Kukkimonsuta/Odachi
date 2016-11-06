@@ -54,14 +54,22 @@ if ([string]::IsNullOrEmpty($buildNumber)) {
     $buildNumber = "local"
 }
 
+Pack(".\src\Odachi.Abstractions")
+Pack(".\src\Odachi.Annotations")
 Pack(".\src\Odachi.AspNetCore.Authentication.Basic")
+Pack(".\src\Odachi.AspNetCore.JsonRpc")
+Pack(".\src\Odachi.AspNetCore.JsonRpc.Vaidation")
 Pack(".\src\Odachi.AspNetCore.Mvc")
 Pack(".\src\Odachi.AspNetCore.MvcPages")
+Pack(".\src\Odachi.CodeGen")
+Pack(".\src\Odachi.CodeGen.CSharp")
+Pack(".\src\Odachi.CodeGen.TypeScript")
 Pack(".\src\Odachi.Data")
 Pack(".\src\Odachi.Gettext")
 Pack(".\src\Odachi.Localization")
 Pack(".\src\Odachi.Localization.Extraction")
 Pack(".\src\Odachi.Security")
+Pack(".\src\Odachi.Validation")
 
 Write-Host
 Write-Host "Build samples.."

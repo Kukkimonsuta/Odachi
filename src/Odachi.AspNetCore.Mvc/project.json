@@ -1,20 +1,20 @@
-﻿{
-    "version": "1.0.0",
-    "description": "ASP.NET MVC extensions and helpers.",
+{
+  "version": "1.0.0",
+  "description": "ASP.NET MVC extensions and helpers.",
+  "authors": [ "Lukáš Novotný" ],
 
-    "packOptions": {
-        "owners": [ "Lukáš Novotný" ],
-        "tags": [ "mvc", "odachi" ],
-        "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-        "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
-    },
+  "packOptions": {
+    "tags": [ "odachi" ],
+    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+  },
 
-    "dependencies": {
-        "Microsoft.AspNetCore.Mvc.Core": "1.0.0"
-    },
+  "dependencies": {
+    "Microsoft.AspNetCore.Mvc.Core": "1.0.1"
+  },
 
-    "frameworks": {
-		"net451": { },
-		"netstandard1.6": { }
-    }
+  "frameworks": {
+    "net451": {},
+    "netstandard1.6": {}
+  }
 }

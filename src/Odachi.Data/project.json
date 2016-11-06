@@ -1,20 +1,20 @@
-﻿{
-    "version": "1.0.1",
-    "description": "Helpers for manipulation data collections (paging, sorting).",
+{
+  "version": "1.0.1",
+  "description": "Helpers for manipulation data collections (paging, sorting).",
+  "authors": [ "Lukáš Novotný" ],
 
-    "packOptions": {
-        "owners": [ "Lukáš Novotný" ],
-        "tags": [ "paging", "sorting", "odachi" ],
-        "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
-        "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
-    },
+  "packOptions": {
+    "tags": [ "odachi" ],
+    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+  },
 
-    "dependencies": {
-        "Microsoft.EntityFrameworkCore": "1.0.0"
-    },
+  "dependencies": {
+    "Microsoft.EntityFrameworkCore": "1.0.1"
+  },
 
-	"frameworks": {
-		"net451": { },
-		"netstandard1.3": { }
-	}
+  "frameworks": {
+    "net451": {},
+    "netstandard1.3": {}
+  }
 }
