@@ -1,0 +1,25 @@
+﻿{
+  "version": "1.0.0",
+  "description": "Odachi ASP.NET Core jsonrpc validation library",
+  "authors": [ "Lukáš Novotný" ],
+
+  "packOptions": {
+    "tags": [ "odachi" ],
+    "projectUrl": "https://github.com/Kukkimonsuta/Odachi",
+    "licenseUrl": "https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE"
+  },
+
+  "dependencies": {
+    "Odachi.AspNetCore.JsonRpc": "1.0.0",
+    "Odachi.Validation": "1.0.0"
+  },
+
+  "frameworks": {
+    "net452": {
+      "frameworkAssemblies": {
+        "System.Runtime": "4.0.10.0"
+      }
+    },
+    "netstandard1.3": {}
+  }
+}

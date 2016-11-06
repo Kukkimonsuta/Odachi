@@ -1,34 +1,34 @@
-﻿{
-	"webroot": "wwwroot",
-	"version": "1.0.0",
+{
+  "webroot": "wwwroot",
+  "version": "1.0.0",
+  "authors": [ "Lukáš Novotný" ],
 
-    "buildOptions": {
-        "emitEntryPoint": true,
-		"preserveCompilationContext": true
-    },
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "preserveCompilationContext": true
+  },
 
-	"dependencies": {
-		"Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
-		"Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
-		"Microsoft.AspNetCore.Diagnostics": "1.0.0",
-		"Microsoft.Extensions.Configuration.Binder": "1.0.0",
+  "dependencies": {
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
+    "Microsoft.AspNetCore.Diagnostics": "1.0.0",
+    "Microsoft.Extensions.Configuration.Binder": "1.0.0",
+    "Odachi.AspNetCore.Authentication.Basic": "1.0.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.0.1"
+  },
 
-		"Odachi.AspNetCore.Authentication.Basic": "1.0.0"
-	},
+  "frameworks": {
+    "net451": {},
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "version": "1.0.1",
+          "type": "platform"
+        }
+      }
+    }
+  },
 
-	"frameworks": {
-		"net451": { },
-		"netcoreapp1.0": {
-			"dependencies": {
-				"Microsoft.NETCore.App": {
-					"version": "1.0.0",
-					"type": "platform"
-				}
-			}
-		}
-	},
-
-	"publishOptions": {
-		"include": [ "wwwroot", "config.json" ]
-	}
+  "publishOptions": {
+    "include": [ "wwwroot", "config.json" ]
+  }
 }
