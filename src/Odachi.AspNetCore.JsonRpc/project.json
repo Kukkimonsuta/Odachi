@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Odachi ASP.NET Core jsonrpc library",
   "authors": [ "Lukáš Novotný" ],
 
@@ -16,8 +16,8 @@
     "Microsoft.Extensions.Options": "1.0.0",
     "Microsoft.Net.Http.Headers": "1.0.0",
     "Newtonsoft.Json": "9.0.1",
-    "Odachi.Abstractions": "1.0.0",
-    "Odachi.Annotations": "1.0.0"
+    "Odachi.Abstractions": "1.0.2",
+    "Odachi.Annotations": "1.0.2"
   },
 
   "frameworks": {

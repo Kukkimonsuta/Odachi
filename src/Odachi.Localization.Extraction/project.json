@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Xgettext-like tool to extract localized strings from `.cs` and `.cshtml` files to `.pot` or `.resx`.",
   "authors": [ "Lukáš Novotný" ],
 

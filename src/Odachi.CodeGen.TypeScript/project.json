@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Odachi TypeScript code generation library",
   "authors": [ "Lukáš Novotný" ],
 
@@ -10,7 +10,7 @@
   },
 
   "dependencies": {
-    "Odachi.CodeGen": "1.0.0"
+    "Odachi.CodeGen": "1.0.2"
   },
 
   "frameworks": {
