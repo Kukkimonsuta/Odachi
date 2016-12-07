@@ -17,8 +17,8 @@
         "Microsoft.Extensions.Options": "1.0.0",
         "Microsoft.Net.Http.Headers": "1.0.0",
         "Newtonsoft.Json": "9.0.1",
-        "Odachi.Abstractions": "1.0.2",
-        "Odachi.Annotations": "1.0.2"
+        "Odachi.Abstractions": "1.0.3",
+        "Odachi.Annotations": "1.0.3"
     },
 
   "frameworks": {

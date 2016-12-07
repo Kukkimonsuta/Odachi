@@ -10,8 +10,8 @@
   },
 
   "dependencies": {
-    "Odachi.AspNetCore.JsonRpc": "1.0.2",
-    "Odachi.Validation": "1.0.2"
+    "Odachi.AspNetCore.JsonRpc": "1.0.3",
+    "Odachi.Validation": "1.0.3"
   },
 
   "frameworks": {

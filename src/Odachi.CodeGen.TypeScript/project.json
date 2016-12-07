@@ -10,7 +10,7 @@
   },
 
   "dependencies": {
-    "Odachi.CodeGen": "1.0.2"
+    "Odachi.CodeGen": "1.0.3"
   },
 
   "frameworks": {
