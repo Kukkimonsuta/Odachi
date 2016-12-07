@@ -14,6 +14,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.Options;
 using Odachi.AspNetCore.JsonRpc.Internal;
+using Microsoft.Extensions.Logging;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
@@ -51,11 +52,12 @@ namespace Odachi.AspNetCore.JsonRpc
 
 	public class JsonRpcMiddleware
 	{
-		public JsonRpcMiddleware(RequestDelegate next, IOptions<JsonRpcOptions> options)
+		public JsonRpcMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, IOptions<JsonRpcOptions> options)
 		{
+			_logger = loggerFactory.CreateLogger<JsonRpcMiddleware>();
 			_next = next;
 			_options = options.Value;
-			_server = new JsonRpcServer(_options.Methods, _options.Behaviors);
+			_server = new JsonRpcServer(loggerFactory, _options.Methods, _options.Behaviors);
 
 			var container = new ServiceCollection();
 			container.AddSingleton(_server);
@@ -64,6 +66,7 @@ namespace Odachi.AspNetCore.JsonRpc
 			_rpcServices = container.BuildServiceProvider();
 		}
 
+		private readonly ILogger _logger;
 		private readonly RequestDelegate _next;
 		private readonly JsonRpcOptions _options;
 		private readonly JsonRpcServer _server;
@@ -120,8 +123,9 @@ namespace Odachi.AspNetCore.JsonRpc
 					}
 					catch (Exception ex)
 					{
-                        // todo: log
-                        if (!httpContext.Response.HasStarted && !httpContext.RequestAborted.IsCancellationRequested)
+						_logger.LogWarning(JsonRpcLogEvents.ParseError, ex, "Failed to parse request");
+
+						if (!httpContext.Response.HasStarted && !httpContext.RequestAborted.IsCancellationRequested)
                         {
                             await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.PARSE_ERROR, errorData: ex.ToString()), serializer);
                         }
@@ -144,10 +148,10 @@ namespace Odachi.AspNetCore.JsonRpc
 			}
 			catch (Exception ex)
 			{
-                // todo: log
-                if (!httpContext.Response.HasStarted && !httpContext.RequestAborted.IsCancellationRequested)
-                {
+				_logger.LogError(JsonRpcLogEvents.InternalError, ex, "Failed to send response");
 
+				if (!httpContext.Response.HasStarted && !httpContext.RequestAborted.IsCancellationRequested)
+                {
                     await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.INTERNAL_ERROR, errorData: ex.ToString()), serializer);
                 }
 			}
