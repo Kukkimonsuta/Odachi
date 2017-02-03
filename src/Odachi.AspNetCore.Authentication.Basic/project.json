@@ -1,5 +1,5 @@
-﻿{
-  "version": "1.0.3",
+{
+  "version": "1.0.4",
   "description": "ASP.NET 5 middleware for basic authentication.",
   "authors": [ "Lukáš Novotný" ],
 
@@ -10,13 +10,13 @@
   },
 
   "dependencies": {
-    "Microsoft.AspNetCore.DataProtection": "1.0.0",
-    "Microsoft.AspNetCore.Authentication": "1.0.0",
-    "Microsoft.Extensions.Logging": "1.0.0",
-    "Microsoft.Extensions.WebEncoders": "1.0.0",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
-    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
-    "Microsoft.Extensions.Configuration.CommandLine": "1.0.0"
+    "Microsoft.AspNetCore.Authentication": "1.1.0",
+    "Microsoft.AspNetCore.DataProtection": "1.1.0",
+    "Microsoft.Extensions.Configuration.CommandLine": "1.1.0",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
+    "Microsoft.Extensions.Logging": "1.1.0",
+    "Microsoft.Extensions.WebEncoders": "1.1.0"
   },
 
   "frameworks": {

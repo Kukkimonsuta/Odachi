@@ -1,5 +1,5 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Helpers for manipulation data collections (paging, sorting).",
   "authors": [ "Lukáš Novotný" ],
 
@@ -10,7 +10,7 @@
   },
 
   "dependencies": {
-    "Microsoft.EntityFrameworkCore": "1.0.1"
+    "Microsoft.EntityFrameworkCore": "1.1.0"
   },
 
   "frameworks": {

@@ -1,5 +1,5 @@
-﻿{
-  "version": "1.0.3",
+{
+  "version": "1.0.4",
   "description": "Odachi code generation library",
   "authors": [ "Lukáš Novotný" ],
 
@@ -24,13 +24,13 @@
     },
     "netstandard1.3": {
       "dependencies": {
-        "System.Runtime": "4.1.0",
-        "System.Runtime.Extensions": "4.1.0",
-        "System.Reflection": "4.1.0",
-        "System.Reflection.TypeExtensions": "4.1.0",
-        "System.Linq": "4.1.0",
-        "System.Text.RegularExpressions": "4.1.0",
-        "System.IO.FileSystem": "4.0.1"
+        "System.IO.FileSystem": "4.3.0",
+        "System.Linq": "4.3.0",
+        "System.Reflection": "4.3.0",
+        "System.Reflection.TypeExtensions": "4.3.0",
+        "System.Runtime": "4.3.0",
+        "System.Runtime.Extensions": "4.3.0",
+        "System.Text.RegularExpressions": "4.3.0"
       },
       "buildOptions": {
         "define": [ "DOTNET" ]

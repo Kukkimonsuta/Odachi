@@ -1,5 +1,5 @@
-﻿{
-  "version": "1.0.3",
+{
+  "version": "1.0.4",
   "description": "Odachi validation library",
   "authors": [ "Lukáš Novotný" ],
 
@@ -21,10 +21,10 @@
     },
     "netstandard1.3": {
       "dependencies": {
-        "System.Runtime": "4.1.0",
-        "System.Threading.Tasks": "4.0.11",
-        "System.Reflection": "4.1.0",
-        "System.Collections": "4.0.11"
+        "System.Reflection": "4.3.0",
+        "System.Runtime": "4.3.0",
+        "System.Collections": "4.3.0",
+        "System.Threading.Tasks": "4.3.0"
       }
     }
   }
