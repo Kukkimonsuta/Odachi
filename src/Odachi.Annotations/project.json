@@ -1,5 +1,5 @@
-﻿{
-  "version": "1.0.0",
+{
+  "version": "1.0.4",
   "description": "Odachi annotations library",
   "authors": [ "Lukáš Novotný" ],
 
@@ -21,7 +21,7 @@
     },
     "netstandard1.3": {
       "dependencies": {
-        "System.Runtime": "4.1.0"
+        "System.Runtime": "4.3.0"
       }
     }
   }

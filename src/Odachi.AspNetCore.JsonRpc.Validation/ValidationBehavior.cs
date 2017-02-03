@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Odachi.Validation;
 using Odachi.AspNetCore.JsonRpc.Internal;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Odachi.AspNetCore.JsonRpc.Validation
 {
@@ -25,7 +26,7 @@ namespace Odachi.AspNetCore.JsonRpc.Validation
 			{
 				context.SetResponse(JsonRpcError.INVALID_PARAMS, "Invalid arguments", new
 				{
-					Errors = validationState.Errors.ToDictionary(e => MakeCamelCasePath(e.Key), e => e.Text)
+					Errors = validationState.Errors.ToDictionary(e => MakeCamelSnakePath(e.Key), e => e.Text)
 				});
 			}
 
@@ -34,32 +35,11 @@ namespace Odachi.AspNetCore.JsonRpc.Validation
 
 		#region Static members
 
-		private static string MakeCamelCasePath(string str)
+		private static readonly Regex CamelSnakeRegex = new Regex("(^|_)[A-Z]+", RegexOptions.Compiled);
+
+		private static string MakeCamelSnakePath(string str)
 		{
-			var output = new char[str.Length];
-
-			bool lower = true;
-			for (var i = 0; i < str.Length; i++)
-			{
-				var c = str[i];
-
-				if (!char.IsLetterOrDigit(c))
-				{
-					lower = true;
-					output[i] = c;
-				}
-				else if (lower)
-				{
-					lower = false;
-					output[i] = char.ToLowerInvariant(c);
-				}
-				else
-				{
-					output[i] = c;
-				}
-			}
-
-			return new string(output);
+			return CamelSnakeRegex.Replace(str, m => m.Value.ToLowerInvariant());
 		}
 
 		#endregion

@@ -1,5 +1,5 @@
-﻿{
-  "version": "1.0.0",
+{
+  "version": "1.0.4",
   "description": "Gettext file parsing library.",
   "authors": [ "Lukáš Novotný" ],
 
@@ -15,12 +15,12 @@
     "net451": {},
     "netstandard1.3": {
       "dependencies": {
-        "System.Linq": "4.1.0",
-        "System.Linq.Expressions": "4.1.0",
-        "System.Runtime.Extensions": "4.1.0",
-        "System.Text.RegularExpressions": "4.1.0",
-        "System.IO.FileSystem": "4.0.1",
-        "System.Globalization": "4.0.11"
+        "System.IO.FileSystem": "4.3.0",
+        "System.Linq": "4.3.0",
+        "System.Runtime.Extensions": "4.3.0",
+        "System.Text.RegularExpressions": "4.3.0",
+        "System.Globalization": "4.3.0",
+        "System.Linq.Expressions": "4.3.0"
       }
     }
   }

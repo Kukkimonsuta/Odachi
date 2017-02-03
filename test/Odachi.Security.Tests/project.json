@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "Odachi.Security.Tests Class Library",
   "authors": [ "Lukáš Novotný" ],
 
@@ -11,9 +11,9 @@
 
   "dependencies": {
     "xunit": "2.2.0-beta2-build3300",
-    "Odachi.Security": "1.0.0",
+    "Odachi.Security": "1.0.4",
     "Microsoft.NETCore.App": {
-      "version": "1.0.1",
+      "version": "1.1.0",
       "type": "platform"
     }
   },

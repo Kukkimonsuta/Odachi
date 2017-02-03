@@ -5,22 +5,26 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Odachi.AspNetCore.JsonRpc.Internal;
 using Odachi.AspNetCore.JsonRpc.Behaviors;
+using Microsoft.Extensions.Logging;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
 	public class JsonRpcServer
 	{
-		public JsonRpcServer(JsonRpcMethodCollection methods, JsonRpcBehaviorCollection behaviors)
+		public JsonRpcServer(ILoggerFactory loggerFactory, JsonRpcMethodCollection methods, JsonRpcBehaviorCollection behaviors)
 		{
 			if (methods == null)
 				throw new ArgumentNullException(nameof(methods));
 			if (behaviors == null)
 				throw new ArgumentNullException(nameof(behaviors));
 
+			_logger = loggerFactory.CreateLogger<JsonRpcServer>();
 			Methods = methods;
 			Behaviors = behaviors;
 		}
 
+		private readonly ILogger _logger;
+		
 		public JsonRpcMethodCollection Methods { get; }
 		public JsonRpcBehaviorCollection Behaviors { get; }
 
@@ -51,14 +55,21 @@ namespace Odachi.AspNetCore.JsonRpc
 			}
 			catch (JsonRpcException ex)
 			{
-				// todo: log
+				if (ex.JsonRpcCode == JsonRpcError.INTERNAL_ERROR)
+				{
+					_logger.LogError(JsonRpcLogEvents.InternalError, ex, "JsonRpc call failed");
+				}
+				else
+				{
+					_logger.LogWarning(JsonRpcLogEvents.GenericError, ex, "JsonRpc call failed");
+				}
 
 				context.SetResponse(ex.JsonRpcCode, ex.JsonRpcMessage, data: ex.JsonRpcData);
 				return;
 			}
 			catch (Exception ex)
 			{
-				// todo: log
+				_logger.LogError(JsonRpcLogEvents.InternalError, ex, "JsonRpc call crashed");
 
 				context.SetResponse(JsonRpcError.INTERNAL_ERROR, data: ex.ToString());
 				return;

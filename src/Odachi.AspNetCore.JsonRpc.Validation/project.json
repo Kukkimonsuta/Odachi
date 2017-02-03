@@ -1,5 +1,5 @@
-﻿{
-  "version": "1.0.0",
+{
+  "version": "1.0.4",
   "description": "Odachi ASP.NET Core jsonrpc validation library",
   "authors": [ "Lukáš Novotný" ],
 
@@ -10,8 +10,8 @@
   },
 
   "dependencies": {
-    "Odachi.AspNetCore.JsonRpc": "1.0.0",
-    "Odachi.Validation": "1.0.0"
+    "Odachi.AspNetCore.JsonRpc": "1.0.4",
+    "Odachi.Validation": "1.0.4"
   },
 
   "frameworks": {
