@@ -18,14 +18,16 @@ function Exec
 function Build($path)
 {
     Exec { pushd $path }
-    Exec { dotnet build --configuration Release }
+    Exec { dotnet build --configuration Release --version-suffix $versionSuffix }
     Exec { popd }
 }
 
 function Pack($path)
 {
     Exec { pushd $path }
-    Exec { dotnet pack --output ../../build --configuration Release --version-suffix $versionSuffix }
+    # Exec { dotnet pack --output ../../build --configuration Release --version-suffix $versionSuffix }
+    # workaround for https://github.com/NuGet/Home/issues/4337
+    Exec { dotnet msbuild "/t:Restore;Pack" /p:VersionSuffix=$versionSuffix /p:Configuration=Release /p:PackageOutputPath=../../build }
     Exec { popd }
 }
 
