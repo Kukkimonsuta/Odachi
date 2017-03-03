@@ -34,8 +34,8 @@ _build "./src/Odachi.AspNetCore.JsonRpc.Validation" netstandard13
 _build "./src/Odachi.AspNetCore.Mvc" netstandard15
 _build "./src/Odachi.AspNetCore.MvcPages" netstandard15
 _build "./src/Odachi.CodeGen" netstandard13
-_build "./src/Odachi.CodeGen.CSharp" netstandard13
-_build "./src/Odachi.CodeGen.TypeScript" netstandard13
+_build "./src/Odachi.CodeGen.CSharp" netstandard16
+_build "./src/Odachi.CodeGen.TypeScript" netstandard16
 _build "./src/Odachi.Data" netstandard13
 _build "./src/Odachi.Gettext" netstandard13
 _build "./src/Odachi.Localization" netstandard13

@@ -25,7 +25,7 @@ function Build($path)
 function Pack($path)
 {
     Exec { pushd $path }
-    Exec { dotnet pack --output ../../build --configuration Release --version-suffix $buildNumber }
+    Exec { dotnet pack --output ../../build --configuration Release --version-suffix $versionSuffix }
     Exec { popd }
 }
 
@@ -35,6 +35,29 @@ function Test($path)
     Exec { dotnet test --configuration Release }
     Exec { popd }
 }
+
+$buildNumber = $env:APPVEYOR_BUILD_NUMBER
+if (![string]::IsNullOrEmpty($buildNumber)) {
+	$buildNumber = $buildNumber.PadLeft(6, "0")
+}
+
+$versionSuffix = ""
+if ([string]::IsNullOrEmpty($buildNumber)) {
+    $versionSuffix = "local"
+}
+elseif ([string]::Compare($env:APPVEYOR_REPO_BRANCH, "release", $True)) {
+	$versionSuffix = ""
+}
+elseif ([string]::Compare($env:APPVEYOR_REPO_BRANCH, "preview", $True)) {
+	$versionSuffix = "$buildNumber-preview"
+}
+else {
+	$versionSuffix = "$buildNumber-dev"
+}
+
+Write-Host
+Write-Host "Building version $versionSuffix"
+Write-Host
 
 Write-Host
 Write-Host "Display dotnet info.."
@@ -49,10 +72,6 @@ Exec { dotnet restore }
 Write-Host
 Write-Host "Build & pack libraries.."
 Write-Host
-$buildNumber = $env:APPVEYOR_BUILD_NUMBER
-if ([string]::IsNullOrEmpty($buildNumber)) {
-    $buildNumber = "local"
-}
 
 Pack(".\src\Odachi.Abstractions")
 Pack(".\src\Odachi.Annotations")

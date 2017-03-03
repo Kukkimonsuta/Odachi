@@ -20,7 +20,7 @@ function Exec
 Write-Host "Installing .NET CLI.."
 
 mkdir -Force ".\tools\" | Out-Null
-Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/v1.0.0-preview2.1/scripts/obtain/dotnet-install.ps1" -OutFile ".\tools\install.ps1"
+Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/v1.0.0-rc4-004771/scripts/obtain/dotnet-install.ps1" -OutFile ".\tools\dotnet-install.ps1"
 $env:DOTNET_INSTALL_DIR = "$pwd\.dotnetcli"
-.\tools\install.ps1 -Channel "Preview" -Version "1.0.0-preview2-1-003177" -InstallDir "$env:DOTNET_INSTALL_DIR" -NoPath
+.\tools\dotnet-install.ps1 -Channel "Preview" -Version "1.0.0-rc4-004771" -InstallDir "$env:DOTNET_INSTALL_DIR" -NoPath
 $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
