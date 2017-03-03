@@ -45,10 +45,10 @@ $versionSuffix = ""
 if ([string]::IsNullOrEmpty($buildNumber)) {
     $versionSuffix = "local"
 }
-elseif ([string]::Compare($env:APPVEYOR_REPO_BRANCH, "release", $True)) {
+elseif ([string]::Compare($env:APPVEYOR_REPO_BRANCH, "release", $True) -eq 0) {
 	$versionSuffix = ""
 }
-elseif ([string]::Compare($env:APPVEYOR_REPO_BRANCH, "preview", $True)) {
+elseif ([string]::Compare($env:APPVEYOR_REPO_BRANCH, "preview", $True) -eq 0) {
 	$versionSuffix = "$buildNumber-preview"
 }
 else {
