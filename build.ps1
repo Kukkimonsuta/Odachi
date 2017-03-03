@@ -48,11 +48,8 @@ if ([string]::IsNullOrEmpty($buildNumber)) {
 elseif ([string]::Compare($env:APPVEYOR_REPO_BRANCH, "release", $True) -eq 0) {
 	$versionSuffix = ""
 }
-elseif ([string]::Compare($env:APPVEYOR_REPO_BRANCH, "preview", $True) -eq 0) {
-	$versionSuffix = "$buildNumber-preview"
-}
 else {
-	$versionSuffix = "$buildNumber-dev"
+	$versionSuffix = "preview-$buildNumber"
 }
 
 Write-Host
