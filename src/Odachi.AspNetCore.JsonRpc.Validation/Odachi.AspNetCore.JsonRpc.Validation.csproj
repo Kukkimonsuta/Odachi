@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\tools\common.props" />
+
+	<PropertyGroup>
+		<Description>Odachi ASP.NET Core jsonrpc validation library</Description>
+		<TargetFrameworks>net452;netstandard1.3</TargetFrameworks>
+		<PackageTags>odachi</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Odachi.AspNetCore.JsonRpc\Odachi.AspNetCore.JsonRpc.csproj" />
+		<ProjectReference Include="..\Odachi.Validation\Odachi.Validation.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Properties\" />
+	</ItemGroup>
+
+</Project>

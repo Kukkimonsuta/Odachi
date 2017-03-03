@@ -81,7 +81,7 @@ namespace Odachi.CodeGen.TypeScript
 			TypeScriptModule module;
 			if (!Context.TryGetModule(type, out module))
 			{
-				var interfaces = type.GetInterfaces();
+				var interfaces = type.GetTypeInfo().GetInterfaces();
 
 				if (type.GetTypeInfo().IsInterface)
 				{
@@ -94,7 +94,7 @@ namespace Odachi.CodeGen.TypeScript
 				var enumerableInterface = interfaces.FirstOrDefault(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
 				if (enumerableInterface != null)
 				{
-					var itemType = enumerableInterface.GetGenericArguments().Single();
+					var itemType = enumerableInterface.GetTypeInfo().GetGenericArguments().Single();
 					var moduleName = GetFqTsTypeInternal(itemType, registerImport, $"{debugStack} => {itemType.Name}");
 
 					return moduleName + "[]";
@@ -107,7 +107,7 @@ namespace Odachi.CodeGen.TypeScript
 
 			if (module.Flags.HasFlag(TypeScriptModuleFlags.Generic) && type.GetTypeInfo().IsGenericType)
 			{
-				var arguments = type.GetGenericArguments();
+				var arguments = type.GetTypeInfo().GetGenericArguments();
 				var argumentFqTypes = arguments.Select(a => GetFqTsTypeInternal(a, registerImport, $"{debugStack} => {a.Name}"));
 
 				genericSuffix = $"<{string.Join(",", argumentFqTypes)}>";
@@ -190,7 +190,7 @@ namespace Odachi.CodeGen.TypeScript
 			if (!Context.TryGetModule(type, out module))
 			{
 				// obtain all relevant interfaces
-				var interfaces = type.GetInterfaces();
+				var interfaces = type.GetTypeInfo().GetInterfaces();
 
 				if (type.GetTypeInfo().IsInterface)
 				{
@@ -204,7 +204,7 @@ namespace Odachi.CodeGen.TypeScript
 				var enumerableInterface = interfaces.FirstOrDefault(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
 				if (enumerableInterface != null)
 				{
-					var itemType = enumerableInterface.GetGenericArguments().Single();
+					var itemType = enumerableInterface.GetTypeInfo().GetGenericArguments().Single();
 
 					// resolve enumerable item type
 					return GetFqTsTypeInternal2(itemType, registerImport, $"{debugStack} => {itemType.Name}", arrayDimensions: arrayDimensions + 1);
@@ -216,7 +216,7 @@ namespace Odachi.CodeGen.TypeScript
 			IEnumerable<FqTsType2> genericArguments = null;
 			if (module.Flags.HasFlag(TypeScriptModuleFlags.Generic) && type.GetTypeInfo().IsGenericType)
 			{
-				genericArguments = type.GetGenericArguments()
+				genericArguments = type.GetTypeInfo().GetGenericArguments()
 					.Select(a => GetFqTsTypeInternal2(a, registerImport, $"{debugStack} => {a.Name}"))
 					.ToArray();
 			}
