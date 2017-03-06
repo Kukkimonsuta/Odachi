@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Odachi.CodeGen.CSharp
@@ -71,8 +72,10 @@ namespace Odachi.CodeGen.CSharp
 			return new CSharpReference(mapping, genericArguments);
 		}
 
-		public void Save(string path)
+		public void Save(string path, Encoding encoding = null)
 		{
+			encoding = encoding ?? Encoding.GetEncoding(0);
+
 			foreach (var package in Packages)
 			{
 				foreach (var module in package.Modules)
@@ -96,7 +99,7 @@ namespace Odachi.CodeGen.CSharp
 			{
 				var packagePath = Path.Combine(path, package.Name);
 
-				package.Save(this, packagePath);
+				package.Save(this, packagePath, encoding: encoding);
 			}
 		}
 	}
