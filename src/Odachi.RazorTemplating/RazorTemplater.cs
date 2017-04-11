@@ -40,15 +40,15 @@ namespace Odachi.RazorTemplating
 		public string RootNamespace { get; }
 		public Encoding Encoding { get; }
 
+		/// <summary>
+		/// Returns relative path from `from` to `to`. Note that directories must have trailing slash.
+		/// </summary>
 		private string GetRelativePath(string from, string to)
 		{
 			if (string.IsNullOrEmpty(from))
 				throw new ArgumentNullException(nameof(from));
 			if (string.IsNullOrEmpty(to))
 				throw new ArgumentNullException(nameof(to));
-
-			if (from[from.Length - 1] != Path.DirectorySeparatorChar && from[from.Length - 1] != Path.AltDirectorySeparatorChar)
-				from += Path.DirectorySeparatorChar;
 
 			var fromUri = new Uri(from);
 			var toUri = new Uri(to);
@@ -72,7 +72,7 @@ namespace Odachi.RazorTemplating
 			outputFileName = Path.GetFullPath(outputFileName);
 
 			var className = Path.GetFileNameWithoutExtension(inputFileName);
-			var @namespace = $"{RootNamespace}.{GetRelativePath(ProjectDirectory, Path.GetDirectoryName(inputFileName)).Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.')}";
+			var @namespace = $"{RootNamespace}.{GetRelativePath($"{ProjectDirectory}{Path.DirectorySeparatorChar}", Path.GetDirectoryName(inputFileName)).Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.')}";
 
 			using (var stream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
 			using (var reader = new StreamReader(stream))
