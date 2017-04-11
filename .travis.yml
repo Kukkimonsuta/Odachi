@@ -1,20 +1,11 @@
-language: bash
-sudo: required
 dist: trusty
-
-addons:
-  apt:
-    packages:
-      - gettext
-      - libcurl4-openssl-dev
-      - libicu-dev
-      - libssl-dev
-      - libunwind8
-      - zlib1g
+sudo: required
+language: csharp
+mono: none
+dotnet: 1.0.1
 
 install:
-  - chmod a+x ./install.sh ./build.sh
-  - source ./install.sh
+  - chmod a+x ./build.sh
 
 script:
   - source ./build.sh

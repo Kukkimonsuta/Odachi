@@ -1,4 +1,5 @@
 version: '1.1.0-{build}'
+image: Visual Studio 2017
 
 skip_tags: true
 
@@ -11,13 +12,10 @@ branches:
 clone_depth: 1
 
 cache:
-  - C:\Users\appveyor\.nuget\packages -> **\project.json
+  - C:\Users\appveyor\.nuget\packages -> **\*.csproj
 
 init:
   - git config --global core.autocrlf true
-
-install:
-  - ps: "& ./install.ps1"
 
 build_script:
   - ps: "& ./build.ps1"

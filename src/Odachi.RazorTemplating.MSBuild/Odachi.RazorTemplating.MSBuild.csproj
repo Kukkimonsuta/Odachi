@@ -7,7 +7,7 @@
     <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageOutputPath>$(BaseOutputPath)</PackageOutputPath>
+    <PackageOutputPath Condition="$(PackageOutputPath) == ''">$(BaseOutputPath)</PackageOutputPath>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <DevelopmentDependency>true</DevelopmentDependency>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>

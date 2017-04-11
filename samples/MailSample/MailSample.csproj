@@ -13,7 +13,8 @@
     <!--
       must be installed as package and not project reference to make injecting of msbuild target work
     -->
-    <PackageReference Include="Odachi.RazorTemplating.MSBuild" Version="$(VersionPrefix)" />
+    <PackageReference Include="Odachi.RazorTemplating.MSBuild" Condition="'$(VersionSuffix)' == ''" Version="$(VersionPrefix)" />
+    <PackageReference Include="Odachi.RazorTemplating.MSBuild" Condition="'$(VersionSuffix)' != ''" Version="$(VersionPrefix)-$(VersionSuffix)" />
   </ItemGroup>
 
   <ItemGroup>
