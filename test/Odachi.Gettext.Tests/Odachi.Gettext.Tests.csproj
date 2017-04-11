@@ -3,7 +3,7 @@
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
-		<Description>Odachi.Gettext.Tests Class Library</Description>
+		<Description>Odachi.Gettext tests</Description>
 		<TargetFramework>netcoreapp1.0</TargetFramework>
 	</PropertyGroup>
 

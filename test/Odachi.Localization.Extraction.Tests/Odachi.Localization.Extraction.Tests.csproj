@@ -3,7 +3,7 @@
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
-		<Description>Odachi.Localization.Extraction.Tests Class Library</Description>
+		<Description>Odachi.Localization.Extraction tests</Description>
 		<TargetFramework>netcoreapp1.0</TargetFramework>
 	</PropertyGroup>
 

@@ -3,12 +3,12 @@
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
-		<Description>Odachi.Security tests</Description>
+		<Description>Odachi.RazorTemplating tests</Description>
 		<TargetFramework>netcoreapp1.0</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\Odachi.Security\Odachi.Security.csproj" />
+		<ProjectReference Include="..\..\src\Odachi.RazorTemplating\Odachi.RazorTemplating.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

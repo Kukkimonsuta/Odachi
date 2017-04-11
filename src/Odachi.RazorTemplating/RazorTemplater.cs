@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Razor;
+using Odachi.RazorTemplating.Internal;
 using System;
 using System.IO;
 using System.Text;
@@ -40,31 +41,6 @@ namespace Odachi.RazorTemplating
 		public string RootNamespace { get; }
 		public Encoding Encoding { get; }
 
-		/// <summary>
-		/// Returns relative path from `from` to `to`. Note that directories must have trailing slash.
-		/// </summary>
-		private string GetRelativePath(string from, string to)
-		{
-			if (string.IsNullOrEmpty(from))
-				throw new ArgumentNullException(nameof(from));
-			if (string.IsNullOrEmpty(to))
-				throw new ArgumentNullException(nameof(to));
-
-			var fromUri = new Uri(from);
-			var toUri = new Uri(to);
-
-			if (fromUri.Scheme != toUri.Scheme)
-				throw new InvalidOperationException($"Cannot form relative path using different schemes");
-
-			var relativeUri = fromUri.MakeRelativeUri(toUri);
-			var relativePath = Uri.UnescapeDataString(relativeUri.ToString());
-
-			if (toUri.Scheme.Equals("file", StringComparison.OrdinalIgnoreCase))
-				relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
-
-			return relativePath;
-		}
-
 		public string Generate(string inputFileName, string outputFileName)
 		{
 			// normalize file names
@@ -72,12 +48,12 @@ namespace Odachi.RazorTemplating
 			outputFileName = Path.GetFullPath(outputFileName);
 
 			var className = Path.GetFileNameWithoutExtension(inputFileName);
-			var @namespace = $"{RootNamespace}.{GetRelativePath($"{ProjectDirectory}{Path.DirectorySeparatorChar}", Path.GetDirectoryName(inputFileName)).Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.')}";
+			var @namespace = $"{RootNamespace}.{PathTools.GetRelativePath($"{ProjectDirectory}{Path.DirectorySeparatorChar}", Path.GetDirectoryName(inputFileName)).Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.')}";
 
 			using (var stream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
 			using (var reader = new StreamReader(stream))
 			{
-				var result = engine.GenerateCode(reader, className, @namespace, GetRelativePath(outputFileName, inputFileName));
+				var result = engine.GenerateCode(reader, className, @namespace, PathTools.GetRelativePath(outputFileName, inputFileName));
 
 				using (var outputStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
 				using (var writer = new StreamWriter(outputStream, Encoding))

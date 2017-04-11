@@ -53,4 +53,5 @@ echo "Build & run test.."
 echo
 _test "./test/Odachi.Gettext.Tests" netcoreapp10
 _test "./test/Odachi.Localization.Extraction.Tests" netcoreapp10
+_test "./test/Odachi.RazorTemplating.Tests" netcoreapp10
 _test "./test/Odachi.Security.Tests" netcoreapp10
