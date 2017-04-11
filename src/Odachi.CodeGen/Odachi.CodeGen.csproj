@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
+
 	<Import Project="..\..\tools\common.props" />
-	
+
 	<PropertyGroup>
 		<Description>Odachi code generation library</Description>
 		<TargetFrameworks>net452;netstandard1.3</TargetFrameworks>

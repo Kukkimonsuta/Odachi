@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\tools\common.props" />
+
+  <PropertyGroup>
+    <Description>MSBuild task to transform razor templates to c#.</Description>
+    <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
+    <PackageTags>odachi</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageOutputPath>$(BaseOutputPath)</PackageOutputPath>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="build\**">
+      <Pack>true</Pack>
+      <PackagePath>build\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <Target Name="_IncludeBuildOutputAsTool" BeforeTargets="_GetPackageFiles">
+    <ItemGroup>
+      <None Include="$(OutputPath)net46\**">
+        <Pack>true</Pack>
+        <PackagePath>tools\net46</PackagePath>
+      </None>
+      <None Include="$(OutputPath)netstandard1.3\**">
+        <Pack>true</Pack>
+        <PackagePath>tools\netstandard1.3</PackagePath>
+      </None>
+    </ItemGroup>
+  </Target>
+
+  <ItemDefinitionGroup>
+    <PackageReference>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <ProjectReference>
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.548" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.548" />
+    <ProjectReference Include="../Odachi.RazorTemplating/Odachi.RazorTemplating.csproj" />
+  </ItemGroup>
+
+</Project>

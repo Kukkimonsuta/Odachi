@@ -3,7 +3,7 @@
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
-		<Description>ASP.NET 5 middleware for basic authentication.</Description>
+    <Description>ASP.NET Core middleware for basic authentication.</Description>
 		<TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>

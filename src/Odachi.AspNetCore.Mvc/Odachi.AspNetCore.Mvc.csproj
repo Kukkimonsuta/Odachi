@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="..\..\tools\common.props" />
-	
+
 	<PropertyGroup>
 		<Description>ASP.NET MVC extensions and helpers.</Description>
 		<TargetFrameworks>net451;netstandard1.6</TargetFrameworks>

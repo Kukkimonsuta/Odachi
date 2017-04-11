@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
+
 	<Import Project="..\..\tools\common.props" />
-	
+
 	<PropertyGroup>
 		<Description>Alternative way to structure MVC projects.</Description>
 		<TargetFrameworks>net451;netstandard1.6</TargetFrameworks>

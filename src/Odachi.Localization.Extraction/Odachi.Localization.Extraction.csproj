@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="..\..\tools\common.props" />
-	
+
 	<PropertyGroup>
 		<Description>Xgettext-like tool to extract localized strings from `.cs` and `.cshtml` files to `.pot` or `.resx`.</Description>
 		<TargetFrameworks>net451;netstandard1.5</TargetFrameworks>

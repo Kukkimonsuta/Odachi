@@ -6,12 +6,16 @@
 
 	<PropertyGroup>
 		<Product>Odachi</Product>
-		<Description>ASP.NET 5 middleware for basic authentication.</Description>
 		<Authors>Lukáš Novotný</Authors>
 		<RepositoryUrl>https://github.com/Kukkimonsuta/Odachi</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseUrl>https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE</PackageLicenseUrl>
 		<NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
 	</PropertyGroup>
+
+  <PropertyGroup>
+    <BaseOutputPath>$(MSBuildProjectDirectory)\bin</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)\obj</BaseIntermediateOutputPath>
+  </PropertyGroup>
 
 </Project>
