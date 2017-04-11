@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Odachi.Mail;
 using MailSample.Templates;
+using System.Reflection;
 
 namespace MailSample
 {
@@ -15,10 +16,12 @@ namespace MailSample
 		{
 			var renderer = new MailTemplateRenderer();
 
-			var task = renderer.RenderAsync(new HelloMessage());
-			task.Wait();
+			foreach (var n in typeof(Program).GetTypeInfo().Assembly.GetManifestResourceNames())
+				Console.WriteLine(n);
 
-			Console.WriteLine(task.Result);
+			var message = renderer.RenderAsync(new HelloMessage()).GetAwaiter().GetResult();
+
+			Console.WriteLine(message.ToString());
 
 			Console.ReadKey();
 

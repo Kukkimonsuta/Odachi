@@ -14,13 +14,13 @@ namespace MailSample.Templates.Layout
         public override async Task ExecuteAsync()
         {
             WriteLiteral("<!DOCTYPE html>\r\n<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n    <meta charset=\"utf-8\" />\r\n</head>\r\n<body>\r\n");
-#line 8 "..\BasicLayout.cshtml"
+#line 8 "BasicLayout.cshtml"
 	
 
 #line default
 #line hidden
 
-#line 8 "..\BasicLayout.cshtml"
+#line 8 "BasicLayout.cshtml"
        RenderBody(); 
 
 #line default

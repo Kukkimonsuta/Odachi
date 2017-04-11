@@ -27,7 +27,7 @@ namespace Odachi.RazorTemplating
 			host.NamespaceImports.Add("System");
 			host.GeneratedClassContext = new Microsoft.AspNetCore.Razor.CodeGenerators.GeneratedClassContext(
 				"ExecuteAsync", "Write", "WriteLiteral",
-				"WriteTo", "WriteLiteralTo", "Template", "DefineSection",
+				"WriteTo", "WriteLiteralTo", null, "DefineSection",
 				new Microsoft.AspNetCore.Razor.CodeGenerators.GeneratedTagHelperContext()
 			);
 			engine = new RazorTemplateEngine(host);
