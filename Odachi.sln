@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.RazorTemplating.MSBu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.RazorTemplating.Tests", "test\Odachi.RazorTemplating.Tests\Odachi.RazorTemplating.Tests.csproj", "{6DC749B9-D641-42A3-8386-5D1C4E448ADC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.AspNetCore.JsonRpc.Tests", "test\Odachi.AspNetCore.JsonRpc.Tests\Odachi.AspNetCore.JsonRpc.Tests.csproj", "{8B7F1454-CE41-48BD-9B83-733293528425}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -381,6 +383,18 @@ Global
 		{6DC749B9-D641-42A3-8386-5D1C4E448ADC}.Release|x64.Build.0 = Release|Any CPU
 		{6DC749B9-D641-42A3-8386-5D1C4E448ADC}.Release|x86.ActiveCfg = Release|Any CPU
 		{6DC749B9-D641-42A3-8386-5D1C4E448ADC}.Release|x86.Build.0 = Release|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Debug|x64.Build.0 = Debug|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Debug|x86.Build.0 = Debug|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Release|x64.ActiveCfg = Release|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Release|x64.Build.0 = Release|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Release|x86.ActiveCfg = Release|Any CPU
+		{8B7F1454-CE41-48BD-9B83-733293528425}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -411,5 +425,6 @@ Global
 		{84C4D48F-439C-4454-8228-32573E4350A1} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{31B6049F-95C3-4FF9-93A0-6215251CB775} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{6DC749B9-D641-42A3-8386-5D1C4E448ADC} = {6914849E-07C0-4D13-8259-A141523454DA}
+		{8B7F1454-CE41-48BD-9B83-733293528425} = {6914849E-07C0-4D13-8259-A141523454DA}
 	EndGlobalSection
 EndGlobal
