@@ -14,6 +14,7 @@ namespace Odachi.RazorTemplating.Internal
 		[InlineData(@"c:\test\", @"c:\test\file1.cshtml", @"file1.cshtml")]
 		[InlineData(@"c:\test\cookies", @"c:\test\file1.cshtml", @"file1.cshtml")]
 		[InlineData(@"c:\test\cookies\", @"c:\test\file1.cshtml", @"..\file1.cshtml")]
+		[InlineData(@"/mnt/d/foo/", @"/mnt/d/bar/", @"..\bar\")]
 		public void Can_compute_relative_path(string from, string to, string expectedResult)
 		{
 			var actualResult = PathTools.GetRelativePath(from, to)
