@@ -19,8 +19,8 @@ namespace Odachi.RazorTemplating.Internal
 			if (string.IsNullOrEmpty(to))
 				throw new ArgumentNullException(nameof(to));
 
-			var fromUri = new Uri(from);
-			var toUri = new Uri(to);
+			var fromUri = new Uri(Path.GetFullPath(from), UriKind.Absolute);
+			var toUri = new Uri(Path.GetFullPath(to), UriKind.Absolute);
 
 			if (fromUri.Scheme != toUri.Scheme)
 				throw new InvalidOperationException($"Cannot form relative path using different schemes");
