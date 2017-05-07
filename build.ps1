@@ -1,4 +1,4 @@
-function Exec
+﻿function Exec
 {
     # source: http://joshua.poehls.me/2012/powershell-script-module-boilerplate/
 
@@ -84,6 +84,7 @@ Pack(".\src\Odachi.CodeGen")
 Pack(".\src\Odachi.CodeGen.CSharp")
 Pack(".\src\Odachi.CodeGen.TypeScript")
 Pack(".\src\Odachi.Data")
+Pack(".\src\Odachi.Extensions.Reflection")
 Pack(".\src\Odachi.Gettext")
 Pack(".\src\Odachi.Localization")
 Pack(".\src\Odachi.Localization.Extraction")
@@ -103,6 +104,8 @@ Build(".\samples\MailSample");
 Write-Host
 Write-Host "Build & run test.."
 Write-Host
+Test(".\test\Odachi.AspNetCore.JsonRpc.Tests");
+Test(".\test\Odachi.Extensions.Reflection.Tests");
 Test(".\test\Odachi.Gettext.Tests");
 Test(".\test\Odachi.Localization.Extraction.Tests");
 Test(".\test\Odachi.RazorTemplating.Tests");

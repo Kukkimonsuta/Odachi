@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 function _build {
     pushd $1
@@ -33,6 +33,7 @@ _build "./src/Odachi.CodeGen" netstandard13
 _build "./src/Odachi.CodeGen.CSharp" netstandard16
 _build "./src/Odachi.CodeGen.TypeScript" netstandard16
 _build "./src/Odachi.Data" netstandard13
+_build "./src/Odachi.Extensions.Reflection" netstandard13
 _build "./src/Odachi.Gettext" netstandard13
 _build "./src/Odachi.Localization" netstandard13
 _build "./src/Odachi.Localization.Extraction" netstandard15
@@ -46,11 +47,13 @@ echo
 echo "Build samples.."
 echo
 _build "./samples/BasicAuthenticationSample" netcoreapp1.1
-#_build "./samples/MailSample" netcoreapp1.1
+_build "./samples/MailSample" netcoreapp1.1
 
 echo
 echo "Build & run test.."
 echo
+_test "./test/Odachi.AspNetCore.JsonRpc.Tests" netcoreapp10
+_test "./test/Odachi.Extensions.Reflection.Tests" netcoreapp10
 _test "./test/Odachi.Gettext.Tests" netcoreapp10
 _test "./test/Odachi.Localization.Extraction.Tests" netcoreapp10
 _test "./test/Odachi.RazorTemplating.Tests" netcoreapp10
