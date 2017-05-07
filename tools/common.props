@@ -1,0 +1,21 @@
+﻿<Project>
+
+	<PropertyGroup>
+		<VersionPrefix>1.1.0</VersionPrefix>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Product>Odachi</Product>
+		<Authors>Lukáš Novotný</Authors>
+		<RepositoryUrl>https://github.com/Kukkimonsuta/Odachi</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseUrl>https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE</PackageLicenseUrl>
+		<NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+	</PropertyGroup>
+
+  <PropertyGroup>
+    <BaseOutputPath>$(MSBuildProjectDirectory)\bin</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)\obj</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+</Project>

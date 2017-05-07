@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Odachi.CodeGen.CSharp
@@ -24,8 +25,10 @@ namespace Odachi.CodeGen.CSharp
 
 		public IList<CSharpModule> Modules { get; } = new List<CSharpModule>();
 
-		public void Save(CSharpContext context, string path)
+		public void Save(CSharpContext context, string path, Encoding encoding = null)
 		{
+			encoding = encoding ?? Encoding.GetEncoding(0);
+
 			foreach (var module in Modules)
 			{
 				var filePath = Path.Combine(path, module.RelativePath);
@@ -39,7 +42,7 @@ namespace Odachi.CodeGen.CSharp
 					module.WriteTo(context, this, writer);
 
 					using (var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None))
-					using (var output = new StreamWriter(stream))
+					using (var output = new StreamWriter(stream, encoding))
 					{
 						writer.WriteTo(output);
 					}

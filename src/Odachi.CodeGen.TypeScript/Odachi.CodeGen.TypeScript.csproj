@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\tools\common.props" />
+
+	<PropertyGroup>
+		<Description>Odachi TypeScript code generation library</Description>
+		<TargetFrameworks>net452;netstandard1.6</TargetFrameworks>
+		<PackageTags>odachi</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Odachi.CodeGen\Odachi.CodeGen.csproj" />
+	</ItemGroup>
+
+</Project>

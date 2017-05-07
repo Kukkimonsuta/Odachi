@@ -1,4 +1,5 @@
-version: '1.0.2-{build}'
+version: '1.1.0-{build}'
+image: Visual Studio 2017
 
 skip_tags: true
 
@@ -11,13 +12,10 @@ branches:
 clone_depth: 1
 
 cache:
-  - C:\Users\appveyor\.nuget\packages -> **\project.json
+  - C:\Users\appveyor\.nuget\packages -> **\*.csproj
 
 init:
   - git config --global core.autocrlf true
-
-install:
-  - ps: "& ./install.ps1"
 
 build_script:
   - ps: "& ./build.ps1"
@@ -29,13 +27,13 @@ artifacts:
 
 deploy:
   - provider: Environment
-    name: GitHub Releases (pre)
+    name: GitHub Releases (preview)
     on:
       branch: preview
   - provider: Environment
-    name: GitHub Releases (stable)
+    name: GitHub Releases (release)
     on:
-      branch: stable
+      branch: release
   - provider: Environment
     name: NuGet
     on:
@@ -43,4 +41,4 @@ deploy:
   - provider: Environment
     name: NuGet
     on:
-      branch: stable
+      branch: release

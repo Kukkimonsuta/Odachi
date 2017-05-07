@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace Odachi.CodeGen.TypeScript
 {
@@ -126,10 +127,12 @@ namespace Odachi.CodeGen.TypeScript
 			_modules[module.ManagedType] = module;
 		}
 
-		public void Save(string rootFolder)
+		public void Save(string rootFolder, Encoding encoding = null)
 		{
 			if (!Directory.Exists(rootFolder))
 				Directory.CreateDirectory(rootFolder);
+
+			encoding = encoding ?? Encoding.GetEncoding(0);
 
 			foreach (var module in _modules.Values.Where(t => (t.Flags & (TypeScriptModuleFlags.BuiltIn | TypeScriptModuleFlags.External)) == 0))
 			{
@@ -141,7 +144,7 @@ namespace Odachi.CodeGen.TypeScript
 				{
 					template.Write(writer, module);
 
-					using (var output = new StreamWriter(File.Create(fullPath)))
+					using (var output = new StreamWriter(File.Create(fullPath), encoding))
 						writer.Save(output);
 				}
 			}

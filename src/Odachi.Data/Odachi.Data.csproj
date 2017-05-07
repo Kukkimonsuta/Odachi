@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\tools\common.props" />
+
+	<PropertyGroup>
+		<Description>Helpers for manipulation data collections (paging, sorting).</Description>
+		<TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+		<PackageTags>odachi</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.0" />
+	</ItemGroup>
+
+</Project>

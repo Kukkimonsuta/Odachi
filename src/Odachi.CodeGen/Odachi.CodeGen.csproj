@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\tools\common.props" />
+
+	<PropertyGroup>
+		<Description>Odachi code generation library</Description>
+		<TargetFrameworks>net452;netstandard1.3</TargetFrameworks>
+		<PackageTags>odachi</PackageTags>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
+		<DefineConstants>$(DefineConstants);NET45</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+		<DefineConstants>$(DefineConstants);DOTNET</DefineConstants>
+	</PropertyGroup>
+
+</Project>

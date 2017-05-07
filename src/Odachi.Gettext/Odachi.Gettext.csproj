@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\tools\common.props" />
+
+	<PropertyGroup>
+		<Description>Gettext file parsing library.</Description>
+		<TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
+		<PackageTags>odachi</PackageTags>
+	</PropertyGroup>
+
+</Project>

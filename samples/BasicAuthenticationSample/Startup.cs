@@ -1,47 +1,46 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 using Odachi.AspNetCore.Authentication.Basic;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Authentication;
-using System.IO;
-using System;
 
 namespace BasicAuthenticationSample
 {
-	public class Startup
-	{
+    public class Startup
+    {
 		public Startup(IHostingEnvironment hostingEnvironment)
 		{
 			Configuration = new ConfigurationBuilder()
 				.SetBasePath(hostingEnvironment.ContentRootPath)
 				.AddJsonFile("config.json")
 				.Build();
-
-			BasicOptions = new BasicOptions();
+			
 			Configuration.GetSection("BasicAuthentication").Bind(BasicOptions);
 		}
 
 		public IConfigurationRoot Configuration { get; set; }
-		public BasicOptions BasicOptions { get; set; }
+		public BasicOptions BasicOptions { get; set; } = new BasicOptions();
 
-		// For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
+
+		// This method gets called by the runtime. Use this method to add services to the container.
+		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
-		{
+        {
 			services.AddAuthentication();
 		}
 
+		// this example shows how to configure basic authentication using IOptions
 		public void Run_Simple(IApplicationBuilder app)
 		{
-			// this example shows how to configure basic authentication using IOptions
-
 			app.UseBasicAuthentication(BasicOptions);
 
 			app.Run(async (context) =>
@@ -53,10 +52,9 @@ namespace BasicAuthenticationSample
 			});
 		}
 
+		// this example shows how to use custom authentication logic
 		public void Run_CustomAuthenticationLogic(IApplicationBuilder app)
 		{
-			// this example shows how to use custom authentication logic
-
 			app.UseBasicAuthentication(options =>
 			{
 				options.Realm = "Custom authentication logic";
@@ -103,10 +101,16 @@ namespace BasicAuthenticationSample
 			});
 		}
 
-		public void Configure(IApplicationBuilder app)
-		{
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddConsole();
+
 			app.UseStatusCodePages();
-			app.UseDeveloperExceptionPage();
+			if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
 			app.Map("/simple", Run_Simple);
 			app.Map("/custom-authentication-logic", Run_CustomAuthenticationLogic);
@@ -117,28 +121,6 @@ namespace BasicAuthenticationSample
 					<a href=""/custom-authentication-logic"">Custom authentication logic</a>
 				");
 			});
-		}
-	}
-
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-			var config = new ConfigurationBuilder()
-				.AddJsonFile("hosting.json", optional: true)
-				.AddEnvironmentVariables(prefix: "ASPNETCORE_")
-				.AddCommandLine(args)
-				.Build();
-
-			var host = new WebHostBuilder()
-				.UseKestrel()
-				.UseConfiguration(config)
-				.UseContentRoot(Directory.GetCurrentDirectory())
-				.UseIISIntegration()
-				.UseStartup<Startup>()
-				.Build();
-
-            host.Run();
         }
     }
 }
