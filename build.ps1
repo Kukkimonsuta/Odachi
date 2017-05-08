@@ -100,6 +100,7 @@ Write-Host "Build samples.."
 Write-Host
 Build(".\samples\BasicAuthenticationSample");
 Build(".\samples\MailSample");
+Build(".\samples\JsonRpcSample");
 
 Write-Host
 Write-Host "Build & run test.."

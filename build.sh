@@ -47,6 +47,7 @@ echo
 echo "Build samples.."
 echo
 _build "./samples/BasicAuthenticationSample" netcoreapp1.1
+_build "./samples/JsonRpcSample" netcoreapp1.1
 _build "./samples/MailSample" netcoreapp1.1
 
 echo
