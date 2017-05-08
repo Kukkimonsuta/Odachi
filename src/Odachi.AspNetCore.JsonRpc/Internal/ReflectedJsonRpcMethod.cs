@@ -19,26 +19,43 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 			Type = type;
 			Method = method;
-
-			Parameters = method.GetParameters()
-				.Select(p => new JsonRpcParameter(p.Name, JsonMappedType.FromType(p.ParameterType), p.IsOptional, p.DefaultValue))
-				.ToArray();
-
-			ReturnType = JsonMappedType.FromType(method.ReturnType);
 		}
 
-		public Type Type { get;}
+		public Type Type { get; }
 		public MethodInfo Method { get; }
 
-		public override IReadOnlyList<JsonRpcParameter> Parameters { get; }
-		public override JsonMappedType ReturnType { get; }
+		private IReadOnlyList<JsonRpcParameter> _parameters;
+		public override IReadOnlyList<JsonRpcParameter> Parameters => _parameters == null ? throw new InvalidOperationException("Method wasn't analyzed") : _parameters;
+
+		private JsonMappedType _returnType;
+		public override JsonMappedType ReturnType => _returnType == null ? throw new InvalidOperationException("Method wasn't analyzed") : _returnType;
+
+		public override void Analyze(JsonRpcServer server, Type[] internalTypes)
+		{
+			_parameters = Method.GetParameters()
+				.Select(p => new JsonRpcParameter(
+					p.Name,
+					JsonMappedType.FromType(p.ParameterType),
+					internalTypes.Contains(p.ParameterType),
+					p.IsOptional,
+					p.HasDefaultValue ? p.DefaultValue : (p.ParameterType.GetTypeInfo().IsValueType ? Activator.CreateInstance(p.ParameterType) : null)
+				))
+				.ToArray();
+
+			_returnType = JsonMappedType.FromType(Method.ReturnType);
+		}
 
 		public override async Task HandleAsync(JsonRpcContext context)
 		{
 			var request = context.Request;
 
-			var service = context.RequestServices.GetRequiredService(Type);
+			object service = null;
+			if (!Method.IsStatic)
+			{
+				service = context.AppServices.GetRequiredService(Type);
+			}
 
+			var internalParams = 0;
 			var parameters = new object[Parameters.Count];
 			for (var i = 0; i < Parameters.Count; i++)
 			{
@@ -47,17 +64,16 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 				object value = null;
 
-				// try resolve value from DI (only reference types)
-				if (!parameterType.NetType.GetTypeInfo().IsValueType)
+				if (parameter.IsInternal)
 				{
-					value = context.RequestServices.GetService(parameterType.NetType);
-				}
+					value = context.RpcServices.GetService(parameterType.NetType);
 
-				// if DI fails, try to resolve the value from request
-				if (value == null)
+					internalParams++;
+				}
+				else
 				{
 					if (request.IsIndexed)
-						value = request.GetParameter(i, parameterType, Type.Missing);
+						value = request.GetParameter(i - internalParams, parameterType, Type.Missing);
 					else
 						value = request.GetParameter(parameter.Name, parameter.Type, Type.Missing);
 				}
@@ -65,7 +81,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				// if parameter couldn't be resolved, use default value (the called method is responsible for validating parameters)
 				if (value == Type.Missing && !parameter.IsOptional)
 				{
-					value = parameterType.NetType.GetTypeInfo().IsValueType ? Activator.CreateInstance(parameterType.NetType) : null;
+					value = parameter.DefaultValue;
 				}
 
 				parameters[i] = value;
@@ -91,18 +107,5 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 			return Name == other.Name && Method == other.Method;
 		}
-
-		#region Static members
-
-		private static object GetResult(Type type, Task task)
-		{
-			var resultProperty = type.GetProperty("Result");
-			if (resultProperty == null)
-				throw new InvalidOperationException("The task doesn't have a 'Result' property");
-
-			return resultProperty.GetValue(task);
-		}
-
-		#endregion
 	}
 }

@@ -78,8 +78,6 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 			var form = await httpContext.Request.ReadFormAsync();
 
-			serializer.Converters.Add(new StreamReferenceConverter(form));
-
 			return new JsonTextReader(new StringReader(form.Single().Value));
 		}
 

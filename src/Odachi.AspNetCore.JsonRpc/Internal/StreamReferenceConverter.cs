@@ -11,15 +11,15 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 {
 	public class StreamReferenceConverter : JsonConverter
 	{
-		public StreamReferenceConverter(IFormCollection form)
+		public StreamReferenceConverter(IHttpContextAccessor httpContextAccessor)
 		{
-			if (form == null)
-				throw new ArgumentNullException(nameof(form));
+			if (httpContextAccessor == null)
+				throw new ArgumentNullException(nameof(httpContextAccessor));
 
-			_form = form;
+			_httpContextAccessor = httpContextAccessor;
 		}
 
-		private IFormCollection _form;
+		private IHttpContextAccessor _httpContextAccessor;
 
 		public override bool CanConvert(Type objectType)
 		{
@@ -30,7 +30,11 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 		{
 			var fieldName = (string)serializer.Deserialize(reader, typeof(string));
 
-			var file = _form.Files[fieldName];
+			var form = _httpContextAccessor.HttpContext.Request?.Form;
+			if (form == null)
+				return null;
+
+			var file = form.Files[fieldName];
 			if (file == null)
 				return null;
 

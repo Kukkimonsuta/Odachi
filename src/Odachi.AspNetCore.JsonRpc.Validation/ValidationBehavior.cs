@@ -13,14 +13,14 @@ namespace Odachi.AspNetCore.JsonRpc.Validation
 {
 	public class ValidationBehavior : JsonRpcBehavior
 	{
-		public override void ConfigureServices(IServiceCollection services)
+		public override void ConfigureRpcServices(IServiceCollection services)
 		{
 			services.AddScoped<ValidationState>();
 		}
 
 		public override Task AfterInvoke(JsonRpcContext context)
 		{
-			var validationState = context.RequestServices.GetRequiredService<ValidationState>();
+			var validationState = context.RpcServices.GetRequiredService<ValidationState>();
 
 			if (validationState.HasErrors)
 			{

@@ -16,8 +16,6 @@ namespace Odachi.AspNetCore.JsonRpc.Model
 		public JsonRpcMethodCollection()
 		{
 			_methods = new Dictionary<string, JsonRpcMethod>();
-
-			AddReflected<ServerModule>();
 		}
 
 		private IDictionary<string, JsonRpcMethod> _methods;
@@ -30,7 +28,7 @@ namespace Odachi.AspNetCore.JsonRpc.Model
 		public void AddReflected<T>()
 		{
 			var type = typeof(T);
-			var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+			var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 
 			foreach (var method in methods.Where(m => m.DeclaringType == type))
 			{
@@ -63,7 +61,7 @@ namespace Odachi.AspNetCore.JsonRpc.Model
 		public void AddReflected<T>(string name)
 		{
 			var type = typeof(T);
-			var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+			var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 
 			foreach (var method in methods)
 			{

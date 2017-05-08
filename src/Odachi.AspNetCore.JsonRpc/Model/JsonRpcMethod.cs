@@ -50,6 +50,10 @@ namespace Odachi.AspNetCore.JsonRpc.Model
 		/// </summary>
 		public virtual JsonMappedType ReturnType => null;
 
+		public virtual void Analyze(JsonRpcServer server, Type[] internalTypes)
+		{
+		}
+
 		public abstract Task HandleAsync(JsonRpcContext context);
 	}
 }

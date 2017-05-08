@@ -28,6 +28,8 @@ namespace Odachi.AspNetCore.JsonRpc
 				NullValueHandling = NullValueHandling.Ignore,
 				TypeNameHandling = TypeNameHandling.None,
 			};
+
+			Methods.AddReflected<ServerModule>();
 		}
 
 		public bool UseJsonRpcConstant { get; set; } = false;

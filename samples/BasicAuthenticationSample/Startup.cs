@@ -23,13 +23,12 @@ namespace BasicAuthenticationSample
 				.SetBasePath(hostingEnvironment.ContentRootPath)
 				.AddJsonFile("config.json")
 				.Build();
-			
+
 			Configuration.GetSection("BasicAuthentication").Bind(BasicOptions);
 		}
 
 		public IConfigurationRoot Configuration { get; set; }
 		public BasicOptions BasicOptions { get; set; } = new BasicOptions();
-
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940

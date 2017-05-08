@@ -15,71 +15,55 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.Options;
 using Odachi.AspNetCore.JsonRpc.Internal;
 using Microsoft.Extensions.Logging;
+using Odachi.AspNetCore.JsonRpc.Modules;
+using System.Threading;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
-	public class CompositeServiceProvider : IServiceProvider
-	{
-		public CompositeServiceProvider(params IServiceProvider[] providers)
-		{
-			if (providers == null)
-				throw new ArgumentNullException(nameof(providers));
-
-			_providers = providers;
-		}
-
-		private IServiceProvider[] _providers;
-
-		public object GetService(Type serviceType)
-		{
-			// todo: handle many
-
-			// the service in last-added provider wins
-			for (var i = _providers.Length - 1; i >= 0; i--)
-			{
-				var provider = _providers[i];
-				var service = provider.GetService(serviceType);
-
-				if (service != null)
-				{
-					return service;
-				}
-			}
-
-			return null;
-		}
-	}
-
 	public class JsonRpcMiddleware
 	{
-		public JsonRpcMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, IOptions<JsonRpcOptions> options)
+		public JsonRpcMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, IHttpContextAccessor httpContextAccessor, IOptions<JsonRpcOptions> options)
 		{
 			_logger = loggerFactory.CreateLogger<JsonRpcMiddleware>();
 			_next = next;
 			_options = options.Value;
 			_server = new JsonRpcServer(loggerFactory, _options.Methods, _options.Behaviors);
+			_httpContextAccessor = httpContextAccessor;
+
+			var serializer = JsonSerializer.Create(_options.JsonSerializerSettings);
+			serializer.Converters.Add(new StreamReferenceConverter(_httpContextAccessor));
+			_serializer = serializer;
 
 			var container = new ServiceCollection();
 			container.AddSingleton(_server);
+			container.AddSingleton(serializer);
 			foreach (var behavior in _options.Behaviors)
-				behavior.ConfigureServices(container);
+				behavior.ConfigureRpcServices(container);
 			_rpcServices = container.BuildServiceProvider();
+
+			var internalTypes = container.Select(d => d.ServiceType).ToArray();
+			foreach (var method in _server.Methods)
+			{
+				method.Analyze(_server, internalTypes);
+			}
 		}
 
 		private readonly ILogger _logger;
 		private readonly RequestDelegate _next;
 		private readonly JsonRpcOptions _options;
 		private readonly JsonRpcServer _server;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly IServiceProvider _rpcServices;
+		private readonly JsonSerializer _serializer;
 
-		private async Task SendResponse(HttpContext httpContext, JsonRpcResponse response, JsonSerializer serializer)
+		private async Task SendResponse(HttpContext httpContext, JsonRpcResponse response)
 		{
 			httpContext.Response.StatusCode = 200;
 			httpContext.Response.ContentType = "application/json";
 
 			using (var writer = new StreamWriter(httpContext.Response.Body))
 			{
-				var jObject = JObject.FromObject(response, serializer);
+				var jObject = JObject.FromObject(response, _serializer);
 
 				// append jsonrpc constant if enabled
 				if (_options.UseJsonRpcConstant)
@@ -105,34 +89,27 @@ namespace Odachi.AspNetCore.JsonRpc
 
 		public async Task Invoke(HttpContext httpContext)
 		{
-			// serializer may be mutated in JsonRpcRequest.CreateAsync, so we need new instance for every request
-			var serializer = JsonSerializer.Create(_options.JsonSerializerSettings);
 			try
 			{
 				using (var scope = _rpcServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
 				{
-					var requestServices = new CompositeServiceProvider(
-						httpContext.RequestServices,
-						scope.ServiceProvider
-					);
-
 					JsonRpcRequest request;
 					try
 					{
-						request = await JsonRpcRequest.CreateAsync(httpContext, serializer);
+						request = await JsonRpcRequest.CreateAsync(httpContext, _serializer);
 					}
 					catch (Exception ex)
 					{
 						_logger.LogWarning(JsonRpcLogEvents.ParseError, ex, "Failed to parse request");
 
 						if (!httpContext.Response.HasStarted && !httpContext.RequestAborted.IsCancellationRequested)
-                        {
-                            await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.PARSE_ERROR, errorData: ex.ToString()), serializer);
-                        }
+						{
+							await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.PARSE_ERROR, errorData: ex.ToString()));
+						}
 						return;
 					}
 
-					var rpcContext = new JsonRpcContext(requestServices, _server, request);
+					var rpcContext = new JsonRpcContext(httpContext.RequestServices, scope.ServiceProvider, _server, request);
 
 					await _server.ProcessAsync(rpcContext);
 
@@ -142,7 +119,7 @@ namespace Odachi.AspNetCore.JsonRpc
 					}
 					else
 					{
-						await SendResponse(httpContext, rpcContext.Response, serializer);
+						await SendResponse(httpContext, rpcContext.Response);
 					}
 				}
 			}
@@ -151,9 +128,9 @@ namespace Odachi.AspNetCore.JsonRpc
 				_logger.LogError(JsonRpcLogEvents.InternalError, ex, "Failed to send response");
 
 				if (!httpContext.Response.HasStarted && !httpContext.RequestAborted.IsCancellationRequested)
-                {
-                    await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.INTERNAL_ERROR, errorData: ex.ToString()), serializer);
-                }
+				{
+					await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.INTERNAL_ERROR, errorData: ex.ToString()));
+				}
 			}
 		}
 	}

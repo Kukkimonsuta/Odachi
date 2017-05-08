@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Odachi.AspNetCore.JsonRpc;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -12,12 +14,16 @@ namespace Microsoft.AspNetCore.Builder
     {
 		public static IApplicationBuilder UseJsonRpc(this IApplicationBuilder builder)
 		{
-			return builder.UseMiddleware<JsonRpcMiddleware>();
+			var httpContextAccessor = builder.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
+
+			return builder.UseMiddleware<JsonRpcMiddleware>(httpContextAccessor);
 		}
 
 		public static IApplicationBuilder UseJsonRpc(this IApplicationBuilder builder, JsonRpcOptions options)
 		{
-			return builder.UseMiddleware<JsonRpcMiddleware>(Options.Create(options));
+			var httpContextAccessor = builder.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
+
+			return builder.UseMiddleware<JsonRpcMiddleware>(httpContextAccessor, Options.Create(options));
 		}
 	}
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using Microsoft.Extensions.Options;
 using Odachi.AspNetCore.JsonRpc;
+using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -26,6 +27,9 @@ namespace Microsoft.Extensions.DependencyInjection
 				throw new ArgumentNullException(nameof(services));
 			if (configureOptions == null)
 				throw new ArgumentNullException(nameof(configureOptions));
+
+			// HttpContextAccessor is required due to the way we handle files inside `StreamReferenceConverter`
+			services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 			services.Configure(configureOptions);
 			services.AddJsonRpc();

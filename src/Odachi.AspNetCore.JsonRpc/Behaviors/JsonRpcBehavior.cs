@@ -9,7 +9,7 @@ namespace Odachi.AspNetCore.JsonRpc.Behaviors
 {
     public abstract class JsonRpcBehavior
     {
-		public virtual void ConfigureServices(IServiceCollection services)
+		public virtual void ConfigureRpcServices(IServiceCollection services)
 		{
 		}
 
