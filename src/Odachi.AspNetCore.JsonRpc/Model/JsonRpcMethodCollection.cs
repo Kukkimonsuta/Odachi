@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Odachi.AspNetCore.JsonRpc
+namespace Odachi.AspNetCore.JsonRpc.Model
 {
 	public class JsonRpcMethodCollection : ICollection<JsonRpcMethod>
 	{
@@ -17,7 +17,7 @@ namespace Odachi.AspNetCore.JsonRpc
 		{
 			_methods = new Dictionary<string, JsonRpcMethod>();
 
-			Add(new ServerModule.ListMethods());
+			AddReflected<ServerModule>();
 		}
 
 		private IDictionary<string, JsonRpcMethod> _methods;
@@ -25,7 +25,7 @@ namespace Odachi.AspNetCore.JsonRpc
 		public bool TryGetMethod(string name, out JsonRpcMethod method) => _methods.TryGetValue(name, out method);
 
 		/// <summary>
-		/// Adds all public methods of `T`.
+		/// Adds all public methods of `T` marked with `RpcMethodAttribute`.
 		/// </summary>
 		public void AddReflected<T>()
 		{
@@ -38,14 +38,16 @@ namespace Odachi.AspNetCore.JsonRpc
 				if (attribute == null)
 					continue;
 
-				var name = DefaultNameResolver(type, method);
-				var reflectedMethod = new ReflectedJsonRpcMethod(name, type, method);
+				var moduleName = ModuleNameResolver(type, method);
+				var methodName = MethodNameResolver(type, method);
+
+				var reflectedMethod = new ReflectedJsonRpcMethod(moduleName, methodName, type, method);
 
 				Add(reflectedMethod);
 			}
 		}
 		/// <summary>
-		/// Adds all public methods of `T` with given name
+		/// Adds all public methods of `T` with given name.
 		/// </summary>
 		public void AddReflected<T>(Expression<Func<T, string>> methodExpression)
 		{
@@ -56,26 +58,28 @@ namespace Odachi.AspNetCore.JsonRpc
 			AddReflected<T>(constantExpression.Value.ToString());
 		}
 		/// <summary>
-		/// Adds all public methods of `T` with given name
+		/// Adds all public methods of `T` with given name.
 		/// </summary>
-		public void AddReflected<T>(string methodName)
+		public void AddReflected<T>(string name)
 		{
 			var type = typeof(T);
 			var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance);
 
 			foreach (var method in methods)
 			{
-				if (method.Name != methodName)
+				if (method.Name != name)
 					continue;
 
-				var name = DefaultNameResolver(type, method);
-				var reflectedMethod = new ReflectedJsonRpcMethod(name, type, method);
+				var moduleName = ModuleNameResolver(type, method);
+				var methodName = MethodNameResolver(type, method);
+
+				var reflectedMethod = new ReflectedJsonRpcMethod(moduleName, methodName, type, method);
 
 				Add(reflectedMethod);
 			}
 		}
 
-		#region
+		#region ICollection
 
 		public int Count => _methods.Count;
 
@@ -106,7 +110,7 @@ namespace Odachi.AspNetCore.JsonRpc
 
 		#region Static members
 
-		public static Func<Type, MethodInfo, string> DefaultNameResolver { get; set; } = (type, method) =>
+		public static Func<Type, MethodInfo, string> ModuleNameResolver { get; set; } = (type, method) =>
 		{
 			var moduleName = type.Name;
 			if (moduleName.EndsWith("Module"))
@@ -118,6 +122,11 @@ namespace Odachi.AspNetCore.JsonRpc
 				moduleName = moduleName.Substring(0, moduleName.Length - 7);
 			}
 
+			return moduleName;
+		};
+
+		public static Func<Type, MethodInfo, string> MethodNameResolver { get; set; } = (type, method) =>
+		{
 			var methodName = "";
 			for (var i = 0; i < method.Name.Length; i++)
 			{
@@ -134,7 +143,7 @@ namespace Odachi.AspNetCore.JsonRpc
 				methodName = methodName.Substring(0, methodName.Length - 5);
 			}
 
-			return $"{moduleName}.{methodName}";
+			return methodName;
 		};
 
 		#endregion

@@ -4,26 +4,34 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Odachi.AspNetCore.JsonRpc.Model;
+using Odachi.Extensions.Reflection;
 
 namespace Odachi.AspNetCore.JsonRpc.Internal
 {
 	public class ReflectedJsonRpcMethod : JsonRpcMethod
 	{
-		public ReflectedJsonRpcMethod(string name, Type type, MethodInfo method)
-			: base(name)
+		public ReflectedJsonRpcMethod(string moduleName, string methodName, Type type, MethodInfo method)
+			: base(moduleName, methodName)
 		{
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
 
 			Type = type;
 			Method = method;
-			_parameters = method.GetParameters();
-		}
 
-		private ParameterInfo[] _parameters;
+			Parameters = method.GetParameters()
+				.Select(p => new JsonRpcParameter(p.Name, JsonMappedType.FromType(p.ParameterType), p.IsOptional, p.DefaultValue))
+				.ToArray();
+
+			ReturnType = JsonMappedType.FromType(method.ReturnType);
+		}
 
 		public Type Type { get;}
 		public MethodInfo Method { get; }
+
+		public override IReadOnlyList<JsonRpcParameter> Parameters { get; }
+		public override JsonMappedType ReturnType { get; }
 
 		public override async Task HandleAsync(JsonRpcContext context)
 		{
@@ -31,18 +39,18 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 			var service = context.RequestServices.GetRequiredService(Type);
 
-			var parameters = new object[_parameters.Length];
-			for (var i = 0; i < _parameters.Length; i++)
+			var parameters = new object[Parameters.Count];
+			for (var i = 0; i < Parameters.Count; i++)
 			{
-				var parameter = _parameters[i];
-				var parameterType = parameter.ParameterType;
+				var parameter = Parameters[i];
+				var parameterType = parameter.Type;
 
 				object value = null;
 
 				// try resolve value from DI (only reference types)
-				if (!parameterType.GetTypeInfo().IsValueType)
+				if (!parameterType.NetType.GetTypeInfo().IsValueType)
 				{
-					value = context.RequestServices.GetService(parameterType);
+					value = context.RequestServices.GetService(parameterType.NetType);
 				}
 
 				// if DI fails, try to resolve the value from request
@@ -51,35 +59,20 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 					if (request.IsIndexed)
 						value = request.GetParameter(i, parameterType, Type.Missing);
 					else
-						value = request.GetParameter(parameter.Name, parameterType, Type.Missing);
+						value = request.GetParameter(parameter.Name, parameter.Type, Type.Missing);
 				}
 
 				// if parameter couldn't be resolved, use default value (the called method is responsible for validating parameters)
 				if (value == Type.Missing && !parameter.IsOptional)
-					value = parameterType.GetTypeInfo().IsValueType ? Activator.CreateInstance(parameterType) : null;
+				{
+					value = parameterType.NetType.GetTypeInfo().IsValueType ? Activator.CreateInstance(parameterType.NetType) : null;
+				}
 
 				parameters[i] = value;
 			}
 
 			// invoke the method
-			var result = Method.Invoke(service, parameters);
-
-			// await tasks
-			if (typeof(Task).IsAssignableFrom(Method.ReturnType))
-			{
-				var task = (Task)result;
-
-				await task;
-
-				if (Method.ReturnType == typeof(Task))
-				{
-					result = null;
-				}
-				else
-				{
-					result = GetResult(Method.ReturnType, task);
-				}
-			}
+			var result = await Method.InvokeAsync(service, parameters);
 
 			// return the result
 			context.SetResponse(result);

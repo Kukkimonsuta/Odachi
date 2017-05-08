@@ -106,7 +106,7 @@ namespace Odachi.AspNetCore.JsonRpc
 		public async Task Invoke(HttpContext httpContext)
 		{
 			// serializer may be mutated in JsonRpcRequest.CreateAsync, so we need new instance for every request
-			JsonSerializer serializer = JsonSerializer.Create(_options.JsonSerializerSettings);
+			var serializer = JsonSerializer.Create(_options.JsonSerializerSettings);
 			try
 			{
 				using (var scope = _rpcServices.GetRequiredService<IServiceScopeFactory>().CreateScope())

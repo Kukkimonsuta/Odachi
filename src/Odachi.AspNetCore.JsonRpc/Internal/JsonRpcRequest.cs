@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Odachi.AspNetCore.JsonRpc.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,7 +37,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 		public bool IsNotification => Id == null;
 		public bool IsIndexed => _params?.Type == JTokenType.Array;
 
-		public object GetParameter(int index, Type type, object @default)
+		public object GetParameter(int index, JsonMappedType type, object @default)
 		{
 			if (_params == null)
 				return @default;
@@ -49,9 +50,9 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 			if (paramsArray.Count <= index)
 				return @default;
 
-			return paramsArray[index].ToObject(type);
+			return paramsArray[index].ToObject(type.NetType);
 		}
-		public object GetParameter(string name, Type type, object @default)
+		public object GetParameter(string name, JsonMappedType type, object @default)
 		{
 			if (_params == null)
 				return @default;
@@ -63,7 +64,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 			if (!((JObject)_params).TryGetValue(name, out value))
 				return @default;
 
-			return value.ToObject(type, _serializer);
+			return value.ToObject(type.NetType, _serializer);
 		}
 
 		#region Static members

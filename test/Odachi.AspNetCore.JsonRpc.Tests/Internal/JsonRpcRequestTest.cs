@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Odachi.AspNetCore.JsonRpc.Model;
 using Odachi.Data;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				new JProperty("stringProperty", "test")
 			), new JsonSerializer());
 
-			var result = (string)request.GetParameter("stringProperty", typeof(string), null);
+			var result = (string)request.GetParameter("stringProperty", JsonMappedType.FromType(typeof(string)), null);
 
 			Assert.Equal("test", "test");
 		}
@@ -31,7 +32,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				new JProperty("intProperty", 55)
 			), new JsonSerializer());
 
-			var result = (int)request.GetParameter("intProperty", typeof(int), 0);
+			var result = (int)request.GetParameter("intProperty", JsonMappedType.FromType(typeof(int)), 0);
 
 			Assert.Equal(55, 55);
 		}
@@ -46,7 +47,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				))
 			), new JsonSerializer());
 
-			var result = (PagingOptions)request.GetParameter("pagingOptions", typeof(PagingOptions), null);
+			var result = (PagingOptions)request.GetParameter("pagingOptions", JsonMappedType.FromType(typeof(PagingOptions)), null);
 
 			Assert.Equal(result.Page, 1);
 			Assert.Equal(result.PageSize, 5);

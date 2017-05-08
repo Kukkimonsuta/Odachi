@@ -11,6 +11,7 @@ using System.Linq.Expressions;
 using System.Collections;
 using Odachi.AspNetCore.JsonRpc.Modules;
 using Odachi.AspNetCore.JsonRpc.Behaviors;
+using Odachi.AspNetCore.JsonRpc.Model;
 
 namespace Odachi.AspNetCore.JsonRpc
 {

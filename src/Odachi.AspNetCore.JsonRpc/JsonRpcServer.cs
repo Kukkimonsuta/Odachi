@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Odachi.AspNetCore.JsonRpc.Internal;
 using Odachi.AspNetCore.JsonRpc.Behaviors;
 using Microsoft.Extensions.Logging;
+using Odachi.AspNetCore.JsonRpc.Model;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
@@ -24,7 +25,7 @@ namespace Odachi.AspNetCore.JsonRpc
 		}
 
 		private readonly ILogger _logger;
-		
+
 		public JsonRpcMethodCollection Methods { get; }
 		public JsonRpcBehaviorCollection Behaviors { get; }
 
@@ -46,12 +47,16 @@ namespace Odachi.AspNetCore.JsonRpc
 				}
 
 				for (var i = 0; i < Behaviors.Count; i++)
+				{
 					await Behaviors[i].BeforeInvoke(context);
+				}
 
 				await method.HandleAsync(context);
 
 				for (var i = 0; i < Behaviors.Count; i++)
+				{
 					await Behaviors[i].AfterInvoke(context);
+				}
 			}
 			catch (JsonRpcException ex)
 			{
