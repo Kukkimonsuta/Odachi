@@ -157,6 +157,21 @@ namespace Odachi.Extensions.Reflection
 			return new Awaitable(target, entry.GetAwaiterMethod);
 		}
 
+		public static Type GetAwaitedType(this Type type)
+		{
+			var awaitableEntry = GetAwaitableEntry(type);
+			if (awaitableEntry == null)
+				throw new InvalidOperationException($"Type '{type.FullName}' is not an awaitable");
+
+			var awaiterType = awaitableEntry.GetAwaiterMethod.ReturnType;
+
+			var awaiterEntry = GetAwaiterEntry(awaiterType);
+			if (awaiterEntry == null)
+				throw new InvalidOperationException($"Type '{awaiterType.FullName}' is not an awaiter");
+
+			return awaiterEntry.GetResultMethod.ReturnType;
+		}
+
 		public static Awaitable InvokeAsync(this MethodInfo method, object target, object[] parameters)
 		{
 			var result = method.Invoke(target, parameters);

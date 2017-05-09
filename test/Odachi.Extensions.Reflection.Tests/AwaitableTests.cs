@@ -104,6 +104,15 @@ namespace Odachi.Extensions.Reflection.Tests
 		}
 
 		[Fact]
+		public void Extracts_awaited_type()
+		{
+			Assert.Equal(typeof(void), typeof(Task).GetAwaitedType());
+			Assert.Equal(typeof(string), typeof(Task<string>).GetAwaitedType());
+			Assert.Equal(typeof(string), typeof(ValueTask<string>).GetAwaitedType());
+			Assert.Equal(typeof(string), typeof(CustomAwaitable).GetAwaitedType());
+		}
+
+		[Fact]
 		public void Executes_task()
 		{
 			var target = new TestTarget();

@@ -42,7 +42,14 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				))
 				.ToArray();
 
-			_returnType = JsonMappedType.FromType(Method.ReturnType);
+			if (Method.ReturnType.IsAwaitable())
+			{
+
+			}
+			else
+			{
+				_returnType = JsonMappedType.FromType(Method.ReturnType);
+			}
 		}
 
 		public override async Task HandleAsync(JsonRpcContext context)
