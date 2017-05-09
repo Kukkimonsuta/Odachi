@@ -28,7 +28,9 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 		public override IReadOnlyList<JsonRpcParameter> Parameters => _parameters == null ? throw new InvalidOperationException("Method wasn't analyzed") : _parameters;
 
 		private JsonMappedType _returnType;
-		public override JsonMappedType ReturnType => _returnType == null ? throw new InvalidOperationException("Method wasn't analyzed") : _returnType;
+		public override JsonMappedType ReturnType =>
+			// `_returnType` may be null (= `void` return type), so check on `_parameters` instead
+			_parameters == null ? throw new InvalidOperationException("Method wasn't analyzed") : _returnType;
 
 		public override void Analyze(JsonRpcServer server, Type[] internalTypes)
 		{

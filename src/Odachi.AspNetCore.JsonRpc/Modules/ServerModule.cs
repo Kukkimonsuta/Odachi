@@ -35,7 +35,7 @@ namespace Odachi.AspNetCore.JsonRpc.Modules
 					Methods = g.Select(m => new
 					{
 						Name = m.MethodName,
-						ReturnType = m.ReturnType.JsonType.ToString().ToLowerInvariant(),
+						ReturnType = m.ReturnType?.JsonType.ToString().ToLowerInvariant(),
 						Parameters = m.Parameters.Where(p => includeInternals || !p.IsInternal).Select(p => new
 						{
 							Name = p.Name,
