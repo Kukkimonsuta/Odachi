@@ -157,6 +157,9 @@ namespace Odachi.Extensions.Reflection
 			return new Awaitable(target, entry.GetAwaiterMethod);
 		}
 
+		/// <summary>
+		/// Returns result type of awaitable.
+		/// </summary>
 		public static Type GetAwaitedType(this Type type)
 		{
 			var awaitableEntry = GetAwaitableEntry(type);
@@ -172,6 +175,9 @@ namespace Odachi.Extensions.Reflection
 			return awaiterEntry.GetResultMethod.ReturnType;
 		}
 
+		/// <summary>
+		/// Invokes given method and returns awaitable.
+		/// </summary>
 		public static Awaitable InvokeAsync(this MethodInfo method, object target, object[] parameters)
 		{
 			var result = method.Invoke(target, parameters);
