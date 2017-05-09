@@ -44,7 +44,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 			if (Method.ReturnType.IsAwaitable())
 			{
-
+				_returnType = JsonMappedType.FromType(Method.ReturnType.GetAwaitedType());
 			}
 			else
 			{
