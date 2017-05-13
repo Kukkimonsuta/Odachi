@@ -54,7 +54,7 @@ namespace Odachi.Extensions.Reflection.Internal
 				return;
 			}
 
-			_onCompletedMethod.Invoke(continuation, new[] { continuation });
+			_onCompletedMethod.Invoke(Target, new[] { continuation });
 		}
 
 		public void UnsafeOnCompleted(Action continuation)
@@ -69,11 +69,11 @@ namespace Odachi.Extensions.Reflection.Internal
 
 			if (_unsafeOnCompletedMethod != null)
 			{
-				_unsafeOnCompletedMethod.Invoke(continuation, new[] { continuation });
+				_unsafeOnCompletedMethod.Invoke(Target, new[] { continuation });
 			}
 			else
 			{
-				_onCompletedMethod.Invoke(continuation, new[] { continuation });
+				_onCompletedMethod.Invoke(Target, new[] { continuation });
 			}
 		}
 
