@@ -3,7 +3,7 @@
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
-		<Description>Odachi ASP.NET Core jsonrpc validation library</Description>
+		<Description>Validation support for Odachi.AspNetCore.JsonRpc.</Description>
 		<TargetFrameworks>net46;netstandard1.3</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>

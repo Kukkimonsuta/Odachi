@@ -3,7 +3,7 @@
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
-		<Description>Generic abstractions used in Odachi framework.</Description>
+		<Description>Abstractions used across Odachi framework.</Description>
 		<TargetFrameworks>net452;netstandard1.3</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>

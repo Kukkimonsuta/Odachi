@@ -3,7 +3,7 @@
   <Import Project="..\..\tools\common.props" />
 
   <PropertyGroup>
-    <Description>Helper to translate razor templates to c#.</Description>
+    <Description>Helpers to translate razor templates to c#.</Description>
     <TargetFrameworks>net46;netstandard1.3</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>

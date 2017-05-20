@@ -3,7 +3,7 @@
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
-		<Description>Odachi ASP.NET Core jsonrpc library</Description>
+		<Description>ASP.NET Core jsonrpc middleware.</Description>
 		<TargetFrameworks>net46;netstandard1.3</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
