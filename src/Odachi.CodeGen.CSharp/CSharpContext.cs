@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odachi.CodeGen.CSharp
+namespace Odachi.CodeModelGen.CSharp
 {
 	public class CSharpContext
 	{

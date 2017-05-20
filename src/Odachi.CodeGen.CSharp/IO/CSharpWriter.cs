@@ -1,4 +1,4 @@
-﻿using Odachi.CodeGen.IO;
+﻿using Odachi.CodeModelGen.IO;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Odachi.CodeGen.CSharp.IO
+namespace Odachi.CodeModelGen.CSharp.IO
 {
 	public class CSharpWriter : IndentWriter
 	{

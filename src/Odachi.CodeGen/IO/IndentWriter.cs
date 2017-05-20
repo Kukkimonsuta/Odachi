@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odachi.CodeGen.IO
+namespace Odachi.CodeModelGen.IO
 {
 	public class IndentWriter : TextWriter
 	{

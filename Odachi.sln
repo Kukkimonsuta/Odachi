@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{41DA389D-8FD3-4CC0-B012-5825FE714E87}"
 EndProject
@@ -63,23 +63,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{FC7DD2D4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicAuthenticationSample", "samples\BasicAuthenticationSample\BasicAuthenticationSample.csproj", "{CBD72C15-D70A-43F8-9A5F-04408DFE2D46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSample", "samples\MailSample\MailSample.csproj", "{7430AA2C-0D0A-49E5-A7EE-F244A421A00B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailSample", "samples\MailSample\MailSample.csproj", "{7430AA2C-0D0A-49E5-A7EE-F244A421A00B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.RazorTemplating", "src\Odachi.RazorTemplating\Odachi.RazorTemplating.csproj", "{2E937268-515D-4674-8886-2610475D2ECE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.RazorTemplating", "src\Odachi.RazorTemplating\Odachi.RazorTemplating.csproj", "{2E937268-515D-4674-8886-2610475D2ECE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.Mail", "src\Odachi.Mail\Odachi.Mail.csproj", "{84C4D48F-439C-4454-8228-32573E4350A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Mail", "src\Odachi.Mail\Odachi.Mail.csproj", "{84C4D48F-439C-4454-8228-32573E4350A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.RazorTemplating.MSBuild", "src\Odachi.RazorTemplating.MSBuild\Odachi.RazorTemplating.MSBuild.csproj", "{31B6049F-95C3-4FF9-93A0-6215251CB775}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.RazorTemplating.MSBuild", "src\Odachi.RazorTemplating.MSBuild\Odachi.RazorTemplating.MSBuild.csproj", "{31B6049F-95C3-4FF9-93A0-6215251CB775}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.RazorTemplating.Tests", "test\Odachi.RazorTemplating.Tests\Odachi.RazorTemplating.Tests.csproj", "{6DC749B9-D641-42A3-8386-5D1C4E448ADC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.AspNetCore.JsonRpc.Tests", "test\Odachi.AspNetCore.JsonRpc.Tests\Odachi.AspNetCore.JsonRpc.Tests.csproj", "{8B7F1454-CE41-48BD-9B83-733293528425}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.Extensions.Reflection", "src\Odachi.Extensions.Reflection\Odachi.Extensions.Reflection.csproj", "{7EE40027-CA70-4ADE-9933-8B1E1DC4125B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Extensions.Reflection", "src\Odachi.Extensions.Reflection\Odachi.Extensions.Reflection.csproj", "{7EE40027-CA70-4ADE-9933-8B1E1DC4125B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Extensions.Reflection.Tests", "test\Odachi.Extensions.Reflection.Tests\Odachi.Extensions.Reflection.Tests.csproj", "{19AD802F-89BC-4699-AEE1-96C5314ADD6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonRpcSample", "samples\JsonRpcSample\JsonRpcSample.csproj", "{4DD617D9-3166-4D22-804E-8A9345A6C437}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonRpcSample", "samples\JsonRpcSample\JsonRpcSample.csproj", "{4DD617D9-3166-4D22-804E-8A9345A6C437}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.CodeModel", "src\Odachi.CodeModel\Odachi.CodeModel.csproj", "{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -439,6 +441,18 @@ Global
 		{4DD617D9-3166-4D22-804E-8A9345A6C437}.Release|x64.Build.0 = Release|Any CPU
 		{4DD617D9-3166-4D22-804E-8A9345A6C437}.Release|x86.ActiveCfg = Release|Any CPU
 		{4DD617D9-3166-4D22-804E-8A9345A6C437}.Release|x86.Build.0 = Release|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Debug|x64.Build.0 = Debug|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Debug|x86.Build.0 = Debug|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Release|x64.ActiveCfg = Release|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Release|x64.Build.0 = Release|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Release|x86.ActiveCfg = Release|Any CPU
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -473,5 +487,6 @@ Global
 		{7EE40027-CA70-4ADE-9933-8B1E1DC4125B} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{19AD802F-89BC-4699-AEE1-96C5314ADD6D} = {6914849E-07C0-4D13-8259-A141523454DA}
 		{4DD617D9-3166-4D22-804E-8A9345A6C437} = {066ADA6B-80D9-4679-BF94-2743B59B5C29}
+		{8E554E7E-C4F9-43E1-BC3E-638EC8078C35} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 	EndGlobalSection
 EndGlobal

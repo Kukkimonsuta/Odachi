@@ -1,4 +1,4 @@
-﻿using Odachi.CodeGen.CSharp.IO;
+﻿using Odachi.CodeModelGen.CSharp.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odachi.CodeGen.CSharp
+namespace Odachi.CodeModelGen.CSharp
 {
 	public class CSharpPackage
 	{

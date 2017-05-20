@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odachi.CodeGen.CSharp.Internal
+namespace Odachi.CodeModelGen.CSharp.Internal
 {
 	public static class CSharpHelpers
 	{

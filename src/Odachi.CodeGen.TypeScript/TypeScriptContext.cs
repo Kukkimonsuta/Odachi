@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Odachi.CodeGen.TypeScript
+namespace Odachi.CodeModelGen.TypeScript
 {
 	[Flags]
 	public enum TypeScriptModuleFlags

@@ -54,6 +54,11 @@ C# code generator.<br />
 TypeScript code generator.<br />
 ❗ Complete breaking refactor/replacement soon(tm).
 
+## Odachi.CodeModel
+
+Code description library.<br />
+🚧 In development. Happy with the current state. May change outside of semver.
+
 ## Odachi.Data
 
 Helpers for manipulation data collections (paging, sorting).<br />

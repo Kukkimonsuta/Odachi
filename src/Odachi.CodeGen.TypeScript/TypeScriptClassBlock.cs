@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Reflection;
 
-namespace Odachi.CodeGen.TypeScript
+namespace Odachi.CodeModelGen.TypeScript
 {
 	public class TypeScriptClassBlock : TypeScriptBlock
 	{

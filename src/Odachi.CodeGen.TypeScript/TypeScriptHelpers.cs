@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Odachi.CodeGen.TypeScript
+namespace Odachi.CodeModelGen.TypeScript
 {
 	public static class TypeScriptHelpers
     {

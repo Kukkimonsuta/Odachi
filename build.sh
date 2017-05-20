@@ -32,6 +32,7 @@ _build "./src/Odachi.AspNetCore.MvcPages" netstandard15
 _build "./src/Odachi.CodeGen" netstandard13
 _build "./src/Odachi.CodeGen.CSharp" netstandard16
 _build "./src/Odachi.CodeGen.TypeScript" netstandard16
+_build "./src/Odachi.CodeModel" netstandard13
 _build "./src/Odachi.Data" netstandard13
 _build "./src/Odachi.Extensions.Reflection" netstandard13
 _build "./src/Odachi.Gettext" netstandard13
