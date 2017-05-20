@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Odachi.CodeModelGen.TypeScript
+namespace Odachi.CodeGen.TypeScript
 {
 	public class TypeScriptWriter : IDisposable
 	{

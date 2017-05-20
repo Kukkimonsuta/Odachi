@@ -1,12 +1,12 @@
-﻿using Odachi.CodeModelGen.CSharp.IO;
-using Odachi.CodeModelGen.IO;
+﻿using Odachi.CodeGen.CSharp.IO;
+using Odachi.CodeGen.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Odachi.CodeModelGen.CSharp
+namespace Odachi.CodeGen.CSharp
 {
 	public abstract class CSharpFragment
 	{

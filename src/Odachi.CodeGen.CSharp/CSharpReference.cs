@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Odachi.CodeModelGen.CSharp
+namespace Odachi.CodeGen.CSharp
 {
     public class CSharpReference
     {

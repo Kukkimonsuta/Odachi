@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Odachi.CodeModelGen.TypeScript
+namespace Odachi.CodeGen.TypeScript
 {
 	public class TypeScriptInterfaceBlock : TypeScriptBlock
 	{

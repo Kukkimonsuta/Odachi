@@ -1,4 +1,4 @@
-﻿namespace Odachi.CodeModelGen.TypeScript
+﻿namespace Odachi.CodeGen.TypeScript
 {
 	public interface ITypeScriptTemplate
 	{

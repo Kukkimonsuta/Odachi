@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Odachi.CodeModelGen.TypeScript
+namespace Odachi.CodeGen.TypeScript
 {
 	public class TypeScriptBlock : IDisposable
 	{
