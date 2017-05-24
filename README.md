@@ -59,14 +59,24 @@ TypeScript code generator.<br />
 Code description library.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
-## Odachi.Data
+## Odachi.EntityFrameworkCore
 
-Helpers for manipulation data collections (paging, sorting).<br />
-✔️ Used in production. Breaking changes will follow semver. Planned to make more serializer friendly.
+Extensions for Entity Framework Core. Includes paging.<br />
+✔️ Used in production. Breaking changes will follow semver.
+
+## Odachi.Extensions.Collections
+
+Collection extensions. Includes paging and sorting.<br />
+✔️ Used in production. Breaking changes will follow semver.
+
+## Odachi.Extensions.Formatting
+
+Formatting extensions. Includes word splitting and casing changes.<br />
+🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.Extensions.Reflection
 
-Reflection extensions.<br />
+Reflection extensions. Includes awaitable detection and execution helpers.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.Gettext

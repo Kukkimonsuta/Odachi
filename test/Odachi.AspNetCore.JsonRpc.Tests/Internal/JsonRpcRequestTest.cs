@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Odachi.AspNetCore.JsonRpc.Model;
-using Odachi.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
+using Odachi.Extensions.Collections;
 
 namespace Odachi.AspNetCore.JsonRpc.Internal
 {
@@ -42,15 +42,15 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 		{
 			var request = new JsonRpcRequest("1", "TestMethod", new JObject(
 				new JProperty("pagingOptions", new JObject(
-					new JProperty("page", 1),
-					new JProperty("pageSize", 5)
+					new JProperty("number", 1),
+					new JProperty("size", 5)
 				))
 			), new JsonSerializer());
 
 			var result = (PagingOptions)request.GetParameter("pagingOptions", JsonMappedType.FromType(typeof(PagingOptions)), null);
 
-			Assert.Equal(result.Page, 1);
-			Assert.Equal(result.PageSize, 5);
+			Assert.Equal(result.Number, 1);
+			Assert.Equal(result.Size, 5);
 		}
 	}
 }

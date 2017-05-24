@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Odachi.CodeGen.CSharp.IO
 {
-	public class CSharpWriter : IndentWriter
+	public class CSharpWriter : IndentedTextWriter
 	{
 		public CSharpWriter()
 			: base(new StringWriter(CultureInfo.InvariantCulture))

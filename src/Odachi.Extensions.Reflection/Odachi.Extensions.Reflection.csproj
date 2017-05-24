@@ -3,7 +3,7 @@
   <Import Project="..\..\tools\common.props" />
 
   <PropertyGroup>
-    <Description>Reflection extensions.</Description>
+    <Description>Reflection extensions. Includes awaitable detection and execution helpers.</Description>
     <TargetFrameworks>net46;netstandard1.3</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>

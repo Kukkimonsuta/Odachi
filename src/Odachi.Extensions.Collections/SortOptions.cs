@@ -11,11 +11,11 @@ namespace Odachi.Data
 	/// </summary>
 	public abstract class SortOptions<TEntity>
 	{
-		internal SortOptions()
+		public SortOptions()
 		{ }
 
-		internal abstract IOrderedQueryable<TEntity> Execute(IQueryable<TEntity> query);
-		internal abstract IOrderedEnumerable<TEntity> Execute(IEnumerable<TEntity> query);
+		public abstract IOrderedQueryable<TEntity> Execute(IQueryable<TEntity> query);
+		public abstract IOrderedEnumerable<TEntity> Execute(IEnumerable<TEntity> query);
 
 		public SortOptions<TEntity> ThenBy<TKey>(Expression<Func<TEntity, TKey>> expression, bool descending = false)
 		{
@@ -35,43 +35,43 @@ namespace Odachi.Data
 	/// <summary>
 	/// Holds information about sorting
 	/// </summary>
-	internal sealed class SortOptions<TEntity, TKey> : SortOptions<TEntity>
+	internal class SortOptions<TEntity, TKey> : SortOptions<TEntity>
 	{
-		internal SortOptions(Expression<Func<TEntity, TKey>> expression, bool descending = false)
+		public SortOptions(Expression<Func<TEntity, TKey>> expression, bool descending = false)
 		{
 			if (expression == null)
 				throw new ArgumentNullException(nameof(expression));
 
 			_expression = expression;
-			_descending = descending;
+			Descending = descending;
 		}
-		internal SortOptions(SortOptions<TEntity> parent, Expression<Func<TEntity, TKey>> expression, bool descending = false)
+		public SortOptions(SortOptions<TEntity> parent, Expression<Func<TEntity, TKey>> expression, bool descending = false)
 		{
 			if (expression == null)
 				throw new ArgumentNullException(nameof(expression));
 
 			_parent = parent;
 			_expression = expression;
-			_descending = descending;
+			Descending = descending;
 		}
 
 		private SortOptions<TEntity> _parent;
 		private Expression<Func<TEntity, TKey>> _expression;
-		private bool _descending;
+		private bool Descending { get; set; }
 
-		internal override IOrderedQueryable<TEntity> Execute(IQueryable<TEntity> query)
+		public override IOrderedQueryable<TEntity> Execute(IQueryable<TEntity> query)
 		{
 			if (_parent != null)
 			{
 				var result = _parent.Execute(query);
 
-				return _descending ? result.ThenByDescending(_expression) : result.ThenBy(_expression);
+				return Descending ? result.ThenByDescending(_expression) : result.ThenBy(_expression);
 			}
 			else
-				return _descending ? query.OrderByDescending(_expression) : query.OrderBy(_expression);
+				return Descending ? query.OrderByDescending(_expression) : query.OrderBy(_expression);
 		}
 
-		internal override IOrderedEnumerable<TEntity> Execute(IEnumerable<TEntity> query)
+		public override IOrderedEnumerable<TEntity> Execute(IEnumerable<TEntity> query)
 		{
 			var compiled = _expression.Compile();
 
@@ -79,10 +79,10 @@ namespace Odachi.Data
 			{
 				var result = _parent.Execute(query);
 
-				return _descending ? result.ThenByDescending(compiled) : result.ThenBy(compiled);
+				return Descending ? result.ThenByDescending(compiled) : result.ThenBy(compiled);
 			}
 			else
-				return _descending ? query.OrderByDescending(compiled) : query.OrderBy(compiled);
+				return Descending ? query.OrderByDescending(compiled) : query.OrderBy(compiled);
 		}
 	}
 }

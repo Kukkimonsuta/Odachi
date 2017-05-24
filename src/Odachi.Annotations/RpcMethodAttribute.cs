@@ -2,13 +2,16 @@
 
 namespace Odachi.Annotations
 {
+	/// <summary>
+	/// Marks methods for rpc registration.
+	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-	public class RpcMethod : Attribute
+	public class RpcMethodAttribute : Attribute
 	{
-		public RpcMethod()
+		public RpcMethodAttribute()
 		{
 		}
-		public RpcMethod(string name)
+		public RpcMethodAttribute(string name)
 		{
 			Name = name;
 		}

@@ -32,7 +32,7 @@ namespace Odachi.AspNetCore.JsonRpc.Model
 
 			foreach (var method in methods.Where(m => m.DeclaringType == type))
 			{
-				var attribute = method.GetCustomAttribute<RpcMethod>();
+				var attribute = method.GetCustomAttribute<RpcMethodAttribute>();
 				if (attribute == null)
 					continue;
 

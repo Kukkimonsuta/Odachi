@@ -84,7 +84,9 @@ Pack(".\src\Odachi.CodeGen")
 Pack(".\src\Odachi.CodeGen.CSharp")
 Pack(".\src\Odachi.CodeGen.TypeScript")
 Pack(".\src\Odachi.CodeModel")
-Pack(".\src\Odachi.Data")
+Pack(".\src\Odachi.EntityFrameworkCore")
+Pack(".\src\Odachi.Extensions.Collections")
+Pack(".\src\Odachi.Extensions.Formatting")
 Pack(".\src\Odachi.Extensions.Reflection")
 Pack(".\src\Odachi.Gettext")
 Pack(".\src\Odachi.Localization")
@@ -107,6 +109,8 @@ Write-Host
 Write-Host "Build & run test.."
 Write-Host
 Test(".\test\Odachi.AspNetCore.JsonRpc.Tests");
+Test(".\test\Odachi.CodeGen.Tests");
+Test(".\test\Odachi.Extensions.Formatting.Tests");
 Test(".\test\Odachi.Extensions.Reflection.Tests");
 Test(".\test\Odachi.Gettext.Tests");
 Test(".\test\Odachi.Localization.Extraction.Tests");

@@ -33,7 +33,8 @@ _build "./src/Odachi.CodeGen" netstandard13
 _build "./src/Odachi.CodeGen.CSharp" netstandard16
 _build "./src/Odachi.CodeGen.TypeScript" netstandard16
 _build "./src/Odachi.CodeModel" netstandard13
-_build "./src/Odachi.Data" netstandard13
+_build "./src/Odachi.EntityFrameworkCore" netstandard13
+_build "./src/Odachi.Extensions.Collections" netstandard13
 _build "./src/Odachi.Extensions.Reflection" netstandard13
 _build "./src/Odachi.Gettext" netstandard13
 _build "./src/Odachi.Localization" netstandard13
@@ -54,9 +55,11 @@ _build "./samples/MailSample" netcoreapp1.1
 echo
 echo "Build & run test.."
 echo
-_test "./test/Odachi.AspNetCore.JsonRpc.Tests" netcoreapp10
-_test "./test/Odachi.Extensions.Reflection.Tests" netcoreapp10
-_test "./test/Odachi.Gettext.Tests" netcoreapp10
-_test "./test/Odachi.Localization.Extraction.Tests" netcoreapp10
-_test "./test/Odachi.RazorTemplating.Tests" netcoreapp10
-_test "./test/Odachi.Security.Tests" netcoreapp10
+_test "./test/Odachi.AspNetCore.JsonRpc.Tests" netcoreapp11
+_test "./test/Odachi.CodeGen.Tests" netcoreapp11
+_test "./test/Odachi.Extensions.Formatting.Tests" netcoreapp11
+_test "./test/Odachi.Extensions.Reflection.Tests" netcoreapp11
+_test "./test/Odachi.Gettext.Tests" netcoreapp11
+_test "./test/Odachi.Localization.Extraction.Tests" netcoreapp11
+_test "./test/Odachi.RazorTemplating.Tests" netcoreapp11
+_test "./test/Odachi.Security.Tests" netcoreapp11

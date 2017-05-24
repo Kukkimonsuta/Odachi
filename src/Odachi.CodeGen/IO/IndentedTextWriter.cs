@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Odachi.CodeGen.IO
 {
-	public class IndentWriter : TextWriter
+	public class IndentedTextWriter : TextWriter
 	{
-		public IndentWriter(TextWriter writer)
+		public IndentedTextWriter(TextWriter writer)
 			: this(writer, null)
 		{
 		}
-		public IndentWriter(TextWriter writer, IFormatProvider formatProvider)
+		public IndentedTextWriter(TextWriter writer, IFormatProvider formatProvider)
 			: base(formatProvider)
 		{
 			if (writer == null)
@@ -30,6 +28,7 @@ namespace Odachi.CodeGen.IO
 		protected int IndentLevel { get { return _indentLevel; } }
 
 		public string IndentString { get; set; } = "\t";
+		public bool OpenBlockOnNewLine { get; set; } = false;
 
 		public void Indent(int magnitude)
 		{
@@ -199,12 +198,27 @@ namespace Odachi.CodeGen.IO
 
 		public sealed class Block : IDisposable
 		{
-			public Block(IndentWriter writer, string prefix,  string open, string close, string suffix, bool inline)
+			public Block(IndentedTextWriter writer, string prefix, string open, string close, string suffix, bool inline)
 			{
-				if (!inline)
+				if (writer.OpenBlockOnNewLine)
+				{
+					if (!string.IsNullOrEmpty(prefix))
+					{
+						if (!inline)
+							writer.WriteIndent();
+
+						writer.Write(prefix.TrimEnd());
+					}
+					writer.WriteLine();
 					writer.WriteIndent();
-				if (!string.IsNullOrEmpty(prefix))
-					writer.Write(prefix);
+				}
+				else
+				{
+					if (!inline)
+						writer.WriteIndent();
+					if (!string.IsNullOrEmpty(prefix))
+						writer.Write(prefix);
+				}
 				if (!string.IsNullOrEmpty(open))
 					writer.Write(open);
 				writer.WriteLine();
@@ -217,7 +231,7 @@ namespace Odachi.CodeGen.IO
 				_inline = inline;
 			}
 
-			private IndentWriter _writer;
+			private IndentedTextWriter _writer;
 			private string _close;
 			private string _suffix;
 			private bool _inline;
