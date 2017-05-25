@@ -24,7 +24,7 @@ namespace Odachi.AspNetCore.JsonRpc
 			{
 				ContractResolver = new DefaultContractResolver
 				{
-					NamingStrategy = new CamelCaseNamingStrategy()
+					NamingStrategy = new MultiWordCamelCaseNamingStrategy(true, false)
 				},
 				NullValueHandling = NullValueHandling.Ignore,
 				TypeNameHandling = TypeNameHandling.None,

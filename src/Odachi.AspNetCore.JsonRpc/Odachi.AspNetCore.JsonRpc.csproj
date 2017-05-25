@@ -4,7 +4,7 @@
 
 	<PropertyGroup>
 		<Description>ASP.NET Core jsonrpc middleware.</Description>
-		<TargetFrameworks>net46;netstandard1.3</TargetFrameworks>
+		<TargetFrameworks>net46;netstandard1.5</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
@@ -14,6 +14,7 @@
     <ProjectReference Include="..\Odachi.Extensions.Reflection\Odachi.Extensions.Reflection.csproj" />
     <ProjectReference Include="..\Odachi.Extensions.Collections\Odachi.Extensions.Collections.csproj" />
     <ProjectReference Include="..\Odachi.Extensions.Primitives\Odachi.Extensions.Primitives.csproj" />
+    <ProjectReference Include="..\Odachi.Extensions.Formatting\Odachi.Extensions.Formatting.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

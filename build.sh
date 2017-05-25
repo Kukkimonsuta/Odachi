@@ -25,8 +25,8 @@ echo
 _build "./src/Odachi.Abstractions" netstandard13
 _build "./src/Odachi.Annotations" netstandard13
 _build "./src/Odachi.AspNetCore.Authentication.Basic" netstandard15
-_build "./src/Odachi.AspNetCore.JsonRpc" netstandard13
-_build "./src/Odachi.AspNetCore.JsonRpc.Validation" netstandard13
+_build "./src/Odachi.AspNetCore.JsonRpc" netstandard15
+_build "./src/Odachi.AspNetCore.JsonRpc.Validation" netstandard15
 _build "./src/Odachi.AspNetCore.Mvc" netstandard15
 _build "./src/Odachi.AspNetCore.MvcPages" netstandard15
 _build "./src/Odachi.CodeGen" netstandard13
@@ -35,7 +35,7 @@ _build "./src/Odachi.CodeGen.TypeScript" netstandard16
 _build "./src/Odachi.CodeModel" netstandard13
 _build "./src/Odachi.EntityFrameworkCore" netstandard13
 _build "./src/Odachi.Extensions.Collections" netstandard13
-_build "./src/Odachi.Extensions.Formatting" netstandard13
+_build "./src/Odachi.Extensions.Formatting" netstandard15
 _build "./src/Odachi.Extensions.Primitives" netstandard13
 _build "./src/Odachi.Extensions.Reflection" netstandard13
 _build "./src/Odachi.Gettext" netstandard13
