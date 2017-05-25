@@ -12,6 +12,7 @@ using System.Collections;
 using Odachi.AspNetCore.JsonRpc.Modules;
 using Odachi.AspNetCore.JsonRpc.Behaviors;
 using Odachi.AspNetCore.JsonRpc.Model;
+using Odachi.AspNetCore.JsonRpc.Converters;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
@@ -28,6 +29,8 @@ namespace Odachi.AspNetCore.JsonRpc
 				NullValueHandling = NullValueHandling.Ignore,
 				TypeNameHandling = TypeNameHandling.None,
 			};
+			JsonSerializerSettings.Converters.Add(new PageConverter());
+			JsonSerializerSettings.Converters.Add(new EntityReferenceConverter());
 
 			Methods.AddReflected<ServerModule>();
 		}

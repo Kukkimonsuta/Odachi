@@ -35,6 +35,8 @@ _build "./src/Odachi.CodeGen.TypeScript" netstandard16
 _build "./src/Odachi.CodeModel" netstandard13
 _build "./src/Odachi.EntityFrameworkCore" netstandard13
 _build "./src/Odachi.Extensions.Collections" netstandard13
+_build "./src/Odachi.Extensions.Formatting" netstandard13
+_build "./src/Odachi.Extensions.Primitives" netstandard13
 _build "./src/Odachi.Extensions.Reflection" netstandard13
 _build "./src/Odachi.Gettext" netstandard13
 _build "./src/Odachi.Localization" netstandard13

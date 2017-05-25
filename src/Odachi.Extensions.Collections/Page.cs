@@ -11,25 +11,28 @@ namespace Odachi.Extensions.Collections
 	/// </summary>
 	public abstract class Page : IPage
 	{
-		public Page(IEnumerable data, int page, int pageSize, int? total = null, bool overflow = false)
+		public Page(IEnumerable data, int number, int size, int? total = null, bool overflow = false)
 		{
 			if (data == null)
 				throw new ArgumentNullException(nameof(data));
-			if (page < 0)
-				throw new ArgumentOutOfRangeException(nameof(page), "Page must be greater than or equal to zero");
-			if (pageSize <= 0)
-				throw new ArgumentOutOfRangeException(nameof(pageSize), "PageSize must be greater than zero");
+			if (number < 0)
+				throw new ArgumentOutOfRangeException(nameof(number), "Number must be greater than or equal to zero");
+			if (size <= 0)
+				throw new ArgumentOutOfRangeException(nameof(size), "Size must be greater than zero");
 			if (total != null && total < 0)
 				throw new ArgumentOutOfRangeException(nameof(total), "Total must be greater than or equal to zero or null");
 
-			_data = data;
-			Number = page;
-			Size = pageSize;
+			Data = data;
+			Number = number;
+			Size = size;
 			Total = total;
 			Overflow = overflow;
 		}
 
-		private IEnumerable _data;
+		/// <summary>
+		/// Underlying data.
+		/// </summary>
+		public IEnumerable Data { get; }
 
 		/// <summary>
 		/// Number of page that is represented by this instance.
@@ -61,7 +64,7 @@ namespace Odachi.Extensions.Collections
 
 		#region IEnumerable
 
-		IEnumerator IEnumerable.GetEnumerator() => _data.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => Data.GetEnumerator();
 
 		#endregion
 
@@ -78,22 +81,25 @@ namespace Odachi.Extensions.Collections
 	/// <summary>
 	/// Holds information about page of a collection.
 	/// </summary>
-	public class Page<T> : Page, IEnumerable<T>
+	public class Page<T> : Page, IPage<T>
 	{
-		public Page(IEnumerable<T> data, int page, int pageSize, int? total = null, bool overflow = false)
-			: base(data, page, pageSize, total: total, overflow: overflow)
+		public Page(IEnumerable<T> data, int number, int size, int? total = null, bool overflow = false)
+			: base(data, number, size, total: total, overflow: overflow)
 		{
 			if (data == null)
 				throw new ArgumentNullException(nameof(data));
 
-			_data = data;
+			Data = data;
 		}
 
-		private IEnumerable<T> _data;
+		/// <summary>
+		/// Underlying data.
+		/// </summary>
+		public new IEnumerable<T> Data { get; }
 
 		#region IEnumerable
 
-		public IEnumerator<T> GetEnumerator() => _data.GetEnumerator();
+		public IEnumerator<T> GetEnumerator() => Data.GetEnumerator();
 
 		#endregion
 	}

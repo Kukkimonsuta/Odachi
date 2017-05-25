@@ -1,6 +1,6 @@
 ﻿# Odachi [![Build Status](https://travis-ci.org/Kukkimonsuta/Odachi.svg?branch=master)](https://travis-ci.org/Kukkimonsuta/Odachi) [![Build status](https://ci.appveyor.com/api/projects/status/spbrm8id15t27y08/branch/master?svg=true)](https://ci.appveyor.com/project/Kukkimonsuta/odachi/branch/master)
 
-Set of miscellaneous extensions for .NET Core.
+Set of miscellaneous extensions for .NET Core. Please note that while we will try to follow semver we also have no intention of keeping apis stable between major versions which may or may not come somewhat often depending on our needs.
 
 Nightly nuget feed: https://ci.appveyor.com/nuget/odachi
 
@@ -72,6 +72,11 @@ Collection extensions. Includes paging and sorting.<br />
 ## Odachi.Extensions.Formatting
 
 Formatting extensions. Includes word splitting and casing changes.<br />
+🚧 In development. Happy with the current state. May change outside of semver.
+
+## Odachi.Extensions.Primitives
+
+Primitives extensions. Includes entity reference, file reference.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.Extensions.Reflection

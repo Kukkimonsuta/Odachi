@@ -12,6 +12,8 @@
 		<ProjectReference Include="..\Odachi.Abstractions\Odachi.Abstractions.csproj" />
 		<ProjectReference Include="..\Odachi.Annotations\Odachi.Annotations.csproj" />
     <ProjectReference Include="..\Odachi.Extensions.Reflection\Odachi.Extensions.Reflection.csproj" />
+    <ProjectReference Include="..\Odachi.Extensions.Collections\Odachi.Extensions.Collections.csproj" />
+    <ProjectReference Include="..\Odachi.Extensions.Primitives\Odachi.Extensions.Primitives.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -23,6 +25,7 @@
 		<PackageReference Include="Microsoft.Extensions.Options" Version="1.1.0" />
 		<PackageReference Include="Microsoft.Net.Http.Headers" Version="1.1.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -12,19 +12,19 @@ namespace Odachi.Extensions.Collections
 	public class PagingOptions
 	{
 		public const int DefaultPageSize = 10;
-		public const int DefaultMaxPageCount = 20;
+		public const int DefaultMaximumCount = 20;
 
 		public PagingOptions()
 			: this(0, DefaultPageSize)
 		{
 		}
-		public PagingOptions(int number, int size = DefaultPageSize, bool acquireTotal = true, int offset = 0, int? maxPageCount = DefaultMaxPageCount)
+		public PagingOptions(int number, int size = DefaultPageSize, bool acquireTotal = true, int offset = 0, int? maximumCount = DefaultMaximumCount)
 		{
 			Number = number;
 			Size = size;
 			AcquireTotal = acquireTotal;
 			Offset = offset;
-			MaximumCount = maxPageCount;
+			MaximumCount = maximumCount;
 		}
 
 		private int _page;

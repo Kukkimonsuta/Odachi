@@ -91,6 +91,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Extensions.Formattin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Extensions.Formatting.Tests", "test\Odachi.Extensions.Formatting.Tests\Odachi.Extensions.Formatting.Tests.csproj", "{17BB4886-C93E-487E-ADEE-46D0641683C0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Extensions.Primitives", "src\Odachi.Extensions.Primitives\Odachi.Extensions.Primitives.csproj", "{3C19FDAC-6FA4-40D1-990E-A349DF114124}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -509,6 +511,18 @@ Global
 		{17BB4886-C93E-487E-ADEE-46D0641683C0}.Release|x64.Build.0 = Release|Any CPU
 		{17BB4886-C93E-487E-ADEE-46D0641683C0}.Release|x86.ActiveCfg = Release|Any CPU
 		{17BB4886-C93E-487E-ADEE-46D0641683C0}.Release|x86.Build.0 = Release|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Debug|x64.Build.0 = Debug|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Debug|x86.Build.0 = Debug|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Release|x64.ActiveCfg = Release|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Release|x64.Build.0 = Release|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Release|x86.ActiveCfg = Release|Any CPU
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -548,5 +562,6 @@ Global
 		{49531241-2AA2-4B72-9D04-250B6961FA6D} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{F565B6F1-F3E9-489E-83F3-EB33242C000E} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{17BB4886-C93E-487E-ADEE-46D0641683C0} = {6914849E-07C0-4D13-8259-A141523454DA}
+		{3C19FDAC-6FA4-40D1-990E-A349DF114124} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 	EndGlobalSection
 EndGlobal
