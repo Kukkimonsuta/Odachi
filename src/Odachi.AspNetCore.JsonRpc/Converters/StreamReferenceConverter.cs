@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Odachi.AspNetCore.JsonRpc.Internal
+namespace Odachi.AspNetCore.JsonRpc.Converters
 {
 	public class StreamReferenceConverter : JsonConverter
 	{

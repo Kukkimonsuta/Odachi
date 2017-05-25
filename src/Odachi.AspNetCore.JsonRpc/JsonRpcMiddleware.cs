@@ -17,6 +17,7 @@ using Odachi.AspNetCore.JsonRpc.Internal;
 using Microsoft.Extensions.Logging;
 using Odachi.AspNetCore.JsonRpc.Modules;
 using System.Threading;
+using Odachi.AspNetCore.JsonRpc.Converters;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
