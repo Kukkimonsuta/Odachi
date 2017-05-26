@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <Description>Primitives extensions. Includes entity reference, file reference.</Description>
-    <TargetFrameworks>net452;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>net452;netstandard1.3;netstandard1.0</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 

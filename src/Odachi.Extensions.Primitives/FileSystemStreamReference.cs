@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NETSTANDARD1_0
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,3 +29,4 @@ namespace Odachi.Extensions.Primitives
 		public Stream OpenReadStream() => File.Open(FullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
 	}
 }
+#endif
