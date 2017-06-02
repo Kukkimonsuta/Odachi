@@ -1,72 +1,152 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 
 namespace Odachi.Validation
 {
+	/// <summary>
+	/// Collection of validation messages.
+	/// </summary>
+	[DataContract]
 	public class ValidationState
 	{
 		public ValidationState()
 		{
-			_prefixes = new Stack<string>();
-			_errors = new Dictionary<string, ValidationMessage>();
+			State = new Dictionary<string, IList<ValidationMessage>>();
+		}
+		public ValidationState(IDictionary<string, IList<ValidationMessage>> state)
+		{
+			if (state == null)
+				throw new ArgumentNullException(nameof(state));
+
+			State = state;
 		}
 
-		private Stack<string> _prefixes;
-		private IDictionary<string, ValidationMessage> _errors;
+		[DataMember]
+		public IDictionary<string, IList<ValidationMessage>> State { get; private set; }
 
-		public bool HasErrors => _errors.Count > 0;
-		public IEnumerable<ValidationMessage> Errors { get { return _errors.Values; } }
-
-		public IDisposable PushPrefix(string prefix, int index) => PushPrefix(prefix, index.ToString());
-		public IDisposable PushPrefix(string prefix, string index) => PushPrefix($"{prefix}[{index}]");
-		public IDisposable PushPrefix(string prefix)
+		/// <summary>
+		/// Returns validation messages for given field name. Returns zero results if there are no results.
+		/// </summary>
+		public IEnumerable<ValidationMessage> this[string name]
 		{
-			var current = _prefixes.Count > 0 ? $"{_prefixes.Peek()}." : null;
-
-			_prefixes.Push($"{current}{prefix}");
-
-			return new StackPopper<string>(_prefixes);
-		}
-
-		public void AddError(string key, string text)
-		{
-			AddError(new ValidationMessage()
+			get
 			{
-				Key = key,
-				Text = text
+				if (name == null)
+					throw new ArgumentNullException(nameof(name));
+
+				return State.TryGetValue(name, out var result) ? result : Enumerable.Empty<ValidationMessage>();
+			}
+		}
+
+		/// <summary>
+		/// Adds message into the dictionary.
+		/// </summary>
+		public void Add(string name, ValidationMessage message)
+		{
+			if (!State.TryGetValue(name, out var propertyState))
+				State.Add(name, propertyState = new List<ValidationMessage>());
+
+			propertyState.Add(message);
+		}
+
+		#region Warnings
+
+		/// <summary>
+		/// Adds warning into the dictionary.
+		/// </summary>
+		public void AddWarning(string name, string message)
+		{
+			Add(name, new ValidationMessage()
+			{
+				Level = ValidationLevel.Warning,
+				Message = message,
 			});
 		}
-		public void AddError(ValidationMessage message)
+
+		/// <summary>
+		/// Returns whether there are any warnings.
+		/// </summary>
+		public bool HasWarnings => State.Any(s => s.Value.Any(m => m.Level == ValidationLevel.Error));
+
+		/// <summary>
+		/// Returns an warning or null for given field name.
+		/// </summary>
+		public string GetWarning(string name)
 		{
-			if (_prefixes.Count > 0)
-			{
-				if (!string.IsNullOrEmpty(message.Key))
-					message.Key = _prefixes.Peek() + "." + message.Key;
-				else
-					message.Key = _prefixes.Peek();
-			}
+			if (name == null)
+				throw new ArgumentNullException(nameof(name));
 
-			if (_errors.ContainsKey(message.Key))
-				return;
+			if (!State.TryGetValue(name, out var state))
+				return null;
 
-			_errors.Add(message.Key, message);
+			return state.FirstOrDefault().Message;
 		}
 
-		#region Nested type: StackPopper
-
-		private class StackPopper<T> : IDisposable
+		/// <summary>
+		/// Returns all warnings for given field name.
+		/// </summary>
+		public IEnumerable<string> GetWarnings(string name)
 		{
-			public StackPopper(Stack<T> stack)
-			{
-				_stack = stack;
-			}
+			if (name == null)
+				throw new ArgumentNullException(nameof(name));
 
-			private Stack<T> _stack;
+			if (!State.TryGetValue(name, out var state))
+				return null;
 
-			public void Dispose()
+			return state.Select(s => s.Message);
+		}
+
+		#endregion
+
+		#region Errors
+
+		/// <summary>
+		/// Adds error into the dictionary.
+		/// </summary>
+		public void AddError(string name, string message)
+		{
+			Add(name, new ValidationMessage()
 			{
-				_stack.Pop();
-			}
+				Level = ValidationLevel.Error,
+				Message = message,
+			});
+		}
+
+		/// <summary>
+		/// Returns whether there are any errors.
+		/// </summary>
+		public bool HasErrors => State.Any(s => s.Value.Any(m => m.Level == ValidationLevel.Error));
+
+		/// <summary>
+		/// Returns an error or null for given field name.
+		/// </summary>
+		public string GetError(string name)
+		{
+			if (name == null)
+				throw new ArgumentNullException(nameof(name));
+
+			if (!State.TryGetValue(name, out var state))
+				return null;
+
+			return state.FirstOrDefault().Message;
+		}
+
+		/// <summary>
+		/// Returns all errors for given field name.
+		/// </summary>
+		public IEnumerable<string> GetErrors(string name)
+		{
+			if (name == null)
+				throw new ArgumentNullException(nameof(name));
+
+			if (!State.TryGetValue(name, out var state))
+				return null;
+
+			return state.Select(s => s.Message);
 		}
 
 		#endregion

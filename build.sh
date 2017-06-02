@@ -26,7 +26,6 @@ _build "./src/Odachi.Abstractions" netstandard13
 _build "./src/Odachi.Annotations" netstandard13
 _build "./src/Odachi.AspNetCore.Authentication.Basic" netstandard15
 _build "./src/Odachi.AspNetCore.JsonRpc" netstandard15
-_build "./src/Odachi.AspNetCore.JsonRpc.Validation" netstandard15
 _build "./src/Odachi.AspNetCore.Mvc" netstandard15
 _build "./src/Odachi.AspNetCore.MvcPages" netstandard15
 _build "./src/Odachi.CodeGen" netstandard13

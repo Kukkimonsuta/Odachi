@@ -24,11 +24,6 @@ ASP.NET Core middleware for basic authentication.<br />
 ASP.NET Core jsonrpc middleware.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
-## Odachi.AspNetCore.JsonRpc.Validation
-
-Validation support for `Odachi.AspNetCore.JsonRpc`.<br />
-❓ Internal use. Not happy with the current state. Likely to change outside of semver.
-
 ## Odachi.AspNetCore.Mvc
 
 ASP.NET MVC extensions and helpers.<br />
@@ -121,5 +116,5 @@ Role/Permission definition helpers.<br />
 
 ## Odachi.Validation
 
-Role/Permission definition helpers.<br />
-❓ Internal use. Not happy with the current state. Likely to change outside of semver.
+Object validation library.<br />
+🚧 In development. May change outside of semver.
