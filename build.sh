@@ -31,7 +31,9 @@ _build "./src/Odachi.AspNetCore.MvcPages" netstandard15
 _build "./src/Odachi.CodeGen" netstandard13
 _build "./src/Odachi.CodeGen.CSharp" netstandard16
 _build "./src/Odachi.CodeGen.TypeScript" netstandard16
-_build "./src/Odachi.CodeModel" netstandard13
+_build "./src/Odachi.CodeModel" netstandard15
+_build "./src/Odachi.CodeModel.Providers.FluentValidation" netstandard15
+_build "./src/Odachi.CodeModel.Providers.JsonRpc" netstandard15
 _build "./src/Odachi.EntityFrameworkCore" netstandard13
 _build "./src/Odachi.Extensions.Collections" netstandard13
 _build "./src/Odachi.Extensions.Formatting" netstandard15
