@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Humanizer;
 using Odachi.CodeModel.Builders;
+using Odachi.Extensions.Formatting;
 
 namespace Odachi.CodeModel.Description
 {
@@ -26,7 +26,7 @@ namespace Odachi.CodeModel.Description
 		/// <inheritdoc />
 		public virtual string GetModuleName(PackageContext context, string fragmentName)
 		{
-			return fragmentName.Underscore().Hyphenate();
+			return string.Join("-", fragmentName.GetWords());
 		}
 
 		/// <inheritdoc />

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\tools\common.props" />
+
+	<PropertyGroup>
+		<Description>Code description providers for `FluentValidation`.</Description>
+		<TargetFrameworks>net461;netstandard1.5</TargetFrameworks>
+		<PackageTags>odachi</PackageTags>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Odachi.CodeModel/Odachi.CodeModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="7.0.2" />
+  </ItemGroup>
+
+</Project>
