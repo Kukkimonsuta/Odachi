@@ -34,6 +34,7 @@ _build "./src/Odachi.CodeGen.TypeScript" netstandard16
 _build "./src/Odachi.CodeModel" netstandard15
 _build "./src/Odachi.CodeModel.Providers.FluentValidation" netstandard15
 _build "./src/Odachi.CodeModel.Providers.JsonRpc" netstandard15
+_build "./src/Odachi.CodeModel.Providers.Validation" netstandard15
 _build "./src/Odachi.EntityFrameworkCore" netstandard13
 _build "./src/Odachi.Extensions.Collections" netstandard13
 _build "./src/Odachi.Extensions.Formatting" netstandard15

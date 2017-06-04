@@ -97,6 +97,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.CodeModel.Providers.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.CodeModel.Providers.JsonRpc", "src\Odachi.CodeModel.Providers.JsonRpc\Odachi.CodeModel.Providers.JsonRpc.csproj", "{ADE8E595-B4E1-406B-BB5A-DBD59AB18A29}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.CodeModel.Providers.Validation", "src\Odachi.CodeModel.Providers.Validation\Odachi.CodeModel.Providers.Validation.csproj", "{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -551,6 +553,18 @@ Global
 		{ADE8E595-B4E1-406B-BB5A-DBD59AB18A29}.Release|x64.Build.0 = Release|Any CPU
 		{ADE8E595-B4E1-406B-BB5A-DBD59AB18A29}.Release|x86.ActiveCfg = Release|Any CPU
 		{ADE8E595-B4E1-406B-BB5A-DBD59AB18A29}.Release|x86.Build.0 = Release|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Debug|x64.Build.0 = Debug|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Debug|x86.Build.0 = Debug|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Release|x64.ActiveCfg = Release|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Release|x64.Build.0 = Release|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Release|x86.ActiveCfg = Release|Any CPU
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -593,5 +607,6 @@ Global
 		{67E563A8-A2DE-4F21-BF8A-CF324DADF13F} = {6914849E-07C0-4D13-8259-A141523454DA}
 		{68586092-8500-47A8-BC7B-FB90D62AB94C} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{ADE8E595-B4E1-406B-BB5A-DBD59AB18A29} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
+		{F32D9E48-D73C-448E-8F59-6F6AD168C5FB} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 	EndGlobalSection
 EndGlobal

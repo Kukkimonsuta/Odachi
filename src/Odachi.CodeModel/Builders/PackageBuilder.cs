@@ -163,7 +163,7 @@ namespace Odachi.CodeModel.Builders
 
 			return result;
 		}
-		
+
 		#region Static members
 
 		public static Package Build(string name, Action<PackageBuilder> configure)
@@ -217,6 +217,42 @@ namespace Odachi.CodeModel.Builders
 		}
 
 		/// <summary>
+		/// Shortcut for creating a module with single enum fragment and all its enum items from specified .NET type.
+		/// </summary>
+		public static PackageBuilder Module_Enum_Default<T>(this PackageBuilder builder, Action<EnumBuilder> configure = null)
+			where T : struct
+		{
+			if (builder == null)
+				throw new ArgumentNullException(nameof(builder));
+
+			return Module_Enum_Default(builder, typeof(T), configure: configure);
+		}
+		/// <summary>
+		/// Shortcut for creating a module with single enum fragment and all its enum items from specified .NET type.
+		/// </summary>
+		public static PackageBuilder Module_Enum_Default(this PackageBuilder builder, Type enumType, Action<EnumBuilder> configure = null)
+		{
+			if (builder == null)
+				throw new ArgumentNullException(nameof(builder));
+			if (enumType == null)
+				throw new ArgumentNullException(nameof(enumType));
+			if (!enumType.GetTypeInfo().IsEnum)
+				throw new ArgumentException($"Parameter `enumType` must be enum type");
+
+			return builder.Module_Enum(enumType, enumBuilder =>
+			{
+				enumBuilder.Hint("logical-kind", "enum");
+
+				foreach (var item in Enum.GetValues(enumType))
+				{
+					enumBuilder.Item(item.ToString(), Convert.ToInt32(item));
+				}
+
+				configure?.Invoke(enumBuilder);
+			});
+		}
+
+		/// <summary>
 		/// Shortcut for creating a module with single class fragment from specified .NET type.
 		/// </summary>
 		public static PackageBuilder Module_Class<T>(this PackageBuilder builder, Action<ClassBuilder> configure)
@@ -248,6 +284,47 @@ namespace Odachi.CodeModel.Builders
 				.Module(moduleName, module => module
 					.Class(fragmentName, objectType, configure)
 				);
+		}
+
+		/// <summary>
+		/// Shortcut for creating a module with single class fragment and all its fields and properties from specified .NET type.
+		/// </summary>
+		public static PackageBuilder Module_Class_BusinessObject<T>(this PackageBuilder builder, Action<ClassBuilder> configure = null)
+		{
+			if (builder == null)
+				throw new ArgumentNullException(nameof(builder));
+
+			return Module_Class_BusinessObject(builder, typeof(T), configure: configure);
+		}
+		/// <summary>
+		/// Shortcut for creating a module with single class fragment and all its fields and properties from specified .NET type.
+		/// </summary>
+		public static PackageBuilder Module_Class_BusinessObject(this PackageBuilder builder, Type objectType, Action<ClassBuilder> configure = null)
+		{
+			if (builder == null)
+				throw new ArgumentNullException(nameof(builder));
+			if (objectType == null)
+				throw new ArgumentNullException(nameof(objectType));
+
+			return builder.Module_Class(objectType, classBuilder =>
+			{
+				classBuilder.Hint("logical-kind", "business-object");
+
+				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+				foreach (var member in members)
+				{
+					if (member is FieldInfo field)
+					{
+						classBuilder.Field(field.Name, ClrTypeReference.Create(field.FieldType), (objectType, field));
+					}
+					else if (member is PropertyInfo property)
+					{
+						classBuilder.Field(property.Name, ClrTypeReference.Create(property.PropertyType), (objectType, property));
+					}
+				}
+
+				configure?.Invoke(classBuilder);
+			});
 		}
 	}
 }

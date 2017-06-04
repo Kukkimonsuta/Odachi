@@ -34,6 +34,10 @@ namespace Odachi.CodeModel.Mapping
 		public static readonly BuiltinTypeDefinition Array = new BuiltinTypeDefinition("array", new GenericArgumentDefinition("T"));
 		public static readonly BuiltinTypeDefinition File = new BuiltinTypeDefinition("file");
 
+		public static readonly BuiltinTypeDefinition EntityReference = new BuiltinTypeDefinition("EntityReference");
+		public static readonly BuiltinTypeDefinition PagingOptions = new BuiltinTypeDefinition("PagingOptions");
+		public static readonly BuiltinTypeDefinition Page = new BuiltinTypeDefinition("Page", new GenericArgumentDefinition("TItem"));
+
 		#endregion
 	}
 }

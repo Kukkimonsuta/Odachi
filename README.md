@@ -54,6 +54,21 @@ TypeScript code generator.<br />
 Code description library.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
+## Odachi.CodeModel.Providers.FluentValidation
+
+Code description providers for `FluentValidation`.
+🚧 In development. Happy with the current state. May change outside of semver.
+
+## Odachi.CodeModel.Providers.JsonRpc
+
+Code description providers for `Odachi.AspNetCore.JsonRpc`.
+🚧 In development. Happy with the current state. May change outside of semver.
+
+## Odachi.CodeModel.Providers.Validation
+
+Code description providers for `Odachi.Validation`.
+🚧 In development. Happy with the current state. May change outside of semver.
+
 ## Odachi.EntityFrameworkCore
 
 Extensions for Entity Framework Core. Includes paging.<br />

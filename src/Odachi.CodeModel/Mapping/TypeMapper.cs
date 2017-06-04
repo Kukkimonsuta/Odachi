@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Odachi.Extensions.Collections;
 
 namespace Odachi.CodeModel.Mapping
 {
@@ -37,6 +38,10 @@ namespace Odachi.CodeModel.Mapping
 			Register(typeof(DateTime), BuiltinTypeDefinition.DateTime);
 			Register(typeof(IEnumerable<>), BuiltinTypeDefinition.Array);
 			Register(typeof(IStreamReference), BuiltinTypeDefinition.File);
+
+			Register(typeof(IEntityReference), BuiltinTypeDefinition.EntityReference);
+			Register(typeof(PagingOptions), BuiltinTypeDefinition.PagingOptions);
+			Register(typeof(Page<>), BuiltinTypeDefinition.Page);
 		}
 
 		private IDictionary<Type, TypeDefinition> _mapping;
