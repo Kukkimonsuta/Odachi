@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using Odachi.Abstractions;
 using Odachi.Extensions.Primitives;
 
-namespace Odachi.AspNetCore.JsonRpc.Converters
+namespace Odachi.JsonRpc.Common.Converters
 {
 	public class EntityReferenceConverter : JsonConverter
 	{

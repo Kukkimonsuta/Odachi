@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\tools\common.props" />
+
+	<PropertyGroup>
+		<Description>Common classes of `JsonRpc.Client` and `Odachi.AspNetCore.JsonRpc`.</Description>
+		<TargetFrameworks>netstandard1.1</TargetFrameworks>
+		<PackageTags>odachi</PackageTags>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Odachi.Abstractions\Odachi.Abstractions.csproj" />
+    <ProjectReference Include="..\Odachi.Extensions.Collections\Odachi.Extensions.Collections.csproj" />
+    <ProjectReference Include="..\Odachi.Extensions.Primitives\Odachi.Extensions.Primitives.csproj" />
+    <ProjectReference Include="..\Odachi.Extensions.Formatting\Odachi.Extensions.Formatting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
+  </ItemGroup>
+
+</Project>

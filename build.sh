@@ -41,6 +41,8 @@ _build "./src/Odachi.Extensions.Formatting" netstandard15
 _build "./src/Odachi.Extensions.Primitives" netstandard13
 _build "./src/Odachi.Extensions.Reflection" netstandard13
 _build "./src/Odachi.Gettext" netstandard13
+_build "./src/Odachi.JsonRpc.Client" netstandard11
+_build "./src/Odachi.JsonRpc.Common" netstandard11
 _build "./src/Odachi.Localization" netstandard13
 _build "./src/Odachi.Localization.Extraction" netstandard15
 _build "./src/Odachi.Mail" netstandard13
@@ -54,6 +56,7 @@ echo "Build samples.."
 echo
 _build "./samples/BasicAuthenticationSample" netcoreapp1.1
 _build "./samples/JsonRpcSample" netcoreapp1.1
+_build "./samples/JsonRpcClientSample" netcoreapp1.1
 _build "./samples/MailSample" netcoreapp1.1
 
 echo

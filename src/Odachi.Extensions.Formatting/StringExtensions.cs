@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Odachi.Extensions.Formatting
 {
@@ -69,7 +65,7 @@ namespace Odachi.Extensions.Formatting
 			if (source == null)
 				throw new ArgumentNullException(nameof(source));
 
-			var chars = source.ToArray();
+			var chars = source.ToCharArray();
 			foreach (var (start, _) in source.GetWordBoundaries())
 			{
 				var ch = chars[start];
@@ -90,7 +86,7 @@ namespace Odachi.Extensions.Formatting
 			if (source == null)
 				throw new ArgumentNullException(nameof(source));
 
-			var chars = source.ToArray();
+			var chars = source.ToCharArray();
 			foreach (var (start, end) in source.GetWordBoundaries())
 			{
 				for (var i = start; i < end; i++)

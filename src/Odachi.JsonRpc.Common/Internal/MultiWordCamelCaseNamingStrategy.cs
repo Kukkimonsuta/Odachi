@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Odachi.Extensions.Formatting;
 using Newtonsoft.Json.Serialization;
 
-namespace Odachi.AspNetCore.JsonRpc.Internal
+namespace Odachi.JsonRpc.Common.Internal
 {
 	public class MultiWordCamelCaseNamingStrategy : NamingStrategy
 	{

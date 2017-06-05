@@ -94,6 +94,16 @@ Primitives extensions. Includes entity reference, file reference.<br />
 Reflection extensions. Includes awaitable detection and execution helpers.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
+## Odachi.JsonRpc.Client
+
+JsonRpc client.
+🚧 In development. Happy with the current state. May change outside of semver.
+
+## Odachi.JsonRpc.Common
+
+Common classes of `JsonRpc.Client` and `Odachi.AspNetCore.JsonRpc`.
+🚧 In development. Happy with the current state. May change outside of semver.
+
 ## Odachi.Gettext
 
 Gettext file parsing library.<br />

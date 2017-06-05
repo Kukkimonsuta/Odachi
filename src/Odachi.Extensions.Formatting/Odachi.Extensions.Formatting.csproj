@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <Description>Formatting extensions. Includes word splitting and casing changes.</Description>
-    <TargetFrameworks>net452;netstandard1.5</TargetFrameworks>
+    <TargetFrameworks>net452;netstandard1.5;netstandard1.0</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 

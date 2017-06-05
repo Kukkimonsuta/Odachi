@@ -92,6 +92,8 @@ Pack(".\src\Odachi.Extensions.Formatting")
 Pack(".\src\Odachi.Extensions.Primitives")
 Pack(".\src\Odachi.Extensions.Reflection")
 Pack(".\src\Odachi.Gettext")
+Pack(".\src\Odachi.JsonRpc.Client")
+Pack(".\src\Odachi.JsonRpc.Common")
 Pack(".\src\Odachi.Localization")
 Pack(".\src\Odachi.Localization.Extraction")
 Pack(".\src\Odachi.Mail")
@@ -107,6 +109,7 @@ Write-Host
 Build(".\samples\BasicAuthenticationSample");
 Build(".\samples\MailSample");
 Build(".\samples\JsonRpcSample");
+Build(".\samples\JsonRpcClientSample");
 
 Write-Host
 Write-Host "Build & run test.."

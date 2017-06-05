@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Odachi.Extensions.Collections;
 
-namespace Odachi.AspNetCore.JsonRpc.Converters
+namespace Odachi.JsonRpc.Common.Converters
 {
 	public class PageConverter : JsonConverter
 	{
@@ -19,7 +19,7 @@ namespace Odachi.AspNetCore.JsonRpc.Converters
 
 		public override bool CanConvert(Type objectType)
 		{
-			return typeof(Page).IsAssignableFrom(objectType);
+			return typeof(Page).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
 		}
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -42,7 +42,7 @@ namespace Odachi.AspNetCore.JsonRpc.Converters
 					continue;
 				}
 
-				itemType = type.GetGenericArguments()[0];
+				itemType = type.GenericTypeArguments[0];
 				break;
 			}
 
@@ -83,7 +83,6 @@ namespace Odachi.AspNetCore.JsonRpc.Converters
 			public int Count { get; set; }
 			public int? Total { get; set; }
 			public bool Overflow { get; set; }
-
 
 			public abstract IEnumerable GetData();
 		}
