@@ -289,17 +289,17 @@ namespace Odachi.CodeModel.Builders
 		/// <summary>
 		/// Shortcut for creating a module with single class fragment and all its fields and properties from specified .NET type.
 		/// </summary>
-		public static PackageBuilder Module_Class_BusinessObject<T>(this PackageBuilder builder, Action<ClassBuilder> configure = null)
+		public static PackageBuilder Module_Class_Default<T>(this PackageBuilder builder, Action<ClassBuilder> configure = null)
 		{
 			if (builder == null)
 				throw new ArgumentNullException(nameof(builder));
 
-			return Module_Class_BusinessObject(builder, typeof(T), configure: configure);
+			return Module_Class_Default(builder, typeof(T), configure: configure);
 		}
 		/// <summary>
 		/// Shortcut for creating a module with single class fragment and all its fields and properties from specified .NET type.
 		/// </summary>
-		public static PackageBuilder Module_Class_BusinessObject(this PackageBuilder builder, Type objectType, Action<ClassBuilder> configure = null)
+		public static PackageBuilder Module_Class_Default(this PackageBuilder builder, Type objectType, Action<ClassBuilder> configure = null)
 		{
 			if (builder == null)
 				throw new ArgumentNullException(nameof(builder));

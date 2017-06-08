@@ -31,7 +31,7 @@ namespace Odachi.CodeModel.Mapping
 			var type = mapper.Get(underlyingType, out var resolvedType, tryRegister: true);
 			if (type == null)
 			{
-				return null;
+				throw new InvalidOperationException($"Cannot resolve reference '{ToString()}'");
 			}
 
 			var resolvedTypeGenericArguments = resolvedType.GetGenericArguments();

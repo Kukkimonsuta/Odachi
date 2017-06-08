@@ -62,12 +62,7 @@ namespace Odachi.CodeModel.Mapping
 
 		public TypeReference Map(ITypeReference reference)
 		{
-			var resolved = reference.Resolve(this);
-
-			if (resolved == null)
-				throw new InvalidOperationException($"Cannot resolve reference '{reference.ToString()}'");
-
-			return resolved;
+			return reference.Resolve(this);
 		}
 
 		private bool TryGet(ref Type type, out TypeDefinition definition)
