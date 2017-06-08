@@ -8,7 +8,7 @@ namespace Odachi.Extensions.Formatting
 		/// <summary>
 		/// Returns `start` (inclusive) and `end` (exclusive) indexes of all words in given string. A 'word' is considered to be any sequence of letters or digits.
 		/// </summary>
-		public static IEnumerable<(int start, int end)> GetWordBoundaries(this string source)
+		public static IEnumerable<(int start, int end)> GetWordBoundaries(this string source, bool splitOnUpperLetter = false)
 		{
 			if (source == null)
 				throw new ArgumentNullException(nameof(source));
@@ -26,6 +26,14 @@ namespace Odachi.Extensions.Formatting
 					{
 						yield return (startIndex, i);
 						startIndex = -1;
+					}
+					else if (splitOnUpperLetter)
+					{
+						if (char.IsUpper(source, i) && (i == 0 || !char.IsUpper(source, i - 1)))
+						{
+							yield return (startIndex, i);
+							startIndex = i;
+						}
 					}
 				}
 				else
@@ -46,12 +54,12 @@ namespace Odachi.Extensions.Formatting
 		/// <summary>
 		/// Returns all words in given string. A 'word' is considered to be any sequence of letters or digits.
 		/// </summary>
-		public static IEnumerable<string> GetWords(this string source)
+		public static IEnumerable<string> GetWords(this string source, bool splitOnUpperLetter = false)
 		{
 			if (source == null)
 				throw new ArgumentNullException(nameof(source));
 
-			foreach (var (start, end) in GetWordBoundaries(source))
+			foreach (var (start, end) in GetWordBoundaries(source, splitOnUpperLetter: splitOnUpperLetter))
 			{
 				yield return source.Substring(start, end - start);
 			}

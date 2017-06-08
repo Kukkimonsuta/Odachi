@@ -16,6 +16,22 @@ namespace Odachi.Extensions.Formatting.Tests
 		}
 
 		[Theory]
+		[InlineData("en-US", new[] { "en", "US" })]
+		[InlineData("enUS", new[] { "en", "US" })]
+		[InlineData("c:\\windows\\system32", new[] { "c", "windows", "system32" })]
+		[InlineData("fooBarOne", new[] { "foo", "Bar", "One" })]
+		[InlineData("fooBAR", new[] { "foo", "BAR" })]
+		[InlineData("System32Test", new[] { "System32", "Test" })]
+		[InlineData("System32TEST", new[] { "System32", "TEST" })]
+		[InlineData("System32test", new[] { "System32test" })]
+		public void Splits_words_using_upper_split(string input, string[] expected)
+		{
+			var actual = input.GetWords(splitOnUpperLetter: true);
+
+			Assert.Equal(expected, actual);
+		}
+
+		[Theory]
 		[InlineData("en-US", "En-US")]
 		[InlineData("enUS", "EnUS")]
 		[InlineData("c:\\windows\\system32", "C:\\Windows\\System32")]
