@@ -308,7 +308,7 @@ namespace Odachi.CodeModel.Builders
 
 			return builder.Module_Class(objectType, classBuilder =>
 			{
-				classBuilder.Hint("logical-kind", "business-object");
+				classBuilder.Hint("logical-kind", "class");
 
 				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance);
 				foreach (var member in members)
