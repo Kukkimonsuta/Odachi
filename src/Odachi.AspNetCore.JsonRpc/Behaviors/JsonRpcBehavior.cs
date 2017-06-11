@@ -15,12 +15,17 @@ namespace Odachi.AspNetCore.JsonRpc.Behaviors
 
 		public virtual Task BeforeInvoke(JsonRpcContext context)
 		{
-			return Task.WhenAll();
+			return Task.CompletedTask;
+		}
+
+		public virtual Task OnError(JsonRpcContext context, Exception exception)
+		{
+			return Task.CompletedTask;
 		}
 
 		public virtual Task AfterInvoke(JsonRpcContext context)
 		{
-			return Task.WhenAll();
+			return Task.CompletedTask;
 		}
 	}
 }

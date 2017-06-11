@@ -25,6 +25,8 @@ namespace Odachi.AspNetCore.JsonRpc
 			JsonSerializerSettings.Converters.Add(new PageConverter());
 			JsonSerializerSettings.Converters.Add(new EntityReferenceConverter());
 
+			Behaviors.Add(new SecurityErrorBehavior());
+
 			Methods.AddReflected<ServerModule>();
 		}
 

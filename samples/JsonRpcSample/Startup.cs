@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,16 +32,33 @@ namespace JsonRpcSample
 		}
 	}
 
+	public class ErrorModule
+	{
+		[RpcMethod]
+		public int UnauthorizedMethod()
+		{
+			throw new SecurityException("Unauthorized method");
+		}
+
+		[RpcMethod]
+		public void UnauthorizedNotification()
+		{
+			throw new SecurityException("Unauthorized notification");
+		}
+	}
+
 	public class Startup
 	{
 		// This method gets called by the runtime. Use this method to add services to the container.
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddScoped<ErrorModule>();
 			services.AddScoped<StorageModule>();
 
 			services.AddJsonRpc(options =>
 			{
+				options.Methods.AddReflected<ErrorModule>();
 				options.Methods.AddReflected<StorageModule>();
 			});
 		}

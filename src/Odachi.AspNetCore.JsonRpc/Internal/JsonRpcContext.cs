@@ -29,22 +29,39 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 		public JsonRpcRequest Request { get; }
 		public JsonRpcResponse Response { get; protected set; }
 
-		public void SetResponse(object result)
+		public bool WasHandled { get; protected set; }
+
+		public void SetResponse(object result, bool handled = true)
 		{
+			if (handled)
+			{
+				WasHandled = true;
+			}
+
 			if (Request.IsNotification)
 				return;
 
 			Response = new JsonRpcResponse(Request.Id, result);
 		}
-		public void SetResponse(int errorCode, object data = null)
+		public void SetResponse(int errorCode, object data = null, bool handled = true)
 		{
+			if (handled)
+			{
+				WasHandled = true;
+			}
+
 			if (Request.IsNotification)
 				return;
 
 			Response = new JsonRpcResponse(Request.Id, errorCode, errorData: data);
 		}
-		public void SetResponse(int errorCode, string errorMessage, object data = null)
+		public void SetResponse(int errorCode, string errorMessage, object data = null, bool handled = true)
 		{
+			if (handled)
+			{
+				WasHandled = true;
+			}
+
 			if (Request.IsNotification)
 				return;
 

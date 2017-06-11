@@ -18,6 +18,8 @@ using Microsoft.Extensions.Logging;
 using Odachi.AspNetCore.JsonRpc.Modules;
 using System.Threading;
 using Odachi.AspNetCore.JsonRpc.Converters;
+using System.Security;
+using System.Reflection;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
@@ -130,7 +132,7 @@ namespace Odachi.AspNetCore.JsonRpc
 
 				if (!httpContext.Response.HasStarted && !httpContext.RequestAborted.IsCancellationRequested)
 				{
-					await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.INTERNAL_ERROR, errorData: ex.ToString()));
+					await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.INTERNAL_ERROR, errorData: ex.Unwrap().ToDiagnosticString()));
 				}
 			}
 		}

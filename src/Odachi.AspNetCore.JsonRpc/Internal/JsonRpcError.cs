@@ -36,6 +36,16 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 		/// </summary>
 		public const int NOTIFICATION_EXPECTED = -32000;
 
+		/// <summary>
+		/// Client is not authorized to call given method (authenticate and try again).
+		/// </summary>
+		public const int UNAUTHORIZED = -32001;
+
+		/// <summary>
+		/// Client is not allowd to call given method (display error).
+		/// </summary>
+		public const int FORBIDDEN = -32002;
+
 		public static string GetMessage(int code)
 		{
 			switch (code)
@@ -57,6 +67,12 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 				case NOTIFICATION_EXPECTED:
 					return "Notification expected";
+
+				case UNAUTHORIZED:
+					return "Unauthorized";
+
+				case FORBIDDEN:
+					return "Forbidden";
 
 				default:
 					throw new InvalidOperationException($"Undefined behavior for code '{code}'");
