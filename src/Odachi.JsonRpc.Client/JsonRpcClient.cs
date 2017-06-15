@@ -13,17 +13,20 @@ using Odachi.JsonRpc.Common.Internal;
 using Odachi.JsonRpc.Common.Converters;
 using Odachi.AspNetCore.JsonRpc.Converters;
 using System.Diagnostics;
+using System.Net.Http.Headers;
+using Microsoft.Extensions.Logging;
 
 namespace Odachi.JsonRpc.Client
 {
 	public class JsonRpcClient : IDisposable
 	{
-		public JsonRpcClient(string endpoint)
+		public JsonRpcClient(string endpoint, ILogger<JsonRpcClient> logger = null)
 		{
 			if (endpoint == null)
 				throw new ArgumentNullException(nameof(endpoint));
 
 			_endpoint = endpoint;
+			_logger = logger;
 
 			_client = new HttpClient();
 			_serializerSettings = new JsonSerializerSettings()
@@ -46,8 +49,15 @@ namespace Odachi.JsonRpc.Client
 		private HttpClient _client;
 		private JsonSerializerSettings _serializerSettings;
 		private JsonSerializer _serializer;
+		private ILogger _logger;
 
 		public bool UseJsonRpcConstant { get; set; } = false;
+
+		public AuthenticationHeaderValue Authorization
+		{
+			get => _client.DefaultRequestHeaders.Authorization;
+			set => _client.DefaultRequestHeaders.Authorization = value;
+		}
 
 		private MultipartFormDataContent CreateRequestContent(string method, object @params)
 		{
@@ -75,18 +85,20 @@ namespace Odachi.JsonRpc.Client
 				}
 
 				// add to content
+				using (var stringWriter = new StringWriter())
 				{
-					using (var stringWriter = new StringWriter())
+					using (var jsonWriter = new JsonTextWriter(stringWriter))
 					{
-						using (var jsonWriter = new JsonTextWriter(stringWriter))
-						{
-							jObject.WriteTo(jsonWriter);
-						}
-
-						stringWriter.Flush();
-
-						content.Add(new StringContent(stringWriter.GetStringBuilder().ToString()), "json-request");
+						jObject.WriteTo(jsonWriter);
 					}
+
+					stringWriter.Flush();
+
+					var requestString = stringWriter.GetStringBuilder().ToString();
+
+					_logger?.LogDebug($"Sending request: {requestString}");
+
+					content.Add(new StringContent(requestString), "json-request");
 				}
 
 				return content;
@@ -104,6 +116,8 @@ namespace Odachi.JsonRpc.Client
 			{
 				case StreamContent streamContent:
 					var responseString = await streamContent.ReadAsStringAsync();
+
+					_logger?.LogDebug($"Received response: {responseString}");
 
 					return CreateJsonRpcResponse(responseString);
 
