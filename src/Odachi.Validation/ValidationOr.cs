@@ -1,8 +1,11 @@
-﻿namespace Odachi.Validation
+﻿using System.Runtime.Serialization;
+
+namespace Odachi.Validation
 {
 	/// <summary>
 	/// Either value or validation state.
 	/// </summary>
+	[DataContract]
 	public struct ValidationOr<TValue>
 	{
 		public ValidationOr(TValue value)
@@ -16,8 +19,10 @@
 			Value = default(TValue);
 		}
 
+		[DataMember]
 		public ValidationState Validation { get; private set; }
 
+		[DataMember]
 		public TValue Value { get; private set; }
 
 		#region Static members
