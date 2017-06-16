@@ -3,15 +3,27 @@ using System.Collections.Generic;
 
 namespace Odachi.Extensions.Formatting
 {
+	[Flags]
+	public enum WordSplitOptions
+	{
+		None = 0,
+		/// <summary>
+		/// Consider upper letters to be word boundary.
+		/// </summary>
+		SplitOnUpperLetter = 1,
+	}
+
 	public static class StringExtensions
 	{
 		/// <summary>
 		/// Returns `start` (inclusive) and `end` (exclusive) indexes of all words in given string. A 'word' is considered to be any sequence of letters or digits.
 		/// </summary>
-		public static IEnumerable<(int start, int end)> GetWordBoundaries(this string source, bool splitOnUpperLetter = false)
+		public static IEnumerable<(int start, int end)> GetWordBoundaries(this string source, WordSplitOptions options = WordSplitOptions.None)
 		{
 			if (source == null)
 				throw new ArgumentNullException(nameof(source));
+
+			var splitOnUpperLetter = options.HasFlag(WordSplitOptions.SplitOnUpperLetter);
 
 			// todo: I'm pretty confident that this can fail due to some unicode shenanigans
 
@@ -54,12 +66,12 @@ namespace Odachi.Extensions.Formatting
 		/// <summary>
 		/// Returns all words in given string. A 'word' is considered to be any sequence of letters or digits.
 		/// </summary>
-		public static IEnumerable<string> GetWords(this string source, bool splitOnUpperLetter = false)
+		public static IEnumerable<string> GetWords(this string source, WordSplitOptions options = WordSplitOptions.None)
 		{
 			if (source == null)
 				throw new ArgumentNullException(nameof(source));
 
-			foreach (var (start, end) in GetWordBoundaries(source, splitOnUpperLetter: splitOnUpperLetter))
+			foreach (var (start, end) in GetWordBoundaries(source, options: options))
 			{
 				yield return source.Substring(start, end - start);
 			}

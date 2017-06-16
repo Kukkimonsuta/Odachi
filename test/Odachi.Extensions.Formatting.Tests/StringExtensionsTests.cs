@@ -26,7 +26,7 @@ namespace Odachi.Extensions.Formatting.Tests
 		[InlineData("System32test", new[] { "System32test" })]
 		public void Splits_words_using_upper_split(string input, string[] expected)
 		{
-			var actual = input.GetWords(splitOnUpperLetter: true);
+			var actual = input.GetWords(options: WordSplitOptions.SplitOnUpperLetter);
 
 			Assert.Equal(expected, actual);
 		}
