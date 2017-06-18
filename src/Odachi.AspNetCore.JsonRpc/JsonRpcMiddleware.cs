@@ -20,6 +20,7 @@ using System.Threading;
 using Odachi.AspNetCore.JsonRpc.Converters;
 using System.Security;
 using System.Reflection;
+using Odachi.JsonRpc.Common;
 
 namespace Odachi.AspNetCore.JsonRpc
 {

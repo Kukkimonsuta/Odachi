@@ -42,6 +42,7 @@ _build "./src/Odachi.Extensions.Primitives" netstandard13
 _build "./src/Odachi.Extensions.Reflection" netstandard13
 _build "./src/Odachi.Gettext" netstandard13
 _build "./src/Odachi.JsonRpc.Client" netstandard11
+_build "./src/Odachi.JsonRpc.Client.Http" netstandard11
 _build "./src/Odachi.JsonRpc.Common" netstandard11
 _build "./src/Odachi.Localization" netstandard13
 _build "./src/Odachi.Localization.Extraction" netstandard15

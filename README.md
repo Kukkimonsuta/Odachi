@@ -96,7 +96,12 @@ Reflection extensions. Includes awaitable detection and execution helpers.<br />
 
 ## Odachi.JsonRpc.Client
 
-JsonRpc client.
+JsonRpc client base.
+🚧 In development. Happy with the current state. May change outside of semver.
+
+## Odachi.JsonRpc.Client.Http
+
+JsonRpc client using `HttpClient` as backend.
 🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.JsonRpc.Common

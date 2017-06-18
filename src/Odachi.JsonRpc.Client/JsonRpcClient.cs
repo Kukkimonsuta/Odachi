@@ -13,121 +13,82 @@ using Odachi.JsonRpc.Common.Internal;
 using Odachi.JsonRpc.Common.Converters;
 using Odachi.AspNetCore.JsonRpc.Converters;
 using System.Diagnostics;
-using System.Net.Http.Headers;
 using Microsoft.Extensions.Logging;
+using Odachi.Abstractions;
 
 namespace Odachi.JsonRpc.Client
 {
-	public class JsonRpcClient : IDisposable
+	public interface IRequestFilter
 	{
-		public JsonRpcClient(string endpoint, ILogger<JsonRpcClient> logger = null)
+		Task<JsonRpcRequest> Process(JsonRpcClient client, JsonRpcRequest request);
+	}
+
+	public interface IResponseFilter
+	{
+		Task<JsonRpcResponse> Process(JsonRpcClient client, JsonRpcRequest request, JsonRpcResponse response);
+	}
+
+	public abstract class JsonRpcClient : IRpcClient, IDisposable
+	{
+		public JsonRpcClient(ILogger logger = null)
 		{
-			if (endpoint == null)
-				throw new ArgumentNullException(nameof(endpoint));
-
-			_endpoint = endpoint;
-			_logger = logger;
-
-			_client = new HttpClient();
-			_serializerSettings = new JsonSerializerSettings()
+			Serializer = JsonSerializer.Create();
+			Serializer.NullValueHandling = NullValueHandling.Ignore;
+			Serializer.TypeNameHandling = TypeNameHandling.None;
+			Serializer.ContractResolver = new DefaultContractResolver()
 			{
-				ContractResolver = new DefaultContractResolver
-				{
-					NamingStrategy = new MultiWordCamelCaseNamingStrategy(true, false)
-				},
-				NullValueHandling = NullValueHandling.Ignore,
-				TypeNameHandling = TypeNameHandling.None,
+				NamingStrategy = new MultiWordCamelCaseNamingStrategy(true, false)
 			};
-			_serializerSettings.Converters.Add(new PageConverter());
-			_serializerSettings.Converters.Add(new EntityReferenceConverter());
-			_serializerSettings.Converters.Add(new StreamReferenceConverter());
-			_serializer = JsonSerializer.Create(_serializerSettings);
+			Serializer.Converters.Add(new PageConverter());
+			Serializer.Converters.Add(new EntityReferenceConverter());
+			Serializer.Converters.Add(new StreamReferenceConverter());
+
+			RequestFilters = new List<IRequestFilter>();
+			ResponseFilters = new List<IResponseFilter>();
 		}
 
-		private int _id;
-		private string _endpoint;
-		private HttpClient _client;
-		private JsonSerializerSettings _serializerSettings;
-		private JsonSerializer _serializer;
-		private ILogger _logger;
+		public JsonSerializer Serializer { get; }
+
+		public IList<IRequestFilter> RequestFilters { get; }
+		public IList<IResponseFilter> ResponseFilters { get; }
 
 		public bool UseJsonRpcConstant { get; set; } = false;
 
-		public AuthenticationHeaderValue Authorization
+		protected string SerializeRequest(JsonRpcRequest request, Action<string, IStreamReference> streamReferenceHandler)
 		{
-			get => _client.DefaultRequestHeaders.Authorization;
-			set => _client.DefaultRequestHeaders.Authorization = value;
-		}
+			if (request == null)
+				throw new ArgumentNullException(nameof(request));
+			if (streamReferenceHandler == null)
+				throw new ArgumentNullException(nameof(streamReferenceHandler));
 
-		private MultipartFormDataContent CreateRequestContent(string method, object @params)
-		{
-			var id = Interlocked.Increment(ref _id);
-
-			var request = new JsonRpcRequest(id, method, @params);
-
-			return CreateRequestContent(request);
-		}
-		private MultipartFormDataContent CreateRequestContent(JsonRpcRequest request)
-		{
-			var content = new MultipartFormDataContent();
-			try
+			JObject jObject;
+			using (new StreamReferenceHandler(streamReferenceHandler))
 			{
-				JObject jObject;
-				using (new StreamReferenceHandler((path, reference) => content.Add(new StreamContent(reference.OpenReadStream()), path, reference.Name)))
-				{
-					jObject = JObject.FromObject(request, _serializer);
-				}
-
-				// append jsonrpc constant if enabled
-				if (UseJsonRpcConstant)
-				{
-					jObject.AddFirst(new JProperty("jsonrpc", "2.0"));
-				}
-
-				// add to content
-				using (var stringWriter = new StringWriter())
-				{
-					using (var jsonWriter = new JsonTextWriter(stringWriter))
-					{
-						jObject.WriteTo(jsonWriter);
-					}
-
-					stringWriter.Flush();
-
-					var requestString = stringWriter.GetStringBuilder().ToString();
-
-					_logger?.LogDebug($"Sending request: {requestString}");
-
-					content.Add(new StringContent(requestString), "json-request");
-				}
-
-				return content;
+				jObject = JObject.FromObject(request, Serializer);
 			}
-			catch (Exception)
+
+			// append jsonrpc constant if enabled
+			if (UseJsonRpcConstant)
 			{
-				content.Dispose();
-				throw;
+				jObject.AddFirst(new JProperty("jsonrpc", "2.0"));
+			}
+
+			// serialize
+			using (var writer = new StringWriter())
+			{
+				using (var jsonWriter = new JsonTextWriter(writer))
+				{
+					jObject.WriteTo(jsonWriter);
+				}
+				writer.Flush();
+
+				return writer.GetStringBuilder().ToString();
 			}
 		}
 
-		private async Task<JsonRpcResponse> CreateJsonRpcResponseAsync(HttpContent content)
+		protected JsonRpcResponse DeserializeResponse(string response)
 		{
-			switch (content)
-			{
-				case StreamContent streamContent:
-					var responseString = await streamContent.ReadAsStringAsync();
-
-					_logger?.LogDebug($"Received response: {responseString}");
-
-					return CreateJsonRpcResponse(responseString);
-
-				default:
-					throw new InvalidOperationException($"Undefined behavior for content '{content.GetType().FullName}'");
-			}
-		}
-		private JsonRpcResponse CreateJsonRpcResponse(string responseString)
-		{
-			var jObject = JObject.Parse(responseString);
+			var jObject = JObject.Parse(response);
 
 			var hasId = jObject.TryGetValue("id", out var jId);
 			var hasResult = jObject.TryGetValue("result", out var jResult);
@@ -143,22 +104,38 @@ namespace Odachi.JsonRpc.Client
 			return new JsonRpcResponse(jId, jResult, jError);
 		}
 
-		public async Task<JsonRpcResponse> CallAsync(string method, object @params)
+		protected abstract Task<JsonRpcResponse> CallInternalAsync(JsonRpcRequest request);
+
+		public async Task<JsonRpcResponse> CallAsync(JsonRpcRequest request, bool throwOnError = true)
+		{
+			foreach (var filter in RequestFilters)
+			{
+				request = await filter.Process(this, request);
+			}
+
+			var response = await CallInternalAsync(request);
+
+			foreach (var filter in ResponseFilters)
+			{
+				response = await filter.Process(this, request, response);
+			}
+
+			if (throwOnError && response.Error != null)
+			{
+				throw new JsonRpcException($"Rpc call failed: {response.Error}");
+			}
+
+			return response;
+		}
+
+		public Task<JsonRpcResponse> CallAsync(string method, object @params, bool throwOnError = true)
 		{
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
 
-			using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, _endpoint))
-			{
-				httpRequest.Content = CreateRequestContent(method, @params);
+			var request = JsonRpcRequest.Create(method, @params);
 
-				using (var httpResponse = await _client.SendAsync(httpRequest))
-				{
-					httpResponse.EnsureSuccessStatusCode();
-
-					return await CreateJsonRpcResponseAsync(httpResponse.Content);
-				}
-			}
+			return CallAsync(request, throwOnError: throwOnError);
 		}
 
 		public async Task<T> CallAsync<T>(string method, object @params)
@@ -166,13 +143,22 @@ namespace Odachi.JsonRpc.Client
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
 
-			var response = await CallAsync(method, @params);
+			var response = await CallAsync(method, @params, throwOnError: true);
 
-			if (response.Error != null)
-				throw new JsonRpcException($"Rpc call failed: {response.Error}");
-
-			return response.Result.ToObject<T>(_serializer);
+			return response.Result.ToObject<T>(Serializer);
 		}
+
+		#region IRpcClient
+
+		Task<TResult> IRpcClient.CallAsync<TResult, TParams>(string service, string method, TParams @params)
+		{
+			if (method == null)
+				throw new ArgumentNullException(nameof(method));
+
+			return CallAsync<TResult>(service == null ? method : $"{service}.{method}", @params);
+		}
+
+		#endregion
 
 		#region IDisposable
 
@@ -185,11 +171,6 @@ namespace Odachi.JsonRpc.Client
 
 			if (disposing)
 			{
-				if (_client != null)
-				{
-					_client.Dispose();
-					_client = null;
-				}
 			}
 
 			_disposed = true;

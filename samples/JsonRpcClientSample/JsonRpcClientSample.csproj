@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../src/Odachi.JsonRpc.Client/Odachi.JsonRpc.Client.csproj" />
+    <ProjectReference Include="..\..\src\Odachi.JsonRpc.Client.Http\Odachi.JsonRpc.Client.Http.csproj" />
   </ItemGroup>
 
 </Project>

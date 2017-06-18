@@ -3,7 +3,7 @@
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
-		<Description>JsonRpc client.</Description>
+		<Description>JsonRpc client base.</Description>
 		<TargetFrameworks>netstandard1.1</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
@@ -13,7 +13,8 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Odachi.JsonRpc.Common/Odachi.JsonRpc.Common.csproj" />
+    <ProjectReference Include="..\Odachi.JsonRpc.Common\Odachi.JsonRpc.Common.csproj" />
+    <ProjectReference Include="..\Odachi.Abstractions\Odachi.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Odachi.AspNetCore.JsonRpc.Internal
+namespace Odachi.JsonRpc.Common
 {
+	/// <summary>
+	/// Describes error codes used within json rpc protocol.
+	/// </summary>
 	public class JsonRpcError
 	{
 		/// <summary>
@@ -42,10 +45,13 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 		public const int UNAUTHORIZED = -32001;
 
 		/// <summary>
-		/// Client is not allowd to call given method (display error).
+		/// Client is not allowed to call given method (display error).
 		/// </summary>
 		public const int FORBIDDEN = -32002;
 
+		/// <summary>
+		/// Returns message for given error code.
+		/// </summary>
 		public static string GetMessage(int code)
 		{
 			switch (code)

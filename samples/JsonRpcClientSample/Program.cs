@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Odachi.Extensions.Primitives;
 using Odachi.JsonRpc.Client;
+using Odachi.JsonRpc.Client.Http;
 
 namespace JsonRpcClientSample
 {
@@ -16,7 +17,7 @@ namespace JsonRpcClientSample
 		static async Task MainAsync()
 		{
 			Console.WriteLine("Call (raw response):");
-			using (var client = new JsonRpcClient("http://localhost:56956/api"))
+			using (var client = new JsonRpcHttpClient("http://localhost:56956/api"))
 			{
 				var response = await client.CallAsync("Server.listMethods", null);
 				Console.WriteLine($"\t=> id: {response.Id}");
@@ -26,7 +27,7 @@ namespace JsonRpcClientSample
 			Console.WriteLine();
 
 			Console.WriteLine("Call (typed response):");
-			using (var client = new JsonRpcClient("http://localhost:56956/api"))
+			using (var client = new JsonRpcHttpClient("http://localhost:56956/api"))
 			{
 				var response = await client.CallAsync<string[]>("Server.listMethods", null);
 
@@ -35,7 +36,7 @@ namespace JsonRpcClientSample
 			Console.WriteLine();
 
 			Console.WriteLine("Call (typed response, stream request):");
-			using (var client = new JsonRpcClient("http://localhost:56956/api"))
+			using (var client = new JsonRpcHttpClient("http://localhost:56956/api"))
 			{
 				using (var stream = new MemoryStream())
 				{

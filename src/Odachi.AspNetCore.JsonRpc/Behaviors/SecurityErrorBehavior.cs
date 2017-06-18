@@ -6,6 +6,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Odachi.AspNetCore.JsonRpc.Internal;
+using Odachi.JsonRpc.Common;
 
 namespace Odachi.AspNetCore.JsonRpc.Behaviors
 {

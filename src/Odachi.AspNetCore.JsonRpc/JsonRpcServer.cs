@@ -7,6 +7,7 @@ using Odachi.AspNetCore.JsonRpc.Internal;
 using Odachi.AspNetCore.JsonRpc.Behaviors;
 using Microsoft.Extensions.Logging;
 using Odachi.AspNetCore.JsonRpc.Model;
+using Odachi.JsonRpc.Common;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
