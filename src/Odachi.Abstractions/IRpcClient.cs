@@ -8,7 +8,7 @@ namespace Odachi.Abstractions
 {
     public interface IRpcClient
     {
-		Task CallAsync<TParams>(string service, string method, TParams @params);
-		Task<TResult> CallAsync<TResult, TParams>(string service, string method, TParams @params);
+		Task CallAsync(string service, string method, object @params);
+		Task<TResult> CallAsync<TResult>(string service, string method, object @params);
 	}
 }
