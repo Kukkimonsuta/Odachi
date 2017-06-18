@@ -8,7 +8,9 @@ namespace Odachi.CodeModel.Providers.JsonRpc.Description
 	{
 		protected virtual void DescribeJsonRpcMethod(MethodBuilder builder, JsonRpcMethod jsonRpcMethod)
 		{
-			builder.Hint("jsonrpc-method-name", jsonRpcMethod.Name);
+			builder.Hint("jsonrpc-name", jsonRpcMethod.Name);
+			builder.Hint("jsonrpc-module-name", jsonRpcMethod.ModuleName);
+			builder.Hint("jsonrpc-method-name", jsonRpcMethod.MethodName);
 		}
 
 		public void Describe(MethodBuilder builder)

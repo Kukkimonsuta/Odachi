@@ -150,6 +150,14 @@ namespace Odachi.JsonRpc.Client
 
 		#region IRpcClient
 
+		Task IRpcClient.CallAsync<TParams>(string service, string method, TParams @params)
+		{
+			if (method == null)
+				throw new ArgumentNullException(nameof(method));
+
+			return CallAsync(service == null ? method : $"{service}.{method}", @params);
+		}
+
 		Task<TResult> IRpcClient.CallAsync<TResult, TParams>(string service, string method, TParams @params)
 		{
 			if (method == null)
