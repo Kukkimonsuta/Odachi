@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Odachi.Abstractions;
 using Odachi.AspNetCore.JsonRpc.Model;
 using Odachi.Extensions.Reflection;
+using Odachi.JsonRpc.Common.Converters;
 
 namespace Odachi.AspNetCore.JsonRpc.Internal
 {
@@ -66,34 +69,56 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 			var internalParams = 0;
 			var parameters = new object[Parameters.Count];
-			for (var i = 0; i < Parameters.Count; i++)
+			if (parameters.Length > 0)
 			{
-				var parameter = Parameters[i];
-				var parameterType = parameter.Type;
+				// todo: this should be extracted somewhere else..
+				var httpContext = context.AppServices.GetRequiredService<IHttpContextAccessor>().HttpContext;
 
-				object value = null;
-
-				if (parameter.IsInternal)
+				IStreamReference HandleReference(string path, string name)
 				{
-					value = context.RpcServices.GetService(parameterType.NetType);
+					var form = httpContext.Request?.Form;
+					if (form == null)
+						return null;
 
-					internalParams++;
-				}
-				else
-				{
-					if (request.IsIndexed)
-						value = request.GetParameter(i - internalParams, parameterType, Type.Missing);
-					else
-						value = request.GetParameter(parameter.Name, parameter.Type, Type.Missing);
+					var file = form.Files[name];
+					if (file == null)
+						return null;
+
+					return new FormFileStreamReference(file);
 				}
 
-				// if parameter couldn't be resolved, use default value (the called method is responsible for validating parameters)
-				if (value == Type.Missing && !parameter.IsOptional)
+				using (new StreamReferenceReadHandler(HandleReference))
 				{
-					value = parameter.DefaultValue;
-				}
+					for (var i = 0; i < Parameters.Count; i++)
+					{
+						var parameter = Parameters[i];
+						var parameterType = parameter.Type;
 
-				parameters[i] = value;
+						object value = null;
+
+						if (parameter.IsInternal)
+						{
+							value = context.RpcServices.GetService(parameterType.NetType);
+
+							internalParams++;
+						}
+						else
+						{
+							if (request.IsIndexed)
+								value = request.GetParameter(i - internalParams, parameterType, Type.Missing);
+							else
+								value = request.GetParameter(parameter.Name, parameter.Type, Type.Missing);
+						}
+
+						// if parameter couldn't be resolved, use default value (the called method is responsible for validating parameters)
+						if (value == Type.Missing && !parameter.IsOptional)
+						{
+							value = parameter.DefaultValue;
+						}
+
+						parameters[i] = value;
+					}
+				}
 			}
 
 			// invoke the method

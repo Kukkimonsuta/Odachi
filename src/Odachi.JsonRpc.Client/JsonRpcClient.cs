@@ -11,7 +11,6 @@ using System.IO;
 using Newtonsoft.Json.Serialization;
 using Odachi.JsonRpc.Common.Internal;
 using Odachi.JsonRpc.Common.Converters;
-using Odachi.AspNetCore.JsonRpc.Converters;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Odachi.Abstractions;
@@ -62,7 +61,7 @@ namespace Odachi.JsonRpc.Client
 				throw new ArgumentNullException(nameof(streamReferenceHandler));
 
 			JObject jObject;
-			using (new StreamReferenceHandler(streamReferenceHandler))
+			using (new StreamReferenceWriteHandler(streamReferenceHandler))
 			{
 				jObject = JObject.FromObject(request, Serializer);
 			}

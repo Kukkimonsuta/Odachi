@@ -5,7 +5,6 @@ using System.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Odachi.Abstractions;
-using Odachi.AspNetCore.JsonRpc.Converters;
 
 namespace Odachi.JsonRpc.Client
 {

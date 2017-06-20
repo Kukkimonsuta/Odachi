@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Odachi.AspNetCore.JsonRpc.Behaviors;
-using Odachi.AspNetCore.JsonRpc.Converters;
 using Odachi.AspNetCore.JsonRpc.Model;
 using Odachi.AspNetCore.JsonRpc.Modules;
 using Odachi.JsonRpc.Common.Converters;
@@ -24,6 +23,7 @@ namespace Odachi.AspNetCore.JsonRpc
 			};
 			JsonSerializerSettings.Converters.Add(new PageConverter());
 			JsonSerializerSettings.Converters.Add(new EntityReferenceConverter());
+			JsonSerializerSettings.Converters.Add(new StreamReferenceConverter());
 
 			Behaviors.Add(new SecurityErrorBehavior());
 

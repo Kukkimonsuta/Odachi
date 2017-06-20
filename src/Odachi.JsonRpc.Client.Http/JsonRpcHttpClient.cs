@@ -65,10 +65,13 @@ namespace Odachi.JsonRpc.Client.Http
 
 		private async Task<JsonRpcResponse> CreateJsonRpcResponseAsync(HttpContent content)
 		{
-			switch (content)
+			switch (content.Headers.ContentType.MediaType)
 			{
-				case StreamContent streamContent:
-					var responseString = await streamContent.ReadAsStringAsync();
+				case "multipart/form-data":
+					throw new NotSupportedException();
+
+				default:
+					var responseString = await content.ReadAsStringAsync();
 
 					if (_logger != null && _logger.IsEnabled(LogLevel.Debug))
 					{
@@ -76,9 +79,6 @@ namespace Odachi.JsonRpc.Client.Http
 					}
 
 					return DeserializeResponse(responseString);
-
-				default:
-					throw new InvalidOperationException($"Undefined behavior for content '{content.GetType().FullName}'");
 			}
 		}
 

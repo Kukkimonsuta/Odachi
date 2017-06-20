@@ -17,30 +17,29 @@ using Odachi.AspNetCore.JsonRpc.Internal;
 using Microsoft.Extensions.Logging;
 using Odachi.AspNetCore.JsonRpc.Modules;
 using System.Threading;
-using Odachi.AspNetCore.JsonRpc.Converters;
 using System.Security;
 using System.Reflection;
 using Odachi.JsonRpc.Common;
+using Odachi.JsonRpc.Common.Converters;
+using Odachi.Abstractions;
+using System.Net.Http;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
 	public class JsonRpcMiddleware
 	{
-		public JsonRpcMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, IHttpContextAccessor httpContextAccessor, IOptions<JsonRpcOptions> options)
+		public JsonRpcMiddleware(RequestDelegate next, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IOptions<JsonRpcOptions> options)
 		{
 			_logger = loggerFactory.CreateLogger<JsonRpcMiddleware>();
 			_next = next;
 			_options = options.Value;
 			_server = new JsonRpcServer(loggerFactory, _options.Methods, _options.Behaviors);
-			_httpContextAccessor = httpContextAccessor;
 
-			var serializer = JsonSerializer.Create(_options.JsonSerializerSettings);
-			serializer.Converters.Add(new StreamReferenceConverter(_httpContextAccessor));
-			_serializer = serializer;
+			_serializer = JsonSerializer.Create(_options.JsonSerializerSettings);
 
 			var container = new ServiceCollection();
 			container.AddSingleton(_server);
-			container.AddSingleton(serializer);
+			container.AddSingleton(_serializer);
 			foreach (var behavior in _options.Behaviors)
 				behavior.ConfigureRpcServices(container);
 			_rpcServices = container.BuildServiceProvider();
@@ -56,31 +55,29 @@ namespace Odachi.AspNetCore.JsonRpc
 		private readonly RequestDelegate _next;
 		private readonly JsonRpcOptions _options;
 		private readonly JsonRpcServer _server;
-		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly IServiceProvider _rpcServices;
 		private readonly JsonSerializer _serializer;
 
 		private async Task SendResponse(HttpContext httpContext, JsonRpcResponse response)
 		{
+			var jObject = JObject.FromObject(response, _serializer);
+
+			// append jsonrpc constant if enabled
+			if (_options.UseJsonRpcConstant)
+			{
+				jObject.AddFirst(new JProperty("jsonrpc", "2.0"));
+			}
+
+			// ensure that respose has either result or error property
+			if (jObject.Property("result") == null && jObject.Property("error") == null)
+			{
+				jObject.Add("result", null);
+			}
+
 			httpContext.Response.StatusCode = 200;
 			httpContext.Response.ContentType = "application/json";
-
 			using (var writer = new StreamWriter(httpContext.Response.Body))
 			{
-				var jObject = JObject.FromObject(response, _serializer);
-
-				// append jsonrpc constant if enabled
-				if (_options.UseJsonRpcConstant)
-				{
-					jObject.AddFirst(new JProperty("jsonrpc", "2.0"));
-				}
-
-				// ensure that respose has either result or error property
-				if (jObject.Property("result") == null && jObject.Property("error") == null)
-				{
-					jObject.Add("result", null);
-				}
-
 				// write to output
 				using (var jsonWriter = new JsonTextWriter(writer))
 				{
