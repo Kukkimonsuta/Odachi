@@ -78,8 +78,10 @@ namespace Odachi.JsonRpc.Client
 				using (var jsonWriter = new JsonTextWriter(writer))
 				{
 					jObject.WriteTo(jsonWriter);
+
+					jsonWriter.Flush();
+					writer.Flush();
 				}
-				writer.Flush();
 
 				return writer.GetStringBuilder().ToString();
 			}

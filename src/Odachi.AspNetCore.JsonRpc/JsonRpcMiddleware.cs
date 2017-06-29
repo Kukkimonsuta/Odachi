@@ -77,13 +77,11 @@ namespace Odachi.AspNetCore.JsonRpc
 			httpContext.Response.StatusCode = 200;
 			httpContext.Response.ContentType = "application/json";
 			using (var writer = new StreamWriter(httpContext.Response.Body))
+			using (var jsonWriter = new JsonTextWriter(writer))
 			{
-				// write to output
-				using (var jsonWriter = new JsonTextWriter(writer))
-				{
-					jObject.WriteTo(jsonWriter);
-				}
+				await jObject.WriteToAsync(jsonWriter);
 
+				await jsonWriter.FlushAsync();
 				await writer.FlushAsync();
 			}
 		}
