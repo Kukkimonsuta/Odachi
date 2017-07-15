@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26711.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{41DA389D-8FD3-4CC0-B012-5825FE714E87}"
 EndProject
@@ -103,11 +103,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.CodeModel.Providers.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.JsonRpc.Client", "src\Odachi.JsonRpc.Client\Odachi.JsonRpc.Client.csproj", "{DCC165BF-9AE0-479A-9667-E13C08FBB073}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonRpcClientSample", "samples\JsonRpcClientSample\JsonRpcClientSample.csproj", "{6C7EA892-AA5A-4A09-8EF8-3B0280C54943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonRpcClientSample", "samples\JsonRpcClientSample\JsonRpcClientSample.csproj", "{6C7EA892-AA5A-4A09-8EF8-3B0280C54943}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.JsonRpc.Common", "src\Odachi.JsonRpc.Common\Odachi.JsonRpc.Common.csproj", "{2E851E13-F33F-4309-B98A-C088CDD9786A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.JsonRpc.Client.Http", "src\Odachi.JsonRpc.Client.Http\Odachi.JsonRpc.Client.Http.csproj", "{D9ECBE13-4B00-409E-B60B-B2EE2E3B304E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Extensions.Primitives.Tests", "test\Odachi.Extensions.Primitives.Tests\Odachi.Extensions.Primitives.Tests.csproj", "{B258C15B-7976-410D-A887-6DE6A23703CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -623,6 +625,18 @@ Global
 		{D9ECBE13-4B00-409E-B60B-B2EE2E3B304E}.Release|x64.Build.0 = Release|Any CPU
 		{D9ECBE13-4B00-409E-B60B-B2EE2E3B304E}.Release|x86.ActiveCfg = Release|Any CPU
 		{D9ECBE13-4B00-409E-B60B-B2EE2E3B304E}.Release|x86.Build.0 = Release|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Debug|x64.Build.0 = Debug|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Debug|x86.Build.0 = Debug|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Release|x64.ActiveCfg = Release|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Release|x64.Build.0 = Release|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Release|x86.ActiveCfg = Release|Any CPU
+		{B258C15B-7976-410D-A887-6DE6A23703CD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -670,5 +684,9 @@ Global
 		{6C7EA892-AA5A-4A09-8EF8-3B0280C54943} = {066ADA6B-80D9-4679-BF94-2743B59B5C29}
 		{2E851E13-F33F-4309-B98A-C088CDD9786A} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{D9ECBE13-4B00-409E-B60B-B2EE2E3B304E} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
+		{B258C15B-7976-410D-A887-6DE6A23703CD} = {6914849E-07C0-4D13-8259-A141523454DA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2776D3BA-E65C-40FB-A3E4-A454391888CA}
 	EndGlobalSection
 EndGlobal

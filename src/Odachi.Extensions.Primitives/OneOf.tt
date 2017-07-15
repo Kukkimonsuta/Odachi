@@ -1,0 +1,94 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Odachi.Extensions.Primitives
+{
+<#
+	var minTypeCount = 2;
+	var maxTypeCount = 9;
+
+	for (var i = minTypeCount - 1; i < maxTypeCount; i++) {
+		var typeNames = Enumerable.Range(1, i + 1).Select(n => "T" + n).ToArray();
+
+#>
+	public struct OneOf<<#= string.Join(", ", typeNames) #>>
+	{
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+		public OneOf(<#= typeNames[ti] #> value)
+		{
+			Index = <#= ti + 1 #>;
+<#
+		for (var oi = 0; oi < typeNames.Length; oi++) {
+#>
+			Option<#= oi + 1 #> = <# if (oi == ti) { #>value<# } else { #>default(T<#= oi + 1 #>)<# } #>;
+<#
+	}
+#>
+		}
+<#
+	}
+#>
+
+		public readonly int Index;
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+		public readonly <#= typeNames[ti] #> Option<#= ti + 1 #>;
+<#
+		}
+#>
+
+		public bool IsEmpty => Index == 0;
+
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+		public bool Is<#= ti + 1 #> => Index == <#= ti + 1 #>;
+		public <#= typeNames[ti] #> As<#= ti + 1 #> => Index == <#= ti + 1 #> ? Option<#= ti + 1 #> : throw new InvalidOperationException("OneOf<<#= string.Join(", ", typeNames) #>> doesn't contain T<#= ti + 1 #>");<#= ti != i ? Environment.NewLine : "" #>
+<#
+		}
+#>
+
+		public TResult Match<TResult>(<#= string.Join(", ", typeNames.Select((tn, tni) => "Func<" + tn + ", TResult> when" + (tni + 1))) #>, Func<TResult> whenEmpty = null)
+		{
+			switch (Index)
+			{
+				case 0:
+					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException($"OneOf<<#= string.Join(", ", typeNames) #>> is empty");
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+				case <#= ti + 1 #>:
+					return when<#= ti + 1 #>(Option<#= ti + 1 #>);
+<#
+		}
+#>
+				default:
+					throw new InvalidOperationException($"Undefined behavior for OneOf<<#= string.Join(", ", typeNames) #>> with Index {Index}'");
+			}
+		}
+
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+		public static implicit operator OneOf<<#= string.Join(", ", typeNames) #>>(T<#= ti + 1 #> value)
+		{
+			return new OneOf<<#= string.Join(", ", typeNames) #>>(value);
+		}
+<#
+		}
+#>
+	}<#= i != maxTypeCount - 1 ? Environment.NewLine : "" #>
+<# } #>
+}

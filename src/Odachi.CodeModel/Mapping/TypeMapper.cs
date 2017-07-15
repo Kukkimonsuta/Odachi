@@ -1,10 +1,11 @@
-﻿using Odachi.Abstractions;
+using Odachi.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Odachi.Extensions.Collections;
+using Odachi.Extensions.Primitives;
 
 namespace Odachi.CodeModel.Mapping
 {
@@ -40,6 +41,14 @@ namespace Odachi.CodeModel.Mapping
 			Register(typeof(IStreamReference), BuiltinTypeDefinition.File);
 
 			Register(typeof(IEntityReference), BuiltinTypeDefinition.EntityReference);
+			Register(typeof(OneOf<,>), BuiltinTypeDefinition.OneOf2);
+			Register(typeof(OneOf<,,>), BuiltinTypeDefinition.OneOf3);
+			Register(typeof(OneOf<,,,>), BuiltinTypeDefinition.OneOf4);
+			Register(typeof(OneOf<,,,,>), BuiltinTypeDefinition.OneOf5);
+			Register(typeof(OneOf<,,,,,>), BuiltinTypeDefinition.OneOf6);
+			Register(typeof(OneOf<,,,,,,>), BuiltinTypeDefinition.OneOf7);
+			Register(typeof(OneOf<,,,,,,,>), BuiltinTypeDefinition.OneOf8);
+			Register(typeof(OneOf<,,,,,,,,>), BuiltinTypeDefinition.OneOf9);
 			Register(typeof(PagingOptions), BuiltinTypeDefinition.PagingOptions);
 			Register(typeof(Page<>), BuiltinTypeDefinition.Page);
 		}

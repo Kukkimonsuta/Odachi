@@ -1,4 +1,4 @@
-﻿function Exec
+function Exec
 {
     # source: http://joshua.poehls.me/2012/powershell-script-module-boilerplate/
 
@@ -118,6 +118,7 @@ Write-Host
 Test(".\test\Odachi.AspNetCore.JsonRpc.Tests");
 Test(".\test\Odachi.CodeGen.Tests");
 Test(".\test\Odachi.Extensions.Formatting.Tests");
+Test(".\test\Odachi.Extensions.Primitives.Tests");
 Test(".\test\Odachi.Extensions.Reflection.Tests");
 Test(".\test\Odachi.Gettext.Tests");
 Test(".\test\Odachi.Localization.Extraction.Tests");

@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 function _build {
     pushd $1
@@ -66,6 +66,7 @@ echo
 _test "./test/Odachi.AspNetCore.JsonRpc.Tests" netcoreapp11
 _test "./test/Odachi.CodeGen.Tests" netcoreapp11
 _test "./test/Odachi.Extensions.Formatting.Tests" netcoreapp11
+_test "./test/Odachi.Extensions.Primitives.Tests" netcoreapp11
 _test "./test/Odachi.Extensions.Reflection.Tests" netcoreapp11
 _test "./test/Odachi.Gettext.Tests" netcoreapp11
 _test "./test/Odachi.Localization.Extraction.Tests" netcoreapp11
