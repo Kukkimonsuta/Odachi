@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace Odachi.Extensions.Primitives
 {
+	[DataContract]
 	public struct OneOf<T1, T2>
 	{
 		public OneOf(T1 value)
@@ -21,8 +19,11 @@ namespace Odachi.Extensions.Primitives
 			Option2 = value;
 		}
 
+		[DataMember]
 		public readonly int Index;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T1 Option1;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T2 Option2;
 
 		public bool IsEmpty => Index == 0;
@@ -58,6 +59,7 @@ namespace Odachi.Extensions.Primitives
 		}
 	}
 
+	[DataContract]
 	public struct OneOf<T1, T2, T3>
 	{
 		public OneOf(T1 value)
@@ -82,9 +84,13 @@ namespace Odachi.Extensions.Primitives
 			Option3 = value;
 		}
 
+		[DataMember]
 		public readonly int Index;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T1 Option1;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T2 Option2;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T3 Option3;
 
 		public bool IsEmpty => Index == 0;
@@ -129,6 +135,7 @@ namespace Odachi.Extensions.Primitives
 		}
 	}
 
+	[DataContract]
 	public struct OneOf<T1, T2, T3, T4>
 	{
 		public OneOf(T1 value)
@@ -164,10 +171,15 @@ namespace Odachi.Extensions.Primitives
 			Option4 = value;
 		}
 
+		[DataMember]
 		public readonly int Index;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T1 Option1;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T2 Option2;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T3 Option3;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T4 Option4;
 
 		public bool IsEmpty => Index == 0;
@@ -221,6 +233,7 @@ namespace Odachi.Extensions.Primitives
 		}
 	}
 
+	[DataContract]
 	public struct OneOf<T1, T2, T3, T4, T5>
 	{
 		public OneOf(T1 value)
@@ -269,11 +282,17 @@ namespace Odachi.Extensions.Primitives
 			Option5 = value;
 		}
 
+		[DataMember]
 		public readonly int Index;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T1 Option1;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T2 Option2;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T3 Option3;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T4 Option4;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T5 Option5;
 
 		public bool IsEmpty => Index == 0;
@@ -336,6 +355,7 @@ namespace Odachi.Extensions.Primitives
 		}
 	}
 
+	[DataContract]
 	public struct OneOf<T1, T2, T3, T4, T5, T6>
 	{
 		public OneOf(T1 value)
@@ -399,12 +419,19 @@ namespace Odachi.Extensions.Primitives
 			Option6 = value;
 		}
 
+		[DataMember]
 		public readonly int Index;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T1 Option1;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T2 Option2;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T3 Option3;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T4 Option4;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T5 Option5;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T6 Option6;
 
 		public bool IsEmpty => Index == 0;
@@ -476,6 +503,7 @@ namespace Odachi.Extensions.Primitives
 		}
 	}
 
+	[DataContract]
 	public struct OneOf<T1, T2, T3, T4, T5, T6, T7>
 	{
 		public OneOf(T1 value)
@@ -556,13 +584,21 @@ namespace Odachi.Extensions.Primitives
 			Option7 = value;
 		}
 
+		[DataMember]
 		public readonly int Index;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T1 Option1;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T2 Option2;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T3 Option3;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T4 Option4;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T5 Option5;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T6 Option6;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T7 Option7;
 
 		public bool IsEmpty => Index == 0;
@@ -643,6 +679,7 @@ namespace Odachi.Extensions.Primitives
 		}
 	}
 
+	[DataContract]
 	public struct OneOf<T1, T2, T3, T4, T5, T6, T7, T8>
 	{
 		public OneOf(T1 value)
@@ -742,14 +779,23 @@ namespace Odachi.Extensions.Primitives
 			Option8 = value;
 		}
 
+		[DataMember]
 		public readonly int Index;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T1 Option1;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T2 Option2;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T3 Option3;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T4 Option4;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T5 Option5;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T6 Option6;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T7 Option7;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T8 Option8;
 
 		public bool IsEmpty => Index == 0;
@@ -839,6 +885,7 @@ namespace Odachi.Extensions.Primitives
 		}
 	}
 
+	[DataContract]
 	public struct OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9>
 	{
 		public OneOf(T1 value)
@@ -959,15 +1006,25 @@ namespace Odachi.Extensions.Primitives
 			Option9 = value;
 		}
 
+		[DataMember]
 		public readonly int Index;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T1 Option1;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T2 Option2;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T3 Option3;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T4 Option4;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T5 Option5;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T6 Option6;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T7 Option7;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T8 Option8;
+		[DataMember(EmitDefaultValue = false)]
 		public readonly T9 Option9;
 
 		public bool IsEmpty => Index == 0;

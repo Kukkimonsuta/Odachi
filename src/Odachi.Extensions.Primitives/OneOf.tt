@@ -5,10 +5,7 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace Odachi.Extensions.Primitives
 {
@@ -20,6 +17,7 @@ namespace Odachi.Extensions.Primitives
 		var typeNames = Enumerable.Range(1, i + 1).Select(n => "T" + n).ToArray();
 
 #>
+	[DataContract]
 	public struct OneOf<<#= string.Join(", ", typeNames) #>>
 	{
 <#
@@ -40,10 +38,12 @@ namespace Odachi.Extensions.Primitives
 	}
 #>
 
+		[DataMember]
 		public readonly int Index;
 <#
 		for (var ti = 0; ti < typeNames.Length; ti++) {
 #>
+		[DataMember(EmitDefaultValue = false)]
 		public readonly <#= typeNames[ti] #> Option<#= ti + 1 #>;
 <#
 		}
