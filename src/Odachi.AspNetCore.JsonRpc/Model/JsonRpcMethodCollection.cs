@@ -1,4 +1,4 @@
-﻿using Odachi.AspNetCore.JsonRpc.Internal;
+using Odachi.AspNetCore.JsonRpc.Internal;
 using Odachi.AspNetCore.JsonRpc.Modules;
 using Odachi.Annotations;
 using System;
@@ -36,8 +36,8 @@ namespace Odachi.AspNetCore.JsonRpc.Model
 				if (attribute == null)
 					continue;
 
-				var moduleName = ModuleNameResolver(type, method);
-				var methodName = MethodNameResolver(type, method);
+				var moduleName = attribute.ModuleName ?? ModuleNameResolver(type, method);
+				var methodName = attribute.MethodName ?? MethodNameResolver(type, method);
 
 				var reflectedMethod = new ReflectedJsonRpcMethod(moduleName, methodName, type, method);
 

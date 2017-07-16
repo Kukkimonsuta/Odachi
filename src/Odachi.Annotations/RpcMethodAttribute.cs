@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Odachi.Annotations
 {
@@ -11,11 +11,13 @@ namespace Odachi.Annotations
 		public RpcMethodAttribute()
 		{
 		}
-		public RpcMethodAttribute(string name)
+		public RpcMethodAttribute(string moduleName, string methodName)
 		{
-			Name = name;
+			ModuleName = moduleName;
+			MethodName = methodName;
 		}
 
-		public string Name { get; set; }
+		public string ModuleName { get; set; }
+		public string MethodName { get; set; }
 	}
 }
