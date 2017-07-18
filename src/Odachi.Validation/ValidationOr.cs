@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+using System;
+using System.Runtime.Serialization;
 
 namespace Odachi.Validation
 {
@@ -6,6 +7,7 @@ namespace Odachi.Validation
 	/// Either value or validation state.
 	/// </summary>
 	[DataContract]
+	[Obsolete("Will be removed in 2.0. Use `OneOf<?, ValidationState>` instead.")]
 	public struct ValidationOr<TValue>
 	{
 		public ValidationOr(TValue value)
