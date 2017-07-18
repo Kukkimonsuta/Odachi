@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\Odachi.Validation\Odachi.Validation.csproj" />
+    <ProjectReference Include="..\..\src\Odachi.Extensions.Primitives\Odachi.Extensions.Primitives.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -66,5 +66,12 @@ namespace Odachi.Extensions.Primitives.Tests
 			Assert.Equal(expected.Option1, actual.Option1);
 			Assert.Equal(expected.Option2, actual.Option2);
 		}
+
+		[Fact]
+		public void Wrapped_values_can_be_checked_for_equality()
+		{
+			var value = new OneOf<string, int>("ten");		
+			Assert.True(new OneOf<string, int>("ten") == value);
+		}
 	}
 }

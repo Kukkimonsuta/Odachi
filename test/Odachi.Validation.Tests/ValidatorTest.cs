@@ -1,34 +1,35 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Xunit;
+using Odachi.Extensions.Primitives;
 
 namespace Odachi.Validation
 {
 	public class ValidatorTest
 	{
-		private ValidationOr<string> TestBusinessMethod(string foo)
+		private OneOf<string, ValidationState> TestBusinessMethod(string foo)
 		{
 			var validator = new Validator();
 
 			if (foo.Length <= 0)
-				return validator.Error(nameof(foo), "Required field");
+				return validator.Error(nameof(foo), "Required field").State;
 
 			return $"bar_{foo}";
 		}
-
+		
 		[Fact]
 		public void Validation_success_result()
 		{
 			var result = TestBusinessMethod("test");
 
-			Assert.NotNull(result.Value);
-			Assert.Equal("bar_test", result.Value);
-
-			Assert.Null(result.Validation);
+			result.Match(
+				value => Assert.Equal("bar_test", value),
+				validation => Assert.True(false)
+			);
 		}
 
 		[Fact]
@@ -36,24 +37,27 @@ namespace Odachi.Validation
 		{
 			var result = TestBusinessMethod("");
 
-			Assert.Null(result.Value);
-
-			Assert.NotNull(result.Validation);
-			Assert.Equal("Required field", result.Validation.GetError("foo"));
-			Assert.Null(result.Validation.GetError("nonexistant-field"));
+			result.Match(
+				value => Assert.True(false),
+				validation =>
+				{
+					Assert.NotNull(validation);
+					Assert.Equal("Required field", validation.GetError("foo"));
+					Assert.Null(validation.GetError("nonexistant-field"));
+				}
+			);
 		}
 
 		[Fact]
 		public void Validation_or_value_is_serializable()
 		{
-			var valueHolder = new ValidationOr<string>("test");
+			var expected = new OneOf<string, ValidationState>("test");
 
-			var serialized = JsonConvert.SerializeObject(valueHolder);
-			var deserialized = JsonConvert.DeserializeObject<ValidationOr<string>>(serialized);
-
-			Assert.NotNull(deserialized.Value);
-			Assert.Null(deserialized.Validation);
-			Assert.Equal(valueHolder.Value, deserialized.Value);
+			var serialized = JsonConvert.SerializeObject(expected);
+			var deserialized = JsonConvert.DeserializeObject<OneOf<string, ValidationState>>(serialized);
+			
+			Assert.True(deserialized.Is1);
+			Assert.Equal(expected.As1, deserialized.As1);
 		}
 	}
 }

@@ -5,6 +5,7 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Odachi.Extensions.Primitives
@@ -12,14 +13,29 @@ namespace Odachi.Extensions.Primitives
 <#
 	var minTypeCount = 2;
 	var maxTypeCount = 9;
+#>
+	public class OneOf
+	{
+		public const int MinTypes = <#= minTypeCount #>;
+		public const int MaxTypes = <#= maxTypeCount #>;
+	}
 
+<#
 	for (var i = minTypeCount - 1; i < maxTypeCount; i++) {
 		var typeNames = Enumerable.Range(1, i + 1).Select(n => "T" + n).ToArray();
 
 #>
 	[DataContract]
-	public struct OneOf<<#= string.Join(", ", typeNames) #>>
+	public struct OneOf<<#= string.Join(", ", typeNames) #>> : IEquatable<OneOf<<#= string.Join(", ", typeNames) #>>>
 	{
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+		private static readonly EqualityComparer<T<#= ti + 1 #>> s_t<#= ti + 1 #>Comparer = EqualityComparer<T<#= ti + 1 #>>.Default;
+<#
+	}
+#>
+
 <#
 		for (var ti = 0; ti < typeNames.Length; ti++) {
 #>
@@ -60,6 +76,28 @@ namespace Odachi.Extensions.Primitives
 		}
 #>
 
+		public void Match(<#= string.Join(", ", typeNames.Select((tn, tni) => "Action<" + tn + "> when" + (tni + 1))) #>, Action whenEmpty = null)
+		{
+			switch (Index)
+			{
+				case 0:
+					if (whenEmpty == null)
+						throw new InvalidOperationException($"OneOf<<#= string.Join(", ", typeNames) #>> is empty");
+					whenEmpty();
+					return;
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+				case <#= ti + 1 #>:
+					when<#= ti + 1 #>(Option<#= ti + 1 #>);
+					return;
+<#
+		}
+#>
+				default:
+					throw new InvalidOperationException($"Undefined behavior for OneOf<<#= string.Join(", ", typeNames) #>> with Index {Index}'");
+			}
+		}
 		public TResult Match<TResult>(<#= string.Join(", ", typeNames.Select((tn, tni) => "Func<" + tn + ", TResult> when" + (tni + 1))) #>, Func<TResult> whenEmpty = null)
 		{
 			switch (Index)
@@ -79,6 +117,50 @@ namespace Odachi.Extensions.Primitives
 			}
 		}
 
+		public override int GetHashCode()
+		{
+			var hash = Index.GetHashCode();
+
+			switch (Index)
+			{
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+				case <#= ti + 1 #>:
+					hash ^= s_t<#= ti + 1 #>Comparer.GetHashCode(As<#= ti + 1 #>);
+					break;
+<#
+		}
+#>
+			}
+
+			return hash;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj is OneOf<<#= string.Join(", ", typeNames) #>> oneOfObj)
+			{
+				return Equals(oneOfObj);
+			}
+
+			return false;
+		}
+
+		public bool Equals(OneOf<<#= string.Join(", ", typeNames) #>> other)
+		{
+			return Equals(this, other);
+		}
+		
+		public static bool operator ==(OneOf<<#= string.Join(", ", typeNames) #>> a, OneOf<<#= string.Join(", ", typeNames) #>> b)
+		{
+			return Equals(a, b);
+		}
+		public static bool operator !=(OneOf<<#= string.Join(", ", typeNames) #>> a, OneOf<<#= string.Join(", ", typeNames) #>> b)
+		{
+			return !Equals(a, b);
+		}
+
 <#
 		for (var ti = 0; ti < typeNames.Length; ti++) {
 #>
@@ -89,6 +171,41 @@ namespace Odachi.Extensions.Primitives
 <#
 		}
 #>
+
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+		public static explicit operator T<#= ti + 1 #>(OneOf<<#= string.Join(", ", typeNames) #>> value)
+		{
+			return value.As<#= ti + 1 #>;
+		}
+<#
+		}
+#>
+
+		public static bool Equals(OneOf<<#= string.Join(", ", typeNames) #>> a, OneOf<<#= string.Join(", ", typeNames) #>> b)
+		{
+			if (a.Index != b.Index)
+			{
+				return false;
+			}
+
+			switch (a.Index)
+			{
+				case 0:
+					return true;
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+				case <#= ti + 1 #>:
+					return s_t<#= ti + 1 #>Comparer.Equals(a.As<#= ti + 1 #>, b.As<#= ti + 1 #>);
+<#
+		}
+#>
+				default:
+					return false;
+			}
+		}
 	}<#= i != maxTypeCount - 1 ? Environment.NewLine : "" #>
 <# } #>
 }
