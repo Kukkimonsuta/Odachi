@@ -20,6 +20,9 @@ init:
 build_script:
   - ps: "& ./build.ps1"
 
+hosts:
+  api.nuget.org: 93.184.221.200
+
 test: off
 
 artifacts:
