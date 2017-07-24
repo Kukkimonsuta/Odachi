@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Odachi.AspNetCore.JsonRpc.Model;
@@ -14,7 +14,7 @@ namespace Odachi.CodeModel
 		public static PackageBuilder UseJsonRpc(this PackageBuilder builder)
 		{
 			builder.Context.MethodDescriptors.Add(new JsonRpcMethodDescriptor());
-
+			
 			return builder;
 		}
 
@@ -31,7 +31,7 @@ namespace Odachi.CodeModel
 
 			foreach (var module in modules)
 			{
-				Module_Class_JsonRpcService(builder, $"{module.Name}Service", module.Methods);
+				Module_Class_JsonRpcService(builder, $"{module.Name}Rpc", module.Methods);
 			}
 
 			return builder;
