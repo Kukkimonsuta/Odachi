@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Odachi.AspNetCore.JsonRpc.Internal;
 using Odachi.AspNetCore.JsonRpc.Behaviors;
 using Microsoft.Extensions.Logging;
+using Odachi.AspNetCore.JsonRpc.Model;
+using Odachi.JsonRpc.Common;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
@@ -24,7 +26,7 @@ namespace Odachi.AspNetCore.JsonRpc
 		}
 
 		private readonly ILogger _logger;
-		
+
 		public JsonRpcMethodCollection Methods { get; }
 		public JsonRpcBehaviorCollection Behaviors { get; }
 
@@ -45,33 +47,62 @@ namespace Odachi.AspNetCore.JsonRpc
 					return;
 				}
 
+				// run `Before` behaviors
 				for (var i = 0; i < Behaviors.Count; i++)
+				{
 					await Behaviors[i].BeforeInvoke(context);
+				}
 
-				await method.HandleAsync(context);
+				// if `Before` behavior marks request as handled, skip 'handle' phase
+				if (!context.WasHandled)
+				{
+					try
+					{
+						await method.HandleAsync(context);
+					}
+					catch (Exception ex)
+					{
+						// run `Error` behaviors
+						for (var i = 0; i < Behaviors.Count; i++)
+						{
+							await Behaviors[i].OnError(context, ex);
+						}
 
+						// if `Error` behavior marks request as handled, don't throw
+						if (!context.WasHandled)
+						{
+							throw;
+						}
+					}
+				}
+
+				// run `After` behavior no matter how the request was handled
 				for (var i = 0; i < Behaviors.Count; i++)
+				{
 					await Behaviors[i].AfterInvoke(context);
-			}
-			catch (JsonRpcException ex)
-			{
-				if (ex.JsonRpcCode == JsonRpcError.INTERNAL_ERROR)
-				{
-					_logger.LogError(JsonRpcLogEvents.InternalError, ex, "JsonRpc call failed");
 				}
-				else
-				{
-					_logger.LogWarning(JsonRpcLogEvents.GenericError, ex, "JsonRpc call failed");
-				}
-
-				context.SetResponse(ex.JsonRpcCode, ex.JsonRpcMessage, data: ex.JsonRpcData);
-				return;
 			}
 			catch (Exception ex)
 			{
+				var jsonRpcException = ex.Unwrap<JsonRpcException>();
+				if (jsonRpcException != null)
+				{
+					if (jsonRpcException.JsonRpcCode == JsonRpcError.INTERNAL_ERROR)
+					{
+						_logger.LogError(JsonRpcLogEvents.InternalError, jsonRpcException, "JsonRpc call failed");
+					}
+					else
+					{
+						_logger.LogWarning(JsonRpcLogEvents.GenericError, jsonRpcException, "JsonRpc call failed");
+					}
+
+					context.SetResponse(jsonRpcException.JsonRpcCode, jsonRpcException.JsonRpcMessage, data: jsonRpcException.JsonRpcData);
+					return;
+				}
+
 				_logger.LogError(JsonRpcLogEvents.InternalError, ex, "JsonRpc call crashed");
 
-				context.SetResponse(JsonRpcError.INTERNAL_ERROR, data: ex.ToString());
+				context.SetResponse(JsonRpcError.INTERNAL_ERROR, data: ex.Unwrap().ToDiagnosticString());
 				return;
 			}
 		}

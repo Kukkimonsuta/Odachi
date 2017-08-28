@@ -3,9 +3,13 @@
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
-		<Description>Odachi validation library</Description>
-		<TargetFrameworks>net452;netstandard1.3</TargetFrameworks>
+		<Description>Object validation library.</Description>
+		<TargetFrameworks>net452;netstandard1.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+  </ItemGroup>
+  
 </Project>

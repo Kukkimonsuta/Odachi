@@ -3,83 +3,126 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Odachi.Abstractions;
+using Odachi.AspNetCore.JsonRpc.Model;
+using Odachi.Extensions.Reflection;
+using Odachi.JsonRpc.Common.Converters;
 
 namespace Odachi.AspNetCore.JsonRpc.Internal
 {
 	public class ReflectedJsonRpcMethod : JsonRpcMethod
 	{
-		public ReflectedJsonRpcMethod(string name, Type type, MethodInfo method)
-			: base(name)
+		public ReflectedJsonRpcMethod(string moduleName, string methodName, Type type, MethodInfo method)
+			: base(moduleName, methodName)
 		{
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
 
 			Type = type;
 			Method = method;
-			_parameters = method.GetParameters();
 		}
 
-		private ParameterInfo[] _parameters;
-
-		public Type Type { get;}
+		public Type Type { get; }
 		public MethodInfo Method { get; }
+
+		private IReadOnlyList<JsonRpcParameter> _parameters;
+		public override IReadOnlyList<JsonRpcParameter> Parameters => _parameters == null ? throw new InvalidOperationException("Method wasn't analyzed") : _parameters;
+
+		private JsonMappedType _returnType;
+		public override JsonMappedType ReturnType =>
+			// `_returnType` may be null (= `void` return type), so check on `_parameters` instead
+			_parameters == null ? throw new InvalidOperationException("Method wasn't analyzed") : _returnType;
+
+		public override void Analyze(JsonRpcServer server, Type[] internalTypes)
+		{
+			_parameters = Method.GetParameters()
+				.Select(p => new JsonRpcParameter(
+					p.Name,
+					JsonMappedType.FromType(p.ParameterType),
+					internalTypes.Contains(p.ParameterType),
+					p.IsOptional,
+					p.HasDefaultValue ? p.DefaultValue : (p.ParameterType.GetTypeInfo().IsValueType ? Activator.CreateInstance(p.ParameterType) : null)
+				))
+				.ToArray();
+
+			if (Method.ReturnType.IsAwaitable())
+			{
+				_returnType = JsonMappedType.FromType(Method.ReturnType.GetAwaitedType());
+			}
+			else
+			{
+				_returnType = JsonMappedType.FromType(Method.ReturnType);
+			}
+		}
 
 		public override async Task HandleAsync(JsonRpcContext context)
 		{
 			var request = context.Request;
 
-			var service = context.RequestServices.GetRequiredService(Type);
-
-			var parameters = new object[_parameters.Length];
-			for (var i = 0; i < _parameters.Length; i++)
+			object service = null;
+			if (!Method.IsStatic)
 			{
-				var parameter = _parameters[i];
-				var parameterType = parameter.ParameterType;
+				service = context.AppServices.GetRequiredService(Type);
+			}
 
-				object value = null;
+			var internalParams = 0;
+			var parameters = new object[Parameters.Count];
+			if (parameters.Length > 0)
+			{
+				// todo: this should be extracted somewhere else..
+				var httpContext = context.AppServices.GetRequiredService<IHttpContextAccessor>().HttpContext;
 
-				// try resolve value from DI (only reference types)
-				if (!parameterType.GetTypeInfo().IsValueType)
+				IStreamReference HandleReference(string path, string name)
 				{
-					value = context.RequestServices.GetService(parameterType);
+					var form = httpContext.Request?.Form;
+					if (form == null)
+						return null;
+
+					var file = form.Files[name];
+					if (file == null)
+						return null;
+
+					return new FormFileStreamReference(file);
 				}
 
-				// if DI fails, try to resolve the value from request
-				if (value == null)
+				using (new StreamReferenceReadHandler(HandleReference))
 				{
-					if (request.IsIndexed)
-						value = request.GetParameter(i, parameterType, Type.Missing);
-					else
-						value = request.GetParameter(parameter.Name, parameterType, Type.Missing);
+					for (var i = 0; i < Parameters.Count; i++)
+					{
+						var parameter = Parameters[i];
+						var parameterType = parameter.Type;
+
+						object value = null;
+
+						if (parameter.IsInternal)
+						{
+							value = context.RpcServices.GetService(parameterType.NetType);
+
+							internalParams++;
+						}
+						else
+						{
+							if (request.IsIndexed)
+								value = request.GetParameter(i - internalParams, parameterType, Type.Missing);
+							else
+								value = request.GetParameter(parameter.Name, parameter.Type, Type.Missing);
+						}
+
+						// if parameter couldn't be resolved, use default value (the called method is responsible for validating parameters)
+						if (value == Type.Missing && !parameter.IsOptional)
+						{
+							value = parameter.DefaultValue;
+						}
+
+						parameters[i] = value;
+					}
 				}
-
-				// if parameter couldn't be resolved, use default value (the called method is responsible for validating parameters)
-				if (value == Type.Missing && !parameter.IsOptional)
-					value = parameterType.GetTypeInfo().IsValueType ? Activator.CreateInstance(parameterType) : null;
-
-				parameters[i] = value;
 			}
 
 			// invoke the method
-			var result = Method.Invoke(service, parameters);
-
-			// await tasks
-			if (typeof(Task).IsAssignableFrom(Method.ReturnType))
-			{
-				var task = (Task)result;
-
-				await task;
-
-				if (Method.ReturnType == typeof(Task))
-				{
-					result = null;
-				}
-				else
-				{
-					result = GetResult(Method.ReturnType, task);
-				}
-			}
+			var result = await Method.InvokeAsync(service, parameters);
 
 			// return the result
 			context.SetResponse(result);
@@ -98,18 +141,5 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 			return Name == other.Name && Method == other.Method;
 		}
-
-		#region Static members
-
-		private static object GetResult(Type type, Task task)
-		{
-			var resultProperty = type.GetProperty("Result");
-			if (resultProperty == null)
-				throw new InvalidOperationException("The task doesn't have a 'Result' property");
-
-			return resultProperty.GetValue(task);
-		}
-
-		#endregion
 	}
 }

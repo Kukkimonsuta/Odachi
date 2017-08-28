@@ -4,12 +4,12 @@
 
 	<PropertyGroup>
 		<Description>Odachi.AspNetCore.JsonRpc tests</Description>
-		<TargetFramework>netcoreapp1.0</TargetFramework>
+		<TargetFramework>netcoreapp1.1</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\Odachi.AspNetCore.JsonRpc\Odachi.AspNetCore.JsonRpc.csproj" />
-    <ProjectReference Include="..\..\src\Odachi.Data\Odachi.Data.csproj" />
+    <ProjectReference Include="..\..\src\Odachi.Extensions.Collections\Odachi.Extensions.Collections.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

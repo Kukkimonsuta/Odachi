@@ -9,18 +9,23 @@ namespace Odachi.AspNetCore.JsonRpc.Behaviors
 {
     public abstract class JsonRpcBehavior
     {
-		public virtual void ConfigureServices(IServiceCollection services)
+		public virtual void ConfigureRpcServices(IServiceCollection services)
 		{
 		}
 
 		public virtual Task BeforeInvoke(JsonRpcContext context)
 		{
-			return Task.WhenAll();
+			return Task.CompletedTask;
+		}
+
+		public virtual Task OnError(JsonRpcContext context, Exception exception)
+		{
+			return Task.CompletedTask;
 		}
 
 		public virtual Task AfterInvoke(JsonRpcContext context)
 		{
-			return Task.WhenAll();
+			return Task.CompletedTask;
 		}
 	}
 }

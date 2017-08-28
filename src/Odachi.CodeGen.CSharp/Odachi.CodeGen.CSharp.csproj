@@ -3,7 +3,7 @@
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
-		<Description>Odachi C# code generation library</Description>
+		<Description>C# code generator.</Description>
 		<TargetFrameworks>net452;netstandard1.6</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>

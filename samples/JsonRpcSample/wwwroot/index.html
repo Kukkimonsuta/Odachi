@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+
+	<meta name="robots" content="nofollow, noindex">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>JsonRpc tester</title>
+
+	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css" rel="stylesheet" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" rel="stylesheet" />
+</head>
+<body>
+	<nav class="light-blue lighten-1" role="navigation">
+		<div class="nav-wrapper container">
+			<a id="logo-container" href="#" class="brand-logo">JsonRpc sample</a>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="section">
+
+			<div class="row">
+				<form class="col s12">
+					<div class="row">
+						<div class="input-field col s12">
+							<select id="method" disabled>
+								<option value="" disabled selected>Choose method..</option>
+							</select>
+							<label>Materialize Select</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s12">
+							<textarea id="args" class="materialize-textarea" disabled></textarea>
+							<label for="args">Textarea</label>
+						</div>
+					</div>
+
+					<div class="form-actions">
+						<button id="send" class="btn" disabled>Send <i class="material-icons right">send</i></button>
+					</div>
+				</form>
+			</div>
+
+			<div class="row">
+				<div class="col s12">
+					<pre id="request" class="prettyprint" style="display: none;"></pre>
+					<pre id="results" class="prettyprint" style="display: none;"></pre>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+	<script>
+		jQuery(document).ready(function ($) {
+
+			var id = 1;
+
+			$.ajax("/api", {
+				type: "POST",
+				contentType: "application/json",
+				data: JSON.stringify({
+					id: (id++).toString(),
+					method: "Server.listMethods"
+				}),
+				success: function (data) {
+					for (var i = 0; i < data.result.length; i++) {
+						var method = data.result[i];
+
+						$("#method").append("<option value='" + method + "'>" + method + "</option>").change();
+					}
+
+					$("#method, #args, #send").removeAttr("disabled");
+					$("#method").material_select();
+				}
+			});
+
+			function sendRequest(request) {
+				$.ajax("/api", {
+					type: "POST",
+					contentType: "application/json",
+					data: JSON.stringify(request),
+					success: function (data) {
+						$("#results").removeClass("prettyprinted").text(JSON.stringify(data, null, 4)).show();
+						PR.prettyPrint();
+					}
+				});
+			}
+
+			$("#send").on("click", function (event) {
+				event.preventDefault();
+
+				$("body > .container > .alert").remove();
+
+				var args;
+				try {
+					args = JSON.parse($("#args").val());
+				}
+				catch (ex) {
+					$("#request, #results").empty().hide();
+
+					$("<div class='alert alert-error'>").text("Failed to parse json: " + ex).prependTo($("body > .container"));
+
+					return;
+				}
+
+				var request = {
+					id: (id++).toString(),
+					method: $("#method").val(),
+					params: args
+				};
+
+				$("#request").removeClass("prettyprinted").text(JSON.stringify(request, null, 4)).show();
+				$("#response").empty().hide();
+				PR.prettyPrint();
+
+				sendRequest(request);
+			});
+
+			$("#method").on("change", function (event) {
+
+				$("body > .container > .alert").remove();
+				$("#request, #results").empty().hide();
+				$("#args").val("[ ]").change();
+
+			});
+
+			$('select').material_select();
+
+		});
+	</script>
+</body>
+</html>

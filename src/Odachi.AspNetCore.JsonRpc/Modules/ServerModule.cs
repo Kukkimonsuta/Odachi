@@ -3,28 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Odachi.AspNetCore.JsonRpc.Internal;
+using Odachi.Annotations;
 
 namespace Odachi.AspNetCore.JsonRpc.Modules
 {
 	public class ServerModule
 	{
-		public class ListMethods : JsonRpcMethod
+		[RpcMethod]
+		public static string[] ListMethods(JsonRpcServer server)
 		{
-			public ListMethods()
-				: base("Server.listMethods")
-			{
-			}
+			var methods = server.Methods
+				.Select(m => m.Name)
+				.ToArray();
 
-			public override Task HandleAsync(JsonRpcContext context)
-			{
-				var methods = context.Server.Methods
-					.Select(m => m.Name)
-					.ToArray();
+			return methods;
+		}
 
-				context.SetResponse(methods);
-
-				return Task.WhenAll();
-			}
+		[RpcMethod]
+		public static DateTime Ping()
+		{
+			return DateTime.Now;
 		}
 	}
 }

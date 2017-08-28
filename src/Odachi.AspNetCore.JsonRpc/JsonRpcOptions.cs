@@ -1,16 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Odachi.AspNetCore.JsonRpc.Internal;
-using Microsoft.Extensions.DependencyInjection;
-using System.Linq.Expressions;
-using System.Collections;
-using Odachi.AspNetCore.JsonRpc.Modules;
 using Odachi.AspNetCore.JsonRpc.Behaviors;
+using Odachi.AspNetCore.JsonRpc.Model;
+using Odachi.AspNetCore.JsonRpc.Modules;
+using Odachi.JsonRpc.Common.Converters;
+using Odachi.JsonRpc.Common.Internal;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
@@ -22,11 +16,18 @@ namespace Odachi.AspNetCore.JsonRpc
 			{
 				ContractResolver = new DefaultContractResolver
 				{
-					NamingStrategy = new CamelCaseNamingStrategy()
+					NamingStrategy = new MultiWordCamelCaseNamingStrategy(true, false)
 				},
 				NullValueHandling = NullValueHandling.Ignore,
 				TypeNameHandling = TypeNameHandling.None,
 			};
+			JsonSerializerSettings.Converters.Add(new PageConverter());
+			JsonSerializerSettings.Converters.Add(new EntityReferenceConverter());
+			JsonSerializerSettings.Converters.Add(new StreamReferenceConverter());
+
+			Behaviors.Add(new SecurityErrorBehavior());
+
+			Methods.AddReflected<ServerModule>();
 		}
 
 		public bool UseJsonRpcConstant { get; set; } = false;

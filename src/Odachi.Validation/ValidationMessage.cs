@@ -1,8 +1,11 @@
 ﻿namespace Odachi.Validation
 {
+	/// <summary>
+	/// Validation message.
+	/// </summary>
 	public struct ValidationMessage
 	{
-		public string Key { get; set; }
-		public string Text { get; set; }
+		public ValidationLevel Level { get; set; }
+		public string Message { get; set; }
 	}
 }

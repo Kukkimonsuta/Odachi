@@ -77,14 +77,24 @@ Pack(".\src\Odachi.Abstractions")
 Pack(".\src\Odachi.Annotations")
 Pack(".\src\Odachi.AspNetCore.Authentication.Basic")
 Pack(".\src\Odachi.AspNetCore.JsonRpc")
-Pack(".\src\Odachi.AspNetCore.JsonRpc.Validation")
 Pack(".\src\Odachi.AspNetCore.Mvc")
 Pack(".\src\Odachi.AspNetCore.MvcPages")
 Pack(".\src\Odachi.CodeGen")
 Pack(".\src\Odachi.CodeGen.CSharp")
 Pack(".\src\Odachi.CodeGen.TypeScript")
-Pack(".\src\Odachi.Data")
+Pack(".\src\Odachi.CodeModel")
+Pack(".\src\Odachi.CodeModel.Providers.FluentValidation")
+Pack(".\src\Odachi.CodeModel.Providers.JsonRpc")
+Pack(".\src\Odachi.CodeModel.Providers.Validation")
+Pack(".\src\Odachi.EntityFrameworkCore")
+Pack(".\src\Odachi.Extensions.Collections")
+Pack(".\src\Odachi.Extensions.Formatting")
+Pack(".\src\Odachi.Extensions.Primitives")
+Pack(".\src\Odachi.Extensions.Reflection")
 Pack(".\src\Odachi.Gettext")
+Pack(".\src\Odachi.JsonRpc.Client")
+Pack(".\src\Odachi.JsonRpc.Client.Http")
+Pack(".\src\Odachi.JsonRpc.Common")
 Pack(".\src\Odachi.Localization")
 Pack(".\src\Odachi.Localization.Extraction")
 Pack(".\src\Odachi.Mail")
@@ -99,10 +109,17 @@ Write-Host "Build samples.."
 Write-Host
 Build(".\samples\BasicAuthenticationSample");
 Build(".\samples\MailSample");
+Build(".\samples\JsonRpcSample");
+Build(".\samples\JsonRpcClientSample");
 
 Write-Host
 Write-Host "Build & run test.."
 Write-Host
+Test(".\test\Odachi.AspNetCore.JsonRpc.Tests");
+Test(".\test\Odachi.CodeGen.Tests");
+Test(".\test\Odachi.Extensions.Formatting.Tests");
+Test(".\test\Odachi.Extensions.Primitives.Tests");
+Test(".\test\Odachi.Extensions.Reflection.Tests");
 Test(".\test\Odachi.Gettext.Tests");
 Test(".\test\Odachi.Localization.Extraction.Tests");
 Test(".\test\Odachi.RazorTemplating.Tests");

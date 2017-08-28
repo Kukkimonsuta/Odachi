@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\tools\common.props" />
+
+  <PropertyGroup>
+    <Description>Primitives extensions. Includes entity reference, file reference.</Description>
+    <TargetFrameworks>net452;netstandard1.3;netstandard1.0</TargetFrameworks>
+    <PackageTags>odachi</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Odachi.Abstractions/Odachi.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="OneOf.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>OneOf.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="OneOf.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OneOf.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

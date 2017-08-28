@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\tools\common.props" />
+
+	<PropertyGroup>
+		<Description>Code description providers for `Odachi.Validation`.</Description>
+		<TargetFrameworks>net461;netstandard1.5</TargetFrameworks>
+		<PackageTags>odachi</PackageTags>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Odachi.CodeModel/Odachi.CodeModel.csproj" />
+    <ProjectReference Include="../Odachi.Validation/Odachi.Validation.csproj" />
+  </ItemGroup>
+
+</Project>
