@@ -26,8 +26,8 @@ _build "./src/Odachi.Abstractions" netstandard1.3
 _build "./src/Odachi.Annotations" netstandard1.3
 _build "./src/Odachi.AspNetCore.Authentication.Basic" netstandard2.0
 _build "./src/Odachi.AspNetCore.JsonRpc" netstandard1.5
-_build "./src/Odachi.AspNetCore.Mvc" netstandard1.5
-_build "./src/Odachi.AspNetCore.MvcPages" netstandard1.5
+_build "./src/Odachi.AspNetCore.Mvc" netstandard1.6
+_build "./src/Odachi.AspNetCore.MvcPages" netstandard1.6
 _build "./src/Odachi.CodeGen" netstandard1.3
 _build "./src/Odachi.CodeGen.CSharp" netstandard1.6
 _build "./src/Odachi.CodeGen.TypeScript" netstandard1.6
@@ -50,7 +50,7 @@ _build "./src/Odachi.Mail" netstandard1.3
 _build "./src/Odachi.RazorTemplating" netstandard1.3
 _build "./src/Odachi.RazorTemplating.MSBuild" netstandard1.3
 _build "./src/Odachi.Security" netstandard1.3
-_build "./src/Odachi.Validation" netstandard1.3
+_build "./src/Odachi.Validation" netstandard1.0
 
 echo
 echo "Build samples.."
