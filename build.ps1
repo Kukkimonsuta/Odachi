@@ -119,6 +119,5 @@ Test(".\test\Odachi.Extensions.Formatting.Tests");
 Test(".\test\Odachi.Extensions.Primitives.Tests");
 Test(".\test\Odachi.Extensions.Reflection.Tests");
 Test(".\test\Odachi.Gettext.Tests");
-Test(".\test\Odachi.Localization.Extraction.Tests");
 Test(".\test\Odachi.RazorTemplating.Tests");
 Test(".\test\Odachi.Security.Tests");
