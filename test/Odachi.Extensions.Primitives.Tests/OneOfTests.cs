@@ -20,9 +20,9 @@ namespace Odachi.Extensions.Primitives.Tests
 			var actual = default(OneOf<string, int>);
 
 			Assert.Equal(0, actual.Index);
-			Assert.Equal(true, actual.IsEmpty);
-			Assert.Equal(false, actual.Is1);
-			Assert.Equal(false, actual.Is2);
+			Assert.True(actual.IsEmpty);
+			Assert.False(actual.Is1);
+			Assert.False(actual.Is2);
 			Assert.Throws<InvalidOperationException>(() => actual.As1);
 			Assert.Throws<InvalidOperationException>(() => actual.As2);
 		}
@@ -33,9 +33,9 @@ namespace Odachi.Extensions.Primitives.Tests
 			var actual = Convert(10);
 
 			Assert.Equal(1, actual.Index);
-			Assert.Equal(false, actual.IsEmpty);
-			Assert.Equal(true, actual.Is1);
-			Assert.Equal(false, actual.Is2);
+			Assert.False(actual.IsEmpty);
+			Assert.True(actual.Is1);
+			Assert.False(actual.Is2);
 			Assert.Equal("10", actual.As1);
 			Assert.Throws<InvalidOperationException>(() => actual.As2);
 		}
@@ -46,9 +46,9 @@ namespace Odachi.Extensions.Primitives.Tests
 			var actual = Convert("10");
 
 			Assert.Equal(2, actual.Index);
-			Assert.Equal(false, actual.IsEmpty);
-			Assert.Equal(false, actual.Is1);
-			Assert.Equal(true, actual.Is2);
+			Assert.False(actual.IsEmpty);
+			Assert.False(actual.Is1);
+			Assert.True(actual.Is2);
 			Assert.Throws<InvalidOperationException>(() => actual.As1);
 			Assert.Equal(10, actual.As2);
 		}
@@ -60,7 +60,7 @@ namespace Odachi.Extensions.Primitives.Tests
 			var serialized = JsonConvert.SerializeObject(expected);
 			var actual = JsonConvert.DeserializeObject<OneOf<string, int>>(serialized);
 
-			Assert.Equal(serialized, "{\"Index\":1,\"Option1\":\"test\"}");
+			Assert.Equal("{\"Index\":1,\"Option1\":\"test\"}", serialized);
 			Assert.False(expected.IsEmpty);
 			Assert.Equal(expected.Index, actual.Index);
 			Assert.Equal(expected.Option1, actual.Option1);
@@ -70,7 +70,7 @@ namespace Odachi.Extensions.Primitives.Tests
 		[Fact]
 		public void Wrapped_values_can_be_checked_for_equality()
 		{
-			var value = new OneOf<string, int>("ten");		
+			var value = new OneOf<string, int>("ten");
 			Assert.True(new OneOf<string, int>("ten") == value);
 		}
 	}
