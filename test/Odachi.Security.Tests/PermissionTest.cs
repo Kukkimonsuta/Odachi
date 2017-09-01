@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -90,7 +90,7 @@ namespace Odachi.Security
 			Assert.False(permission.Matches($"pre{value}post", arg0, arg1, ""));
 		}
 
-		public static object[] Matches_array_variables_data
+		public static IEnumerable<object[]> Matches_array_variables_data
 		{
 			get
 			{
@@ -106,7 +106,7 @@ namespace Odachi.Security
 			}
 		}
 		[Theory]
-		[MemberData("Matches_array_variables_data")]
+		[MemberData(nameof(Matches_array_variables_data))]
 		public void Matches_array_variables(string permissionName, object[] args)
 		{
 			var permission = new Permission(permissionName);

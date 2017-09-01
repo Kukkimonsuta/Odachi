@@ -3,11 +3,6 @@
 	<Import Project="..\..\tools\common.props" />
 
   <PropertyGroup>
-    <VersionPrefix>2.0.0</VersionPrefix>
-    <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
-  </PropertyGroup>
-
-  <PropertyGroup>
 		<Description>JsonRpc client using `HttpClient` as backend.</Description>
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
