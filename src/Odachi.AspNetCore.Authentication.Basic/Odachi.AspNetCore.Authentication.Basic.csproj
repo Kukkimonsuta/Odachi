@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core middleware for basic authentication.</Description>
-		<TargetFrameworks>netcoreapp2.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
