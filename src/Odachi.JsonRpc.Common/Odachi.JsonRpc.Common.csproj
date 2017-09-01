@@ -4,7 +4,7 @@
 
 	<PropertyGroup>
 		<Description>Common classes of `JsonRpc.Client` and `Odachi.AspNetCore.JsonRpc`.</Description>
-		<TargetFrameworks>netstandard1.1</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
 
 </Project>

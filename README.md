@@ -1,4 +1,4 @@
-﻿# Odachi [![Build Status](https://travis-ci.org/Kukkimonsuta/Odachi.svg?branch=master)](https://travis-ci.org/Kukkimonsuta/Odachi) [![Build status](https://ci.appveyor.com/api/projects/status/spbrm8id15t27y08/branch/master?svg=true)](https://ci.appveyor.com/project/Kukkimonsuta/odachi/branch/master)
+# Odachi [![Build Status](https://travis-ci.org/Kukkimonsuta/Odachi.svg?branch=master)](https://travis-ci.org/Kukkimonsuta/Odachi) [![Build status](https://ci.appveyor.com/api/projects/status/spbrm8id15t27y08/branch/master?svg=true)](https://ci.appveyor.com/project/Kukkimonsuta/odachi/branch/master)
 
 Set of miscellaneous extensions for .NET Core. Please note that while we will try to follow semver we also have no intention of keeping apis stable between major versions which may or may not come somewhat often depending on our needs.
 
@@ -56,17 +56,17 @@ Code description library.<br />
 
 ## Odachi.CodeModel.Providers.FluentValidation
 
-Code description providers for `FluentValidation`.
+Code description providers for `FluentValidation`.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.CodeModel.Providers.JsonRpc
 
-Code description providers for `Odachi.AspNetCore.JsonRpc`.
+Code description providers for `Odachi.AspNetCore.JsonRpc`.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.CodeModel.Providers.Validation
 
-Code description providers for `Odachi.Validation`.
+Code description providers for `Odachi.Validation`.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.EntityFrameworkCore
@@ -96,32 +96,22 @@ Reflection extensions. Includes awaitable detection and execution helpers.<br />
 
 ## Odachi.JsonRpc.Client
 
-JsonRpc client base.
+JsonRpc client base.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.JsonRpc.Client.Http
 
-JsonRpc client using `HttpClient` as backend.
+JsonRpc client using `HttpClient` as backend.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.JsonRpc.Common
 
-Common classes of `JsonRpc.Client` and `Odachi.AspNetCore.JsonRpc`.
+Common classes of `JsonRpc.Client` and `Odachi.AspNetCore.JsonRpc`.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.Gettext
 
 Gettext file parsing library.<br />
-❓ Unused. May change outside of semver.
-
-## Odachi.Localization
-
-Gettext-like localization library.<br />
-❓ Unused. May change outside of semver.
-
-## Odachi.Localization.Extraction
-
-Xgettext-like tool to extract localized strings from `.cs` and `.cshtml` files to `.pot` or `.resx`.<br />
 ❓ Unused. May change outside of semver.
 
 ## Odachi.Mail

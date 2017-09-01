@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -32,6 +32,8 @@ namespace Odachi.Mail
 		internal IDictionary<string, Func<TextWriter, Task>> Sections { get; set; }
 
 		#region Razor (mostly butchered from https://github.com/aspnet/Mvc/blob/rel/1.1.2/src/Microsoft.AspNetCore.Mvc.Razor/RazorPage.cs)
+
+		// TODO: Needs to be updated to 2.0.0
 
 		private AttributeInfo _attributeInfo;
 
