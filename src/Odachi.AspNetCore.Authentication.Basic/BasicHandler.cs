@@ -1,116 +1,148 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http.Authentication;
-using Microsoft.AspNetCore.Http.Features.Authentication;
-using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Authentication;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using System.Text.Encodings.Web;
+using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace Odachi.AspNetCore.Authentication.Basic
 {
-    internal class BasicHandler : AuthenticationHandler<BasicOptions>
-    {
-        public const string RequestHeader = "Authorization";
-        public const string ChallengeHeader = "WWW-Authenticate";
+	internal class BasicHandler : AuthenticationHandler<BasicOptions>
+	{
 		public const string RequestHeaderPrefix = "Basic ";
 
-        public BasicHandler()
-        {
-        }
+		public BasicHandler(IOptionsMonitor<BasicOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
+			: base(options, logger, encoder, clock)
+		{
+		}
 
-        protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
-        {
-            try
-            {
-				var feat = Context.Features.OfType<HttpRequestFeature>();
+		/// <summary>
+		/// The handler calls methods on the events which give the application control at certain points where processing is occurring.
+		/// If it is not provided a default instance is supplied which does nothing when the methods are called.
+		/// </summary>
+		protected new BasicEvents Events
+		{
+			get { return (BasicEvents)base.Events; }
+			set { base.Events = value; }
+		}
 
-                var headers = Request.Headers[RequestHeader];
-                if (headers.Count <= 0)
-					return AuthenticateResult.Fail("No authorization header.");
+		protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new BasicEvents());
 
-				var header = headers.Where(h => h.StartsWith(RequestHeaderPrefix, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-                if (header == null)
-					return AuthenticateResult.Fail("Not basic authentication header.");
+		protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
+		{
+			try
+			{
+				// retrieve authorization header
+				string authorization = Request.Headers[HeaderNames.Authorization];
 
-				var encoded = header.Substring(RequestHeaderPrefix.Length);
-				var decoded = default(string);
+				if (string.IsNullOrEmpty(authorization))
+				{
+					return AuthenticateResult.NoResult();
+				}
+
+				if (!authorization.StartsWith(RequestHeaderPrefix, StringComparison.OrdinalIgnoreCase))
+				{
+					return AuthenticateResult.NoResult();
+				}
+
+				// retrieve credentials from header
+				var encodedCredentials = authorization.Substring(RequestHeaderPrefix.Length);
+				var decodedCredentials = default(string);
 				try
 				{
-					decoded = Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
+					decodedCredentials = Encoding.UTF8.GetString(Convert.FromBase64String(encodedCredentials));
 				}
 				catch (Exception)
 				{
 					return AuthenticateResult.Fail("Invalid basic authentication header encoding.");
 				}
 
-                var index = decoded.IndexOf(':');
-                if (index == -1)
-					return AuthenticateResult.Fail("Invalid basic authentication header format.");
-
-				var username = decoded.Substring(0, index);
-                var password = decoded.Substring(index + 1);
-
-                var signInContext = new BasicSignInContext(Context, Options, username, password);
-                await Options.Events.SignIn(signInContext);
-
-				if (signInContext.HandledResponse)
+				var index = decodedCredentials.IndexOf(':');
+				if (index == -1)
 				{
-					if (signInContext.Ticket != null)
-						return AuthenticateResult.Success(signInContext.Ticket);
-					else
-						return AuthenticateResult.Fail("Invalid basic authentication credentials.");
+					return AuthenticateResult.Fail("Invalid basic authentication header format.");
 				}
 
-				if (signInContext.Skipped)
-					return AuthenticateResult.Success(null);
+				var username = decodedCredentials.Substring(0, index);
+				var password = decodedCredentials.Substring(index + 1);
 
-				var credentials = Options.Credentials.Where(c => c.Username == username && c.Password == password).FirstOrDefault();
+				// invoke sign in event
+				var signInContext = new BasicSignInContext(Context, Scheme, Options)
+				{
+					Username = username,
+					Password = password,
+				};
+				await Events.SignIn(signInContext);
+
+				if (signInContext.Result != null)
+				{
+					return signInContext.Result;
+				}
+
+				// allow sign in event to modify received credentials
+				username = signInContext.Username;
+				password = signInContext.Password;
+
+				// verify credentials against options
+				BasicCredential credentials = null;
+				for (var i = 0; i < Options.Credentials.Length; i++)
+				{
+					var currentCredentials = Options.Credentials[i];
+
+					if (currentCredentials.Username == username && currentCredentials.Password == password)
+					{
+						credentials = currentCredentials;
+						break;
+					}
+				}
 				if (credentials == null)
+				{
 					return AuthenticateResult.Fail("Invalid basic authentication credentials.");
+				}
 
-				var claims = credentials.Claims.Select(c => new Claim(c.Type, c.Value)).ToList();
-				if (!claims.Any(c => c.Type == ClaimTypes.Name))
-					claims.Add(new Claim(ClaimTypes.Name, username));
+				var claims = new Claim[credentials.Claims.Length + 1];
+				claims[0] = new Claim(ClaimsIdentity.DefaultNameClaimType, credentials.Username);
+				for (var i = 0; i < credentials.Claims.Length; i++)
+				{
+					var currentClaim = credentials.Claims[i];
 
-				var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, Options.AuthenticationScheme));
+					claims[i] = new Claim(currentClaim.Type, currentClaim.Value);
+				}
 
-				var ticket = new AuthenticationTicket(principal, new AuthenticationProperties(), Options.AuthenticationScheme);
+				var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, Scheme.Name));
 
-                return AuthenticateResult.Success(ticket);
-            }
-            catch (Exception ex)
-            {
-                var exceptionContext = new BasicExceptionContext(Context, Options, ex);
+				var ticket = new AuthenticationTicket(principal, new AuthenticationProperties(), Scheme.Name);
 
-				await Options.Events.Exception(exceptionContext);
+				return AuthenticateResult.Success(ticket);
+			}
+			catch (Exception ex)
+			{
+				var authenticationFailedContext = new AuthenticationFailedContext(Context, Scheme, Options)
+				{
+					Exception = ex,
+				};
 
-				if (exceptionContext.HandledResponse)
-					return AuthenticateResult.Success(exceptionContext.Ticket);
-
-				if (exceptionContext.Skipped)
-					return AuthenticateResult.Success(null);
+				await Events.AuthenticationFailed(authenticationFailedContext);
+				if (authenticationFailedContext.Result != null)
+				{
+					return authenticationFailedContext.Result;
+				}
 
 				throw;
-            }
-        }
+			}
+		}
 
-        protected override Task<bool> HandleUnauthorizedAsync(ChallengeContext context)
-        {
+		protected override Task HandleChallengeAsync(AuthenticationProperties properties)
+		{
 			Response.StatusCode = 401;
-			Response.Headers[ChallengeHeader] = "Basic realm=\"" + Options.Realm + "\"";
-			return Task.FromResult(false);
-		}
+			Response.Headers.Append(HeaderNames.WWWAuthenticate, $"Basic realm=\"{Options.Realm}\"");
 
-		protected override Task HandleSignOutAsync(SignOutContext context)
-		{
-			throw new NotSupportedException();
-		}
-
-		protected override Task HandleSignInAsync(SignInContext context)
-		{
-			throw new NotSupportedException();
+			return Task.CompletedTask;
 		}
 	}
 }

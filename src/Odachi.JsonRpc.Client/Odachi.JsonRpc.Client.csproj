@@ -4,12 +4,12 @@
 
 	<PropertyGroup>
 		<Description>JsonRpc client base.</Description>
-		<TargetFrameworks>netstandard1.1</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
+	  <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
 	</ItemGroup>
 
   <ItemGroup>

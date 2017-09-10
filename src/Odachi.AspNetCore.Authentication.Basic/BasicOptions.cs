@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,15 +12,8 @@ namespace Odachi.AspNetCore.Authentication.Basic
 	/// <summary>
 	/// Contains the options used by the <see cref="BasicMiddleware"/>.
 	/// </summary>
-	public class BasicOptions : AuthenticationOptions, IOptions<BasicOptions>
+	public class BasicOptions : AuthenticationSchemeOptions
 	{
-		public BasicOptions()
-		{
-			AuthenticationScheme = BasicDefaults.AuthenticationScheme;
-			AutomaticAuthenticate = true;
-			AutomaticChallenge = true;
-		}
-
 		/// <summary>
 		/// The default realm used by basic authentication.
 		/// </summary>
@@ -32,18 +25,14 @@ namespace Odachi.AspNetCore.Authentication.Basic
 		public BasicCredential[] Credentials { get; set; } = new BasicCredential[0];
 
 		/// <summary>
-		/// The Provider may be assigned to an instance of an object created by the application at startup time. The middleware
-		/// calls methods on the provider which give the application control at certain points where processing is occuring.
-		/// If it is not provided a default instance is supplied which does nothing when the methods are called.
+		/// The object provided by the application to process events raised by the bearer authentication handler.
+		/// The application may implement the interface fully, or it may create an instance of JwtBearerEvents
+		/// and assign delegates only to the events it wants to process.
 		/// </summary>
-		public IBasicEvents Events { get; set; } = new BasicEvents();
-
-		BasicOptions IOptions<BasicOptions>.Value
+		public new BasicEvents Events
 		{
-			get
-			{
-				return this;
-			}
+			get { return (BasicEvents)base.Events; }
+			set { base.Events = value; }
 		}
 	}
 }

@@ -1,8 +1,9 @@
-﻿<Project>
+<Project>
 
 	<PropertyGroup>
-		<VersionPrefix>1.3.0</VersionPrefix>
+		<VersionPrefix>2.0.0</VersionPrefix>
 	</PropertyGroup>
+
 
 	<PropertyGroup>
 		<Product>Odachi</Product>
@@ -10,7 +11,7 @@
 		<RepositoryUrl>https://github.com/Kukkimonsuta/Odachi</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseUrl>https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE</PackageLicenseUrl>
-		<NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+		<NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
 	</PropertyGroup>
 
   <PropertyGroup>

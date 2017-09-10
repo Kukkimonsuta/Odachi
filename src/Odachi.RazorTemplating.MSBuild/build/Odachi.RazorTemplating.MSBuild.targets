@@ -1,29 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <RazorTemplatingAssemblyFile Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)..\tools\netstandard1.3\Odachi.RazorTemplating.MSBuild.dll</RazorTemplatingAssemblyFile>
-    <RazorTemplatingAssemblyFile Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)..\tools\net46\Odachi.RazorTemplating.MSBuild.dll</RazorTemplatingAssemblyFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<RazorTemplatingAssemblyFile Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)..\tools\netstandard2.0\Odachi.RazorTemplating.MSBuild.dll</RazorTemplatingAssemblyFile>
+		<RazorTemplatingAssemblyFile Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)..\tools\net462\Odachi.RazorTemplating.MSBuild.dll</RazorTemplatingAssemblyFile>
+	</PropertyGroup>
 
-  <UsingTask AssemblyFile="$(RazorTemplatingAssemblyFile)" TaskName="Odachi.RazorTemplating.MSBuild.TransformTemplatesTask"/>
+	<UsingTask AssemblyFile="$(RazorTemplatingAssemblyFile)" TaskName="Odachi.RazorTemplating.MSBuild.TransformTemplatesTask"/>
 
-  <PropertyGroup>
-    <BuildDependsOn>RazorTemplatingTransformTemplates; $(BuildDependsOn)</BuildDependsOn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<BuildDependsOn>RazorTemplatingTransformTemplates; $(BuildDependsOn)</BuildDependsOn>
+	</PropertyGroup>
 
-  <Target Name="RazorTemplatingTransformTemplates">
-    <ItemGroup>
-      <RazorTemplatingSourceFiles Include="@(None)" Condition="'%(Extension)' == '.cshtml'" />
-      <RazorTemplatingSourceFiles Include="@(Content)" Condition="'%(Extension)' == '.cshtml'" />
-    </ItemGroup>
-    <Odachi.RazorTemplating.MSBuild.TransformTemplatesTask
-			ProjectDirectory="$(MSBuildProjectDirectory)"
-      InputItems="@(RazorTemplatingSourceFiles)"
-    >
-      <Output TaskParameter="OutputItems" ItemName="RazorTemplatingOutputFiles" />
-    </Odachi.RazorTemplating.MSBuild.TransformTemplatesTask>
-    <ItemGroup>
-      <Compile Include="@(RazorTemplatingOutputFiles)" Exclude="@(Compile)" />
-    </ItemGroup>
-  </Target>
+	<Target Name="RazorTemplatingTransformTemplates">
+		<ItemGroup>
+			<RazorTemplatingSourceFiles Include="@(None)" Condition="'%(Extension)' == '.cshtml'" />
+			<RazorTemplatingSourceFiles Include="@(Content)" Condition="'%(Extension)' == '.cshtml'" />
+		</ItemGroup>
+		<Odachi.RazorTemplating.MSBuild.TransformTemplatesTask ProjectDirectory="$(MSBuildProjectDirectory)" InputItems="@(RazorTemplatingSourceFiles)">
+			<Output TaskParameter="OutputItems" ItemName="RazorTemplatingOutputFiles" />
+		</Odachi.RazorTemplating.MSBuild.TransformTemplatesTask>
+		<ItemGroup>
+			<Compile Include="@(RazorTemplatingOutputFiles)" Exclude="@(Compile)" />
+		</ItemGroup>
+	</Target>
 </Project>

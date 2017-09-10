@@ -1,11 +1,38 @@
-﻿using Microsoft.AspNetCore.Razor;
+using Microsoft.AspNetCore.Razor;
+using Microsoft.AspNetCore.Razor.Language;
+using Microsoft.AspNetCore.Razor.Language.Extensions;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Odachi.RazorTemplating.Internal;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Odachi.RazorTemplating
 {
+	public class ChangeNamespacePass : IntermediateNodePassBase, IRazorDocumentClassifierPass
+	{
+		public ChangeNamespacePass(string projectDirectory, string rootNamespace)
+		{
+			ProjectDirectory = projectDirectory;
+			RootNamespace = rootNamespace;
+		}
+
+		public string ProjectDirectory { get; }
+		public string RootNamespace { get; }
+
+		public override int Order => 1100;
+
+		protected override void ExecuteCore(RazorCodeDocument codeDocument, DocumentIntermediateNode documentNode)
+		{
+			var @namespace = documentNode.FindPrimaryNamespace();
+			var @class = documentNode.FindPrimaryClass();
+
+			@namespace.Content = $"{RootNamespace}.{PathTools.GetRelativePath($"{ProjectDirectory}{Path.DirectorySeparatorChar}", Path.GetDirectoryName(codeDocument.Source.FilePath)).Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.')}";
+			@class.ClassName = Path.GetFileNameWithoutExtension(codeDocument.Source.FilePath);
+		}
+	}
+
 	public class RazorTemplater
 	{
 		private static readonly char[] DirectorySeparatorChars = new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
@@ -22,20 +49,17 @@ namespace Odachi.RazorTemplating
 			RootNamespace = rootNamespace ?? Path.GetFileName(ProjectDirectory);
 			Encoding = encoding ?? new UTF8Encoding(false);
 
-			language = new CSharpRazorCodeLanguage();
-			host = new RazorEngineHost(language);
-			host.NamespaceImports.Add("System");
-			host.GeneratedClassContext = new Microsoft.AspNetCore.Razor.CodeGenerators.GeneratedClassContext(
-				"ExecuteAsync", "Write", "WriteLiteral",
-				"WriteTo", "WriteLiteralTo", null, "DefineSection",
-				new Microsoft.AspNetCore.Razor.CodeGenerators.GeneratedTagHelperContext()
-			);
-			engine = new RazorTemplateEngine(host);
+			engine = RazorEngine.Create(config =>
+			{
+				InheritsDirective.Register(config);
+
+				config.Features.Add(new ChangeNamespacePass(ProjectDirectory, RootNamespace));
+			});
+			templateEngine = new RazorTemplateEngine(engine, RazorProject.Create(ProjectDirectory));
 		}
 
-		private RazorCodeLanguage language;
-		private RazorEngineHost host;
-		private RazorTemplateEngine engine;
+		private RazorEngine engine;
+		private RazorTemplateEngine templateEngine;
 
 		public string ProjectDirectory { get; }
 		public string RootNamespace { get; }
@@ -47,13 +71,11 @@ namespace Odachi.RazorTemplating
 			inputFileName = Path.GetFullPath(inputFileName);
 			outputFileName = Path.GetFullPath(outputFileName);
 
-			var className = Path.GetFileNameWithoutExtension(inputFileName);
-			var @namespace = $"{RootNamespace}.{PathTools.GetRelativePath($"{ProjectDirectory}{Path.DirectorySeparatorChar}", Path.GetDirectoryName(inputFileName)).Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.')}";
-
 			using (var stream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
 			using (var reader = new StreamReader(stream))
 			{
-				var result = engine.GenerateCode(reader, className, @namespace, PathTools.GetRelativePath(outputFileName, inputFileName));
+				var codeDocument = templateEngine.CreateCodeDocument(inputFileName);
+				var result = templateEngine.GenerateCode(codeDocument);
 
 				using (var outputStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
 				using (var writer = new StreamWriter(outputStream, Encoding))

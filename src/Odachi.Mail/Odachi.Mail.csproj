@@ -9,8 +9,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Text.Encodings.Web" Version="4.3.0" />
-		<PackageReference Include="MimeKit" Version="1.14.1" />
+		<PackageReference Include="System.Text.Encodings.Web" Version="4.4.0" />
+		<PackageReference Include="MimeKit" Version="1.18.0" />
 	</ItemGroup>
 
 </Project>

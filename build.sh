@@ -22,53 +22,50 @@ dotnet --info
 echo
 echo "Build & pack libraries.."
 echo
-_build "./src/Odachi.Abstractions" netstandard13
-_build "./src/Odachi.Annotations" netstandard13
-_build "./src/Odachi.AspNetCore.Authentication.Basic" netstandard15
-_build "./src/Odachi.AspNetCore.JsonRpc" netstandard15
-_build "./src/Odachi.AspNetCore.Mvc" netstandard15
-_build "./src/Odachi.AspNetCore.MvcPages" netstandard15
-_build "./src/Odachi.CodeGen" netstandard13
-_build "./src/Odachi.CodeGen.CSharp" netstandard16
-_build "./src/Odachi.CodeGen.TypeScript" netstandard16
-_build "./src/Odachi.CodeModel" netstandard15
-_build "./src/Odachi.CodeModel.Providers.FluentValidation" netstandard15
-_build "./src/Odachi.CodeModel.Providers.JsonRpc" netstandard15
-_build "./src/Odachi.CodeModel.Providers.Validation" netstandard15
-_build "./src/Odachi.EntityFrameworkCore" netstandard13
-_build "./src/Odachi.Extensions.Collections" netstandard13
-_build "./src/Odachi.Extensions.Formatting" netstandard15
-_build "./src/Odachi.Extensions.Primitives" netstandard13
-_build "./src/Odachi.Extensions.Reflection" netstandard13
-_build "./src/Odachi.Gettext" netstandard13
-_build "./src/Odachi.JsonRpc.Client" netstandard11
-_build "./src/Odachi.JsonRpc.Client.Http" netstandard11
-_build "./src/Odachi.JsonRpc.Common" netstandard11
-_build "./src/Odachi.Localization" netstandard13
-_build "./src/Odachi.Localization.Extraction" netstandard15
-_build "./src/Odachi.Mail" netstandard13
-_build "./src/Odachi.RazorTemplating" netstandard13
-_build "./src/Odachi.RazorTemplating.MSBuild" netstandard13
-_build "./src/Odachi.Security" netstandard13
-_build "./src/Odachi.Validation" netstandard13
+_build "./src/Odachi.Abstractions" netstandard1.3
+_build "./src/Odachi.Annotations" netstandard1.3
+_build "./src/Odachi.AspNetCore.Authentication.Basic" netstandard2.0
+_build "./src/Odachi.AspNetCore.JsonRpc" netstandard2.0
+_build "./src/Odachi.AspNetCore.Mvc" netstandard2.0
+_build "./src/Odachi.AspNetCore.MvcPages" netstandard2.0
+_build "./src/Odachi.CodeGen" netstandard1.3
+_build "./src/Odachi.CodeGen.CSharp" netstandard1.6
+_build "./src/Odachi.CodeGen.TypeScript" netstandard1.6
+_build "./src/Odachi.CodeModel" netstandard1.5
+_build "./src/Odachi.CodeModel.Providers.FluentValidation" netstandard1.5
+_build "./src/Odachi.CodeModel.Providers.JsonRpc" netstandard2.0
+_build "./src/Odachi.CodeModel.Providers.Validation" netstandard1.5
+_build "./src/Odachi.EntityFrameworkCore" netstandard2.0
+_build "./src/Odachi.Extensions.Collections" netstandard1.3
+_build "./src/Odachi.Extensions.Formatting" netstandard1.5
+_build "./src/Odachi.Extensions.Primitives" netstandard1.3
+_build "./src/Odachi.Extensions.Reflection" netstandard1.3
+_build "./src/Odachi.Gettext" netstandard1.3
+_build "./src/Odachi.JsonRpc.Client" netstandard2.0
+_build "./src/Odachi.JsonRpc.Client.Http" netstandard2.0
+_build "./src/Odachi.JsonRpc.Common" netstandard2.0
+_build "./src/Odachi.Mail" netstandard1.3
+_build "./src/Odachi.RazorTemplating" netstandard2.0
+_build "./src/Odachi.RazorTemplating.MSBuild" netstandard2.0
+_build "./src/Odachi.Security" netstandard1.3
+_build "./src/Odachi.Validation" netstandard1.0
 
 echo
 echo "Build samples.."
 echo
-_build "./samples/BasicAuthenticationSample" netcoreapp1.1
-_build "./samples/JsonRpcSample" netcoreapp1.1
-_build "./samples/JsonRpcClientSample" netcoreapp1.1
-_build "./samples/MailSample" netcoreapp1.1
+_build "./samples/BasicAuthenticationSample" netcoreapp2.0
+_build "./samples/JsonRpcSample" netcoreapp2.0
+_build "./samples/JsonRpcClientSample" netcoreapp2.0
+_build "./samples/MailSample" netcoreapp2.0
 
 echo
 echo "Build & run test.."
 echo
-_test "./test/Odachi.AspNetCore.JsonRpc.Tests" netcoreapp11
-_test "./test/Odachi.CodeGen.Tests" netcoreapp11
-_test "./test/Odachi.Extensions.Formatting.Tests" netcoreapp11
-_test "./test/Odachi.Extensions.Primitives.Tests" netcoreapp11
-_test "./test/Odachi.Extensions.Reflection.Tests" netcoreapp11
-_test "./test/Odachi.Gettext.Tests" netcoreapp11
-_test "./test/Odachi.Localization.Extraction.Tests" netcoreapp11
-_test "./test/Odachi.RazorTemplating.Tests" netcoreapp11
-_test "./test/Odachi.Security.Tests" netcoreapp11
+_test "./test/Odachi.AspNetCore.JsonRpc.Tests" netcoreapp2.0
+_test "./test/Odachi.CodeGen.Tests" netcoreapp2.0
+_test "./test/Odachi.Extensions.Formatting.Tests" netcoreapp2.0
+_test "./test/Odachi.Extensions.Primitives.Tests" netcoreapp2.0
+_test "./test/Odachi.Extensions.Reflection.Tests" netcoreapp2.0
+_test "./test/Odachi.Gettext.Tests" netcoreapp2.0
+_test "./test/Odachi.RazorTemplating.Tests" netcoreapp2.0
+_test "./test/Odachi.Security.Tests" netcoreapp2.0

@@ -1,29 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-		<Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\common.props" />
 
-		<PropertyGroup>
-				<TargetFramework>netcoreapp1.1</TargetFramework>
-				<OutputType>Exe</OutputType>
-		</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
 
-		<ItemGroup>
-				<EmbeddedResource Include="Resources/**/*" />
-		</ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources/**/*" />
+  </ItemGroup>
 
-		<ItemGroup>
-				<ProjectReference Include="../../src/Odachi.Mail/Odachi.Mail.csproj" />
+  <ItemGroup>
+    <ProjectReference Include="../../src/Odachi.Mail/Odachi.Mail.csproj" />
 
-				<!--
-        must be installed as package and not project reference to make injecting of msbuild target work
-        -->
-				<PackageReference Include="Odachi.RazorTemplating.MSBuild" Condition="'$(VersionSuffix)' == ''" Version="$(VersionPrefix)" />
-				<PackageReference Include="Odachi.RazorTemplating.MSBuild" Condition="'$(VersionSuffix)' != ''" Version="$(VersionPrefix)-$(VersionSuffix)" />
-		</ItemGroup>
+    <!--
+      must be installed as package and not project reference to make injecting of msbuild target work
+    -->
+    <PackageReference Include="Odachi.RazorTemplating.MSBuild" Condition="'$(VersionSuffix)' == ''" Version="$(VersionPrefix)" />
+    <PackageReference Include="Odachi.RazorTemplating.MSBuild" Condition="'$(VersionSuffix)' != ''" Version="$(VersionPrefix)-$(VersionSuffix)" />
+  </ItemGroup>
 
-		<ItemGroup>
-				<Folder Include="Resources\" />
-				<Folder Include="Properties\" />
-		</ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
 
 </Project>

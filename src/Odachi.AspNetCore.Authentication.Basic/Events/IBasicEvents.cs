@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Odachi.AspNetCore.Authentication.Basic
 {
@@ -7,17 +7,17 @@ namespace Odachi.AspNetCore.Authentication.Basic
     /// </summary>
     public interface IBasicEvents
     {
-        /// <summary>
-        /// Called when a request came with basic authentication credentials. By implementing this method the credentials can be converted to
-        /// a principal.
-        /// </summary>
-        /// <param name="context">Contains information about the sign in request.</param>
-        Task SignIn(BasicSignInContext context);
+		/// <summary>
+		/// Called when an exception occurs during request or response processing.
+		/// </summary>
+		/// <param name="context">Contains information about the exception that occurred</param>
+		Task AuthenticationFailed(AuthenticationFailedContext context);
 
-        /// <summary>
-        /// Called when an exception occurs during request or response processing.
-        /// </summary>
-        /// <param name="context">Contains information about the exception that occurred</param>
-        Task Exception(BasicExceptionContext context);
-    }
+		/// <summary>
+		/// Called when a request came with basic authentication credentials. By implementing this method the credentials can be converted to
+		/// a principal.
+		/// </summary>
+		/// <param name="context">Contains information about the sign in request.</param>
+		Task SignIn(BasicSignInContext context);
+	}
 }

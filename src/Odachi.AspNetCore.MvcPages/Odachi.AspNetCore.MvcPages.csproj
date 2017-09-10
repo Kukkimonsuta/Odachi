@@ -2,15 +2,15 @@
 
 	<Import Project="..\..\tools\common.props" />
 
-	<PropertyGroup>
+  <PropertyGroup>
 		<Description>Alternative way to structure MVC projects.</Description>
-		<TargetFrameworks>net451;netstandard1.6</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="1.1.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="1.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.0.0" />
 	</ItemGroup>
 
 </Project>

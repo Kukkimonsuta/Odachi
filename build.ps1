@@ -95,8 +95,6 @@ Pack(".\src\Odachi.Gettext")
 Pack(".\src\Odachi.JsonRpc.Client")
 Pack(".\src\Odachi.JsonRpc.Client.Http")
 Pack(".\src\Odachi.JsonRpc.Common")
-Pack(".\src\Odachi.Localization")
-Pack(".\src\Odachi.Localization.Extraction")
 Pack(".\src\Odachi.Mail")
 Pack(".\src\Odachi.RazorTemplating")
 Build(".\src\Odachi.RazorTemplating.MSBuild"); # to generate package in right location for MailSample
@@ -121,6 +119,5 @@ Test(".\test\Odachi.Extensions.Formatting.Tests");
 Test(".\test\Odachi.Extensions.Primitives.Tests");
 Test(".\test\Odachi.Extensions.Reflection.Tests");
 Test(".\test\Odachi.Gettext.Tests");
-Test(".\test\Odachi.Localization.Extraction.Tests");
 Test(".\test\Odachi.RazorTemplating.Tests");
 Test(".\test\Odachi.Security.Tests");
