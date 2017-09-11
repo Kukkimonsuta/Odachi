@@ -111,7 +111,7 @@ namespace Odachi.AspNetCore.Authentication.Basic
 				{
 					var currentClaim = credentials.Claims[i];
 
-					claims[i] = new Claim(currentClaim.Type, currentClaim.Value);
+					claims[i + 1] = new Claim(currentClaim.Type, currentClaim.Value);
 				}
 
 				var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, Scheme.Name));
