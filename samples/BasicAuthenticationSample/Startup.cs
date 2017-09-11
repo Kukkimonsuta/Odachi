@@ -32,8 +32,10 @@ namespace BasicAuthenticationSample
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.Configure<BasicOptions>(BasicScheme, Configuration.GetSection("BasicAuthentication"));
+
 			services.AddAuthentication()
-				.AddBasic(BasicScheme, options => Configuration.GetSection("BasicAuthentication").Bind(options))
+				.AddBasic(BasicScheme, _ => { })
 				.AddBasic(CustomBasicScheme, options =>
 				{
 					options.Realm = "Custom authentication logic";
