@@ -10,9 +10,10 @@ namespace Odachi.CodeModel
 {
 	public enum TypeKind
 	{
+		Array,
+		Enum,
 		Primitive,
 		Interface,
-		Enum,
 		Struct,
 		Class,
 	}
@@ -25,14 +26,17 @@ namespace Odachi.CodeModel
 		}
 		public static TypeKind GetTypeKind(this TypeInfo info)
 		{
+			if (info.IsArray)
+				return TypeKind.Array;
+
+			if (info.IsEnum)
+				return TypeKind.Enum;
+
 			if (info.IsPrimitive)
 				return TypeKind.Primitive;
 
 			if (info.IsInterface)
 				return TypeKind.Interface;
-
-			if (info.IsEnum)
-				return TypeKind.Enum;
 
 			if (info.IsValueType)
 				return TypeKind.Struct;
