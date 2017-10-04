@@ -10,7 +10,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="System.Text.Encodings.Web" Version="4.4.0" />
-		<PackageReference Include="MimeKit" Version="1.18.0" />
+		<PackageReference Include="MimeKit" Version="1.18.1" />
 	</ItemGroup>
 
 </Project>
