@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -97,7 +97,24 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				JToken idJson;
 				object id = null;
 				if (requestJson.TryGetValue("id", out idJson))
-					id = idJson.Value<object>();
+				{
+					switch (idJson.Type)
+					{
+						case JTokenType.Null:
+							break;
+
+						case JTokenType.String:
+							id = idJson.Value<string>();
+							break;
+
+						case JTokenType.Integer:
+							id = idJson.Value<int>();
+							break;
+
+						default:
+							throw new JsonRpcException(JsonRpcError.INVALID_REQUEST, "Invalid request (wrong id type)");
+					}
+				}
 
 				JToken methodJson;
 				string method;
