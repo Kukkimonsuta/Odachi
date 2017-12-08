@@ -31,9 +31,7 @@ namespace Odachi.Mail
 		internal MailTemplateContext Context { get; set; }
 		internal IDictionary<string, Func<TextWriter, Task>> Sections { get; set; }
 
-		#region Razor (mostly butchered from https://github.com/aspnet/Mvc/blob/rel/1.1.2/src/Microsoft.AspNetCore.Mvc.Razor/RazorPage.cs)
-
-		// TODO: Needs to be updated to 2.0.0
+		#region Razor (mostly butchered from https://github.com/aspnet/Mvc/blob/rel/2.0.0/src/Microsoft.AspNetCore.Mvc.Razor/RazorPage.cs)
 
 		private AttributeInfo _attributeInfo;
 
@@ -56,7 +54,7 @@ namespace Odachi.Mail
 			if (value == null)
 				return;
 
-			WriteTo(Output, value.ToString());
+			Write(value.ToString());
 		}
 		protected void Write(string value)
 		{
@@ -64,27 +62,6 @@ namespace Odachi.Mail
 				throw new InvalidOperationException("No output writer defined");
 
 			if (value == null)
-				return;
-
-			WriteTo(Output, value);
-		}
-
-		protected void WriteTo(TextWriter writer, object value)
-		{
-			if (writer == null)
-				throw new ArgumentNullException(nameof(writer));
-
-			if (value == null)
-				return;
-
-			WriteTo(writer, value.ToString());
-		}
-		protected void WriteTo(TextWriter writer, string value)
-		{
-			if (writer == null)
-				throw new ArgumentNullException(nameof(writer));
-
-			if (string.IsNullOrEmpty(value))
 				return;
 
 			HtmlEncoder.Default.Encode(Output, value);
@@ -98,7 +75,7 @@ namespace Odachi.Mail
 			if (value == null)
 				return;
 
-			WriteLiteralTo(Output, value.ToString());
+			WriteLiteral(value.ToString());
 		}
 		protected void WriteLiteral(string value)
 		{
@@ -108,39 +85,11 @@ namespace Odachi.Mail
 			if (value == null)
 				return;
 
-			WriteLiteralTo(Output, value);
-		}
-
-		protected void WriteLiteralTo(TextWriter writer, object value)
-		{
-			if (writer == null)
-				throw new ArgumentNullException(nameof(writer));
-
-			if (value == null)
-				return;
-
-			WriteLiteralTo(writer, value.ToString());
-		}
-		protected void WriteLiteralTo(TextWriter writer, string value)
-		{
-			if (writer == null)
-				throw new ArgumentNullException(nameof(writer));
-
-			if (string.IsNullOrEmpty(value))
-				return;
-
-			writer.Write(value);
+			Output.Write(value);
 		}
 
 		public virtual void BeginWriteAttribute(string name, string prefix, int prefixOffset, string suffix, int suffixOffset, int attributeValuesCount)
 		{
-			BeginWriteAttributeTo(Output, name, prefix, prefixOffset, suffix, suffixOffset, attributeValuesCount);
-		}
-
-		public virtual void BeginWriteAttributeTo(TextWriter writer, string name, string prefix, int prefixOffset, string suffix, int suffixOffset, int attributeValuesCount)
-		{
-			if (writer == null)
-				throw new ArgumentNullException(nameof(writer));
 			if (prefix == null)
 				throw new ArgumentNullException(nameof(prefix));
 			if (suffix == null)
@@ -152,16 +101,11 @@ namespace Odachi.Mail
 			// null  or false. Consequently defer the prefix generation until we encounter the attribute value.
 			if (attributeValuesCount != 1)
 			{
-				WritePositionTaggedLiteral(writer, prefix, prefixOffset);
+				WritePositionTaggedLiteral(prefix, prefixOffset);
 			}
 		}
 
 		public void WriteAttributeValue(string prefix, int prefixOffset, object value, int valueOffset, int valueLength, bool isLiteral)
-		{
-			WriteAttributeValueTo(Output, prefix, prefixOffset, value, valueOffset, valueLength, isLiteral);
-		}
-
-		public void WriteAttributeValueTo(TextWriter writer, string prefix, int prefixOffset, object value, int valueOffset, int valueLength, bool isLiteral)
 		{
 			if (_attributeInfo.AttributeValuesCount == 1)
 			{
@@ -173,7 +117,7 @@ namespace Odachi.Mail
 				}
 
 				// We are not omitting the attribute. Write the prefix.
-				WritePositionTaggedLiteral(writer, _attributeInfo.Prefix, _attributeInfo.PrefixOffset);
+				WritePositionTaggedLiteral(_attributeInfo.Prefix, _attributeInfo.PrefixOffset);
 
 				if (string.IsNullOrEmpty(prefix) && (value is bool && (bool)value))
 				{
@@ -189,55 +133,47 @@ namespace Odachi.Mail
 			{
 				if (!string.IsNullOrEmpty(prefix))
 				{
-					WritePositionTaggedLiteral(writer, prefix, prefixOffset);
+					WritePositionTaggedLiteral(prefix, prefixOffset);
 				}
 
-				WriteUnprefixedAttributeValueTo(writer, value, isLiteral);
+				WriteUnprefixedAttributeValue(value, isLiteral);
 			}
 		}
 
 		public virtual void EndWriteAttribute()
 		{
-			EndWriteAttributeTo(Output);
-		}
-
-		public virtual void EndWriteAttributeTo(TextWriter writer)
-		{
-			if (writer == null)
-				throw new ArgumentNullException(nameof(writer));
-
 			if (!_attributeInfo.Suppressed)
 			{
-				WritePositionTaggedLiteral(writer, _attributeInfo.Suffix, _attributeInfo.SuffixOffset);
+				WritePositionTaggedLiteral(_attributeInfo.Suffix, _attributeInfo.SuffixOffset);
 			}
 		}
 
-		private void WriteUnprefixedAttributeValueTo(TextWriter writer, object value, bool isLiteral)
+		private void WriteUnprefixedAttributeValue(object value, bool isLiteral)
 		{
 			var stringValue = value as string;
 
 			// The extra branching here is to ensure that we call the Write*To(string) overload where possible.
 			if (isLiteral && stringValue != null)
 			{
-				WriteLiteralTo(writer, stringValue);
+				WriteLiteral(stringValue);
 			}
 			else if (isLiteral)
 			{
-				WriteLiteralTo(writer, value);
+				WriteLiteral(value);
 			}
 			else if (stringValue != null)
 			{
-				WriteTo(writer, stringValue);
+				Write(stringValue);
 			}
 			else
 			{
-				WriteTo(writer, value);
+				Write(value);
 			}
 		}
 
-		private void WritePositionTaggedLiteral(TextWriter writer, string value, int position)
+		private void WritePositionTaggedLiteral(string value, int position)
 		{
-			WriteLiteralTo(writer, value);
+			WriteLiteral(value);
 		}
 
 		#endregion
@@ -337,6 +273,7 @@ namespace Odachi.Mail
 
 			public bool Suppressed { get; set; }
 		}
+
 
 		#endregion
 	}

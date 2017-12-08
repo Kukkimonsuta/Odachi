@@ -1,15 +1,16 @@
-﻿using Odachi.CodeModel.Mapping;
+using Odachi.CodeModel.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Odachi.CodeModel.Builders.Abstraction;
+using Odachi.CodeModel.Description;
 
 namespace Odachi.CodeModel.Builders
 {
-	public class ParameterFragmentBuilder : BuilderBase<ParameterFragmentBuilder, ParameterFragment>
+	public class ParameterBuilder : BuilderBase<ParameterBuilder, ParameterFragment>
 	{
-		public ParameterFragmentBuilder(PackageContext context, string name, ITypeReference type, object source)
+		public ParameterBuilder(PackageContext context, string name, ITypeReference type, object source)
 			: base(context, name)
 		{
 			if (type == null)
@@ -18,7 +19,7 @@ namespace Odachi.CodeModel.Builders
 			Type = type;
 			Source = source;
 
-			// todo: describe
+			Context.ParameterDescriptors.Describe(this);
 		}
 
 		public ITypeReference Type { get; }

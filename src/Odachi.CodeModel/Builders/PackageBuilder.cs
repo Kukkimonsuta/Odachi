@@ -1,4 +1,4 @@
-﻿using Odachi.CodeModel.Description;
+using Odachi.CodeModel.Description;
 using Odachi.CodeModel.Mapping;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,7 @@ namespace Odachi.CodeModel.Builders
 			ClassDescriptors = new List<IClassDescriptor>() { new DefaultClassDescriptor() };
 			FieldDescriptors = new List<IFieldDescriptor>() { new DefaultFieldDescriptor() };
 			MethodDescriptors = new List<IMethodDescriptor>() { new DefaultMethodDescriptor() };
+			ParameterDescriptors = new List<IParameterDescriptor>() { new DefaultParameterDescriptor() };
 			EnumDescriptors = new List<IEnumDescriptor>() { new DefaultEnumDescriptor() };
 			EnumItemDescriptors = new List<IEnumItemDescriptor>() { new DefaultEnumItemDescriptor() };
 			TypeMapper = new TypeMapper();
@@ -34,6 +35,7 @@ namespace Odachi.CodeModel.Builders
 			ClassDescriptors = copyFromContext.ClassDescriptors;
 			FieldDescriptors = copyFromContext.FieldDescriptors;
 			MethodDescriptors = copyFromContext.MethodDescriptors;
+			ParameterDescriptors = copyFromContext.ParameterDescriptors;
 			EnumDescriptors = copyFromContext.EnumDescriptors;
 			EnumItemDescriptors = copyFromContext.EnumItemDescriptors;
 			TypeMapper = copyFromContext.TypeMapper;
@@ -44,6 +46,7 @@ namespace Odachi.CodeModel.Builders
 		public IList<IClassDescriptor> ClassDescriptors { get; }
 		public IList<IFieldDescriptor> FieldDescriptors { get; }
 		public IList<IMethodDescriptor> MethodDescriptors { get; }
+		public IList<IParameterDescriptor> ParameterDescriptors { get; }
 		public IList<IEnumDescriptor> EnumDescriptors { get; }
 		public IList<IEnumItemDescriptor> EnumItemDescriptors { get; }
 		public TypeMapper TypeMapper { get; }

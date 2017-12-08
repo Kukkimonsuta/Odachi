@@ -1,4 +1,4 @@
-﻿using Odachi.CodeModel.Description;
+using Odachi.CodeModel.Description;
 using Odachi.CodeModel.Mapping;
 using System;
 using System.Collections.Generic;
@@ -22,13 +22,13 @@ namespace Odachi.CodeModel.Builders
 			Context.MethodDescriptors.Describe(this);
 		}
 
-		public IList<ParameterFragmentBuilder> Parameters { get; } = new List<ParameterFragmentBuilder>();
+		public IList<ParameterBuilder> Parameters { get; } = new List<ParameterBuilder>();
 		public ITypeReference ReturnType { get; }
 		public object Source { get; }
 
-		public MethodBuilder Parameter(string name, ITypeReference type, object source, Action<ParameterFragmentBuilder> configure = null)
+		public MethodBuilder Parameter(string name, ITypeReference type, object source, Action<ParameterBuilder> configure = null)
 		{
-			var parameterBuilder = new ParameterFragmentBuilder(Context, name, type, source);
+			var parameterBuilder = new ParameterBuilder(Context, name, type, source);
 
 			configure?.Invoke(parameterBuilder);
 

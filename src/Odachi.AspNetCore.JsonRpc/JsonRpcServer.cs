@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,11 +8,14 @@ using Odachi.AspNetCore.JsonRpc.Behaviors;
 using Microsoft.Extensions.Logging;
 using Odachi.AspNetCore.JsonRpc.Model;
 using Odachi.JsonRpc.Common;
+using System.Diagnostics;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
 	public class JsonRpcServer
 	{
+		private static readonly double TimestampToTicks = TimeSpan.TicksPerSecond / (double)Stopwatch.Frequency;
+
 		public JsonRpcServer(ILoggerFactory loggerFactory, JsonRpcMethodCollection methods, JsonRpcBehaviorCollection behaviors)
 		{
 			if (methods == null)
@@ -35,75 +38,90 @@ namespace Odachi.AspNetCore.JsonRpc
 			if (context == null)
 				throw new ArgumentNullException(nameof(context));
 
-			try
+			using (_logger.BeginScope(new Dictionary<string, object>()
 			{
-				var request = context.Request;
+				["JsonRpcRequestId"] = context.Request.Id,
+				["JsonRpcRequestMethod"] = context.Request.Method,
+			}))
+			{
+				_logger.LogInformation(JsonRpcLogEvents.RequestStarting, "Rpc request starting: {Method}", context.Request.Method);
+				var startTimestamp = Stopwatch.GetTimestamp();
 
-				JsonRpcMethod method;
-
-				if (!Methods.TryGetMethod(request.Method, out method))
+				try
 				{
-					context.SetResponse(JsonRpcError.METHOD_NOT_FOUND);
-					return;
-				}
+					var request = context.Request;
 
-				// run `Before` behaviors
-				for (var i = 0; i < Behaviors.Count; i++)
-				{
-					await Behaviors[i].BeforeInvoke(context);
-				}
+					JsonRpcMethod method;
 
-				// if `Before` behavior marks request as handled, skip 'handle' phase
-				if (!context.WasHandled)
-				{
-					try
+					if (!Methods.TryGetMethod(request.Method, out method))
 					{
-						await method.HandleAsync(context);
+						context.SetResponse(JsonRpcError.METHOD_NOT_FOUND);
+						return;
 					}
-					catch (Exception ex)
+
+					// run `Before` behaviors
+					for (var i = 0; i < Behaviors.Count; i++)
 					{
-						// run `Error` behaviors
-						for (var i = 0; i < Behaviors.Count; i++)
+						await Behaviors[i].BeforeInvoke(context);
+					}
+
+					// if `Before` behavior marks request as handled, skip 'handle' phase
+					if (!context.WasHandled)
+					{
+						try
 						{
-							await Behaviors[i].OnError(context, ex);
+							await method.HandleAsync(context);
+						}
+						catch (Exception ex)
+						{
+							// run `Error` behaviors
+							for (var i = 0; i < Behaviors.Count; i++)
+							{
+								await Behaviors[i].OnError(context, ex);
+							}
+
+							// if `Error` behavior marks request as handled, don't throw
+							if (!context.WasHandled)
+							{
+								throw;
+							}
+						}
+					}
+
+					// run `After` behavior no matter how the request was handled
+					for (var i = 0; i < Behaviors.Count; i++)
+					{
+						await Behaviors[i].AfterInvoke(context);
+					}
+
+					var elapsed = new TimeSpan((long)(TimestampToTicks * (Stopwatch.GetTimestamp() - startTimestamp)));
+					_logger.LogInformation(JsonRpcLogEvents.RequestFinished, "Rpc request finished in {ElapsedMilliseconds}ms", elapsed.TotalMilliseconds);
+				}
+				catch (Exception ex)
+				{
+					var elapsed = new TimeSpan((long)(TimestampToTicks * (Stopwatch.GetTimestamp() - startTimestamp)));
+
+					var jsonRpcException = ex.Unwrap<JsonRpcException>();
+					if (jsonRpcException != null)
+					{
+						if (jsonRpcException.JsonRpcCode == JsonRpcError.INTERNAL_ERROR)
+						{
+							_logger.LogError(JsonRpcLogEvents.InternalError, jsonRpcException, "JsonRpc call failed after {ElapsedMilliseconds}ms", elapsed.TotalMilliseconds);
+						}
+						else
+						{
+							_logger.LogWarning(JsonRpcLogEvents.GenericError, jsonRpcException, "JsonRpc call failed after {ElapsedMilliseconds}ms", elapsed.TotalMilliseconds);
 						}
 
-						// if `Error` behavior marks request as handled, don't throw
-						if (!context.WasHandled)
-						{
-							throw;
-						}
-					}
-				}
-
-				// run `After` behavior no matter how the request was handled
-				for (var i = 0; i < Behaviors.Count; i++)
-				{
-					await Behaviors[i].AfterInvoke(context);
-				}
-			}
-			catch (Exception ex)
-			{
-				var jsonRpcException = ex.Unwrap<JsonRpcException>();
-				if (jsonRpcException != null)
-				{
-					if (jsonRpcException.JsonRpcCode == JsonRpcError.INTERNAL_ERROR)
-					{
-						_logger.LogError(JsonRpcLogEvents.InternalError, jsonRpcException, "JsonRpc call failed");
-					}
-					else
-					{
-						_logger.LogWarning(JsonRpcLogEvents.GenericError, jsonRpcException, "JsonRpc call failed");
+						context.SetResponse(jsonRpcException.JsonRpcCode, jsonRpcException.JsonRpcMessage, data: jsonRpcException.JsonRpcData);
+						return;
 					}
 
-					context.SetResponse(jsonRpcException.JsonRpcCode, jsonRpcException.JsonRpcMessage, data: jsonRpcException.JsonRpcData);
+					_logger.LogError(JsonRpcLogEvents.InternalError, ex, "JsonRpc call crashed after {ElapsedMilliseconds}ms", elapsed.TotalMilliseconds);
+
+					context.SetResponse(JsonRpcError.INTERNAL_ERROR, data: ex.Unwrap().ToDiagnosticString());
 					return;
 				}
-
-				_logger.LogError(JsonRpcLogEvents.InternalError, ex, "JsonRpc call crashed");
-
-				context.SetResponse(JsonRpcError.INTERNAL_ERROR, data: ex.Unwrap().ToDiagnosticString());
-				return;
 			}
 		}
 	}

@@ -72,6 +72,7 @@ namespace Odachi.Extensions.Primitives.Tests
 		{
 			var value = new OneOf<string, int>("ten");
 			Assert.True(new OneOf<string, int>("ten") == value);
+			Assert.False(new OneOf<string, int>("xyz") == value);
 		}
 	}
 }

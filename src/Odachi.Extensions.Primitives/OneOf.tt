@@ -54,12 +54,12 @@ namespace Odachi.Extensions.Primitives
 	}
 #>
 
-		[DataMember]
+		[DataMember(Order = 0)]
 		public readonly int Index;
 <#
 		for (var ti = 0; ti < typeNames.Length; ti++) {
 #>
-		[DataMember(EmitDefaultValue = false)]
+		[DataMember(EmitDefaultValue = false, Order = <#= ti + 1 #>)]
 		public readonly <#= typeNames[ti] #> Option<#= ti + 1 #>;
 <#
 		}
@@ -151,7 +151,7 @@ namespace Odachi.Extensions.Primitives
 		{
 			return Equals(this, other);
 		}
-		
+
 		public static bool operator ==(OneOf<<#= string.Join(", ", typeNames) #>> a, OneOf<<#= string.Join(", ", typeNames) #>> b)
 		{
 			return Equals(a, b);

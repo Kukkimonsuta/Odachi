@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Odachi.AspNetCore.JsonRpc.Model;
 using System;
@@ -57,8 +57,8 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 			var result = (PagingOptions)request.GetParameter("pagingOptions", JsonMappedType.FromType(typeof(PagingOptions)), null);
 
-			Assert.Equal(result.Number, 1);
-			Assert.Equal(result.Size, 5);
+			Assert.Equal(1, result.Number);
+			Assert.Equal(5, result.Size);
 		}
 
 		[Fact]
@@ -80,10 +80,10 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 			var result = (Page<string>)request.GetParameter("page", JsonMappedType.FromType(typeof(Page<string>)), null);
 
 			Assert.Equal(result, new[] { "value1", "value2" });
-			Assert.Equal(result.Number, 1);
-			Assert.Equal(result.Size, 5);
-			Assert.Equal(result.Total, 10);
-			Assert.Equal(result.Overflow, false);
+			Assert.Equal(1, result.Number);
+			Assert.Equal(5, result.Size);
+			Assert.Equal(10, result.Total);
+			Assert.False(result.Overflow);
 		}
 
 		[Fact]
@@ -98,7 +98,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 			var result = (IEntityReference)request.GetParameter("ref", JsonMappedType.FromType(typeof(IEntityReference)), null);
 
 			Assert.NotNull(result);
-			Assert.Equal(result.Id, 12345);
+			Assert.Equal(12345, result.Id);
 		}
 	}
 }

@@ -80,7 +80,10 @@ namespace Odachi.RazorTemplating
 				using (var outputStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
 				using (var writer = new StreamWriter(outputStream, Encoding))
 				{
-					writer.Write(result.GeneratedCode);
+					// normalize new lines (is there better way to do this?)
+					var code = result.GeneratedCode.Replace("\r\n", "\n");
+
+					writer.Write(code);
 				}
 			}
 

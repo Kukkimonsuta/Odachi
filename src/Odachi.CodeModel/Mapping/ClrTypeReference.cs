@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -34,12 +34,14 @@ namespace Odachi.CodeModel.Mapping
 				throw new InvalidOperationException($"Cannot resolve reference '{ToString()}'");
 			}
 
+			var kind = Type.GetTypeKind();
+
 			var resolvedTypeGenericArguments = resolvedType.GetGenericArguments();
 			var genericArguments = type.GenericArgumentDefinitions
 				.Select((a, i) => new ClrTypeReference(resolvedTypeGenericArguments[i]).Resolve(mapper))
 				.ToArray();
 
-			return new TypeReference(type.Module, type.Name, IsNullable, genericArguments);
+			return new TypeReference(type.Module, type.Name, kind, IsNullable, genericArguments);
 		}
 
 		public override string ToString()
