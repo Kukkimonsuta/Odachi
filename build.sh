@@ -28,7 +28,7 @@ _build "./src/Odachi.AspNetCore.Authentication.Basic" netstandard2.0
 _build "./src/Odachi.AspNetCore.JsonRpc" netstandard2.0
 _build "./src/Odachi.AspNetCore.Mvc" netstandard2.0
 _build "./src/Odachi.AspNetCore.MvcPages" netstandard2.0
-_build "./src/Odachi.CodeGen" netstandard1.3
+_build "./src/Odachi.CodeGen" netstandard1.5
 _build "./src/Odachi.CodeGen.CSharp" netstandard1.6
 _build "./src/Odachi.CodeGen.TypeScript" netstandard1.6
 _build "./src/Odachi.CodeModel" netstandard1.5

@@ -19,7 +19,7 @@ Annotations used across Odachi framework.<br />
 ASP.NET Core middleware for basic authentication.<br />
 ✔️ Used in production, breaking changes will follow semver.
 
-## Odachi.AspNetCore.JsonRpc 
+## Odachi.AspNetCore.JsonRpc
 
 ASP.NET Core jsonrpc middleware.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
@@ -36,18 +36,18 @@ Alternative way to structure MVC projects.<br />
 
 ## Odachi.CodeGen
 
-Helpers for code generation.<br />
-❗ Complete breaking refactor/replacement soon(tm).
+Base for code generators using `Odachi.CodeModel`.<br />
+🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.CodeGen.CSharp
 
-C# code generator.<br />
-❗ Complete breaking refactor/replacement soon(tm).
+C# code generator for `Odachi.CodeModel`.<br />
+🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.CodeGen.TypeScript
 
-TypeScript code generator.<br />
-❗ Complete breaking refactor/replacement soon(tm).
+TypeScript code generator for `Odachi.CodeModel`.<br />
+🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.CodeModel
 

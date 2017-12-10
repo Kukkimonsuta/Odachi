@@ -4,20 +4,24 @@
 
 	<PropertyGroup>
 		<Description>Helpers for code generation.</Description>
-		<TargetFrameworks>net452;netstandard1.3</TargetFrameworks>
+		<TargetFrameworks>net461;netstandard1.5</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
-		<DefineConstants>$(DefineConstants);NET45</DefineConstants>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
+		<DefineConstants>$(DefineConstants);NET46</DefineConstants>
 	</PropertyGroup>
 
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.5' ">
 		<DefineConstants>$(DefineConstants);DOTNET</DefineConstants>
 	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Odachi.CodeModel\Odachi.CodeModel.csproj" />
   </ItemGroup>
 
 </Project>
