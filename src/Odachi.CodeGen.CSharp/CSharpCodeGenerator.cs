@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Odachi.CodeGen.CSharp.Renderers;
 using Odachi.CodeModel;
 using Odachi.CodeGen.Rendering;
+using Odachi.CodeGen.IO;
 
 namespace Odachi.CodeGen.CSharp
 {
@@ -23,6 +24,15 @@ namespace Odachi.CodeGen.CSharp
 		protected override CSharpPackageContext CreatePackageContext(Package package, CSharpOptions options)
 		{
 			return new CSharpPackageContext(package, options.Path);
+		}
+
+		protected override IndentedTextWriter CreateWriter(TextWriter writer)
+		{
+			var indentedWriter = base.CreateWriter(writer);
+
+			indentedWriter.OpenBlockOnNewLine = true;
+
+			return indentedWriter;
 		}
 	}
 }

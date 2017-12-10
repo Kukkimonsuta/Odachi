@@ -25,6 +25,11 @@ namespace Odachi.CodeGen
 
 		protected abstract TModuleContext CreateModuleContext(TPackageContext packageContext, Module module, TOptions options);
 
+		protected virtual IndentedTextWriter CreateWriter(TextWriter writer)
+		{
+			return new IndentedTextWriter(writer);
+		}
+
 		protected virtual void OnPackageStart(TPackageContext packageContext) { }
 
 		protected virtual void OnModuleStart(TModuleContext moduleContext) { }
@@ -57,10 +62,10 @@ namespace Odachi.CodeGen
 				Directory.CreateDirectory(directory);
 
 			using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
-			using (var writer = new IndentedTextWriter(new StreamWriter(stream, new UTF8Encoding(false))))
+			using (var writer = CreateWriter(new StreamWriter(stream, new UTF8Encoding(false))))
 			{
 				var bodyBuilder = new StringBuilder();
-				using (var bodyWriter = new IndentedTextWriter(new StringWriter(bodyBuilder)))
+				using (var bodyWriter = CreateWriter(new StringWriter(bodyBuilder)))
 				{
 					foreach (var fragment in context.Module.Fragments)
 					{
