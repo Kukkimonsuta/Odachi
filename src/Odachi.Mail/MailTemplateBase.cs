@@ -204,7 +204,7 @@ namespace Odachi.Mail
 			Context.BodyParts.Add(new MimePart(contentType)
 			{
 				ContentId = contentId,
-				ContentObject = new ContentObject(stream, ContentEncoding.Default),
+				Content = new MimeContent(stream),
 				ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
 				ContentTransferEncoding = ContentEncoding.Base64,
 				FileName = fileName,
@@ -234,7 +234,7 @@ namespace Odachi.Mail
 		{
 			Context.BodyParts.Add(new MimePart(contentType)
 			{
-				ContentObject = new ContentObject(stream, ContentEncoding.Default),
+				Content = new MimeContent(stream),
 				ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
 				ContentTransferEncoding = ContentEncoding.Base64,
 				FileName = fileName,

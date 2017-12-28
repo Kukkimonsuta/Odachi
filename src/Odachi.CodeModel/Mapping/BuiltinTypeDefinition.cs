@@ -34,6 +34,7 @@ namespace Odachi.CodeModel.Mapping
 		public static readonly BuiltinTypeDefinition Array = new BuiltinTypeDefinition("array", new GenericArgumentDefinition("T"));
 		public static readonly BuiltinTypeDefinition File = new BuiltinTypeDefinition("file");
 
+		[Obsolete("")]
 		public static readonly BuiltinTypeDefinition EntityReference = new BuiltinTypeDefinition("EntityReference");
 		public static readonly BuiltinTypeDefinition OneOf2 = new BuiltinTypeDefinition("OneOf", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"));
 		public static readonly BuiltinTypeDefinition OneOf3 = new BuiltinTypeDefinition("OneOf", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"));

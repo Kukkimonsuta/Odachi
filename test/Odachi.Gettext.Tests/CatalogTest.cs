@@ -1,4 +1,4 @@
-﻿using Odachi.Gettext.IO;
+using Odachi.Gettext.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +29,7 @@ namespace Odachi.Gettext
 				Assert.Equal(4, catalog.Count);
 
 				var translation = catalog[new GettextKey(null, "String", null)];
-				Assert.Equal(1, translation.Count);
+				Assert.Single(translation);
 				Assert.Equal("Řetězec", translation[0]);
 
 				translation = catalog[new GettextKey(null, "Plural string", "Plural strings")];
@@ -39,7 +39,7 @@ namespace Odachi.Gettext
 				Assert.Equal("Řetězců", translation[2]);
 
 				translation = catalog[new GettextKey("context", "Particular string", null)];
-				Assert.Equal(1, translation.Count);
+				Assert.Single(translation);
 				Assert.Equal("Specifický řetězec", translation[0]);
 
 				translation = catalog[new GettextKey("context", "Particular plural string", "Particular plural strings")];

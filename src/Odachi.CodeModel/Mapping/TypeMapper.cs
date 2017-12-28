@@ -38,9 +38,8 @@ namespace Odachi.CodeModel.Mapping
 			Register(typeof(string), BuiltinTypeDefinition.String);
 			Register(typeof(DateTime), BuiltinTypeDefinition.DateTime);
 			Register(typeof(IEnumerable<>), BuiltinTypeDefinition.Array);
-			Register(typeof(IStreamReference), BuiltinTypeDefinition.File);
+			Register(typeof(IBlob), BuiltinTypeDefinition.File);
 
-			Register(typeof(IEntityReference), BuiltinTypeDefinition.EntityReference);
 			Register(typeof(OneOf<,>), BuiltinTypeDefinition.OneOf2);
 			Register(typeof(OneOf<,,>), BuiltinTypeDefinition.OneOf3);
 			Register(typeof(OneOf<,,,>), BuiltinTypeDefinition.OneOf4);
@@ -51,6 +50,11 @@ namespace Odachi.CodeModel.Mapping
 			Register(typeof(OneOf<,,,,,,,,>), BuiltinTypeDefinition.OneOf9);
 			Register(typeof(PagingOptions), BuiltinTypeDefinition.PagingOptions);
 			Register(typeof(Page<>), BuiltinTypeDefinition.Page);
+
+#pragma warning disable CS0618 // Type or member is obsolete
+			Register(typeof(IStreamReference), BuiltinTypeDefinition.File);
+			Register(typeof(IEntityReference), BuiltinTypeDefinition.EntityReference);
+#pragma warning restore CS0618 // Type or member is obsolete
 		}
 
 		private IDictionary<Type, TypeDefinition> _mapping;
