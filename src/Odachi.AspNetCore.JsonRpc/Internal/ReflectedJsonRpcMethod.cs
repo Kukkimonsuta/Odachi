@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,6 +9,8 @@ using Odachi.Abstractions;
 using Odachi.AspNetCore.JsonRpc.Model;
 using Odachi.Extensions.Reflection;
 using Odachi.JsonRpc.Common.Converters;
+
+#pragma warning disable CS0618
 
 namespace Odachi.AspNetCore.JsonRpc.Internal
 {
@@ -74,6 +76,19 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				// todo: this should be extracted somewhere else..
 				var httpContext = context.AppServices.GetRequiredService<IHttpContextAccessor>().HttpContext;
 
+				IBlob HandleBlob(string path, string name)
+				{
+					var form = httpContext.Request?.Form;
+					if (form == null)
+						return null;
+
+					var file = form.Files[name];
+					if (file == null)
+						return null;
+
+					return new FormFileBlob(file);
+				}
+
 				IStreamReference HandleReference(string path, string name)
 				{
 					var form = httpContext.Request?.Form;
@@ -87,6 +102,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 					return new FormFileStreamReference(file);
 				}
 
+				using (new BlobReadHandler(HandleBlob))
 				using (new StreamReferenceReadHandler(HandleReference))
 				{
 					for (var i = 0; i < Parameters.Count; i++)

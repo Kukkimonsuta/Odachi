@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
@@ -16,12 +16,12 @@ namespace JsonRpcSample
 	public class StorageModule
 	{
 		[RpcMethod]
-		public IEnumerable<string> Upload(IStreamReference file)
+		public async Task<IEnumerable<string>> UploadAsync(IBlob file)
 		{
 			if (file == null)
 				return new[] { "no-file" };
 
-			using (var stream = file.OpenReadStream())
+			using (var stream = await file.OpenReadAsync())
 			{
 				return new[]
 				{

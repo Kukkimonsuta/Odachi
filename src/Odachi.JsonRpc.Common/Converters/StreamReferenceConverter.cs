@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Threading;
 using Newtonsoft.Json;
@@ -6,6 +6,7 @@ using Odachi.Abstractions;
 
 namespace Odachi.JsonRpc.Common.Converters
 {
+	[Obsolete("Use `Odachi.JsonRpc.Common.Converters.BlobWriteHandler`. Will be removed in next major version.")]
 	public class StreamReferenceWriteHandler : IDisposable
 	{
 		public StreamReferenceWriteHandler(Action<string, IStreamReference> handler)
@@ -35,6 +36,7 @@ namespace Odachi.JsonRpc.Common.Converters
 		#endregion
 	}
 
+	[Obsolete("Use `Odachi.JsonRpc.Common.Converters.BlobReadHandler`. Will be removed in next major version.")]
 	public class StreamReferenceReadHandler : IDisposable
 	{
 		public StreamReferenceReadHandler(Func<string, string, IStreamReference> handler)
@@ -64,6 +66,7 @@ namespace Odachi.JsonRpc.Common.Converters
 		#endregion
 	}
 
+	[Obsolete("Use `Odachi.JsonRpc.Common.Converters.BlobConverter`. Will be removed in next major version.")]
 	public class StreamReferenceConverter : JsonConverter
 	{
 		public override bool CanConvert(Type objectType)

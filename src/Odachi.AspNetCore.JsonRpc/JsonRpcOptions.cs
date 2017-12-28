@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Odachi.AspNetCore.JsonRpc.Behaviors;
 using Odachi.AspNetCore.JsonRpc.Model;
@@ -22,8 +22,11 @@ namespace Odachi.AspNetCore.JsonRpc
 				TypeNameHandling = TypeNameHandling.None,
 			};
 			JsonSerializerSettings.Converters.Add(new PageConverter());
+			JsonSerializerSettings.Converters.Add(new BlobConverter());
+#pragma warning disable CS0618 // Type or member is obsolete
 			JsonSerializerSettings.Converters.Add(new EntityReferenceConverter());
 			JsonSerializerSettings.Converters.Add(new StreamReferenceConverter());
+#pragma warning restore CS0618 // Type or member is obsolete
 
 			Behaviors.Add(new SecurityErrorBehavior());
 

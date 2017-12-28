@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +14,8 @@ using Odachi.JsonRpc.Common.Converters;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Odachi.Abstractions;
+
+#pragma warning disable CS0618
 
 namespace Odachi.JsonRpc.Client
 {
@@ -41,6 +43,7 @@ namespace Odachi.JsonRpc.Client
 			Serializer.Converters.Add(new PageConverter());
 			Serializer.Converters.Add(new EntityReferenceConverter());
 			Serializer.Converters.Add(new StreamReferenceConverter());
+			Serializer.Converters.Add(new BlobConverter());
 
 			RequestFilters = new List<IRequestFilter>();
 			ResponseFilters = new List<IResponseFilter>();
@@ -53,7 +56,7 @@ namespace Odachi.JsonRpc.Client
 
 		public bool UseJsonRpcConstant { get; set; } = false;
 
-		protected string SerializeRequest(JsonRpcRequest request, Action<string, IStreamReference> streamReferenceHandler)
+		protected string SerializeRequest(JsonRpcRequest request, Action<string, IStreamReference> streamReferenceHandler, Action<string, IBlob> blobHandler)
 		{
 			if (request == null)
 				throw new ArgumentNullException(nameof(request));
@@ -61,6 +64,7 @@ namespace Odachi.JsonRpc.Client
 				throw new ArgumentNullException(nameof(streamReferenceHandler));
 
 			JObject jObject;
+			using (new BlobWriteHandler(blobHandler))
 			using (new StreamReferenceWriteHandler(streamReferenceHandler))
 			{
 				jObject = JObject.FromObject(request, Serializer);

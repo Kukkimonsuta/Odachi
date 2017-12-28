@@ -100,6 +100,8 @@ Pack(".\src\Odachi.RazorTemplating")
 Build(".\src\Odachi.RazorTemplating.MSBuild"); # to generate package in right location for MailSample
 Pack(".\src\Odachi.RazorTemplating.MSBuild")
 Pack(".\src\Odachi.Security")
+Pack(".\src\Odachi.Storage.Azure")
+Pack(".\src\Odachi.Storage.FileSystem")
 Pack(".\src\Odachi.Validation")
 
 Write-Host
@@ -121,3 +123,5 @@ Test(".\test\Odachi.Extensions.Reflection.Tests");
 Test(".\test\Odachi.Gettext.Tests");
 Test(".\test\Odachi.RazorTemplating.Tests");
 Test(".\test\Odachi.Security.Tests");
+Test(".\test\Odachi.Storage.FileSystem.Tests");
+Test(".\test\Odachi.Validation.Tests");

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Odachi.Extensions.Primitives;
@@ -43,7 +43,7 @@ namespace JsonRpcClientSample
 					stream.Write(new byte[] { 0x01, 0x02, 0x03, 0x04 }, 0, 4);
 					stream.Seek(0, SeekOrigin.Begin);
 
-					var response = await client.CallAsync<string[]>("Storage.upload", new { file = new StreamStreamReference("test-file.bin", stream) });
+					var response = await client.CallAsync<string[]>("Storage.upload", new { file = new StreamBlob("test-file.bin", stream) });
 
 					Console.WriteLine($"\t=> {string.Join(", ", response)}");
 				}

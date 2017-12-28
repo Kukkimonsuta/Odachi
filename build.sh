@@ -48,6 +48,8 @@ _build "./src/Odachi.Mail" netstandard1.3
 _build "./src/Odachi.RazorTemplating" netstandard2.0
 _build "./src/Odachi.RazorTemplating.MSBuild" netstandard2.0
 _build "./src/Odachi.Security" netstandard1.3
+_build "./src/Odachi.Storage.Azure" netstandard2.0
+_build "./src/Odachi.Storage.FileSystem" netstandard2.0
 _build "./src/Odachi.Validation" netstandard1.0
 
 echo
@@ -69,3 +71,5 @@ _test "./test/Odachi.Extensions.Reflection.Tests" netcoreapp2.0
 _test "./test/Odachi.Gettext.Tests" netcoreapp2.0
 _test "./test/Odachi.RazorTemplating.Tests" netcoreapp2.0
 _test "./test/Odachi.Security.Tests" netcoreapp2.0
+_test "./test/Odachi.Storage.FileSystem.Tests" netcoreapp2.0
+_test "./test/Odachi.Validation.Tests" netcoreapp2.0

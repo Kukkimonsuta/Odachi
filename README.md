@@ -134,6 +134,16 @@ MSBuild task to transform razor templates to c#.<br />
 Role/Permission definition helpers.<br />
 ❓ Internal use. May change outside of semver.
 
+## Odachi.Storage.Azure
+
+Role/Permission definition helpers.<br />
+🚧 In development. May change outside of semver.
+
+## Odachi.Storage.FileSystem
+
+Role/Permission definition helpers.<br />
+🚧 In development. May change outside of semver.
+
 ## Odachi.Validation
 
 Object validation library.<br />

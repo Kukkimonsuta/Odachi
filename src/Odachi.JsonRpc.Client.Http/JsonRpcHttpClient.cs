@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.IO;
@@ -38,14 +38,20 @@ namespace Odachi.JsonRpc.Client.Http
 		{
 			var content = new MultipartFormDataContent();
 
+#pragma warning disable CS0618 // Type or member is obsolete
 			void HandleReference(string path, IStreamReference reference)
+#pragma warning restore CS0618 // Type or member is obsolete
 			{
 				content.Add(new StreamContent(reference.OpenReadStream()), path, reference.Name);
+			}
+			void HandleBlob(string path, IBlob blob)
+			{
+				content.Add(new StreamContent(blob.OpenRead()), path, blob.Name);
 			}
 
 			try
 			{
-				var requestString = SerializeRequest(request, HandleReference);
+				var requestString = SerializeRequest(request, HandleReference, HandleBlob);
 
 				if (_logger != null && _logger.IsEnabled(LogLevel.Debug))
 				{

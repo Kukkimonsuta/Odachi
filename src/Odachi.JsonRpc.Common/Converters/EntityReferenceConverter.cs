@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +10,7 @@ using Odachi.Extensions.Primitives;
 
 namespace Odachi.JsonRpc.Common.Converters
 {
+	[Obsolete("Entity reference concept is obsolete, see `Odachi.Abstractions.IEntityReference`. Will be removed in next major version.")]
 	public class EntityReferenceConverter : JsonConverter
 	{
 		public EntityReferenceConverter()

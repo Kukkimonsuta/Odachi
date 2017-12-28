@@ -95,7 +95,9 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				))
 			), GetSerializer());
 
+#pragma warning disable CS0618 // Type or member is obsolete
 			var result = (IEntityReference)request.GetParameter("ref", JsonMappedType.FromType(typeof(IEntityReference)), null);
+#pragma warning restore CS0618 // Type or member is obsolete
 
 			Assert.NotNull(result);
 			Assert.Equal(12345, result.Id);
