@@ -76,7 +76,7 @@ namespace Odachi.CodeGen
 				if (context.RenderHeader(writer))
 					writer.WriteLine();
 
-				writer.Write(bodyBuilder.ToString());
+				context.RenderBody(writer, bodyBuilder.ToString());
 
 				context.RenderFooter(writer);
 			}

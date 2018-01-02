@@ -47,6 +47,16 @@ namespace Odachi.Storage.FileSystem
 			}
 		}
 
+		public async Task StoreAsync(string relativePath, Func<Stream, Task> write, BlobStoreOptions options = BlobStoreOptions.None)
+		{
+			var absolutePath = ResolvePath(relativePath, createDirectories: true);
+
+			using (var outputStream = new FileStream(absolutePath, options == BlobStoreOptions.Overwrite ? FileMode.Create : FileMode.CreateNew, FileAccess.Write, FileShare.Read))
+			{
+				await write(outputStream);
+			}
+		}
+
 		public Task<IBlob> RetrieveAsync(string relativePath)
 		{
 			var absolutePath = ResolvePath(relativePath);

@@ -48,6 +48,23 @@ namespace Odachi.Storage.Azure
 			}
 		}
 
+		public async Task StoreAsync(string relativePath, Func<Stream, Task> write, BlobStoreOptions options = BlobStoreOptions.None)
+		{
+			await EnsureContainerExists();
+
+			if (options != BlobStoreOptions.Overwrite && await _container.GetBlobReference(relativePath).ExistsAsync())
+			{
+				throw new IOException("Blob already exists");
+			}
+
+			var remoteBlob = await _container.GetBlobReferenceFromServerAsync(relativePath);
+
+			using (var outputStream = await ((CloudBlockBlob)remoteBlob).OpenWriteAsync())
+			{
+				await write(outputStream);
+			}
+		}
+
 		public async Task<IBlob> RetrieveAsync(string relativePath)
 		{
 			await EnsureContainerExists();
