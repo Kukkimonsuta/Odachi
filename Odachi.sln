@@ -56,6 +56,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicAuthenticationSample", "samples\BasicAuthenticationSample\BasicAuthenticationSample.csproj", "{CBD72C15-D70A-43F8-9A5F-04408DFE2D46}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailSample", "samples\MailSample\MailSample.csproj", "{7430AA2C-0D0A-49E5-A7EE-F244A421A00B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E937268-515D-4674-8886-2610475D2ECE} = {2E937268-515D-4674-8886-2610475D2ECE}
+		{31B6049F-95C3-4FF9-93A0-6215251CB775} = {31B6049F-95C3-4FF9-93A0-6215251CB775}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.RazorTemplating", "src\Odachi.RazorTemplating\Odachi.RazorTemplating.csproj", "{2E937268-515D-4674-8886-2610475D2ECE}"
 EndProject
@@ -105,11 +109,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.JsonRpc.Client.Http"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Extensions.Primitives.Tests", "test\Odachi.Extensions.Primitives.Tests\Odachi.Extensions.Primitives.Tests.csproj", "{B258C15B-7976-410D-A887-6DE6A23703CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.Storage.FileSystem", "src\Odachi.Storage.FileSystem\Odachi.Storage.FileSystem.csproj", "{36E8CA88-A065-4668-A246-1CFD73072164}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Storage.FileSystem", "src\Odachi.Storage.FileSystem\Odachi.Storage.FileSystem.csproj", "{36E8CA88-A065-4668-A246-1CFD73072164}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.Storage.Azure", "src\Odachi.Storage.Azure\Odachi.Storage.Azure.csproj", "{75B01DA7-5BF1-45A8-B554-78B83DCC09F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Storage.Azure", "src\Odachi.Storage.Azure\Odachi.Storage.Azure.csproj", "{75B01DA7-5BF1-45A8-B554-78B83DCC09F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.Storage.FileSystem.Tests", "test\Odachi.Storage.FileSystem.Tests\Odachi.Storage.FileSystem.Tests.csproj", "{AA49E4A0-82FA-41BC-8721-A4F5CE401B0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Storage.FileSystem.Tests", "test\Odachi.Storage.FileSystem.Tests\Odachi.Storage.FileSystem.Tests.csproj", "{AA49E4A0-82FA-41BC-8721-A4F5CE401B0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

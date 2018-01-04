@@ -6,6 +6,7 @@ using Odachi.RazorTemplating.Internal;
 using System;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Odachi.RazorTemplating
@@ -65,7 +66,7 @@ namespace Odachi.RazorTemplating
 		public string RootNamespace { get; }
 		public Encoding Encoding { get; }
 
-		public string Generate(string inputFileName, string outputFileName)
+		public void Generate(string inputFileName, string outputFileName)
 		{
 			// normalize file names
 			inputFileName = Path.GetFullPath(inputFileName);
@@ -76,18 +77,30 @@ namespace Odachi.RazorTemplating
 			{
 				var codeDocument = templateEngine.CreateCodeDocument(inputFileName);
 				var result = templateEngine.GenerateCode(codeDocument);
+				// normalize new lines (is there better way to do this?)
+				var code = result.GeneratedCode.Replace("\r\n", "\n");
+				
+				if (File.Exists(outputFileName))
+				{
+					using (var md5 = MD5.Create())
+					using (var inputStream = File.OpenRead(outputFileName))
+					{
+						var codeHash = md5.ComputeHash(inputStream);
+						var fileHash = md5.ComputeHash(Encoding.GetBytes(code));
+
+						if (codeHash.SequenceEqual(fileHash))
+						{
+							return;
+						}
+					}
+				}
 
 				using (var outputStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
 				using (var writer = new StreamWriter(outputStream, Encoding))
 				{
-					// normalize new lines (is there better way to do this?)
-					var code = result.GeneratedCode.Replace("\r\n", "\n");
-
 					writer.Write(code);
 				}
 			}
-
-			return outputFileName;
 		}
 	}
 }

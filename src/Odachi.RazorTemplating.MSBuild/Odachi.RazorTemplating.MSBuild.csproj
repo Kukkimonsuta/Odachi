@@ -6,7 +6,6 @@
     <Description>MSBuild task to transform razor templates to c#.</Description>
     <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath Condition="$(PackageOutputPath) == ''">$(BaseOutputPath)</PackageOutputPath>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <DevelopmentDependency>true</DevelopmentDependency>
