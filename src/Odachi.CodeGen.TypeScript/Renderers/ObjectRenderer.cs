@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,28 +11,22 @@ using Odachi.CodeGen.Rendering;
 
 namespace Odachi.CodeGen.TypeScript.Renderers
 {
-	public class ClassRenderer : IFragmentRenderer<TypeScriptModuleContext>
+	public class ObjectRenderer : IFragmentRenderer<TypeScriptModuleContext>
 	{
 		public bool Render(TypeScriptModuleContext context, Fragment fragment, IndentedTextWriter writer)
 		{
-			if (!(fragment is ClassFragment classFragment))
+			if (!(fragment is ObjectFragment objectFragment))
 				return false;
-
-			if (classFragment.Hints["logical-kind"] != "class")
-				return false;
-
-			if (classFragment.Methods.Count > 0)
-				throw new NotSupportedException("Methods on classes are not supported");
-
-			if (classFragment.Hints.TryGetValue("source-type", out var sourceType))
+			
+			if (objectFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
 				writer.WriteIndented($"// source: {sourceType}");
 				writer.WriteLine();
 			}
 
-			using (writer.WriteIndentedBlock(prefix: $"class {classFragment.Name} "))
+			using (writer.WriteIndentedBlock(prefix: $"class {objectFragment.Name} "))
 			{
-				foreach (var field in classFragment.Fields)
+				foreach (var field in objectFragment.Fields)
 				{
 					context.Import("mobx", "observable");
 
@@ -41,11 +35,11 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					writer.WriteLine();
 				}
 
-				using (writer.WriteIndentedBlock(prefix: $"static create(source: any): {classFragment.Name} "))
+				using (writer.WriteIndentedBlock(prefix: $"static create(source: any): {objectFragment.Name} "))
 				{
-					writer.WriteIndented($"const result = new {classFragment.Name}();");
+					writer.WriteIndented($"const result = new {objectFragment.Name}();");
 
-					foreach (var field in classFragment.Fields)
+					foreach (var field in objectFragment.Fields)
 					{
 						writer.WriteIndented($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
 					}
@@ -56,7 +50,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 			}
 			writer.WriteLine();
 
-			context.Export(classFragment.Name, @default: true);
+			context.Export(objectFragment.Name, @default: true);
 
 			return true;
 		}

@@ -17,8 +17,8 @@ namespace Odachi.CodeGen.TypeScript
 		public TypeScriptCodeGenerator()
 		{
 			Renderers.Add(new EnumRenderer());
-			Renderers.Add(new JsonRpcServiceRenderer());
-			Renderers.Add(new ClassRenderer());
+			Renderers.Add(new ObjectRenderer());
+			Renderers.Add(new ServiceRenderer());
 		}
 
 		protected override TypeScriptPackageContext CreatePackageContext(Package package, TypeScriptOptions options)
@@ -99,14 +99,13 @@ namespace Odachi.CodeGen.TypeScript
 				{
 					foreach (var module in packageContext.Package.Modules)
 					{
-						var rpcServiceFragments = module.Fragments.OfType<ClassFragment>()
-							.Where(c => c.Hints.TryGetValue("logical-kind", out var logicalKind) && logicalKind == "jsonrpc-service")
+						var serviceFragments = module.Fragments.OfType<ServiceFragment>()
 							.ToArray();
 
-						if (rpcServiceFragments.Length <= 0)
+						if (serviceFragments.Length <= 0)
 							continue;
 
-						foreach (var rpcServiceFragment in rpcServiceFragments)
+						foreach (var rpcServiceFragment in serviceFragments)
 						{
 							context.Import(TS.ModuleName(module.Name), rpcServiceFragment.Name);
 

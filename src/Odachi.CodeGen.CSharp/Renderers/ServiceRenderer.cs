@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,18 +11,12 @@ using Odachi.CodeGen.Rendering;
 
 namespace Odachi.CodeGen.CSharp.Renderers
 {
-	public class JsonRpcServiceRenderer : IFragmentRenderer<CSharpModuleContext>
+	public class ServiceRenderer : IFragmentRenderer<CSharpModuleContext>
 	{
 		public bool Render(CSharpModuleContext context, Fragment fragment, IndentedTextWriter writer)
 		{
-			if (!(fragment is ClassFragment classFragment))
+			if (!(fragment is ServiceFragment classFragment))
 				return false;
-
-			if (classFragment.Hints["logical-kind"] != "jsonrpc-service")
-				return false;
-
-			if (classFragment.Fields.Count > 0)
-				throw new NotSupportedException("Fields on json rpc service objects are not supported");
 
 			if (classFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
@@ -48,7 +42,7 @@ namespace Odachi.CodeGen.CSharp.Renderers
 					context.Import("System.Threading.Tasks");
 
 					var rpcModuleName = method.Hints["jsonrpc-module-name"];
-					var rpcMethodName = method.Hints["jsonrpc-method-name"] ?? throw new NotSupportedException("Anonymous rpc methods not supported");
+					var rpcMethodName = method.Hints["jsonrpc-method-name"] ?? method.Name;
 
 					writer.WriteIndent();
 					if (method.ReturnType.Name == "void")

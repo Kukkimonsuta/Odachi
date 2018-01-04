@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,28 +11,22 @@ using Odachi.CodeGen.Rendering;
 
 namespace Odachi.CodeGen.CSharp.Renderers
 {
-	public class ClassRenderer : IFragmentRenderer<CSharpModuleContext>
+	public class ObjectRenderer : IFragmentRenderer<CSharpModuleContext>
 	{
 		public bool Render(CSharpModuleContext context, Fragment fragment, IndentedTextWriter writer)
 		{
-			if (!(fragment is ClassFragment classFragment))
+			if (!(fragment is ObjectFragment objectFragment))
 				return false;
-
-			if (classFragment.Hints["logical-kind"] != "class")
-				return false;
-
-			if (classFragment.Methods.Count > 0)
-				throw new NotSupportedException("Methods on classes are not supported");
-
-			if (classFragment.Hints.TryGetValue("source-type", out var sourceType))
+			
+			if (objectFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
 				writer.WriteIndented($"// source: {sourceType}");
 				writer.WriteLine();
 			}
 
-			using (writer.WriteIndentedBlock(prefix: $"public class {classFragment.Name} "))
+			using (writer.WriteIndentedBlock(prefix: $"public class {objectFragment.Name} "))
 			{
-				foreach (var field in classFragment.Fields)
+				foreach (var field in objectFragment.Fields)
 				{
 					writer.WriteIndented($"public {context.Resolve(field.Type)} {CS.Field(field.Name)} {{ get; set; }}");
 				}

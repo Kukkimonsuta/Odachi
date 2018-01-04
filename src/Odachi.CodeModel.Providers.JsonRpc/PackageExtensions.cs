@@ -18,7 +18,7 @@ namespace Odachi.CodeModel
 			return builder;
 		}
 
-		public static PackageBuilder Modules_Class_JsonRpcService(this PackageBuilder builder, IEnumerable<JsonRpcMethod> methods)
+		public static PackageBuilder Modules_Service_JsonRpc(this PackageBuilder builder, IEnumerable<JsonRpcMethod> methods)
 		{
 			if (methods == null)
 				throw new ArgumentNullException(nameof(methods));
@@ -31,13 +31,13 @@ namespace Odachi.CodeModel
 
 			foreach (var module in modules)
 			{
-				Module_Class_JsonRpcService(builder, $"{module.Name}Rpc", module.Methods);
+				Module_Service_JsonRpc(builder, $"{module.Name}Rpc", module.Methods);
 			}
 
 			return builder;
 		}
 
-		public static PackageBuilder Module_Class_JsonRpcService(this PackageBuilder builder, string fragmentName, IEnumerable<JsonRpcMethod> methods)
+		public static PackageBuilder Module_Service_JsonRpc(this PackageBuilder builder, string fragmentName, IEnumerable<JsonRpcMethod> methods)
 		{
 			if (methods == null)
 				throw new ArgumentNullException(nameof(methods));
@@ -46,13 +46,11 @@ namespace Odachi.CodeModel
 
 			return builder
 				.Module(moduleName, module => module
-					.Class(fragmentName, c =>
+					.Service(fragmentName, service =>
 					{
-						c.Hint("logical-kind", "jsonrpc-service");
-
 						foreach (var method in methods)
 						{
-							c.Method(method.MethodName.ToPascalInvariant(), ClrTypeReference.Create(method.ReturnType?.NetType ?? typeof(void)), method, m =>
+							service.Method(method.MethodName.ToPascalInvariant(), ClrTypeReference.Create(method.ReturnType?.NetType ?? typeof(void)), method, m =>
 							{
 								foreach (var parameter in method.Parameters.Where(p => !p.IsInternal))
 								{

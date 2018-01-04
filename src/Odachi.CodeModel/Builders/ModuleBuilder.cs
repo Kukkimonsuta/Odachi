@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,17 +15,32 @@ namespace Odachi.CodeModel.Builders
 
 		public IList<ITypeFragmentBuilder> Fragments { get; } = new List<ITypeFragmentBuilder>();
 
-		public ModuleBuilder Class(string name, Action<ClassBuilder> configure)
+		public ModuleBuilder Object(string name, Action<ObjectBuilder> configure)
 		{
-			return Class(name, null, configure);
+			return Object(name, null, configure);
 		}
-		public ModuleBuilder Class(string name, Type type, Action<ClassBuilder> configure)
+		public ModuleBuilder Object(string name, Type type, Action<ObjectBuilder> configure)
 		{
-			var classBuilder = new ClassBuilder(Context, name, source: type);
+			var objectBuilder = new ObjectBuilder(Context, name, source: type);
 
-			configure(classBuilder);
+			configure(objectBuilder);
 
-			Fragments.Add(classBuilder);
+			Fragments.Add(objectBuilder);
+
+			return this;
+		}
+
+		public ModuleBuilder Service(string name, Action<ServiceBuilder> configure)
+		{
+			return Service(name, null, configure);
+		}
+		public ModuleBuilder Service(string name, Type type, Action<ServiceBuilder> configure)
+		{
+			var serviceBuilder = new ServiceBuilder(Context, name, source: type);
+
+			configure(serviceBuilder);
+
+			Fragments.Add(serviceBuilder);
 
 			return this;
 		}

@@ -15,7 +15,8 @@ namespace Odachi.CodeModel.Builders
 		public PackageContext()
 		{
 			GlobalDescriptor = new DefaultGlobalDescriptor();
-			ClassDescriptors = new List<IClassDescriptor>() { new DefaultClassDescriptor() };
+			ObjectDescriptors = new List<IObjectDescriptor>() { new DefaultObjectDescriptor() };
+			ServiceDescriptors = new List<IServiceDescriptor>() { new DefaultServiceDescriptor() };
 			FieldDescriptors = new List<IFieldDescriptor>() { new DefaultFieldDescriptor() };
 			MethodDescriptors = new List<IMethodDescriptor>() { new DefaultMethodDescriptor() };
 			ParameterDescriptors = new List<IParameterDescriptor>() { new DefaultParameterDescriptor() };
@@ -32,8 +33,8 @@ namespace Odachi.CodeModel.Builders
 				throw new ArgumentNullException(nameof(newModulePath));
 
 			GlobalDescriptor = copyFromContext.GlobalDescriptor;
-			ClassDescriptors = copyFromContext.ClassDescriptors;
-			FieldDescriptors = copyFromContext.FieldDescriptors;
+			ObjectDescriptors = copyFromContext.ObjectDescriptors;
+			ServiceDescriptors = copyFromContext.ServiceDescriptors;
 			MethodDescriptors = copyFromContext.MethodDescriptors;
 			ParameterDescriptors = copyFromContext.ParameterDescriptors;
 			EnumDescriptors = copyFromContext.EnumDescriptors;
@@ -43,7 +44,8 @@ namespace Odachi.CodeModel.Builders
 		}
 
 		public IGlobalDescriptor GlobalDescriptor { get; }
-		public IList<IClassDescriptor> ClassDescriptors { get; }
+		public IList<IObjectDescriptor> ObjectDescriptors { get; }
+		public IList<IServiceDescriptor> ServiceDescriptors { get; }
 		public IList<IFieldDescriptor> FieldDescriptors { get; }
 		public IList<IMethodDescriptor> MethodDescriptors { get; }
 		public IList<IParameterDescriptor> ParameterDescriptors { get; }
@@ -244,8 +246,6 @@ namespace Odachi.CodeModel.Builders
 
 			return builder.Module_Enum(enumType, enumBuilder =>
 			{
-				enumBuilder.Hint("logical-kind", "enum");
-
 				foreach (var item in Enum.GetValues(enumType))
 				{
 					enumBuilder.Item(item.ToString(), Convert.ToInt32(item));
@@ -256,21 +256,21 @@ namespace Odachi.CodeModel.Builders
 		}
 
 		/// <summary>
-		/// Shortcut for creating a module with single class fragment from specified .NET type.
+		/// Shortcut for creating a module with single object fragment from specified .NET type.
 		/// </summary>
-		public static PackageBuilder Module_Class<T>(this PackageBuilder builder, Action<ClassBuilder> configure)
+		public static PackageBuilder Module_Object<T>(this PackageBuilder builder, Action<ObjectBuilder> configure)
 		{
 			if (builder == null)
 				throw new ArgumentNullException(nameof(builder));
 			if (configure == null)
 				throw new ArgumentNullException(nameof(configure));
 
-			return Module_Class(builder, typeof(T), configure);
+			return Module_Object(builder, typeof(T), configure);
 		}
 		/// <summary>
-		/// Shortcut for creating a module with single class fragment from specified .NET type.
+		/// Shortcut for creating a module with single object fragment from specified .NET type.
 		/// </summary>
-		public static PackageBuilder Module_Class(this PackageBuilder builder, Type objectType, Action<ClassBuilder> configure)
+		public static PackageBuilder Module_Object(this PackageBuilder builder, Type objectType, Action<ObjectBuilder> configure)
 		{
 			if (builder == null)
 				throw new ArgumentNullException(nameof(builder));
@@ -285,48 +285,116 @@ namespace Odachi.CodeModel.Builders
 			return builder
 				.Map(objectType, new FragmentTypeDefinition(builder.Context.MapPath(moduleName), fragmentName))
 				.Module(moduleName, module => module
-					.Class(fragmentName, objectType, configure)
+					.Object(fragmentName, objectType, configure)
 				);
 		}
 
 		/// <summary>
-		/// Shortcut for creating a module with single class fragment and all its fields and properties from specified .NET type.
+		/// Shortcut for creating a module with single object fragment and all its fields and properties from specified .NET type.
 		/// </summary>
-		public static PackageBuilder Module_Class_Default<T>(this PackageBuilder builder, Action<ClassBuilder> configure = null)
+		public static PackageBuilder Module_Object_Default<T>(this PackageBuilder builder, Action<ObjectBuilder> configure = null)
 		{
 			if (builder == null)
 				throw new ArgumentNullException(nameof(builder));
 
-			return Module_Class_Default(builder, typeof(T), configure: configure);
+			return Module_Object_Default(builder, typeof(T), configure: configure);
 		}
 		/// <summary>
-		/// Shortcut for creating a module with single class fragment and all its fields and properties from specified .NET type.
+		/// Shortcut for creating a module with single object fragment and all its fields and properties from specified .NET type.
 		/// </summary>
-		public static PackageBuilder Module_Class_Default(this PackageBuilder builder, Type objectType, Action<ClassBuilder> configure = null)
+		public static PackageBuilder Module_Object_Default(this PackageBuilder builder, Type objectType, Action<ObjectBuilder> configure = null)
 		{
 			if (builder == null)
 				throw new ArgumentNullException(nameof(builder));
 			if (objectType == null)
 				throw new ArgumentNullException(nameof(objectType));
 
-			return builder.Module_Class(objectType, classBuilder =>
+			return builder.Module_Object(objectType, objectBuilder =>
 			{
-				classBuilder.Hint("logical-kind", "class");
-
 				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance);
 				foreach (var member in members)
 				{
 					if (member is FieldInfo field)
 					{
-						classBuilder.Field(field.Name, ClrTypeReference.Create(field.FieldType), (objectType, field));
+						objectBuilder.Field(field.Name, ClrTypeReference.Create(field.FieldType), (objectType, field));
 					}
 					else if (member is PropertyInfo property)
 					{
-						classBuilder.Field(property.Name, ClrTypeReference.Create(property.PropertyType), (objectType, property));
+						objectBuilder.Field(property.Name, ClrTypeReference.Create(property.PropertyType), (objectType, property));
 					}
 				}
 
-				configure?.Invoke(classBuilder);
+				configure?.Invoke(objectBuilder);
+			});
+		}
+
+
+		/// <summary>
+		/// Shortcut for creating a module with single service fragment from specified .NET type.
+		/// </summary>
+		public static PackageBuilder Module_Service<T>(this PackageBuilder builder, Action<ServiceBuilder> configure)
+		{
+			if (builder == null)
+				throw new ArgumentNullException(nameof(builder));
+			if (configure == null)
+				throw new ArgumentNullException(nameof(configure));
+
+			return Module_Service(builder, typeof(T), configure);
+		}
+		/// <summary>
+		/// Shortcut for creating a module with single service fragment from specified .NET type.
+		/// </summary>
+		public static PackageBuilder Module_Service(this PackageBuilder builder, Type objectType, Action<ServiceBuilder> configure)
+		{
+			if (builder == null)
+				throw new ArgumentNullException(nameof(builder));
+			if (objectType == null)
+				throw new ArgumentNullException(nameof(objectType));
+			if (configure == null)
+				throw new ArgumentNullException(nameof(configure));
+
+			var fragmentName = builder.Context.GlobalDescriptor.GetFragmentName(builder.Context, objectType);
+			var moduleName = builder.Context.GlobalDescriptor.GetModuleName(builder.Context, fragmentName);
+
+			return builder
+				.Map(objectType, new FragmentTypeDefinition(builder.Context.MapPath(moduleName), fragmentName))
+				.Module(moduleName, module => module
+					.Service(fragmentName, objectType, configure)
+				);
+		}
+
+		/// <summary>
+		/// Shortcut for creating a module with single service fragment and all its fields and properties from specified .NET type.
+		/// </summary>
+		public static PackageBuilder Module_Service_Default<T>(this PackageBuilder builder, Action<ServiceBuilder> configure = null)
+		{
+			if (builder == null)
+				throw new ArgumentNullException(nameof(builder));
+
+			return Module_Service_Default(builder, typeof(T), configure: configure);
+		}
+		/// <summary>
+		/// Shortcut for creating a module with single service fragment and all its fields and properties from specified .NET type.
+		/// </summary>
+		public static PackageBuilder Module_Service_Default(this PackageBuilder builder, Type objectType, Action<ServiceBuilder> configure = null)
+		{
+			if (builder == null)
+				throw new ArgumentNullException(nameof(builder));
+			if (objectType == null)
+				throw new ArgumentNullException(nameof(objectType));
+
+			return builder.Module_Service(objectType, serviceBuilder =>
+			{
+				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+				foreach (var member in members)
+				{
+					if (member is MethodInfo method)
+					{
+						serviceBuilder.Method(method.Name, ClrTypeReference.Create(method.ReturnType), (objectType, method));
+					}
+				}
+
+				configure?.Invoke(serviceBuilder);
 			});
 		}
 	}

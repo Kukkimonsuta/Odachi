@@ -1,4 +1,4 @@
-﻿using Odachi.AspNetCore.JsonRpc.Model;
+using Odachi.AspNetCore.JsonRpc.Model;
 using Odachi.CodeModel.Builders;
 using Odachi.CodeModel.Description;
 

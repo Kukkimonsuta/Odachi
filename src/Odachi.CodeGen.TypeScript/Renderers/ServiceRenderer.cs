@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,20 +11,14 @@ using Odachi.CodeGen.Rendering;
 
 namespace Odachi.CodeGen.TypeScript.Renderers
 {
-	public class JsonRpcServiceRenderer : IFragmentRenderer<TypeScriptModuleContext>
+	public class ServiceRenderer : IFragmentRenderer<TypeScriptModuleContext>
 	{
 		public bool Render(TypeScriptModuleContext context, Fragment fragment, IndentedTextWriter writer)
 		{
-			if (!(fragment is ClassFragment classFragment))
+			if (!(fragment is ServiceFragment serviceFragment))
 				return false;
-
-			if (classFragment.Hints["logical-kind"] != "jsonrpc-service")
-				return false;
-
-			if (classFragment.Fields.Count > 0)
-				throw new NotSupportedException("Fields on json rpc service objects are not supported");
-
-			if (classFragment.Hints.TryGetValue("source-type", out var sourceType))
+			
+			if (serviceFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
 				writer.WriteIndented($"// source: {sourceType}");
 				writer.WriteLine();
@@ -32,7 +26,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 
 			context.Import("inversify", "injectable");
 			writer.WriteIndented("@injectable()");
-			using (writer.WriteIndentedBlock(prefix: $"class {classFragment.Name} "))
+			using (writer.WriteIndentedBlock(prefix: $"class {serviceFragment.Name} "))
 			{
 				context.Import("@stackino/uno", "net");
 				using (writer.WriteIndentedBlock(prefix: "constructor(client: net.JsonRpcClient) "))
@@ -44,9 +38,9 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 				writer.WriteIndented("private client: net.JsonRpcClient;");
 				writer.WriteLine();
 
-				foreach (var method in classFragment.Methods)
+				foreach (var method in serviceFragment.Methods)
 				{
-					var rpcMethodName = method.Hints["jsonrpc-name"] ?? throw new NotSupportedException("Anonymous rpc methods not supported");
+					var rpcMethodName = method.Hints["jsonrpc-name"] ?? method.Name;
 
 					var parameters = method.Parameters
 						.Select(p => $"{p.Name}: {context.Resolve(p.Type)}")
@@ -68,13 +62,13 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					}
 					writer.WriteLine();
 
-					if (method != classFragment.Methods.Last())
+					if (method != serviceFragment.Methods.Last())
 						writer.WriteLine();
 				}
 			}
 			writer.WriteLine();
 
-			context.Export(classFragment.Name, @default: true);
+			context.Export(serviceFragment.Name, @default: true);
 
 			return true;
 		}
