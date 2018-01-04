@@ -388,6 +388,10 @@ namespace Odachi.CodeModel.Builders
 				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance);
 				foreach (var member in members)
 				{
+					// ignore GetType, GetHashCode, Equals, ToString
+					if (member.DeclaringType == typeof(object))
+						continue;
+
 					if (member is MethodInfo method)
 					{
 						serviceBuilder.Method(method.Name, ClrTypeReference.Create(method.ReturnType), (objectType, method));

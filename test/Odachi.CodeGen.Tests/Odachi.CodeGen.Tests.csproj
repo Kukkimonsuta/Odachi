@@ -3,7 +3,7 @@
 	<Import Project="..\..\tools\common.props" />
 
   <PropertyGroup>
-		<Description>Odachi.Security tests</Description>
+		<Description>Odachi.CodeGen tests</Description>
 		<TargetFramework>netcoreapp2.0</TargetFramework>
     <IsPackable>false</IsPackable>
 	</PropertyGroup>

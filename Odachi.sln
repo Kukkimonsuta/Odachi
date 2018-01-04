@@ -115,6 +115,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Storage.Azure", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Storage.FileSystem.Tests", "test\Odachi.Storage.FileSystem.Tests\Odachi.Storage.FileSystem.Tests.csproj", "{AA49E4A0-82FA-41BC-8721-A4F5CE401B0F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.CodeModel.Tests", "test\Odachi.CodeModel.Tests\Odachi.CodeModel.Tests.csproj", "{A5E70E53-9CD8-4C05-B284-D47218070D9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -641,6 +643,18 @@ Global
 		{AA49E4A0-82FA-41BC-8721-A4F5CE401B0F}.Release|x64.Build.0 = Release|Any CPU
 		{AA49E4A0-82FA-41BC-8721-A4F5CE401B0F}.Release|x86.ActiveCfg = Release|Any CPU
 		{AA49E4A0-82FA-41BC-8721-A4F5CE401B0F}.Release|x86.Build.0 = Release|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Debug|x64.Build.0 = Debug|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Debug|x86.Build.0 = Debug|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Release|x64.ActiveCfg = Release|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Release|x64.Build.0 = Release|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Release|x86.ActiveCfg = Release|Any CPU
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -689,6 +703,7 @@ Global
 		{36E8CA88-A065-4668-A246-1CFD73072164} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{75B01DA7-5BF1-45A8-B554-78B83DCC09F6} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{AA49E4A0-82FA-41BC-8721-A4F5CE401B0F} = {6914849E-07C0-4D13-8259-A141523454DA}
+		{A5E70E53-9CD8-4C05-B284-D47218070D9C} = {6914849E-07C0-4D13-8259-A141523454DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2776D3BA-E65C-40FB-A3E4-A454391888CA}
