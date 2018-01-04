@@ -35,6 +35,7 @@ namespace Odachi.CodeModel.Builders
 			GlobalDescriptor = copyFromContext.GlobalDescriptor;
 			ObjectDescriptors = copyFromContext.ObjectDescriptors;
 			ServiceDescriptors = copyFromContext.ServiceDescriptors;
+			FieldDescriptors = copyFromContext.FieldDescriptors;
 			MethodDescriptors = copyFromContext.MethodDescriptors;
 			ParameterDescriptors = copyFromContext.ParameterDescriptors;
 			EnumDescriptors = copyFromContext.EnumDescriptors;
