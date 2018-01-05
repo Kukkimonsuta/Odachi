@@ -216,7 +216,7 @@ namespace Odachi.CodeGen.CSharp
 
 			using (writer.WriteIndentedBlock(prefix: $"namespace {ModuleNamespace} "))
 			{
-				writer.WriteIndented(body);
+				writer.WriteIndentedLine(body);
 			}
 
 			return true;

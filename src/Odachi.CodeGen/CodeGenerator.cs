@@ -74,11 +74,13 @@ namespace Odachi.CodeGen
 				}
 
 				if (context.RenderHeader(writer))
-					writer.WriteLine();
+					writer.WriteSeparatingLine();
 
-				context.RenderBody(writer, bodyBuilder.ToString());
+				if (context.RenderBody(writer, bodyBuilder.ToString()))
+					writer.WriteSeparatingLine();
 
-				context.RenderFooter(writer);
+				if (context.RenderFooter(writer))
+					writer.WriteSeparatingLine();
 			}
 		}
 

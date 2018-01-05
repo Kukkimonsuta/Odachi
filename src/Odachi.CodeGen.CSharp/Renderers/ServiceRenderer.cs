@@ -20,8 +20,8 @@ namespace Odachi.CodeGen.CSharp.Renderers
 
 			if (classFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
-				writer.WriteIndented($"// source: {sourceType}");
-				writer.WriteLine();
+				writer.WriteIndentedLine($"// source: {sourceType}");
+				writer.WriteSeparatingLine();
 			}
 
 			context.Import("Odachi.Abstractions");
@@ -30,12 +30,11 @@ namespace Odachi.CodeGen.CSharp.Renderers
 			{
 				using (writer.WriteIndentedBlock(prefix: $"public {classFragment.Name}(IRpcClient client) "))
 				{
-					writer.WriteIndented("this._client = client;");
+					writer.WriteIndentedLine("this._client = client;");
 				}
-				writer.WriteLine();
-
-				writer.WriteIndented("private IRpcClient _client;");
-				writer.WriteLine();
+				
+				writer.WriteIndentedLine("private IRpcClient _client;");
+				writer.WriteSeparatingLine();
 
 				foreach (var method in classFragment.Methods)
 				{
@@ -58,17 +57,15 @@ namespace Odachi.CodeGen.CSharp.Renderers
 					{
 						if (method.ReturnType.Name == "void")
 						{
-							writer.WriteIndented($"return _client.CallAsync(\"{rpcModuleName}\", \"{rpcMethodName}\", new {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
+							writer.WriteIndentedLine($"return _client.CallAsync(\"{rpcModuleName}\", \"{rpcMethodName}\", new {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
 						}
 						else
 						{
-							writer.WriteIndented($"return _client.CallAsync<{context.Resolve(method.ReturnType)}>(\"{rpcModuleName}\", \"{rpcMethodName}\", new {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
+							writer.WriteIndentedLine($"return _client.CallAsync<{context.Resolve(method.ReturnType)}>(\"{rpcModuleName}\", \"{rpcMethodName}\", new {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
 						}
 					}
 					writer.WriteLine();
-
-					if (method != classFragment.Methods.Last())
-						writer.WriteLine();
+					writer.WriteSeparatingLine();
 				}
 			}
 

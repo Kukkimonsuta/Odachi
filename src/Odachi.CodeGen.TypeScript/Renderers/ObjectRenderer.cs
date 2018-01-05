@@ -20,8 +20,8 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 			
 			if (objectFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
-				writer.WriteIndented($"// source: {sourceType}");
-				writer.WriteLine();
+				writer.WriteIndentedLine($"// source: {sourceType}");
+				writer.WriteSeparatingLine();
 			}
 
 			using (writer.WriteIndentedBlock(prefix: $"class {objectFragment.Name} "))
@@ -30,25 +30,25 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 				{
 					context.Import("mobx", "observable");
 
-					writer.WriteIndented("@observable.ref");
-					writer.WriteIndented($"{TS.Field(field.Name)}: {context.Resolve(field.Type)};");
-					writer.WriteLine();
+					writer.WriteIndentedLine("@observable.ref");
+					writer.WriteIndentedLine($"{TS.Field(field.Name)}: {context.Resolve(field.Type)};");
+					writer.WriteSeparatingLine();
 				}
 
 				using (writer.WriteIndentedBlock(prefix: $"static create(source: any): {objectFragment.Name} "))
 				{
-					writer.WriteIndented($"const result = new {objectFragment.Name}();");
+					writer.WriteIndentedLine($"const result = new {objectFragment.Name}();");
 
 					foreach (var field in objectFragment.Fields)
 					{
-						writer.WriteIndented($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
+						writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
 					}
 
-					writer.WriteIndented("return result;");
+					writer.WriteIndentedLine("return result;");
 				}
-				writer.WriteLine();
+				writer.WriteSeparatingLine();
 			}
-			writer.WriteLine();
+			writer.WriteSeparatingLine();
 
 			context.Export(objectFragment.Name, @default: true);
 

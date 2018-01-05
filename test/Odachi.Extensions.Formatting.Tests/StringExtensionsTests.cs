@@ -1,4 +1,5 @@
-﻿using Xunit;
+using System.Linq;
+using Xunit;
 
 namespace Odachi.Extensions.Formatting.Tests
 {
@@ -53,6 +54,44 @@ namespace Odachi.Extensions.Formatting.Tests
 		public void Camelizes_input(string input, string expected)
 		{
 			var actual = input.ToCamelInvariant();
+
+			Assert.Equal(expected, actual);
+		}
+
+		[Theory]
+		[InlineData("en-US", new[] { "-" }, new[] { "en", "US" })]
+		[InlineData("enUS", new[] { "n", "nU" }, new[] { "e", "US" })]
+		[InlineData("enUS", new[] { "nU", "n" }, new[] { "e", "S" })]
+		[InlineData("c:\\windows\\system32", new[] { "\\", ":" }, new[] { "c", "", "windows", "system32" })]
+		public void Splits_parts(string input, string[] separators, string[] expected)
+		{
+			var actual = input.GetParts(separators);
+
+			Assert.Equal(expected, actual);
+		}
+
+		[Theory]
+		[InlineData("en-US", new[] { "" }, new[] { "", "e", "n", "-", "U", "S", "" })]
+		[InlineData("enUS", new[] { "" }, new[] { "", "e", "n", "U", "S", "" })]
+		[InlineData("c:\\windows\\system32", new[] { "" }, new[] { "", "c", ":", "\\", "w", "i", "n", "d", "o", "w", "s", "\\", "s", "y", "s", "t", "e", "m", "3", "2", "" })]
+		public void Splits_parts_using_empty_string(string input, string[] separators, string[] expected)
+		{
+			var actual = input.GetParts(separators);
+
+			Assert.Equal(expected, actual);
+		}
+
+		[Theory]
+		[InlineData("en-US", new[] { "en-US" })]
+		[InlineData("\r\nen-US", new[] { "", "en-US" })]
+		[InlineData("en-US\r\n", new[] { "en-US", "" })]
+		[InlineData("\nen-US", new[] { "", "en-US" })]
+		[InlineData("en-US\n", new[] { "en-US", "" })]
+		[InlineData("\r\n\nen-US\n", new[] { "", "", "en-US", "" })]
+		[InlineData("\r\n\nen\r-\nUS\n", new[] { "", "", "en\r-", "US", "" })]
+		public void Splits_lines(string input, string[] expected)
+		{
+			var actual = input.GetLines();
 
 			Assert.Equal(expected, actual);
 		}

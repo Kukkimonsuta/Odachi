@@ -1,4 +1,5 @@
-﻿using System;
+using Odachi.Extensions.Formatting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,38 +17,75 @@ namespace Odachi.CodeGen.IO
 		public IndentedTextWriter(TextWriter writer, IFormatProvider formatProvider)
 			: base(formatProvider)
 		{
-			if (writer == null)
-				throw new ArgumentNullException(nameof(writer));
-
-			Writer = writer;
+			Writer = writer ?? throw new ArgumentNullException(nameof(writer));
 		}
-
-		private int _indentLevel;
 
 		protected TextWriter Writer { get; }
-		protected int IndentLevel { get { return _indentLevel; } }
+		protected int IndentLevel { get; private set; }
+		protected bool ShouldWriteSeparatingLine { get; set; }
 
+		/// <summary>
+		/// String used for single indent level.
+		/// </summary>
 		public string IndentString { get; set; } = "\t";
+		/// <summary>
+		/// Insert new line + indent between blocks prefix and open brace.
+		/// </summary>
 		public bool OpenBlockOnNewLine { get; set; } = false;
 
+		protected void WriteSeparatingLineIfRequested()
+		{
+			if (ShouldWriteSeparatingLine)
+			{
+				Writer.WriteLine();
+				ShouldWriteSeparatingLine = false;
+			}
+		}
+
+		/// <summary>
+		/// Changes indentation level by magnitude.
+		/// </summary>
 		public void Indent(int magnitude)
 		{
-			_indentLevel = Math.Max(0, IndentLevel + magnitude);
+			IndentLevel = Math.Max(0, IndentLevel + magnitude);
 		}
 
+		/// <summary>
+		/// Write empty line separating content blocks. Line is ignored before block ends.
+		/// </summary>
+		public void WriteSeparatingLine()
+		{
+			ShouldWriteSeparatingLine = true;
+		}
+
+		/// <summary>
+		/// Writes indent to underlying writer. Assumes position is at start of a line.
+		/// </summary>
 		public void WriteIndent()
 		{
+			WriteSeparatingLineIfRequested();
+
 			for (var i = 0; i < IndentLevel; i++)
+			{
 				Writer.Write(IndentString);
+			}
 		}
 
-		public void WriteIndented(string format, params object[] args)
+		/// <summary>
+		/// Writes indented text to underlying writer. Embedded new lines are indented.
+		/// </summary>
+		public void WriteIndentedLine(string format, params object[] args)
 		{
-			WriteIndented(string.Format(format, args));
+			WriteIndentedLine(string.Format(format, args));
 		}
-		public void WriteIndented(string text)
+		/// <summary>
+		/// Writes indented text to underlying writer. Embedded new lines are indented.
+		/// </summary>
+		public void WriteIndentedLine(string text)
 		{
-			foreach (var line in text.Replace("\r\n", "\n").Split(new[] { '\n' }, StringSplitOptions.None))
+			WriteSeparatingLineIfRequested();
+
+			foreach (var line in text.GetLines())
 			{
 				if (string.IsNullOrWhiteSpace(line))
 				{
@@ -56,19 +94,24 @@ namespace Odachi.CodeGen.IO
 				}
 
 				WriteIndent();
-
 				WriteLine(line);
 			}
 		}
 
-		public IDisposable WriteIndentedBlock(string prefix = "", string open = "{", string close = "}", string suffix = "")
+		/// <summary>
+		/// Writes block to underlying writer. Opening of the block is indented and new line is inserted after suffix.
+		/// </summary>
+		public IDisposable WriteIndentedBlock(string prefix = "", string open = "{", string close = "}", string suffix = "", bool writeSeparatingLine = true)
 		{
-			return new Block(this, prefix, open, close, suffix, false);
+			return new Block(this, prefix, open, close, suffix, false, writeSeparatingLine);
 		}
 
+		/// <summary>
+		/// Writes block to underlying writer. Opening of the block is not indented and new line is not inserted after suffix.
+		/// </summary>
 		public IDisposable WriteBlock(string prefix = "", string open = "{", string close = "}", string suffix = "")
 		{
-			return new Block(this, prefix, open, close, suffix, true);
+			return new Block(this, prefix, open, close, suffix, true, false);
 		}
 
 		#region TextWriter
@@ -83,15 +126,9 @@ namespace Odachi.CodeGen.IO
 
 		public override Encoding Encoding => Writer.Encoding;
 
-		public override void Write(bool value)
-		{
-			Writer.Write(value);
-		}
+		public override void Write(bool value) => Writer.Write(value);
 
-		public override void Write(char value)
-		{
-			Writer.Write(value);
-		}
+		public override void Write(char value) => Writer.Write(value);
 
 		public override void Write(char[] buffer) => Writer.Write(buffer);
 
@@ -198,7 +235,7 @@ namespace Odachi.CodeGen.IO
 
 		public sealed class Block : IDisposable
 		{
-			public Block(IndentedTextWriter writer, string prefix, string open, string close, string suffix, bool inline)
+			public Block(IndentedTextWriter writer, string prefix, string open, string close, string suffix, bool inline, bool writeSeparatingLine)
 			{
 				if (writer.OpenBlockOnNewLine)
 				{
@@ -229,15 +266,20 @@ namespace Odachi.CodeGen.IO
 				_close = close;
 				_suffix = suffix;
 				_inline = inline;
+				_writeSeparatingLine = writeSeparatingLine;
 			}
 
 			private IndentedTextWriter _writer;
 			private string _close;
 			private string _suffix;
 			private bool _inline;
+			private bool _writeSeparatingLine;
 
 			public void Dispose()
 			{
+				if (_writer.ShouldWriteSeparatingLine)
+					_writer.ShouldWriteSeparatingLine = false;
+
 				_writer.Indent(-1);
 
 				_writer.WriteIndent();
@@ -248,6 +290,9 @@ namespace Odachi.CodeGen.IO
 
 				if (!_inline)
 					_writer.WriteLine();
+
+				if (_writeSeparatingLine)
+					_writer.WriteSeparatingLine();
 			}
 		}
 

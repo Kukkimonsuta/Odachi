@@ -68,7 +68,7 @@ namespace Odachi.CodeGen.TypeScript
 			{
 				foreach (var helper in _helpers)
 				{
-					writer.WriteIndented(helper);
+					writer.WriteIndentedLine(helper);
 				}
 			}
 
@@ -82,7 +82,7 @@ namespace Odachi.CodeGen.TypeScript
 				return false;
 			}
 
-			writer.WriteIndented(body);
+			writer.WriteIndentedLine(body);
 
 			return true;
 		}
@@ -93,13 +93,13 @@ namespace Odachi.CodeGen.TypeScript
 
 			if (_defaultExport != null)
 			{
-				writer.WriteIndented($"export default {_defaultExport};");
+				writer.WriteIndentedLine($"export default {_defaultExport};");
 
 				didRender = true;
 			}
 			if (_exports.Count > 0)
 			{
-				writer.WriteIndented($"export {{ {string.Join(", ", _exports)} }};");
+				writer.WriteIndentedLine($"export {{ {string.Join(", ", _exports)} }};");
 
 				didRender = true;
 			}

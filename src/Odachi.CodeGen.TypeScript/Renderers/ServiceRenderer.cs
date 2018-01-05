@@ -20,23 +20,23 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 			
 			if (serviceFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
-				writer.WriteIndented($"// source: {sourceType}");
-				writer.WriteLine();
+				writer.WriteIndentedLine($"// source: {sourceType}");
+				writer.WriteSeparatingLine();
 			}
 
 			context.Import("inversify", "injectable");
-			writer.WriteIndented("@injectable()");
+			writer.WriteIndentedLine("@injectable()");
 			using (writer.WriteIndentedBlock(prefix: $"class {serviceFragment.Name} "))
 			{
 				context.Import("@stackino/uno", "net");
 				using (writer.WriteIndentedBlock(prefix: "constructor(client: net.JsonRpcClient) "))
 				{
-					writer.WriteIndented("this.client = client;");
+					writer.WriteIndentedLine("this.client = client;");
 				}
-				writer.WriteLine();
+				writer.WriteSeparatingLine();
 
-				writer.WriteIndented("private client: net.JsonRpcClient;");
-				writer.WriteLine();
+				writer.WriteIndentedLine("private client: net.JsonRpcClient;");
+				writer.WriteSeparatingLine();
 
 				foreach (var method in serviceFragment.Methods)
 				{
@@ -45,28 +45,23 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					var parameters = method.Parameters
 						.Select(p => $"{p.Name}: {context.Resolve(p.Type)}")
 						.ToList();
-
-					writer.WriteIndent();
-					writer.Write($"async {TS.Method(method.Name)}Async({string.Join(", ", parameters)}): Promise<{context.Resolve(method.ReturnType)}> ");
-					using (writer.WriteBlock())
+					
+					using (writer.WriteIndentedBlock(prefix: $"async {TS.Method(method.Name)}Async({string.Join(", ", parameters)}): Promise<{context.Resolve(method.ReturnType)}> "))
 					{
 						if (method.ReturnType.Name == "void")
 						{
-							writer.WriteIndented($"await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
+							writer.WriteIndentedLine($"await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
 						}
 						else
 						{
-							writer.WriteIndented($"const result = await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
-							writer.WriteIndented($"return {context.CreateExpression(method.ReturnType, "result")};");
+							writer.WriteIndentedLine($"const result = await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
+							writer.WriteIndentedLine($"return {context.CreateExpression(method.ReturnType, "result")};");
 						}
 					}
-					writer.WriteLine();
-
-					if (method != serviceFragment.Methods.Last())
-						writer.WriteLine();
+					writer.WriteSeparatingLine();
 				}
 			}
-			writer.WriteLine();
+			writer.WriteSeparatingLine();
 
 			context.Export(serviceFragment.Name, @default: true);
 

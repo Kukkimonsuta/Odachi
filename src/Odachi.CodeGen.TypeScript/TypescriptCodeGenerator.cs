@@ -42,12 +42,12 @@ namespace Odachi.CodeGen.TypeScript
 				{
 					if (module.alias != null)
 					{
-						writer.WriteIndented($"import * as {module.alias} from '{module.module}';");
-						writer.WriteIndented($"export {{ {module.alias} }};");
+						writer.WriteIndentedLine($"import * as {module.alias} from '{module.module}';");
+						writer.WriteIndentedLine($"export {{ {module.alias} }};");
 					}
 					else
 					{
-						writer.WriteIndented($"export * from '{module.module}';");
+						writer.WriteIndentedLine($"export * from '{module.module}';");
 					}
 				}
 			}
@@ -109,11 +109,10 @@ namespace Odachi.CodeGen.TypeScript
 						{
 							context.Import(TS.ModuleName(module.Name), rpcServiceFragment.Name);
 
-							writer.WriteIndented($"bind({rpcServiceFragment.Name}).to({rpcServiceFragment.Name}).inSingletonScope();");
+							writer.WriteIndentedLine($"bind({rpcServiceFragment.Name}).to({rpcServiceFragment.Name}).inSingletonScope();");
 						}
 					}
 				}
-				writer.WriteLine();
 			}
 
 			context.Export($"sdkModule", @default: true);
@@ -122,11 +121,13 @@ namespace Odachi.CodeGen.TypeScript
 			using (var writer = new IndentedTextWriter(new StreamWriter(stream, new UTF8Encoding(false))))
 			{
 				if (context.RenderHeader(writer))
-					writer.WriteLine();
+					writer.WriteSeparatingLine();
 
-				context.RenderBody(writer, bodyBuilder.ToString());
+				if (context.RenderBody(writer, bodyBuilder.ToString()))
+					writer.WriteSeparatingLine();
 
-				context.RenderFooter(writer);
+				if (context.RenderFooter(writer))
+					writer.WriteSeparatingLine();
 			}
 		}
 

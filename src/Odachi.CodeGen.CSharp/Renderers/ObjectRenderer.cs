@@ -20,15 +20,15 @@ namespace Odachi.CodeGen.CSharp.Renderers
 			
 			if (objectFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
-				writer.WriteIndented($"// source: {sourceType}");
-				writer.WriteLine();
+				writer.WriteIndentedLine($"// source: {sourceType}");
+				writer.WriteSeparatingLine();
 			}
 
 			using (writer.WriteIndentedBlock(prefix: $"public class {objectFragment.Name} "))
 			{
 				foreach (var field in objectFragment.Fields)
 				{
-					writer.WriteIndented($"public {context.Resolve(field.Type)} {CS.Field(field.Name)} {{ get; set; }}");
+					writer.WriteIndentedLine($"public {context.Resolve(field.Type)} {CS.Field(field.Name)} {{ get; set; }}");
 				}
 			}
 
