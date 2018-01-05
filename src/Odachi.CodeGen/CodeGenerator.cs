@@ -61,17 +61,36 @@ namespace Odachi.CodeGen
 			if (!Directory.Exists(directory))
 				Directory.CreateDirectory(directory);
 
+			void TrimEnd(StringBuilder builder)
+			{
+				if (builder.Length <= 0)
+					return;
+
+				var index = builder.Length - 1;
+				while (index > 0 && char.IsWhiteSpace(builder[index]))
+				{
+					index--;
+				}
+
+				builder.Length = index + 1;
+			}
+			
 			using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
 			using (var writer = CreateWriter(new StreamWriter(stream, new UTF8Encoding(false))))
 			{
+				var newLine = default(string);
 				var bodyBuilder = new StringBuilder();
 				using (var bodyWriter = CreateWriter(new StringWriter(bodyBuilder)))
 				{
+					newLine = bodyWriter.NewLine;
+
 					foreach (var fragment in context.Module.Fragments)
 					{
 						RenderTypeFragment(context, fragment, bodyWriter);
 					}
 				}
+				TrimEnd(bodyBuilder);
+				bodyBuilder.Append(newLine);
 
 				if (context.RenderHeader(writer))
 					writer.WriteSeparatingLine();
