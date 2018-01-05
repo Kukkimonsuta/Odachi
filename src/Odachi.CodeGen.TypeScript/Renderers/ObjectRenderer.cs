@@ -46,9 +46,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 
 					writer.WriteIndentedLine("return result;");
 				}
-				writer.WriteSeparatingLine();
 			}
-			writer.WriteSeparatingLine();
 
 			context.Export(objectFragment.Name, @default: true);
 

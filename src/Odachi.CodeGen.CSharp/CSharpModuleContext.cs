@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -214,7 +214,7 @@ namespace Odachi.CodeGen.CSharp
 				return false;
 			}
 
-			using (writer.WriteIndentedBlock(prefix: $"namespace {ModuleNamespace} "))
+			using (writer.WriteIndentedBlock(prefix: $"namespace {ModuleNamespace} ", writeSeparatingLine: false))
 			{
 				writer.WriteIndentedLine(body);
 			}
