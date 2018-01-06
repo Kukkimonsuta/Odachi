@@ -78,19 +78,15 @@ namespace Odachi.CodeGen
 			using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
 			using (var writer = CreateWriter(new StreamWriter(stream, new UTF8Encoding(false))))
 			{
-				var newLine = default(string);
 				var bodyBuilder = new StringBuilder();
 				using (var bodyWriter = CreateWriter(new StringWriter(bodyBuilder)))
 				{
-					newLine = bodyWriter.NewLine;
-
 					foreach (var fragment in context.Module.Fragments)
 					{
 						RenderTypeFragment(context, fragment, bodyWriter);
 					}
 				}
 				TrimEnd(bodyBuilder);
-				bodyBuilder.Append(newLine);
 
 				if (context.RenderHeader(writer))
 					writer.WriteSeparatingLine();
