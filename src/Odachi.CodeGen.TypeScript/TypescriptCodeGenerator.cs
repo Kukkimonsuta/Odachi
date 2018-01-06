@@ -9,6 +9,7 @@ using Odachi.CodeGen.TypeScript.Renderers;
 using Odachi.CodeGen.IO;
 using Odachi.CodeModel;
 using Odachi.Extensions.Formatting;
+using Odachi.CodeGen.Internal;
 
 namespace Odachi.CodeGen.TypeScript
 {
@@ -92,7 +93,6 @@ namespace Odachi.CodeGen.TypeScript
 			context.Import("inversify", "ContainerModule");
 
 			var bodyBuilder = new StringBuilder();
-
 			using (var writer = new IndentedTextWriter(new StringWriter(bodyBuilder)))
 			{
 				using (writer.WriteIndentedBlock(prefix: "const sdkModule = new ContainerModule((bind: interfaces.Bind) => ", suffix: ");"))
@@ -114,6 +114,7 @@ namespace Odachi.CodeGen.TypeScript
 					}
 				}
 			}
+			bodyBuilder.TrimEnd();
 
 			context.Export($"sdkModule", @default: true);
 

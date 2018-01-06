@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Odachi.CodeGen.IO;
 using Odachi.CodeModel;
 using Odachi.CodeGen.Rendering;
+using Odachi.CodeGen.Internal;
 
 namespace Odachi.CodeGen
 {
@@ -60,21 +61,7 @@ namespace Odachi.CodeGen
 			var directory = Path.GetDirectoryName(path);
 			if (!Directory.Exists(directory))
 				Directory.CreateDirectory(directory);
-
-			void TrimEnd(StringBuilder builder)
-			{
-				if (builder.Length <= 0)
-					return;
-
-				var index = builder.Length - 1;
-				while (index > 0 && char.IsWhiteSpace(builder[index]))
-				{
-					index--;
-				}
-
-				builder.Length = index + 1;
-			}
-			
+		
 			using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
 			using (var writer = CreateWriter(new StreamWriter(stream, new UTF8Encoding(false))))
 			{
@@ -86,7 +73,7 @@ namespace Odachi.CodeGen
 						RenderTypeFragment(context, fragment, bodyWriter);
 					}
 				}
-				TrimEnd(bodyBuilder);
+				bodyBuilder.TrimEnd();
 
 				if (context.RenderHeader(writer))
 					writer.WriteSeparatingLine();
