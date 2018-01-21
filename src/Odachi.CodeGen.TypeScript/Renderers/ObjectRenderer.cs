@@ -43,16 +43,19 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					parameters += $", {genericArgument.Name}_factory: {{ create(source: any): {genericArgument.Name} }}";
 				}
 
-				using (writer.WriteIndentedBlock(prefix: $"static create({parameters}): {objectFragment.Name} "))
+				if (!objectFragment.GenericArguments.Any())
 				{
-					writer.WriteIndentedLine($"const result = new {objectFragment.Name}();");
-
-					foreach (var field in objectFragment.Fields)
+					using (writer.WriteIndentedBlock(prefix: $"static create({parameters}): {objectFragment.Name} "))
 					{
-						writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
-					}
+						writer.WriteIndentedLine($"const result = new {objectFragment.Name}();");
 
-					writer.WriteIndentedLine("return result;");
+						foreach (var field in objectFragment.Fields)
+						{
+							writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
+						}
+
+						writer.WriteIndentedLine("return result;");
+					}
 				}
 			}
 
