@@ -136,15 +136,26 @@ namespace Odachi.CodeModel.Builders
 			return this;
 		}
 
-		public PackageBuilder Map<T>(TypeDefinition mapping)
+		public PackageBuilder Map<T>(TypeDefinition definition)
 		{
-			return Map(typeof(T), mapping);
+			return Map(typeof(T), definition);
 		}
-		public PackageBuilder Map(Type type, TypeDefinition mapping)
+		public PackageBuilder Map(Type type, TypeDefinition definition)
 		{
-			Context.TypeMapper.Register(type, mapping);
+			Context.TypeMapper.Register(type, definition);
 
 			return this;
+		}
+
+		public PackageBuilder MapFragment<T>(string moduleName, string fragmentName)
+		{
+			return MapFragment(typeof(T), moduleName, fragmentName);
+		}
+		public PackageBuilder MapFragment(Type type, string moduleName, string fragmentName)
+		{
+			var genericArgumentDefinition = type.GetGenericArguments().Select(a => new GenericArgumentDefinition(a.Name)).ToArray();
+
+			return Map(type, new FragmentTypeDefinition(Context.MapPath(moduleName), fragmentName, genericArgumentDefinition));
 		}
 
 		public override Package Build()
@@ -216,7 +227,7 @@ namespace Odachi.CodeModel.Builders
 			var moduleName = builder.Context.GlobalDescriptor.GetModuleName(builder.Context, fragmentName);
 
 			return builder
-				.Map(enumType, new FragmentTypeDefinition(builder.Context.MapPath(moduleName), fragmentName))
+				.MapFragment(enumType, moduleName, fragmentName)
 				.Module(moduleName, module => module
 					.Enum(fragmentName, enumType, configure)
 				);
@@ -284,7 +295,7 @@ namespace Odachi.CodeModel.Builders
 			var moduleName = builder.Context.GlobalDescriptor.GetModuleName(builder.Context, fragmentName);
 
 			return builder
-				.Map(objectType, new FragmentTypeDefinition(builder.Context.MapPath(moduleName), fragmentName))
+				.MapFragment(objectType, moduleName, fragmentName)
 				.Module(moduleName, module => module
 					.Object(fragmentName, objectType, configure)
 				);
@@ -358,7 +369,7 @@ namespace Odachi.CodeModel.Builders
 			var moduleName = builder.Context.GlobalDescriptor.GetModuleName(builder.Context, fragmentName);
 
 			return builder
-				.Map(objectType, new FragmentTypeDefinition(builder.Context.MapPath(moduleName), fragmentName))
+				.MapFragment(objectType, moduleName, fragmentName)
 				.Module(moduleName, module => module
 					.Service(fragmentName, objectType, configure)
 				);

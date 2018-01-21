@@ -16,6 +16,7 @@ namespace Odachi.CodeModel
 		Interface,
 		Struct,
 		Class,
+		GenericParameter,
 	}
 
 	public static class TypeKindExtensions
@@ -26,6 +27,9 @@ namespace Odachi.CodeModel
 		}
 		public static TypeKind GetTypeKind(this TypeInfo info)
 		{
+			if (info.IsGenericParameter)
+				return TypeKind.GenericParameter;
+
 			if (info.IsArray)
 				return TypeKind.Array;
 

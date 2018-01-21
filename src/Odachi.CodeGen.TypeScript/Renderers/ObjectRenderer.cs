@@ -17,14 +17,16 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 		{
 			if (!(fragment is ObjectFragment objectFragment))
 				return false;
-			
+
 			if (objectFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
 				writer.WriteIndentedLine($"// source: {sourceType}");
 				writer.WriteSeparatingLine();
 			}
 
-			using (writer.WriteIndentedBlock(prefix: $"class {objectFragment.Name} "))
+			var genericSuffix = string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name));
+
+			using (writer.WriteIndentedBlock(prefix: $"class {objectFragment.Name}{(genericSuffix.Length > 0 ? $"<{genericSuffix}>" : "")} "))
 			{
 				foreach (var field in objectFragment.Fields)
 				{
@@ -35,7 +37,13 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					writer.WriteSeparatingLine();
 				}
 
-				using (writer.WriteIndentedBlock(prefix: $"static create(source: any): {objectFragment.Name} "))
+				var parameters = "source: any";
+				foreach (var genericArgument in objectFragment.GenericArguments)
+				{
+					parameters += $", {genericArgument.Name}_factory: {{ create(source: any): {genericArgument.Name} }}";
+				}
+
+				using (writer.WriteIndentedBlock(prefix: $"static create({parameters}): {objectFragment.Name} "))
 				{
 					writer.WriteIndentedLine($"const result = new {objectFragment.Name}();");
 

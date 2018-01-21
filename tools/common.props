@@ -11,6 +11,7 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseUrl>https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE</PackageLicenseUrl>
 		<NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
+		<LangVersion>7.2</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>

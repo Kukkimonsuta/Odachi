@@ -1,4 +1,4 @@
-﻿using Odachi.CodeModel.Mapping;
+using Odachi.CodeModel.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +21,8 @@ namespace Odachi.CodeModel
 	/// </summary>
 	public abstract class TypeFragment : Fragment
 	{
+		public IReadOnlyList<GenericArgumentDefinition> GenericArguments { get; set; } = Array.Empty<GenericArgumentDefinition>();
+
 		public abstract string Kind { get; }
 	}
 }

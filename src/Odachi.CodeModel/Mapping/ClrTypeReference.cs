@@ -28,20 +28,27 @@ namespace Odachi.CodeModel.Mapping
 		{
 			var underlyingType = Nullable.GetUnderlyingType(Type) ?? Type;
 
-			var type = mapper.Get(underlyingType, out var resolvedType, tryRegister: true);
-			if (type == null)
-			{
-				throw new InvalidOperationException($"Cannot resolve reference '{ToString()}'");
-			}
-
 			var kind = Type.GetTypeKind();
 
-			var resolvedTypeGenericArguments = resolvedType.GetGenericArguments();
-			var genericArguments = type.GenericArgumentDefinitions
-				.Select((a, i) => new ClrTypeReference(resolvedTypeGenericArguments[i]).Resolve(mapper))
-				.ToArray();
+			if (kind == TypeKind.GenericParameter)
+			{
+				return new TypeReference(null, Type.Name, kind, IsNullable);
+			}
+			else
+			{
+				var type = mapper.Get(underlyingType, out var resolvedType, tryRegister: true);
+				if (type == null)
+				{
+					throw new InvalidOperationException($"Cannot resolve reference '{ToString()}'");
+				}
 
-			return new TypeReference(type.Module, type.Name, kind, IsNullable, genericArguments);
+				var resolvedTypeGenericArguments = resolvedType.GetGenericArguments();
+				var genericArguments = type.GenericArgumentDefinitions
+					.Select((a, i) => new ClrTypeReference(resolvedTypeGenericArguments[i]).Resolve(mapper))
+					.ToArray();
+
+				return new TypeReference(type.Module, type.Name, kind, IsNullable, genericArguments);
+			}
 		}
 
 		public override string ToString()

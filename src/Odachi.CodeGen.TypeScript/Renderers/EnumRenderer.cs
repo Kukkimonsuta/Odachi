@@ -29,7 +29,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					writer.WriteIndentedLine($"{TS.Field(item.Name)} = {item.Value},");
 				}
 			}
-			
+
 			var itemHasDisplayNameHint = enumFragment.Items.Any(i => i.Hints.ContainsKey("display-name"));
 
 			using (writer.WriteIndentedBlock(prefix: $"const names = ", suffix: ";"))
@@ -39,7 +39,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					writer.WriteIndentedLine($"[{enumFragment.Name}.{TS.Field(item.Name)}]: '{TS.Field(item.Name)}',");
 				}
 			}
-			
+
 			if (itemHasDisplayNameHint)
 			{
 				using (writer.WriteIndentedBlock(prefix: $"const displayNames = ", suffix: ";"))
@@ -98,7 +98,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					writer.WriteSeparatingLine();
 				}
 			}
-			
+
 			context.Export(enumFragment.Name, @default: true);
 
 			return true;

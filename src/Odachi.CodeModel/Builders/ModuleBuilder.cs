@@ -17,11 +17,19 @@ namespace Odachi.CodeModel.Builders
 
 		public ModuleBuilder Object(string name, Action<ObjectBuilder> configure)
 		{
-			return Object(name, null, configure);
+			return Object(name, null, null, configure);
 		}
 		public ModuleBuilder Object(string name, Type type, Action<ObjectBuilder> configure)
 		{
-			var objectBuilder = new ObjectBuilder(Context, name, source: type);
+			return Object(name, null, type, configure);
+		}
+		public ModuleBuilder Object(string name, IReadOnlyList<string> genericArguments, Action<ObjectBuilder> configure)
+		{
+			return Object(name, genericArguments, null, configure);
+		}
+		public ModuleBuilder Object(string name, IReadOnlyList<string> genericArguments, Type type, Action<ObjectBuilder> configure)
+		{
+			var objectBuilder = new ObjectBuilder(Context, name, genericArguments, source: type);
 
 			configure(objectBuilder);
 

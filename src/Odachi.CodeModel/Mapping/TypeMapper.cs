@@ -73,11 +73,6 @@ namespace Odachi.CodeModel.Mapping
 			_mapping.Add(type, definition);
 		}
 
-		public TypeReference Map(ITypeReference reference)
-		{
-			return reference.Resolve(this);
-		}
-
 		private bool TryGet(ref Type type, out TypeDefinition definition)
 		{
 			// exact lookup
@@ -93,8 +88,7 @@ namespace Odachi.CodeModel.Mapping
 
 				if (_mapping.TryGetValue(genericTypeDefinition, out definition))
 				{
-					// allow stripping of generics.. todo: remove
-					if (type.GetGenericArguments().Length < definition.GenericArgumentDefinitions.Count)
+					if (type.GetGenericArguments().Length != definition.GenericArgumentDefinitions.Count)
 						throw new InvalidOperationException($"Invalid number of generic arguments between '{type.FullName}' and '{definition.GetFullyQualifiedName()}'");
 
 					return true;

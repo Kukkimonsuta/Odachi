@@ -17,14 +17,16 @@ namespace Odachi.CodeGen.CSharp.Renderers
 		{
 			if (!(fragment is ObjectFragment objectFragment))
 				return false;
-			
+
 			if (objectFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
 				writer.WriteIndentedLine($"// source: {sourceType}");
 				writer.WriteSeparatingLine();
 			}
 
-			using (writer.WriteIndentedBlock(prefix: $"public class {objectFragment.Name} "))
+			var genericSuffix = string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name));
+
+			using (writer.WriteIndentedBlock(prefix: $"public class {objectFragment.Name}{(genericSuffix.Length > 0 ? $"<{genericSuffix}>" : "")} "))
 			{
 				foreach (var field in objectFragment.Fields)
 				{

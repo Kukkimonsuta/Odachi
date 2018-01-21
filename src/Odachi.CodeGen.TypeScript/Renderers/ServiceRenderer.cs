@@ -17,7 +17,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 		{
 			if (!(fragment is ServiceFragment serviceFragment))
 				return false;
-			
+
 			if (serviceFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
 				writer.WriteIndentedLine($"// source: {sourceType}");
@@ -45,7 +45,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					var parameters = method.Parameters
 						.Select(p => $"{p.Name}: {context.Resolve(p.Type)}")
 						.ToList();
-					
+
 					using (writer.WriteIndentedBlock(prefix: $"async {TS.Method(method.Name)}Async({string.Join(", ", parameters)}): Promise<{context.Resolve(method.ReturnType)}> "))
 					{
 						if (method.ReturnType.Name == "void")

@@ -10,14 +10,16 @@ namespace Odachi.CodeModel.Builders
 {
 	public class ObjectBuilder : BuilderBase<ObjectBuilder, ObjectFragment>, ITypeFragmentBuilder
 	{
-		public ObjectBuilder(PackageContext context, string name, object source)
+		public ObjectBuilder(PackageContext context, string name, IReadOnlyList<string> genericArguments, object source)
 			: base(context, name)
 		{
+			GenericArguments = genericArguments ?? Array.Empty<string>();
 			Source = source;
 
 			context.ObjectDescriptors.Describe(this);
 		}
 
+		public IReadOnlyList<string> GenericArguments { get; }
 		public IList<FieldBuilder> Fields { get; } = new List<FieldBuilder>();
 		public object Source { get; }
 
@@ -40,14 +42,15 @@ namespace Odachi.CodeModel.Builders
 		{
 			var result = new ObjectFragment()
 			{
-				Name = Name
+				Name = Name,
+				GenericArguments = GenericArguments.Select(a => new GenericArgumentDefinition(a)).ToArray(),
 			};
 
 			foreach (var field in Fields)
 			{
 				result.Fields.Add(field.Build());
 			}
-			
+
 			foreach (var hint in Hints)
 			{
 				result.Hints.Add(hint);

@@ -32,7 +32,7 @@ namespace Odachi.CodeGen.CSharp.Renderers
 				{
 					writer.WriteIndentedLine("this._client = client;");
 				}
-				
+
 				writer.WriteIndentedLine("private IRpcClient _client;");
 				writer.WriteSeparatingLine();
 

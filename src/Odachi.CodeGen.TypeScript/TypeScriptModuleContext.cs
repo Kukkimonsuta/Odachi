@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Odachi.CodeGen.TypeScript.Internal;
@@ -264,6 +264,11 @@ namespace Odachi.CodeGen.TypeScript
 				}
 			}
 
+			if (type.Kind == TypeKind.GenericParameter)
+			{
+				return $"{type.Name}{nullableSuffix}";
+			}
+
 			Import(type);
 
 			return $"{type.Name}{(type.GenericArguments?.Length > 0 ? $"<{string.Join(", ", type.GenericArguments.Select(a => Resolve(a)))}>" : "")}{nullableSuffix}";
@@ -367,9 +372,143 @@ namespace Odachi.CodeGen.TypeScript
 				}
 			}
 
+			if (type.Kind == TypeKind.GenericParameter)
+			{
+				return $"{type.Name}_factory.create({source})";
+			}
+
 			Import(type);
 
-			return $"{prefix}{Resolve(type, includeNullability: false)}.create({source})";
+			var factories = "";
+			foreach (var genericArgument in type.GenericArguments)
+			{
+				factories += ", " + Factory(genericArgument);
+			}
+
+			return $"{prefix}{Resolve(type, includeNullability: false)}.create({source}{factories})";
+		}
+
+		public string Factory(TypeReference type)
+		{
+			const string factoryPrefix = "_$$_factory_";
+
+			if (type.GenericArguments.Any(t => t.Kind == TypeKind.GenericParameter))
+			{
+				throw new InvalidOperationException("Cannot create factory for open generic type");
+			}
+
+			if (type.Module == null)
+			{
+				switch (type.Name)
+				{
+					case "boolean":
+						Helper($"const {factoryPrefix}boolean = {{ create: (source: any): {Resolve(type)} => typeof source === 'boolean' ? source : fail(`Contract violation: expected boolean, got \\'{{typeof(source)}}\\'`) }};");
+						return $"{factoryPrefix}boolean";
+
+					case "string":
+						Helper($"const {factoryPrefix}string = {{ create: (source: any): {Resolve(type)} => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \\'{{typeof(source)}}\\'`) }};");
+						return $"{factoryPrefix}string";
+
+					case "integer":
+					case "long":
+					case "float":
+					case "double":
+					case "decimal":
+						Helper($"const {factoryPrefix}number = {{ create: (source: any): {Resolve(type)} => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \\'{{typeof(source)}}\\'`) }};");
+						return $"{factoryPrefix}number";
+
+					case "datetime":
+						Import("moment", "* as moment");
+						Helper($"const {factoryPrefix}moment = {{ create: (source: any): {Resolve(type)} => typeof source === 'string' ? moment(source) : fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`) }};");
+						return $"{factoryPrefix}moment";
+
+					case "array":
+						if (type.GenericArguments?.Length != 1)
+							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
+
+						Helper($@"function {factoryPrefix}array<T>(T_factory: {{ create: (source: any): T }}) {{
+	return {{
+		create: (source: any): {Resolve(type)} =>
+			Array.isArray(source) ?
+				source.map((item: any) => T_factory(source)) :
+				fail(`Contract violation: expected array, got \\'{{typeof(source)}}\\'`)
+	}};
+}}");
+						return $"{factoryPrefix}array({Factory(type.GenericArguments[0])})";
+
+					case "PagingOptions":
+						Helper($"const {factoryPrefix}paging_options = {{ create: (source: any): {Resolve(type)} => typeof source === 'object' && source !== null ? source : fail(`Contract violation: expected paging options, got \\'{{typeof(source)}}\\'`) }};");
+						return $"{factoryPrefix}paging_options";
+
+					case "Page":
+						if (type.GenericArguments?.Length != 1)
+							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
+
+						Import("@stackino/uno", "core");
+
+						Helper($@"function {factoryPrefix}page<T>(T_factory: {{ create: (source: any): Array<T> }}) {{
+	create: (source: any): {Resolve(type)} =>
+		typeof source === 'object' && source !== null ?
+			new core.Page<T>(
+				(Array.isArray(source.data) ? T_factory(source.data) : fail(`Contract violation: expected array, got \\'{{typeof(source.data)}}\\'`)),
+				{CreateExpression(new TypeReference(null, "integer", TypeKind.Primitive, false), $"source.number")},
+				{CreateExpression(new TypeReference(null, "integer", TypeKind.Primitive, false), $"source.count")}
+			) :
+			fail(`Contract violation: expected page, got \\'{{typeof(source)}}\\'`)
+	}};
+}}");
+						return $"{factoryPrefix}page({Factory(type.GenericArguments[0])})";
+
+					case "OneOf":
+						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						var oneOfHelperArguments = "";
+						var oneOfHelperGenericArguments = "";
+						var oneOfHelperBody = "switch (source.index) {";
+						for (var i = 0; i < type.GenericArguments.Length; i++)
+						{
+							var genericArgument = type.GenericArguments[i];
+
+							if (i != 0)
+							{
+								oneOfHelperArguments += ", ";
+								oneOfHelperGenericArguments += ", ";
+							}
+							oneOfHelperArguments += $"T{i + 1}_factory: {{ create: (source: any): T{i + 1} }}";
+							oneOfHelperGenericArguments += $"T{i + 1}";
+							oneOfHelperBody += $"case {i}: return {genericArgument.Name}_factory(source.option{i + 1});";
+						}
+						oneOfHelperBody += "default: fail(`Contract violation: cannot handle OneOf index ${source.index}`)";
+						oneOfHelperBody += "}";
+
+						Helper($@"function {factoryPrefix}one_of<{oneOfHelperGenericArguments}>({oneOfHelperArguments}) {{
+	return {{
+		create: (source: any): {Resolve(type)} => {{
+			{oneOfHelperBody.Replace("\n", "\n\t\t\t")}
+		}}
+	}};
+}}");
+
+						return $"{factoryPrefix}oneof_{type.GenericArguments.Length}";
+
+					case "ValidationState":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						Import("@stackino/uno", "validation");
+
+						Helper($"const {factoryPrefix}validation_state = {{ create: (source: any): {Resolve(type)} => typeof source === 'object' && source !== null ? new validation.ValidationState(source.state) : fail(`Contract violation: expected validation state, got \\'{{typeof(source)}}\\'`) }};");
+						return $"{factoryPrefix}validation_state";
+
+					default:
+						throw new NotSupportedException($"Undefined behavior for builtin '{type.Name}'");
+				}
+			}
+
+			Import(type);
+
+			return Resolve(type, includeNullability: false);
 		}
 
 		#endregion

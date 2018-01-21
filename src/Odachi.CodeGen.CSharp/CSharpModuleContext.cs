@@ -33,6 +33,45 @@ namespace Odachi.CodeGen.CSharp
 		private StringBuilder _bodyBuilder = new StringBuilder();
 		private List<string> _imports = new List<string>();
 
+		#region General
+
+		public override bool RenderHeader(IndentedTextWriter writer)
+		{
+			if (_imports.Count <= 0)
+			{
+				return false;
+			}
+
+			foreach (var @namespace in _imports.OrderBy(x => x))
+			{
+				writer.WriteLine($"using {@namespace};");
+			}
+
+			return true;
+		}
+
+		public override bool RenderBody(IndentedTextWriter writer, string body)
+		{
+			if (body.Length <= 0)
+			{
+				return false;
+			}
+
+			using (writer.WriteIndentedBlock(prefix: $"namespace {ModuleNamespace} ", writeSeparatingLine: false))
+			{
+				writer.WriteIndentedLine(body);
+			}
+
+			return true;
+		}
+
+		public override bool RenderFooter(IndentedTextWriter writer)
+		{
+			return false;
+		}
+
+		#endregion
+
 		#region CS specific
 
 		public void Import(TypeReference type)
@@ -183,48 +222,14 @@ namespace Odachi.CodeGen.CSharp
 				}
 			}
 
+			if (type.Kind == TypeKind.GenericParameter)
+			{
+				return $"{type.Name}{(includeNullability && type.IsNullable ? "?" : "")}";
+			}
+
 			Import(type);
 
 			return $"{type.Name}{(type.GenericArguments?.Length > 0 ? $"<{string.Join(", ", type.GenericArguments.Select(a => Resolve(a)))}>" : "")}{(includeNullability && type.IsNullable ? "?" : "")}";
-		}
-
-		#endregion
-
-		#region General
-
-		public override bool RenderHeader(IndentedTextWriter writer)
-		{
-			if (_imports.Count <= 0)
-			{
-				return false;
-			}
-
-			foreach (var @namespace in _imports.OrderBy(x => x))
-			{
-				writer.WriteLine($"using {@namespace};");
-			}
-
-			return true;
-		}
-
-		public override bool RenderBody(IndentedTextWriter writer, string body)
-		{
-			if (body.Length <= 0)
-			{
-				return false;
-			}
-
-			using (writer.WriteIndentedBlock(prefix: $"namespace {ModuleNamespace} ", writeSeparatingLine: false))
-			{
-				writer.WriteIndentedLine(body);
-			}
-
-			return true;
-		}
-
-		public override bool RenderFooter(IndentedTextWriter writer)
-		{
-			return false;
 		}
 
 		#endregion
