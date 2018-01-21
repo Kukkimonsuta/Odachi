@@ -190,6 +190,12 @@ namespace Odachi.CodeGen.CSharp
 
 						return $"Page<{Resolve(type.GenericArguments[0])}>";
 
+					case "Tuple":
+						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						return $"({string.Join(", ", type.GenericArguments.Select(t => Resolve(t)))}){(includeNullability && type.IsNullable ? "?" : "")}";
+
 					case "OneOf":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");

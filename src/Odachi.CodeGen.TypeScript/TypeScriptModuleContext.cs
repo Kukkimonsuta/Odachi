@@ -247,6 +247,12 @@ namespace Odachi.CodeGen.TypeScript
 
 						return $"core.Page<{Resolve(type.GenericArguments[0])}>{nullableSuffix}";
 
+					case "Tuple":
+						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						return $"[{string.Join(", ", type.GenericArguments.Select(t => Resolve(t, includeNullability: false)))}]{nullableSuffix}";
+
 					case "OneOf":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
@@ -342,6 +348,12 @@ namespace Odachi.CodeGen.TypeScript
 						Import("@stackino/uno", "core");
 
 						return $"({prefix}new core.Page<{Resolve(type.GenericArguments[0])}>({CreateExpression(new TypeReference(null, "array", TypeKind.Array, false, type.GenericArguments[0]), $"{source}.data")}, {CreateExpression(new TypeReference(null, "integer", TypeKind.Primitive, false), $"{source}.number")}, {CreateExpression(new TypeReference(null, "integer", TypeKind.Primitive, false), $"{source}.count")}))";
+
+					case "Tuple":
+						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						return $"{prefix}[{string.Join(", ", type.GenericArguments.Select((a, i) => CreateExpression(a, $"{source}[{i}]")))}]";
 
 					case "OneOf":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
@@ -458,6 +470,38 @@ namespace Odachi.CodeGen.TypeScript
 	}};
 }}");
 						return $"{factoryPrefix}page({Factory(type.GenericArguments[0])})";
+
+					case "Tuple":
+						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						var tupleHelperArguments = "";
+						var tupleHelperGenericArguments = "";
+						var tupleHelperBody = "return [";
+						for (var i = 0; i < type.GenericArguments.Length; i++)
+						{
+							var genericArgument = type.GenericArguments[i];
+
+							if (i != 0)
+							{
+								tupleHelperArguments += ", ";
+								tupleHelperGenericArguments += ", ";
+							}
+							tupleHelperArguments += $"T{i + 1}_factory: {{ create: (source: any): T{i + 1} }}";
+							tupleHelperGenericArguments += $"T{i + 1}";
+							tupleHelperBody += $"{genericArgument.Name}_factory(source[{i}]);";
+						}
+						tupleHelperBody += "]";
+
+						Helper($@"function {factoryPrefix}tuple<{tupleHelperGenericArguments}>({tupleHelperArguments}) {{
+	return {{
+		create: (source: any): {Resolve(type)} => {{
+			{tupleHelperBody.Replace("\n", "\n\t\t\t")}
+		}}
+	}};
+}}");
+
+						return $"{factoryPrefix}tuple_{type.GenericArguments.Length}";
 
 					case "OneOf":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
