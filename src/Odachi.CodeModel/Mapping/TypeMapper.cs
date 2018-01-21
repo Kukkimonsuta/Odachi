@@ -40,6 +40,15 @@ namespace Odachi.CodeModel.Mapping
 			Register(typeof(IEnumerable<>), BuiltinTypeDefinition.Array);
 			Register(typeof(IBlob), BuiltinTypeDefinition.File);
 
+			Register(typeof(ValueTuple<>), BuiltinTypeDefinition.Tuple1);
+			Register(typeof(ValueTuple<,>), BuiltinTypeDefinition.Tuple2);
+			Register(typeof(ValueTuple<,,>), BuiltinTypeDefinition.Tuple3);
+			Register(typeof(ValueTuple<,,,>), BuiltinTypeDefinition.Tuple4);
+			Register(typeof(ValueTuple<,,,,>), BuiltinTypeDefinition.Tuple5);
+			Register(typeof(ValueTuple<,,,,,>), BuiltinTypeDefinition.Tuple6);
+			Register(typeof(ValueTuple<,,,,,,>), BuiltinTypeDefinition.Tuple7);
+			Register(typeof(ValueTuple<,,,,,,,>), BuiltinTypeDefinition.Tuple8);
+
 			Register(typeof(OneOf<,>), BuiltinTypeDefinition.OneOf2);
 			Register(typeof(OneOf<,,>), BuiltinTypeDefinition.OneOf3);
 			Register(typeof(OneOf<,,,>), BuiltinTypeDefinition.OneOf4);

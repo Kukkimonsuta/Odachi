@@ -17,10 +17,23 @@ namespace Odachi.CodeModel
 		Struct,
 		Class,
 		GenericParameter,
+		Tuple,
 	}
 
 	public static class TypeKindExtensions
 	{
+		private static readonly HashSet<Type> ValueTupleTypes = new HashSet<Type>(new Type[]
+		{
+			typeof(ValueTuple<>),
+			typeof(ValueTuple<,>),
+			typeof(ValueTuple<,,>),
+			typeof(ValueTuple<,,,>),
+			typeof(ValueTuple<,,,,>),
+			typeof(ValueTuple<,,,,,>),
+			typeof(ValueTuple<,,,,,,>),
+			typeof(ValueTuple<,,,,,,,>),
+		});
+
 		public static TypeKind GetTypeKind(this Type type)
 		{
 			return type.GetTypeInfo().GetTypeKind();
@@ -29,6 +42,14 @@ namespace Odachi.CodeModel
 		{
 			if (info.IsGenericParameter)
 				return TypeKind.GenericParameter;
+
+			if (info.IsValueType && info.IsGenericType)
+			{
+				var underlyingType = Nullable.GetUnderlyingType(info.UnderlyingSystemType) ?? info.UnderlyingSystemType;
+
+				if (ValueTupleTypes.Contains(underlyingType.GetGenericTypeDefinition()))
+					return TypeKind.Tuple;
+			}
 
 			if (info.IsArray)
 				return TypeKind.Array;

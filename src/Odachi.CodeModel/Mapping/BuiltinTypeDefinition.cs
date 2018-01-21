@@ -34,6 +34,15 @@ namespace Odachi.CodeModel.Mapping
 		public static readonly BuiltinTypeDefinition Array = new BuiltinTypeDefinition("array", new GenericArgumentDefinition("T"));
 		public static readonly BuiltinTypeDefinition File = new BuiltinTypeDefinition("file");
 
+		public static readonly BuiltinTypeDefinition Tuple1 = new BuiltinTypeDefinition("Tuple", new GenericArgumentDefinition("T1"));
+		public static readonly BuiltinTypeDefinition Tuple2 = new BuiltinTypeDefinition("Tuple", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"));
+		public static readonly BuiltinTypeDefinition Tuple3 = new BuiltinTypeDefinition("Tuple", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"));
+		public static readonly BuiltinTypeDefinition Tuple4 = new BuiltinTypeDefinition("Tuple", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"));
+		public static readonly BuiltinTypeDefinition Tuple5 = new BuiltinTypeDefinition("Tuple", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"));
+		public static readonly BuiltinTypeDefinition Tuple6 = new BuiltinTypeDefinition("Tuple", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"));
+		public static readonly BuiltinTypeDefinition Tuple7 = new BuiltinTypeDefinition("Tuple", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"), new GenericArgumentDefinition("T7"));
+		public static readonly BuiltinTypeDefinition Tuple8 = new BuiltinTypeDefinition("Tuple", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"), new GenericArgumentDefinition("T7"), new GenericArgumentDefinition("T8"));
+
 		[Obsolete("")]
 		public static readonly BuiltinTypeDefinition EntityReference = new BuiltinTypeDefinition("EntityReference");
 		public static readonly BuiltinTypeDefinition OneOf2 = new BuiltinTypeDefinition("OneOf", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"));

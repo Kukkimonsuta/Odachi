@@ -27,8 +27,18 @@ namespace Odachi.CodeModel.Tests
 		}
 	}
 
-    public class PackageTests
-    {
+	public class ValueTupleClass
+	{
+		public (string foo, string bar) Value;
+	}
+
+	public class NullableValueTupleClass
+	{
+		public (string foo, string bar)? Value;
+	}
+
+	public class PackageTests
+	{
 		[Fact]
 		public void Can_describe_empty_class_as_object()
 		{
@@ -92,6 +102,66 @@ namespace Odachi.CodeModel.Tests
 			Assert.Single(package.Modules);
 			Assert.Single(package.Modules[0].Fragments);
 			Assert.Equal("service", package.Modules[0].Fragments[0].Kind);
+		}
+
+		[Fact]
+		public void Can_describe_value_tuple()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<ValueTupleClass>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Modules,
+				module =>
+				{
+					Assert.Collection(module.Fragments,
+						fragment =>
+						{
+							Assert.Equal("object", fragment.Kind);
+
+							Assert.Collection(((ObjectFragment)fragment).Fields,
+								field =>
+								{
+									Assert.Equal(nameof(ValueTupleClass.Value), field.Name);
+									Assert.Equal(TypeKind.Tuple, field.Type.Kind);
+									Assert.False(field.Type.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_nullable_value_tuple()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<NullableValueTupleClass>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Modules,
+				module =>
+				{
+					Assert.Collection(module.Fragments,
+						fragment =>
+						{
+							Assert.Equal("object", fragment.Kind);
+
+							Assert.Collection(((ObjectFragment)fragment).Fields,
+								field =>
+								{
+									Assert.Equal(nameof(NullableValueTupleClass.Value), field.Name);
+									Assert.Equal(TypeKind.Tuple, field.Type.Kind);
+									Assert.True(field.Type.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
 		}
 	}
 }
