@@ -111,6 +111,11 @@ namespace Odachi.CodeGen.CSharp
 		{
 			var includeNullability = type.Kind != TypeKind.Interface && type.Kind != TypeKind.Class;
 
+			if (type.Kind == TypeKind.GenericParameter)
+			{
+				return $"{type.Name}{(includeNullability && type.IsNullable ? "?" : "")}";
+			}
+
 			if (type.Module == null)
 			{
 				// handle builtins
@@ -220,11 +225,6 @@ namespace Odachi.CodeGen.CSharp
 					default:
 						throw new NotSupportedException($"Undefined behavior for builtin '{type.Name}'");
 				}
-			}
-
-			if (type.Kind == TypeKind.GenericParameter)
-			{
-				return $"{type.Name}{(includeNullability && type.IsNullable ? "?" : "")}";
 			}
 
 			Import(type);

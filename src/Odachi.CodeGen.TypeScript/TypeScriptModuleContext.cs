@@ -185,6 +185,11 @@ namespace Odachi.CodeGen.TypeScript
 		{
 			var nullableSuffix = includeNullability && type.IsNullable ? " | null" : "";
 
+			if (type.Kind == TypeKind.GenericParameter)
+			{
+				return $"{type.Name}{nullableSuffix}";
+			}
+
 			if (type.Module == null)
 			{
 				// handle builtins
@@ -264,11 +269,6 @@ namespace Odachi.CodeGen.TypeScript
 				}
 			}
 
-			if (type.Kind == TypeKind.GenericParameter)
-			{
-				return $"{type.Name}{nullableSuffix}";
-			}
-
 			Import(type);
 
 			return $"{type.Name}{(type.GenericArguments?.Length > 0 ? $"<{string.Join(", ", type.GenericArguments.Select(a => Resolve(a)))}>" : "")}{nullableSuffix}";
@@ -289,6 +289,11 @@ namespace Odachi.CodeGen.TypeScript
 				Helper("function fail(message: string): never { throw new Error(message); }");
 
 				prefix += $"fail('Contract violation: value of \\'{source}\\' cannot be null') : ";
+			}
+
+			if (type.Kind == TypeKind.GenericParameter)
+			{
+				return $"{type.Name}_factory.create({source})";
 			}
 
 			if (type.Module == null)
@@ -372,11 +377,6 @@ namespace Odachi.CodeGen.TypeScript
 				}
 			}
 
-			if (type.Kind == TypeKind.GenericParameter)
-			{
-				return $"{type.Name}_factory.create({source})";
-			}
-
 			Import(type);
 
 			var factories = "";
@@ -385,7 +385,7 @@ namespace Odachi.CodeGen.TypeScript
 				factories += ", " + Factory(genericArgument);
 			}
 
-			return $"{prefix}{Resolve(type, includeNullability: false)}.create({source}{factories})";
+			return $"{prefix}{Factory(type)}.create({source}{factories})";
 		}
 
 		public string Factory(TypeReference type)
