@@ -113,7 +113,8 @@ namespace Odachi.CodeGen.CSharp
 
 			if (type.Kind == TypeKind.GenericParameter)
 			{
-				return $"{type.Name}{(includeNullability && type.IsNullable ? "?" : "")}";
+				// ignore nullability until C# 8
+				return $"{type.Name}";
 			}
 
 			if (type.Module == null)
