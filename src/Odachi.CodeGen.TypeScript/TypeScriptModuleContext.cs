@@ -181,7 +181,7 @@ namespace Odachi.CodeGen.TypeScript
 		/// <summary>
 		/// Return string representation valid in code of a type reference.
 		/// </summary>
-		public string Resolve(TypeReference type, bool includeNullability = true)
+		public string Resolve(TypeReference type, bool includeNullability = true, bool includeGenericArguments = true)
 		{
 			var nullableSuffix = includeNullability && type.IsNullable ? " | null" : "";
 
@@ -225,6 +225,9 @@ namespace Odachi.CodeGen.TypeScript
 						if (type.GenericArguments?.Length != 1)
 							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
 
+						if (!includeGenericArguments)
+							return "Array";
+
 						return $"Array<{Resolve(type.GenericArguments[0])}>{nullableSuffix}";
 
 					case "file":
@@ -245,17 +248,26 @@ namespace Odachi.CodeGen.TypeScript
 
 						Import("@stackino/uno", "core");
 
+						if (!includeGenericArguments)
+							return "core.Page";
+
 						return $"core.Page<{Resolve(type.GenericArguments[0])}>{nullableSuffix}";
 
 					case "Tuple":
 						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
+						if (!includeGenericArguments)
+							throw new InvalidOperationException("Cannot resolve tuple without generic arguments");
+
 						return $"[{string.Join(", ", type.GenericArguments.Select(t => Resolve(t, includeNullability: false)))}]{nullableSuffix}";
 
 					case "OneOf":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						if (!includeGenericArguments)
+							throw new InvalidOperationException("Cannot resolve oneof without generic arguments");
 
 						if (includeNullability && type.GenericArguments.Any(a => a.IsNullable))
 							nullableSuffix = " | null";
@@ -277,7 +289,7 @@ namespace Odachi.CodeGen.TypeScript
 
 			Import(type);
 
-			return $"{type.Name}{(type.GenericArguments?.Length > 0 ? $"<{string.Join(", ", type.GenericArguments.Select(a => Resolve(a)))}>" : "")}{nullableSuffix}";
+			return $"{type.Name}{(includeGenericArguments && type.GenericArguments?.Length > 0 ? $"<{string.Join(", ", type.GenericArguments.Select(a => Resolve(a)))}>" : "")}{nullableSuffix}";
 		}
 
 		/// <summary>
@@ -438,11 +450,11 @@ namespace Odachi.CodeGen.TypeScript
 						if (type.GenericArguments?.Length != 1)
 							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
 
-						Helper($@"function {factoryPrefix}array<T>(T_factory: {{ create: (source: any): T }}) {{
+						Helper($@"function {factoryPrefix}array<T>(T_factory: {{ create: (source: any) => T }}) {{
 	return {{
-		create: (source: any): {Resolve(type)} =>
+		create: (source: any): Array<T> =>
 			Array.isArray(source) ?
-				source.map((item: any) => T_factory(source)) :
+				source.map((item: any) => T_factory.create(source)) :
 				fail(`Contract violation: expected array, got \\'{{typeof(source)}}\\'`)
 	}};
 }}");
@@ -552,7 +564,7 @@ namespace Odachi.CodeGen.TypeScript
 
 			Import(type);
 
-			return Resolve(type, includeNullability: false);
+			return Resolve(type, includeNullability: false, includeGenericArguments: false);
 		}
 
 		#endregion

@@ -43,19 +43,19 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					parameters += $", {genericArgument.Name}_factory: {{ create(source: any): {genericArgument.Name} }}";
 				}
 
-				if (!objectFragment.GenericArguments.Any())
+				var factoryGenericParameters = objectFragment.GenericArguments.Count > 0 ? $"<{string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name))}>" : "";
+				var factoryParameters = objectFragment.GenericArguments.Count > 0 ? $", {string.Join(", ", objectFragment.GenericArguments.Select(a => $"{a.Name}_factory: {{ create: (source: any) => {a.Name} }}"))}" : "";
+
+				using (writer.WriteIndentedBlock(prefix: $"static create{factoryGenericParameters}({parameters}{factoryParameters}): {objectFragment.Name} "))
 				{
-					using (writer.WriteIndentedBlock(prefix: $"static create({parameters}): {objectFragment.Name} "))
+					writer.WriteIndentedLine($"const result = new {objectFragment.Name}();");
+
+					foreach (var field in objectFragment.Fields)
 					{
-						writer.WriteIndentedLine($"const result = new {objectFragment.Name}();");
-
-						foreach (var field in objectFragment.Fields)
-						{
-							writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
-						}
-
-						writer.WriteIndentedLine("return result;");
+						writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
 					}
+
+					writer.WriteIndentedLine("return result;");
 				}
 			}
 
