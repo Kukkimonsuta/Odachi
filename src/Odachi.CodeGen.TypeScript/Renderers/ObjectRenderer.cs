@@ -44,9 +44,9 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					parameters += $", {genericArgument.Name}_factory: {{ create(source: any): {genericArgument.Name} }}";
 				}
 
-				using (writer.WriteIndentedBlock(prefix: $"static create{genericParameters}({parameters}): {objectFragment.Name} "))
+				using (writer.WriteIndentedBlock(prefix: $"static create{genericParameters}({parameters}): {objectFragment.Name}{genericParameters} "))
 				{
-					writer.WriteIndentedLine($"const result = new {objectFragment.Name}();");
+					writer.WriteIndentedLine($"const result = new {objectFragment.Name}{genericParameters}();");
 
 					foreach (var field in objectFragment.Fields)
 					{
