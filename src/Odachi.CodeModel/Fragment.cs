@@ -21,8 +21,6 @@ namespace Odachi.CodeModel
 	/// </summary>
 	public abstract class TypeFragment : Fragment
 	{
-		public IReadOnlyList<GenericArgumentDefinition> GenericArguments { get; set; } = Array.Empty<GenericArgumentDefinition>();
-
 		public abstract string Kind { get; }
 	}
 }

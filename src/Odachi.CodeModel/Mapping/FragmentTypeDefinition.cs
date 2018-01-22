@@ -16,11 +16,11 @@ namespace Odachi.CodeModel.Mapping
 
 			Module = moduleName;
 			Name = fragmentName;
-			GenericArgumentDefinitions = genericArgumentDefinitions;
+			GenericArguments = genericArgumentDefinitions;
 		}
 
 		public override string Module { get; }
 		public override string Name { get; }
-		public override IReadOnlyList<GenericArgumentDefinition> GenericArgumentDefinitions { get; }
+		public override IReadOnlyList<GenericArgumentDefinition> GenericArguments { get; }
 	}
 }

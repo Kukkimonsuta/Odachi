@@ -291,13 +291,16 @@ namespace Odachi.CodeModel.Builders
 			if (configure == null)
 				throw new ArgumentNullException(nameof(configure));
 
+			var objectTypeInfo = objectType.GetTypeInfo();
+
 			var fragmentName = builder.Context.GlobalDescriptor.GetFragmentName(builder.Context, objectType);
 			var moduleName = builder.Context.GlobalDescriptor.GetModuleName(builder.Context, fragmentName);
+			var genericArguments = objectTypeInfo.ContainsGenericParameters? objectTypeInfo.GenericTypeParameters.Select(p => p.Name).ToArray() : null;
 
 			return builder
 				.MapFragment(objectType, moduleName, fragmentName)
 				.Module(moduleName, module => module
-					.Object(fragmentName, objectType, configure)
+					.Object(fragmentName, genericArguments, objectType, configure)
 				);
 		}
 

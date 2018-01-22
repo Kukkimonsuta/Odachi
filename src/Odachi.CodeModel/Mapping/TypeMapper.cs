@@ -97,7 +97,7 @@ namespace Odachi.CodeModel.Mapping
 
 				if (_mapping.TryGetValue(genericTypeDefinition, out definition))
 				{
-					if (type.GetGenericArguments().Length != definition.GenericArgumentDefinitions.Count)
+					if (type.GetGenericArguments().Length != definition.GenericArguments.Count)
 						throw new InvalidOperationException($"Invalid number of generic arguments between '{type.FullName}' and '{definition.GetFullyQualifiedName()}'");
 
 					return true;
@@ -110,7 +110,7 @@ namespace Odachi.CodeModel.Mapping
 			{
 				if (_mapping.TryGetValue(typeof(IEnumerable<>), out definition))
 				{
-					if (enumerableInterface.GetGenericArguments().Length != definition.GenericArgumentDefinitions.Count)
+					if (enumerableInterface.GetGenericArguments().Length != definition.GenericArguments.Count)
 						throw new InvalidOperationException($"Invalid number of generic arguments between '{type.FullName}' and '{definition.GetFullyQualifiedName()}'");
 
 					type = enumerableInterface;

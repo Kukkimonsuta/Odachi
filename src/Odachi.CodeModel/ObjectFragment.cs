@@ -13,6 +13,7 @@ namespace Odachi.CodeModel
 	{
 		public override string Kind => "object";
 
+		public IReadOnlyList<GenericArgumentDefinition> GenericArguments { get; set; } = Array.Empty<GenericArgumentDefinition>();
 		public IList<FieldFragment> Fields { get; } = new List<FieldFragment>();
 	}
 }

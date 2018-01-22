@@ -30,26 +30,37 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Single(package.Modules);
-
-			var module = package.Modules[0];
-			Assert.Equal($".\\{nameof(GenericObject<object>)}", module.Name);
-			Assert.Single(module.Fragments);
-
-			var fragment = module.Fragments[0] as ObjectFragment;
-			Assert.NotNull(fragment);
-			Assert.Equal("object", fragment.Kind);
-			Assert.Equal(nameof(GenericObject<object>), fragment.Name);
-			Assert.Collection(fragment.Fields,
-				field =>
+			Assert.Collection(package.Modules,
+				module =>
 				{
-					Assert.Equal(nameof(GenericObject<object>.Value), field.Name);
-					Assert.Equal(TypeKind.GenericParameter, field.Type.Kind);
-				},
-				field =>
-				{
-					Assert.Equal(nameof(GenericObject<object>.Test), field.Name);
-					Assert.Equal(TypeKind.Primitive, field.Type.Kind);
+					Assert.Equal($".\\{nameof(GenericObject<object>)}", module.Name);
+
+					Assert.Collection(module.Fragments,
+						fragment =>
+						{
+							Assert.NotNull(fragment);
+							Assert.Equal("object", fragment.Kind);
+							Assert.Equal(nameof(GenericObject<object>), fragment.Name);
+							Assert.Collection(((ObjectFragment)fragment).GenericArguments,
+								parameter =>
+								{
+									Assert.Equal("T", parameter.Name);
+								}
+							);
+							Assert.Collection(((ObjectFragment)fragment).Fields,
+								field =>
+								{
+									Assert.Equal(nameof(GenericObject<object>.Value), field.Name);
+									Assert.Equal(TypeKind.GenericParameter, field.Type.Kind);
+								},
+								field =>
+								{
+									Assert.Equal(nameof(GenericObject<object>.Test), field.Name);
+									Assert.Equal(TypeKind.Primitive, field.Type.Kind);
+								}
+							);
+						}
+					);
 				}
 			);
 		}
@@ -73,6 +84,12 @@ namespace Odachi.CodeModel.Tests
 							Assert.NotNull(fragment);
 							Assert.Equal("object", fragment.Kind);
 							Assert.Equal(nameof(GenericObject<object>), fragment.Name);
+							Assert.Collection(((ObjectFragment)fragment).GenericArguments,
+								parameter =>
+								{
+									Assert.Equal("T", parameter.Name);
+								}
+							);
 							Assert.Collection(((ObjectFragment)fragment).Fields,
 								field =>
 								{

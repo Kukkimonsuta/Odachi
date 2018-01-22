@@ -43,7 +43,7 @@ namespace Odachi.CodeModel.Mapping
 				}
 
 				var resolvedTypeGenericArguments = resolvedType.GetGenericArguments();
-				var genericArguments = type.GenericArgumentDefinitions
+				var genericArguments = type.GenericArguments
 					.Select((a, i) => new ClrTypeReference(resolvedTypeGenericArguments[i]).Resolve(mapper))
 					.ToArray();
 

@@ -7,18 +7,18 @@ namespace Odachi.CodeModel.Mapping
 {
 	public class BuiltinTypeDefinition : TypeDefinition
 	{
-		public BuiltinTypeDefinition(string name, params GenericArgumentDefinition[] genericArgumentDefinitions)
+		public BuiltinTypeDefinition(string name, params GenericArgumentDefinition[] genericArguments)
 		{
 			if (name == null)
 				throw new ArgumentNullException(nameof(name));
 
 			Name = name;
-			GenericArgumentDefinitions = genericArgumentDefinitions;
+			GenericArguments = genericArguments;
 		}
 
 		public override string Module { get; } = null;
 		public override string Name { get; }
-		public override IReadOnlyList<GenericArgumentDefinition> GenericArgumentDefinitions { get; }
+		public override IReadOnlyList<GenericArgumentDefinition> GenericArguments { get; }
 
 		#region Static members
 
