@@ -43,27 +43,25 @@ namespace Odachi.CodeModel
 			if (info.IsGenericParameter)
 				return TypeKind.GenericParameter;
 
-			if (info.IsValueType && info.IsGenericType)
-			{
-				var underlyingType = Nullable.GetUnderlyingType(info.UnderlyingSystemType) ?? info.UnderlyingSystemType;
+			var underlyingType = Nullable.GetUnderlyingType(info.UnderlyingSystemType) ?? info.UnderlyingSystemType;
+			var underlyingTypeInfo = underlyingType.GetTypeInfo();
 
-				if (ValueTupleTypes.Contains(underlyingType.GetGenericTypeDefinition()))
-					return TypeKind.Tuple;
-			}
+			if (underlyingTypeInfo.IsGenericType && ValueTupleTypes.Contains(underlyingType.GetGenericTypeDefinition()))
+				return TypeKind.Tuple;
 
-			if (info.IsArray)
+			if (underlyingTypeInfo.IsArray)
 				return TypeKind.Array;
 
-			if (info.IsEnum)
+			if (underlyingTypeInfo.IsEnum)
 				return TypeKind.Enum;
 
-			if (info.IsPrimitive)
+			if (underlyingTypeInfo.IsPrimitive)
 				return TypeKind.Primitive;
 
-			if (info.IsInterface)
+			if (underlyingTypeInfo.IsInterface)
 				return TypeKind.Interface;
 
-			if (info.IsValueType)
+			if (underlyingTypeInfo.IsValueType)
 				return TypeKind.Struct;
 
 			return TypeKind.Class;
