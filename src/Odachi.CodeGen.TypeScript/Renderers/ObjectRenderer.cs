@@ -37,16 +37,14 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					writer.WriteSeparatingLine();
 				}
 
+				var genericParameters = objectFragment.GenericArguments.Count > 0 ? $"<{string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name))}>" : "";
 				var parameters = "source: any";
 				foreach (var genericArgument in objectFragment.GenericArguments)
 				{
 					parameters += $", {genericArgument.Name}_factory: {{ create(source: any): {genericArgument.Name} }}";
 				}
 
-				var factoryGenericParameters = objectFragment.GenericArguments.Count > 0 ? $"<{string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name))}>" : "";
-				var factoryParameters = objectFragment.GenericArguments.Count > 0 ? $", {string.Join(", ", objectFragment.GenericArguments.Select(a => $"{a.Name}_factory: {{ create: (source: any) => {a.Name} }}"))}" : "";
-
-				using (writer.WriteIndentedBlock(prefix: $"static create{factoryGenericParameters}({parameters}{factoryParameters}): {objectFragment.Name} "))
+				using (writer.WriteIndentedBlock(prefix: $"static create{genericParameters}({parameters}): {objectFragment.Name} "))
 				{
 					writer.WriteIndentedLine($"const result = new {objectFragment.Name}();");
 
