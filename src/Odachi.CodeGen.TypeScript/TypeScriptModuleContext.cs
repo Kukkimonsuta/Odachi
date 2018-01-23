@@ -454,7 +454,7 @@ namespace Odachi.CodeGen.TypeScript
 	return {{
 		create: (source: any): Array<T> =>
 			Array.isArray(source) ?
-				source.map((item: any) => T_factory.create(source)) :
+				source.map((item: any) => T_factory.create(item)) :
 				fail(`Contract violation: expected array, got \\'{{typeof(source)}}\\'`)
 	}};
 }}");
