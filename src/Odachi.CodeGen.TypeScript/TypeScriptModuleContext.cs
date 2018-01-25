@@ -497,7 +497,7 @@ namespace Odachi.CodeGen.TypeScript
 							oneOfHelperGenericArguments[i] = genericArgumentName;
 							oneOfHelperBody += $"case {i + 1}: return {genericArgumentName}_factory.create(source.option{i + 1}); ";
 						}
-						oneOfHelperBody += "default: fail(`Contract violation: cannot handle OneOf index ${source.index}`); ";
+						oneOfHelperBody += "default: return fail(`Contract violation: cannot handle OneOf index ${source.index}`); ";
 						oneOfHelperBody += "}";
 
 						var oneOfFactory = MakeFactory($"oneof{type.GenericArguments.Length}", $"(source: any): {string.Join(" | ", oneOfHelperGenericArguments)} => {{ {oneOfHelperBody} }}", oneOfHelperGenericArguments);
