@@ -375,7 +375,7 @@ namespace Odachi.CodeGen.TypeScript
 					var optFactoryName = $"{factoryName}_opt";
 					var argumentForward = string.Join(", ", genericParameterNames.Select(n => $"{n}_factory"));
 
-					Helper($"function {optFactoryName}<{genericParameters}>({arguments}) {{ return {optHelper}({factoryName}); }}");
+					Helper($"function {optFactoryName}<{genericParameters}>({arguments}) {{ return {optHelper}({factoryName}({argumentForward})); }}");
 					return optFactoryName;
 				}
 				else
