@@ -1,5 +1,8 @@
 using Odachi.CodeModel.Builders;
 using Odachi.CodeModel.Mapping;
+using Odachi.Extensions.Collections;
+using Odachi.Extensions.Primitives;
+using Odachi.Validation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +21,32 @@ namespace Odachi.CodeModel.Tests
 	{
 		public GenericObject<string> Strings { get; set; }
 		public GenericObject<int> Ints { get; set; }
+	}
+
+	public class ObjectWithArrayOfGenericObject
+	{
+		public GenericObject<string>[] Strings { get; set; }
+		public GenericObject<int>[] Ints { get; set; }
+	}
+
+	public class ObjectWithArrayOfGenericObjectWithPages
+	{
+		public GenericObject<Page<string>>[] Strings { get; set; }
+	}
+
+	public class ObjectWithTuple
+	{
+		public ValueTuple<string, int, GenericObject<DateTime>> Foo { get; set; }
+	}
+
+	public class ObjectWithOneOf
+	{
+		public OneOf<string, int, GenericObject<DateTime>> Foo { get; set; }
+	}
+
+	public class ObjectWithValidationState
+	{
+		public ValidationState Foo { get; set; }
 	}
 
 	public class GenericsTests

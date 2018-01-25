@@ -61,7 +61,7 @@ namespace Odachi.CodeGen
 			var directory = Path.GetDirectoryName(path);
 			if (!Directory.Exists(directory))
 				Directory.CreateDirectory(directory);
-		
+
 			using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
 			using (var writer = CreateWriter(new StreamWriter(stream, new UTF8Encoding(false))))
 			{
@@ -75,14 +75,9 @@ namespace Odachi.CodeGen
 				}
 				bodyBuilder.TrimEnd();
 
-				if (context.RenderHeader(writer))
-					writer.WriteSeparatingLine();
-
-				if (context.RenderBody(writer, bodyBuilder.ToString()))
-					writer.WriteSeparatingLine();
-
-				if (context.RenderFooter(writer))
-					writer.WriteSeparatingLine();
+				context.RenderHeader(writer);
+				context.RenderBody(writer, bodyBuilder.ToString());
+				context.RenderFooter(writer);
 			}
 		}
 

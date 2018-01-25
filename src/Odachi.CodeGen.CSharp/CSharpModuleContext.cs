@@ -46,6 +46,7 @@ namespace Odachi.CodeGen.CSharp
 			{
 				writer.WriteLine($"using {@namespace};");
 			}
+			writer.WriteSeparatingLine();
 
 			return true;
 		}
@@ -61,6 +62,7 @@ namespace Odachi.CodeGen.CSharp
 			{
 				writer.WriteIndentedLine(body);
 			}
+			writer.WriteSeparatingLine();
 
 			return true;
 		}

@@ -3,16 +3,14 @@
 	<Import Project="..\..\tools\common.props" />
 
   <PropertyGroup>
-		<Description>Odachi.CodeModel tests</Description>
+		<Description>Odachi.CodeGen.TypeScript tests</Description>
 		<TargetFramework>netcoreapp2.0</TargetFramework>
     <IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\Odachi.CodeModel.Providers.FluentValidation\Odachi.CodeModel.Providers.FluentValidation.csproj" />
-		<ProjectReference Include="..\..\src\Odachi.CodeModel.Providers.JsonRpc\Odachi.CodeModel.Providers.JsonRpc.csproj" />
-		<ProjectReference Include="..\..\src\Odachi.CodeModel.Providers.Validation\Odachi.CodeModel.Providers.Validation.csproj" />
-		<ProjectReference Include="..\..\src\Odachi.CodeModel\Odachi.CodeModel.csproj" />
+    <ProjectReference Include="..\Odachi.CodeModel.Tests\Odachi.CodeModel.Tests.csproj" />
+		<ProjectReference Include="..\..\src\Odachi.CodeGen.TypeScript\Odachi.CodeGen.TypeScript.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -121,14 +121,9 @@ namespace Odachi.CodeGen.TypeScript
 			using (var stream = new FileStream(Path.Combine(packageContext.Path, context.Module.Name), FileMode.Create, FileAccess.Write, FileShare.Read))
 			using (var writer = new IndentedTextWriter(new StreamWriter(stream, new UTF8Encoding(false))))
 			{
-				if (context.RenderHeader(writer))
-					writer.WriteSeparatingLine();
-
-				if (context.RenderBody(writer, bodyBuilder.ToString()))
-					writer.WriteSeparatingLine();
-
-				if (context.RenderFooter(writer))
-					writer.WriteSeparatingLine();
+				context.RenderHeader(writer);
+				context.RenderBody(writer, bodyBuilder.ToString());
+				context.RenderFooter(writer);
 			}
 		}
 
