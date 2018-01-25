@@ -488,7 +488,7 @@ namespace Odachi.CodeGen.TypeScript
 							var genericArgumentName = $"T{i + 1}";
 
 							oneOfHelperGenericArguments[i] = genericArgumentName;
-							oneOfHelperBody += $"case {i}: return {genericArgumentName}_factory.create(source.option{i + 1}); ";
+							oneOfHelperBody += $"case {i + 1}: return {genericArgumentName}_factory.create(source.option{i + 1}); ";
 						}
 						oneOfHelperBody += "default: fail(`Contract violation: cannot handle OneOf index ${source.index}`); ";
 						oneOfHelperBody += "}";
