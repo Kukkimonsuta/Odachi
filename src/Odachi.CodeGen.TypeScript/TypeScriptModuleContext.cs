@@ -325,13 +325,7 @@ namespace Odachi.CodeGen.TypeScript
 			// handle rest
 			Import(type);
 
-			var factories = "";
-			foreach (var genericArgument in type.GenericArguments)
-			{
-				factories += ", " + Factory(genericArgument);
-			}
-
-			return $"{Factory(type)}.create({source}{factories})";
+			return $"{Factory(type)}.create({source})";
 		}
 
 		/// <summary>
@@ -403,13 +397,13 @@ namespace Odachi.CodeGen.TypeScript
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
-						return MakeFactory(type.Name, $"(source: any): {Resolve(type)} => typeof source === 'boolean' ? source : fail(`Contract violation: expected boolean, got \\'{{typeof(source)}}\\'`)");
+						return MakeFactory(type.Name, $"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'boolean' ? source : fail(`Contract violation: expected boolean, got \\'{{typeof(source)}}\\'`)");
 
 					case "string":
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
-						return MakeFactory(type.Name, $"(source: any): {Resolve(type)} => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \\'{{typeof(source)}}\\'`)");
+						return MakeFactory(type.Name, $"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \\'{{typeof(source)}}\\'`)");
 
 					case "integer":
 					case "long":
@@ -419,14 +413,14 @@ namespace Odachi.CodeGen.TypeScript
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
-						return MakeFactory(type.Name, $"(source: any): {Resolve(type)} => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \\'{{typeof(source)}}\\'`)");
+						return MakeFactory("number", $"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \\'{{typeof(source)}}\\'`)");
 
 					case "datetime":
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
 						Import("moment", "* as moment");
-						return MakeFactory(type.Name, $"(source: any): {Resolve(type)} => typeof source === 'string' ? moment(source) : fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)");
+						return MakeFactory(type.Name, $"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'string' ? moment(source) : fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)");
 
 					case "array":
 						if (type.GenericArguments?.Length != 1)
@@ -441,7 +435,7 @@ namespace Odachi.CodeGen.TypeScript
 						return $"{arrayFactory}({Factory(type.GenericArguments[0])})";
 
 					case "PagingOptions":
-						return MakeFactory(type.Name, $"(source: any): {Resolve(type)} => typeof source === 'object' && source !== null ? source : fail(`Contract violation: expected paging options, got \\'{{typeof(source)}}\\'`)");
+						return MakeFactory(type.Name, $"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'object' && source !== null ? source : fail(`Contract violation: expected paging options, got \\'{{typeof(source)}}\\'`)");
 
 					case "Page":
 						if (type.GenericArguments?.Length != 1)
@@ -509,7 +503,7 @@ namespace Odachi.CodeGen.TypeScript
 
 						Import("@stackino/uno", "validation");
 
-						return MakeFactory(type.Name, $@"(source: any): validation.ValidationState => typeof source === 'object' && source !== null && typeof source.state === 'object' && source.state !== null ? new validation.ValidationState(source.state) : fail(`Contract violation: expected validation state, got \\'{{typeof(source)}}\\'`)");
+						return MakeFactory(type.Name, $@"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'object' && source !== null && typeof source.state === 'object' && source.state !== null ? new validation.ValidationState(source.state) : fail(`Contract violation: expected validation state, got \\'{{typeof(source)}}\\'`)");
 
 					default:
 						throw new NotSupportedException($"Undefined behavior for builtin '{type.Name}'");
