@@ -472,7 +472,7 @@ namespace Odachi.CodeGen.TypeScript
 							var genericArgumentName = $"T{i + 1}";
 
 							tupleHelperGenericArguments[i] = genericArgumentName;
-							tupleHelperBody += $"{genericArgumentName}_factory.create(source[{i}])";
+							tupleHelperBody += $"{genericArgumentName}_factory.create(source.item{i + 1})";
 							if (i != type.GenericArguments.Length - 1)
 							{
 								tupleHelperBody += ", ";
