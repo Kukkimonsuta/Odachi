@@ -69,11 +69,15 @@ class GenericObject<T> {
 	@observable.ref
 	test: boolean;
 
-	static create<T>(source: any, T_factory: { create(source: any): T }): GenericObject<T> {
-		const result = new GenericObject<T>();
-		result.value = T_factory.create(source.value);
-		result.test = _$$_factory_boolean.create(source.test);
-		return result;
+	static create<T>(T_factory: { create(source: any): T }): { create: (source: any) => GenericObject<T> } {
+		return {
+			create: (source: any) => {
+				const result = new GenericObject<T>();
+				result.value = T_factory.create(source.value);
+				result.test = _$$_factory_boolean.create(source.test);
+				return result;
+			}
+		}
 	}
 }
 

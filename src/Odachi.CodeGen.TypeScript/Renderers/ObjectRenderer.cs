@@ -37,23 +37,38 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					writer.WriteSeparatingLine();
 				}
 
-				var genericParameters = objectFragment.GenericArguments.Count > 0 ? $"<{string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name))}>" : "";
-				var parameters = "source: any";
-				foreach (var genericArgument in objectFragment.GenericArguments)
+				if (objectFragment.GenericArguments.Any())
 				{
-					parameters += $", {genericArgument.Name}_factory: {{ create(source: any): {genericArgument.Name} }}";
-				}
+					var genericParameters = $"<{string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name))}>";
+					var factoryParameters = string.Join(", ", objectFragment.GenericArguments.Select(a => $"{a.Name}_factory: {{ create(source: any): {a.Name} }}"));
 
-				using (writer.WriteIndentedBlock(prefix: $"static create{genericParameters}({parameters}): {objectFragment.Name}{genericParameters} "))
-				{
-					writer.WriteIndentedLine($"const result = new {objectFragment.Name}{genericParameters}();");
-
-					foreach (var field in objectFragment.Fields)
+					using (writer.WriteIndentedBlock(prefix: $"static create{genericParameters}({factoryParameters}): {{ create: (source: any) => {objectFragment.Name}{genericParameters} }} "))
 					{
-						writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
+						using (writer.WriteIndentedBlock(prefix: $"return "))
+						{
+							using (writer.WriteIndentedBlock(prefix: $"create: (source: any) => "))
+							{
+								writer.WriteIndentedLine($"const result = new {objectFragment.Name}{genericParameters}();");
+								foreach (var field in objectFragment.Fields)
+								{
+									writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
+								}
+								writer.WriteIndentedLine("return result;");
+							}
+						}
 					}
-
-					writer.WriteIndentedLine("return result;");
+				}
+				else
+				{
+					using (writer.WriteIndentedBlock(prefix: $"static create(source: any): {objectFragment.Name} "))
+					{
+						writer.WriteIndentedLine($"const result = new {objectFragment.Name}();");
+						foreach (var field in objectFragment.Fields)
+						{
+							writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
+						}
+						writer.WriteIndentedLine("return result;");
+					}
 				}
 			}
 
