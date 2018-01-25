@@ -358,7 +358,7 @@ namespace Odachi.CodeGen.TypeScript
 					var genericParameters = string.Join(", ", genericParameterNames);
 					var arguments = string.Join(", ", genericParameterNames.Select(n => $"{n}_factory: {{ create: (source: any) => {n} }}"));
 
-					Helper($"function {factoryName}<{genericParameters}>({arguments}) {{ return {{ create: {factory} }} }}");
+					Helper($"function {factoryName}<{genericParameters}>({arguments}) {{ return {{ create: {factory} }}; }}");
 
 					if (!type.IsNullable)
 					{
@@ -368,7 +368,7 @@ namespace Odachi.CodeGen.TypeScript
 					var optFactoryName = $"{factoryName}_opt";
 					var argumentForward = string.Join(", ", genericParameterNames.Select(n => $"{n}_factory"));
 
-					Helper($"function {optFactoryName}<{genericParameters}>({arguments}) {{ return {{ create: (source: any) => source === undefined || source === null ? null : {factoryName}({argumentForward}).create(source) }} }}");
+					Helper($"function {optFactoryName}<{genericParameters}>({arguments}) {{ return {{ create: (source: any) => source === undefined || source === null ? null : {factoryName}({argumentForward}).create(source) }}; }}");
 					return optFactoryName;
 				}
 				else
@@ -382,7 +382,7 @@ namespace Odachi.CodeGen.TypeScript
 
 					var optFactoryName = $"{factoryName}_opt";
 
-					Helper($"const {optFactoryName} = {{ create: (source: any): {Resolve(type)} => source === undefined || source === null ? null : {factoryName}.create(source) }}");
+					Helper($"const {optFactoryName} = {{ create: (source: any): {Resolve(type)} => source === undefined || source === null ? null : {factoryName}.create(source) }};");
 					return optFactoryName;
 				}
 			}
