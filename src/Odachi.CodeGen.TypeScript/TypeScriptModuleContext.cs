@@ -333,7 +333,8 @@ namespace Odachi.CodeGen.TypeScript
 		/// </summary>
 		public string Factory(TypeReference type)
 		{
-			const string factoryPrefix = "_$$_factory_";
+			const string privatePrefix = "_$$_";
+			const string factoryPrefix = privatePrefix + "factory_";
 
 			//if (type.GenericArguments.Any(t => t.Kind == TypeKind.GenericParameter))
 			//{
@@ -344,6 +345,12 @@ namespace Odachi.CodeGen.TypeScript
 			{
 				// assume factory exists
 				return $"{type.Name}_factory";
+			}
+
+			var optHelper = $"{privatePrefix}opt";
+			if (type.IsNullable)
+			{
+				Helper($"function {privatePrefix}opt<T>(T_factory: {{ create: (source: any) => T }}): {{ create: (source: any) => T | null }} {{ return {{ create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }}; }}");
 			}
 
 			string MakeFactory(string name, string factory, params string[] genericParameterNames)
@@ -368,7 +375,7 @@ namespace Odachi.CodeGen.TypeScript
 					var optFactoryName = $"{factoryName}_opt";
 					var argumentForward = string.Join(", ", genericParameterNames.Select(n => $"{n}_factory"));
 
-					Helper($"function {optFactoryName}<{genericParameters}>({arguments}) {{ return {{ create: (source: any) => source === undefined || source === null ? null : {factoryName}({argumentForward}).create(source) }}; }}");
+					Helper($"function {optFactoryName}<{genericParameters}>({arguments}) {{ return {optHelper}({factoryName}); }}");
 					return optFactoryName;
 				}
 				else
@@ -382,7 +389,7 @@ namespace Odachi.CodeGen.TypeScript
 
 					var optFactoryName = $"{factoryName}_opt";
 
-					Helper($"const {optFactoryName} = {{ create: (source: any): {Resolve(type)} => source === undefined || source === null ? null : {factoryName}.create(source) }};");
+					Helper($"const {optFactoryName} = {optHelper}({factoryName});");
 					return optFactoryName;
 				}
 			}
@@ -513,13 +520,19 @@ namespace Odachi.CodeGen.TypeScript
 			Import(type);
 
 			var factoryBase = Resolve(type, includeNullability: false, includeGenericArguments: false);
-
 			if (type.GenericArguments.Any())
 			{
-				return $"{factoryBase}.create({string.Join(", ", type.GenericArguments.Select(a => Factory(a)))})";
+				factoryBase = $"{factoryBase}.create({string.Join(", ", type.GenericArguments.Select(a => Factory(a)))})";
 			}
 
-			return factoryBase;
+			if (type.IsNullable)
+			{
+				return $"{optHelper}({factoryBase})";
+			}
+			else
+			{
+				return factoryBase;
+			}
 		}
 
 		#endregion
