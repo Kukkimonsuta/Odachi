@@ -44,7 +44,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 
 					using (writer.WriteIndentedBlock(prefix: $"static create{genericParameters}({factoryParameters}): {{ create: (source: any) => {objectFragment.Name}{genericParameters} }} "))
 					{
-						using (writer.WriteIndentedBlock(prefix: $"return "))
+						using (writer.WriteIndentedBlock(prefix: $"return ", suffix: ";"))
 						{
 							using (writer.WriteIndentedBlock(prefix: $"create: (source: any) => "))
 							{

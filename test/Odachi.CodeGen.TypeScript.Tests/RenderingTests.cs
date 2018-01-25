@@ -77,7 +77,7 @@ class GenericObject<T> {
 				result.test = _$$_factory_boolean.create(source.test);
 				return result;
 			}
-		}
+		};
 	}
 }
 
