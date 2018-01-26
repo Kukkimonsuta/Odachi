@@ -74,5 +74,22 @@ namespace Odachi.Extensions.Primitives.Tests
 			Assert.True(new OneOf<string, int>("ten") == value);
 			Assert.False(new OneOf<string, int>("xyz") == value);
 		}
+
+		[Fact]
+		public void Can_use_classic_switch()
+		{
+			var actual = new OneOf<string, int>("foo");
+
+			switch (actual.Value)
+			{
+				case string str:
+					Assert.Equal("foo", str);
+					break;
+
+				default:
+					Assert.True(false);
+					break;
+			}
+		}
 	}
 }

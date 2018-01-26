@@ -44,13 +44,31 @@ namespace Odachi.Extensions.Primitives
 		public bool Is2 => Index == 2;
 		public T2 As2 => Index == 2 ? Option2 : throw new InvalidOperationException("OneOf<T1, T2> doesn't contain T2");
 
+		public object Value
+		{
+			get
+			{
+				switch (Index)
+				{
+					case 0:
+						throw new InvalidOperationException("OneOf<T1, T2> is empty");
+					case 1:
+						return Option1;
+					case 2:
+						return Option2;
+					default:
+						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2> with Index {Index}'");
+				}
+			}
+		}
+
 		public void Match(Action<T1> when1, Action<T2> when2, Action whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					if (whenEmpty == null)
-						throw new InvalidOperationException($"OneOf<T1, T2> is empty");
+						throw new InvalidOperationException("OneOf<T1, T2> is empty");
 					whenEmpty();
 					return;
 				case 1:
@@ -68,7 +86,7 @@ namespace Odachi.Extensions.Primitives
 			switch (Index)
 			{
 				case 0:
-					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException($"OneOf<T1, T2> is empty");
+					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2> is empty");
 				case 1:
 					return when1(Option1);
 				case 2:
@@ -207,13 +225,33 @@ namespace Odachi.Extensions.Primitives
 		public bool Is3 => Index == 3;
 		public T3 As3 => Index == 3 ? Option3 : throw new InvalidOperationException("OneOf<T1, T2, T3> doesn't contain T3");
 
+		public object Value
+		{
+			get
+			{
+				switch (Index)
+				{
+					case 0:
+						throw new InvalidOperationException("OneOf<T1, T2, T3> is empty");
+					case 1:
+						return Option1;
+					case 2:
+						return Option2;
+					case 3:
+						return Option3;
+					default:
+						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3> with Index {Index}'");
+				}
+			}
+		}
+
 		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					if (whenEmpty == null)
-						throw new InvalidOperationException($"OneOf<T1, T2, T3> is empty");
+						throw new InvalidOperationException("OneOf<T1, T2, T3> is empty");
 					whenEmpty();
 					return;
 				case 1:
@@ -234,7 +272,7 @@ namespace Odachi.Extensions.Primitives
 			switch (Index)
 			{
 				case 0:
-					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException($"OneOf<T1, T2, T3> is empty");
+					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3> is empty");
 				case 1:
 					return when1(Option1);
 				case 2:
@@ -405,13 +443,35 @@ namespace Odachi.Extensions.Primitives
 		public bool Is4 => Index == 4;
 		public T4 As4 => Index == 4 ? Option4 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4> doesn't contain T4");
 
+		public object Value
+		{
+			get
+			{
+				switch (Index)
+				{
+					case 0:
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4> is empty");
+					case 1:
+						return Option1;
+					case 2:
+						return Option2;
+					case 3:
+						return Option3;
+					case 4:
+						return Option4;
+					default:
+						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4> with Index {Index}'");
+				}
+			}
+		}
+
 		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					if (whenEmpty == null)
-						throw new InvalidOperationException($"OneOf<T1, T2, T3, T4> is empty");
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4> is empty");
 					whenEmpty();
 					return;
 				case 1:
@@ -435,7 +495,7 @@ namespace Odachi.Extensions.Primitives
 			switch (Index)
 			{
 				case 0:
-					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException($"OneOf<T1, T2, T3, T4> is empty");
+					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4> is empty");
 				case 1:
 					return when1(Option1);
 				case 2:
@@ -640,13 +700,37 @@ namespace Odachi.Extensions.Primitives
 		public bool Is5 => Index == 5;
 		public T5 As5 => Index == 5 ? Option5 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> doesn't contain T5");
 
+		public object Value
+		{
+			get
+			{
+				switch (Index)
+				{
+					case 0:
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> is empty");
+					case 1:
+						return Option1;
+					case 2:
+						return Option2;
+					case 3:
+						return Option3;
+					case 4:
+						return Option4;
+					case 5:
+						return Option5;
+					default:
+						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5> with Index {Index}'");
+				}
+			}
+		}
+
 		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					if (whenEmpty == null)
-						throw new InvalidOperationException($"OneOf<T1, T2, T3, T4, T5> is empty");
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> is empty");
 					whenEmpty();
 					return;
 				case 1:
@@ -673,7 +757,7 @@ namespace Odachi.Extensions.Primitives
 			switch (Index)
 			{
 				case 0:
-					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException($"OneOf<T1, T2, T3, T4, T5> is empty");
+					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> is empty");
 				case 1:
 					return when1(Option1);
 				case 2:
@@ -914,13 +998,39 @@ namespace Odachi.Extensions.Primitives
 		public bool Is6 => Index == 6;
 		public T6 As6 => Index == 6 ? Option6 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T6");
 
+		public object Value
+		{
+			get
+			{
+				switch (Index)
+				{
+					case 0:
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> is empty");
+					case 1:
+						return Option1;
+					case 2:
+						return Option2;
+					case 3:
+						return Option3;
+					case 4:
+						return Option4;
+					case 5:
+						return Option5;
+					case 6:
+						return Option6;
+					default:
+						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6> with Index {Index}'");
+				}
+			}
+		}
+
 		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					if (whenEmpty == null)
-						throw new InvalidOperationException($"OneOf<T1, T2, T3, T4, T5, T6> is empty");
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> is empty");
 					whenEmpty();
 					return;
 				case 1:
@@ -950,7 +1060,7 @@ namespace Odachi.Extensions.Primitives
 			switch (Index)
 			{
 				case 0:
-					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException($"OneOf<T1, T2, T3, T4, T5, T6> is empty");
+					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> is empty");
 				case 1:
 					return when1(Option1);
 				case 2:
@@ -1229,13 +1339,41 @@ namespace Odachi.Extensions.Primitives
 		public bool Is7 => Index == 7;
 		public T7 As7 => Index == 7 ? Option7 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T7");
 
+		public object Value
+		{
+			get
+			{
+				switch (Index)
+				{
+					case 0:
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> is empty");
+					case 1:
+						return Option1;
+					case 2:
+						return Option2;
+					case 3:
+						return Option3;
+					case 4:
+						return Option4;
+					case 5:
+						return Option5;
+					case 6:
+						return Option6;
+					case 7:
+						return Option7;
+					default:
+						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7> with Index {Index}'");
+				}
+			}
+		}
+
 		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action<T7> when7, Action whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					if (whenEmpty == null)
-						throw new InvalidOperationException($"OneOf<T1, T2, T3, T4, T5, T6, T7> is empty");
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> is empty");
 					whenEmpty();
 					return;
 				case 1:
@@ -1268,7 +1406,7 @@ namespace Odachi.Extensions.Primitives
 			switch (Index)
 			{
 				case 0:
-					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException($"OneOf<T1, T2, T3, T4, T5, T6, T7> is empty");
+					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> is empty");
 				case 1:
 					return when1(Option1);
 				case 2:
@@ -1587,13 +1725,43 @@ namespace Odachi.Extensions.Primitives
 		public bool Is8 => Index == 8;
 		public T8 As8 => Index == 8 ? Option8 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T8");
 
+		public object Value
+		{
+			get
+			{
+				switch (Index)
+				{
+					case 0:
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> is empty");
+					case 1:
+						return Option1;
+					case 2:
+						return Option2;
+					case 3:
+						return Option3;
+					case 4:
+						return Option4;
+					case 5:
+						return Option5;
+					case 6:
+						return Option6;
+					case 7:
+						return Option7;
+					case 8:
+						return Option8;
+					default:
+						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7, T8> with Index {Index}'");
+				}
+			}
+		}
+
 		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action<T7> when7, Action<T8> when8, Action whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					if (whenEmpty == null)
-						throw new InvalidOperationException($"OneOf<T1, T2, T3, T4, T5, T6, T7, T8> is empty");
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> is empty");
 					whenEmpty();
 					return;
 				case 1:
@@ -1629,7 +1797,7 @@ namespace Odachi.Extensions.Primitives
 			switch (Index)
 			{
 				case 0:
-					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException($"OneOf<T1, T2, T3, T4, T5, T6, T7, T8> is empty");
+					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> is empty");
 				case 1:
 					return when1(Option1);
 				case 2:
@@ -1990,13 +2158,45 @@ namespace Odachi.Extensions.Primitives
 		public bool Is9 => Index == 9;
 		public T9 As9 => Index == 9 ? Option9 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T9");
 
+		public object Value
+		{
+			get
+			{
+				switch (Index)
+				{
+					case 0:
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> is empty");
+					case 1:
+						return Option1;
+					case 2:
+						return Option2;
+					case 3:
+						return Option3;
+					case 4:
+						return Option4;
+					case 5:
+						return Option5;
+					case 6:
+						return Option6;
+					case 7:
+						return Option7;
+					case 8:
+						return Option8;
+					case 9:
+						return Option9;
+					default:
+						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> with Index {Index}'");
+				}
+			}
+		}
+
 		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action<T7> when7, Action<T8> when8, Action<T9> when9, Action whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					if (whenEmpty == null)
-						throw new InvalidOperationException($"OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> is empty");
+						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> is empty");
 					whenEmpty();
 					return;
 				case 1:
@@ -2035,7 +2235,7 @@ namespace Odachi.Extensions.Primitives
 			switch (Index)
 			{
 				case 0:
-					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException($"OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> is empty");
+					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> is empty");
 				case 1:
 					return when1(Option1);
 				case 2:

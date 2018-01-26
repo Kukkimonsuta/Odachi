@@ -76,13 +76,35 @@ namespace Odachi.Extensions.Primitives
 		}
 #>
 
+		public object Value
+		{
+			get
+			{
+				switch (Index)
+				{
+					case 0:
+						throw new InvalidOperationException("OneOf<<#= string.Join(", ", typeNames) #>> is empty");
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+					case <#= ti + 1 #>:
+						return Option<#= ti + 1 #>;
+<#
+		}
+#>
+					default:
+						throw new InvalidOperationException($"Undefined behavior for OneOf<<#= string.Join(", ", typeNames) #>> with Index {Index}'");
+				}
+			}
+		}
+
 		public void Match(<#= string.Join(", ", typeNames.Select((tn, tni) => "Action<" + tn + "> when" + (tni + 1))) #>, Action whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					if (whenEmpty == null)
-						throw new InvalidOperationException($"OneOf<<#= string.Join(", ", typeNames) #>> is empty");
+						throw new InvalidOperationException("OneOf<<#= string.Join(", ", typeNames) #>> is empty");
 					whenEmpty();
 					return;
 <#
@@ -103,7 +125,7 @@ namespace Odachi.Extensions.Primitives
 			switch (Index)
 			{
 				case 0:
-					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException($"OneOf<<#= string.Join(", ", typeNames) #>> is empty");
+					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<<#= string.Join(", ", typeNames) #>> is empty");
 <#
 		for (var ti = 0; ti < typeNames.Length; ti++) {
 #>
