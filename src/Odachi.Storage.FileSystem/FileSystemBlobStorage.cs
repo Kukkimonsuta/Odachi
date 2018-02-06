@@ -11,7 +11,10 @@ namespace Odachi.Storage.FileSystem
 	{
 		public FileSystemBlobStorage(string rootPath)
 		{
-			RootPath = rootPath ?? throw new ArgumentNullException(nameof(rootPath));
+			if (rootPath == null)
+				throw new ArgumentNullException(nameof(rootPath));
+
+			RootPath = Path.GetFullPath(rootPath);
 		}
 
 		public string RootPath { get; }
