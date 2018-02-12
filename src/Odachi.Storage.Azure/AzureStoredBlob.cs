@@ -13,11 +13,13 @@ namespace Odachi.Storage.Azure
 		public AzureStoredBlob(AzureBlobStorage storage, ICloudBlob blob)
 			: base(blob)
 		{
-			Location = storage ?? throw new ArgumentNullException(nameof(storage));
+			Storage = storage ?? throw new ArgumentNullException(nameof(storage));
 		}
 
 		public long Length => Blob.Properties.Length;
 
-		public IBlobStorage Location { get; }
+		public IBlobStorage Storage { get; }
+
+		public string Path => Blob.Name;
 	}
 }

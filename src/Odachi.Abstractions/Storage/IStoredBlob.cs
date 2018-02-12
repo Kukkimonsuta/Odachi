@@ -9,13 +9,18 @@ namespace Odachi.Abstractions
 	public interface IStoredBlob : IBlob
 	{
 		/// <summary>
+		/// Path to blob within storage (including name).
+		/// </summary>
+		string Path { get; }
+
+		/// <summary>
 		/// Size.
 		/// </summary>
 		long Length { get; }
 
 		/// <summary>
-		/// Blob storage location.
+		/// Owning blob storage.
 		/// </summary>
-		IBlobStorage Location { get; }
+		IBlobStorage Storage { get; }
 	}
 }

@@ -10,17 +10,18 @@ namespace Odachi.Storage.FileSystem
 {
 	public class FileSystemStoredBlob : FileSystemBlob, IStoredBlob
 	{
-		public FileSystemStoredBlob(FileSystemBlobStorage storage, string name, string fullPath) :
-			base(name, fullPath)
+		public FileSystemStoredBlob(FileSystemBlobStorage storage, string path, string fullPath) :
+			base(System.IO.Path.GetFileName(path), fullPath)
 		{
-			Location = storage ?? throw new ArgumentNullException(nameof(storage));
-			_fileInfo = new FileInfo(fullPath);
+			Storage = storage ?? throw new ArgumentNullException(nameof(storage));
+			Length = new FileInfo(fullPath).Length;
+			Path = path;
 		}
 
-		private FileInfo _fileInfo;
+		public string Path { get; }
 
-		public long Length => _fileInfo.Length;
+		public long Length { get; }
 
-		public IBlobStorage Location { get; }
+		public IBlobStorage Storage { get; }
 	}
 }
