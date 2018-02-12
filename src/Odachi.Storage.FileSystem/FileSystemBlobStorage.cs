@@ -60,15 +60,15 @@ namespace Odachi.Storage.FileSystem
 			}
 		}
 
-		public Task<IBlob> RetrieveAsync(string relativePath)
+		public Task<IStoredBlob> RetrieveAsync(string relativePath)
 		{
 			var absolutePath = ResolvePath(relativePath);
 
 			if (!File.Exists(absolutePath))
 				throw new FileNotFoundException();
 
-			return Task.FromResult<IBlob>(
-				new FileSystemBlob(Path.GetFileName(absolutePath), absolutePath)
+			return Task.FromResult<IStoredBlob>(
+				new FileSystemStoredBlob(this, Path.GetFileName(absolutePath), absolutePath)
 			);
 		}
 

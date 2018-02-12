@@ -17,7 +17,7 @@ namespace Odachi.Abstractions
 	{
 		Task StoreAsync(string relativePath, IBlob blob, BlobStoreOptions options = BlobStoreOptions.None);
 
-		Task<IBlob> RetrieveAsync(string relativePath);
+		Task<IStoredBlob> RetrieveAsync(string relativePath);
 
 		Task<bool> ExistsAsync(string relativePath);
 

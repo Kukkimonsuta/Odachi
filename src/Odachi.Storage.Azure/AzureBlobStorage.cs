@@ -65,7 +65,7 @@ namespace Odachi.Storage.Azure
 			}
 		}
 
-		public async Task<IBlob> RetrieveAsync(string relativePath)
+		public async Task<IStoredBlob> RetrieveAsync(string relativePath)
 		{
 			await EnsureContainerExists();
 
@@ -76,7 +76,9 @@ namespace Odachi.Storage.Azure
 
 			var remoteBlob = await _container.GetBlobReferenceFromServerAsync(relativePath);
 
-			return new AzureBlob(remoteBlob);
+			await remoteBlob.FetchAttributesAsync();
+
+			return new AzureStoredBlob(this, remoteBlob);
 		}
 
 		public async Task<bool> ExistsAsync(string relativePath)

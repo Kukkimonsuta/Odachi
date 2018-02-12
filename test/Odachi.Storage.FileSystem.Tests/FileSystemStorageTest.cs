@@ -49,6 +49,7 @@ namespace Odachi.Storage.FileSystem.Tests
 				var retrieved = await storage.RetrieveAsync("./data.dat");
 
 				Assert.Equal("data.dat", retrieved.Name);
+				Assert.Equal(4, retrieved.Length);
 
 				using (var retrievedStream = retrieved.OpenRead())
 				{

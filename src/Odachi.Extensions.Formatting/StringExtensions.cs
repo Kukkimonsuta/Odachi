@@ -12,7 +12,7 @@ namespace Odachi.Extensions.Formatting
 		/// </summary>
 		SplitOnUpperLetter = 1,
 	}
-	
+
 	public static class StringExtensions
 	{
 		private static readonly string[] LineSeparators = new[] { "\r\n", "\n" };
@@ -28,7 +28,7 @@ namespace Odachi.Extensions.Formatting
 				throw new ArgumentNullException(nameof(separators));
 			if (separators.Length <= 0)
 				throw new ArgumentException("At least one separator is required", nameof(separators));
-			
+
 			var startIndex = 0;
 			for (var i = 0; i <= source.Length; i++)
 			{
@@ -44,7 +44,7 @@ namespace Odachi.Extensions.Formatting
 						continue;
 
 					var isMatch = true;
-					
+
 					for (var sci = 0; sci < separator.Length; sci++)
 					{
 						if (separator[sci] != source[i + sci])
