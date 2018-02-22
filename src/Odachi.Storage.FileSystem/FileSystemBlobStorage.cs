@@ -68,7 +68,7 @@ namespace Odachi.Storage.FileSystem
 				throw new FileNotFoundException();
 
 			return Task.FromResult<IStoredBlob>(
-				// todo: path should be normalized
+				// todo: path should be normalized 
 				new FileSystemStoredBlob(this, relativePath, absolutePath)
 			);
 		}
