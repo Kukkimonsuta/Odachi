@@ -6,6 +6,19 @@
     <Description>Formatting extensions. Includes word splitting and casing changes.</Description>
     <TargetFrameworks>net452;netstandard1.5;netstandard1.0</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
+    <DefineConstants>$(DefineConstants);NET45</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
+    <DefineConstants>$(DefineConstants);NETSTANDARD10</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.5' ">
+    <DefineConstants>$(DefineConstants);NETSTANDARD15</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
