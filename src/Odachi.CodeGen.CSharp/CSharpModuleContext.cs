@@ -175,7 +175,7 @@ namespace Odachi.CodeGen.CSharp
 
 						Import("Odachi.Abstractions");
 
-						return $"IStreamReference";
+						return $"IBlob";
 
 					case "PagingOptions":
 						if (type.GenericArguments?.Length > 0)
