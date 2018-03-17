@@ -42,8 +42,8 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.5.180" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.5.180" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.6.82" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.6.82" />
     <ProjectReference Include="../Odachi.RazorTemplating/Odachi.RazorTemplating.csproj" />
   </ItemGroup>
 
