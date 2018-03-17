@@ -19,6 +19,8 @@ namespace Odachi.Storage.FileSystem
 
 		public string RootPath { get; }
 
+		public bool PreferAsync => false;
+
 		private string ResolvePath(string relativePath, bool createDirectories = false)
 		{
 			var result = Path.GetFullPath(Path.Combine(RootPath, relativePath));
@@ -39,6 +41,16 @@ namespace Odachi.Storage.FileSystem
 			return result;
 		}
 
+		public void Store(string relativePath, IBlob blob, BlobStoreOptions options = BlobStoreOptions.None)
+		{
+			var absolutePath = ResolvePath(relativePath, createDirectories: true);
+
+			using (var inputStream = blob.OpenRead())
+			using (var outputStream = new FileStream(absolutePath, options == BlobStoreOptions.Overwrite ? FileMode.Create : FileMode.CreateNew, FileAccess.Write, FileShare.Read))
+			{
+				inputStream.CopyTo(outputStream);
+			}
+		}
 		public async Task StoreAsync(string relativePath, IBlob blob, BlobStoreOptions options = BlobStoreOptions.None)
 		{
 			var absolutePath = ResolvePath(relativePath, createDirectories: true);
@@ -50,6 +62,15 @@ namespace Odachi.Storage.FileSystem
 			}
 		}
 
+		public void StoreAsync(string relativePath, Action<Stream> write, BlobStoreOptions options = BlobStoreOptions.None)
+		{
+			var absolutePath = ResolvePath(relativePath, createDirectories: true);
+
+			using (var outputStream = new FileStream(absolutePath, options == BlobStoreOptions.Overwrite ? FileMode.Create : FileMode.CreateNew, FileAccess.Write, FileShare.Read))
+			{
+				write(outputStream);
+			}
+		}
 		public async Task StoreAsync(string relativePath, Func<Stream, Task> write, BlobStoreOptions options = BlobStoreOptions.None)
 		{
 			var absolutePath = ResolvePath(relativePath, createDirectories: true);
@@ -60,29 +81,37 @@ namespace Odachi.Storage.FileSystem
 			}
 		}
 
-		public Task<IStoredBlob> RetrieveAsync(string relativePath)
+		public IStoredBlob Retrieve(string relativePath)
 		{
 			var absolutePath = ResolvePath(relativePath);
 
 			if (!File.Exists(absolutePath))
 				throw new FileNotFoundException();
 
-			return Task.FromResult<IStoredBlob>(
-				// todo: path should be normalized 
-				new FileSystemStoredBlob(this, relativePath, absolutePath)
-			);
+			// todo: path should be normalized
+			return new FileSystemStoredBlob(this, relativePath, absolutePath);
+		}
+		public Task<IStoredBlob> RetrieveAsync(string relativePath)
+		{
+			var result = Retrieve(relativePath);
+
+			return Task.FromResult<IStoredBlob>(result);
 		}
 
-		public Task<bool> ExistsAsync(string relativePath)
+		public bool Exists(string relativePath)
 		{
 			var absolutePath = ResolvePath(relativePath);
 
-			return Task.FromResult(
-				File.Exists(absolutePath)
-			);
+			return File.Exists(absolutePath);
+		}
+		public Task<bool> ExistsAsync(string relativePath)
+		{
+			var result = Exists(relativePath);
+
+			return Task.FromResult(result);
 		}
 
-		public Task<IEnumerable<string>> ListAsync(string pattern = "**/*")
+		public IEnumerable<string> List(string pattern = "**/*")
 		{
 			// todo: implement glob matching
 			if (pattern != "**/*")
@@ -91,7 +120,7 @@ namespace Odachi.Storage.FileSystem
 			var absolutePath = ResolvePath(".");
 			if (!Directory.Exists(absolutePath))
 			{
-				return Task.FromResult(Enumerable.Empty<string>());
+				return Enumerable.Empty<string>();
 			}
 
 			var result = new List<string>();
@@ -106,10 +135,16 @@ namespace Odachi.Storage.FileSystem
 				result.Add(path);
 			}
 
+			return result;
+		}
+		public Task<IEnumerable<string>> ListAsync(string pattern = "**/*")
+		{
+			var result = List(pattern: pattern);
+
 			return Task.FromResult<IEnumerable<string>>(result);
 		}
 
-		public Task DeleteAsync(string relativePath)
+		public void Delete(string relativePath)
 		{
 			var absolutePath = ResolvePath(relativePath);
 
@@ -117,6 +152,10 @@ namespace Odachi.Storage.FileSystem
 			{
 				File.Delete(absolutePath);
 			}
+		}
+		public Task DeleteAsync(string relativePath)
+		{
+			Delete(relativePath);
 
 			return Task.CompletedTask;
 		}

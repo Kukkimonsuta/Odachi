@@ -21,6 +21,8 @@ namespace Odachi.Storage.Azure
 
 		public string ContainerName { get; }
 
+		public bool PreferAsync => true;
+
 		private Task EnsureContainerExists()
 		{
 			if (_container != null)
@@ -31,6 +33,10 @@ namespace Odachi.Storage.Azure
 			return _container.CreateIfNotExistsAsync();
 		}
 
+		public void Store(string relativePath, IBlob blob, BlobStoreOptions options = BlobStoreOptions.None)
+		{
+			StoreAsync(relativePath, blob, options: options).GetAwaiter().GetResult();
+		}
 		public async Task StoreAsync(string relativePath, IBlob blob, BlobStoreOptions options = BlobStoreOptions.None)
 		{
 			await EnsureContainerExists();
@@ -48,6 +54,15 @@ namespace Odachi.Storage.Azure
 			}
 		}
 
+		public void Store(string relativePath, Action<Stream> write, BlobStoreOptions options = BlobStoreOptions.None)
+		{
+			StoreAsync(relativePath, (s) =>
+			{
+				write(s);
+
+				return Task.CompletedTask;
+			}, options: options).GetAwaiter().GetResult();
+		}
 		public async Task StoreAsync(string relativePath, Func<Stream, Task> write, BlobStoreOptions options = BlobStoreOptions.None)
 		{
 			await EnsureContainerExists();
@@ -65,6 +80,10 @@ namespace Odachi.Storage.Azure
 			}
 		}
 
+		public IStoredBlob Retrieve(string relativePath)
+		{
+			return RetrieveAsync(relativePath).GetAwaiter().GetResult();
+		}
 		public async Task<IStoredBlob> RetrieveAsync(string relativePath)
 		{
 			await EnsureContainerExists();
@@ -81,6 +100,10 @@ namespace Odachi.Storage.Azure
 			return new AzureStoredBlob(this, remoteBlob);
 		}
 
+		public bool Exists(string relativePath)
+		{
+			return ExistsAsync(relativePath).GetAwaiter().GetResult();
+		}
 		public async Task<bool> ExistsAsync(string relativePath)
 		{
 			await EnsureContainerExists();
@@ -88,21 +111,16 @@ namespace Odachi.Storage.Azure
 			return await _container.GetBlobReference(relativePath).ExistsAsync();
 		}
 
-		public async Task DeleteAsync(string relativePath)
+		public IEnumerable<string> List(string pattern = "**/*")
 		{
-			await EnsureContainerExists();
-
-			await _container.GetBlobReference(relativePath).DeleteIfExistsAsync();
+			return ListAsync(pattern: pattern).GetAwaiter().GetResult();
 		}
-
 		public async Task<IEnumerable<string>> ListAsync(string pattern = "**/*")
 		{
 			await EnsureContainerExists();
 
 			if (pattern != "**/*")
 				throw new NotSupportedException("Globs are not yet supported");
-
-			// todo: lazy?
 
 			var results = new List<string>();
 
@@ -121,6 +139,17 @@ namespace Odachi.Storage.Azure
 			while (token != null);
 
 			return results;
+		}
+
+		public void Delete(string relativePath)
+		{
+			DeleteAsync(relativePath).GetAwaiter().GetResult();
+		}
+		public async Task DeleteAsync(string relativePath)
+		{
+			await EnsureContainerExists();
+
+			await _container.GetBlobReference(relativePath).DeleteIfExistsAsync();
 		}
 	}
 }

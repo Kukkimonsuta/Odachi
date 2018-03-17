@@ -14,7 +14,7 @@ namespace Odachi.Abstractions
 		string Name { get; }
 
 		/// <summary>
-		/// Returns whether the preferred method of opening is asynchronous.
+		/// Returns whether it is preffered to use async. Not respecting this value can lead to degraded perfromance.
 		/// </summary>
 		bool PreferAsync { get; }
 
