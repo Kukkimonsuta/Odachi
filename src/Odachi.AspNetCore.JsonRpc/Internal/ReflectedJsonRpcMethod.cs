@@ -32,8 +32,8 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 		private IReadOnlyList<JsonRpcParameter> _parameters;
 		public override IReadOnlyList<JsonRpcParameter> Parameters => _parameters == null ? throw new InvalidOperationException("Method wasn't analyzed") : _parameters;
 
-		private JsonMappedType _returnType;
-		public override JsonMappedType ReturnType =>
+		private Type _returnType;
+		public override Type ReturnType =>
 			// `_returnType` may be null (= `void` return type), so check on `_parameters` instead
 			_parameters == null ? throw new InvalidOperationException("Method wasn't analyzed") : _returnType;
 
@@ -42,7 +42,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 			_parameters = Method.GetParameters()
 				.Select(p => new JsonRpcParameter(
 					p.Name,
-					JsonMappedType.FromType(p.ParameterType),
+					p.ParameterType,
 					internalTypes.Contains(p.ParameterType),
 					p.IsOptional,
 					p.HasDefaultValue ? p.DefaultValue : (p.ParameterType.GetTypeInfo().IsValueType ? Activator.CreateInstance(p.ParameterType) : null)
@@ -51,11 +51,11 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 			if (Method.ReturnType.IsAwaitable())
 			{
-				_returnType = JsonMappedType.FromType(Method.ReturnType.GetAwaitedType());
+				_returnType = Method.ReturnType.GetAwaitedType();
 			}
 			else
 			{
-				_returnType = JsonMappedType.FromType(Method.ReturnType);
+				_returnType = Method.ReturnType;
 			}
 		}
 
@@ -114,7 +114,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 
 						if (parameter.IsInternal)
 						{
-							value = context.RpcServices.GetService(parameterType.NetType);
+							value = context.RpcServices.GetService(parameterType);
 
 							internalParams++;
 						}

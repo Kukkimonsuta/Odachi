@@ -1,4 +1,4 @@
-﻿using Odachi.AspNetCore.JsonRpc.Internal;
+using Odachi.AspNetCore.JsonRpc.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,7 +48,7 @@ namespace Odachi.AspNetCore.JsonRpc.Model
 		/// <summary>
 		/// The return type of method, `null` means `void`.
 		/// </summary>
-		public virtual JsonMappedType ReturnType => null;
+		public virtual Type ReturnType => null;
 
 		public virtual void Analyze(JsonRpcServer server, Type[] internalTypes)
 		{

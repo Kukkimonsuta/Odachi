@@ -28,7 +28,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				new JProperty("stringProperty", "test")
 			), GetSerializer());
 
-			var result = (string)request.GetParameter("stringProperty", JsonMappedType.FromType(typeof(string)), null);
+			var result = (string)request.GetParameter("stringProperty", typeof(string), null);
 
 			Assert.Equal("test", "test");
 		}
@@ -40,7 +40,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				new JProperty("intProperty", 55)
 			), GetSerializer());
 
-			var result = (int)request.GetParameter("intProperty", JsonMappedType.FromType(typeof(int)), 0);
+			var result = (int)request.GetParameter("intProperty", typeof(int), 0);
 
 			Assert.Equal(55, 55);
 		}
@@ -55,7 +55,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				))
 			), GetSerializer());
 
-			var result = (PagingOptions)request.GetParameter("pagingOptions", JsonMappedType.FromType(typeof(PagingOptions)), null);
+			var result = (PagingOptions)request.GetParameter("pagingOptions", typeof(PagingOptions), null);
 
 			Assert.Equal(1, result.Number);
 			Assert.Equal(5, result.Size);
@@ -77,7 +77,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 				))
 			), GetSerializer());
 
-			var result = (Page<string>)request.GetParameter("page", JsonMappedType.FromType(typeof(Page<string>)), null);
+			var result = (Page<string>)request.GetParameter("page", typeof(Page<string>), null);
 
 			Assert.Equal(result, new[] { "value1", "value2" });
 			Assert.Equal(1, result.Number);
@@ -96,7 +96,7 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 			), GetSerializer());
 
 #pragma warning disable CS0618 // Type or member is obsolete
-			var result = (IEntityReference)request.GetParameter("ref", JsonMappedType.FromType(typeof(IEntityReference)), null);
+			var result = (IEntityReference)request.GetParameter("ref", typeof(IEntityReference), null);
 #pragma warning restore CS0618 // Type or member is obsolete
 
 			Assert.NotNull(result);

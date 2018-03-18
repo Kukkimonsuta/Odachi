@@ -14,7 +14,7 @@ namespace Odachi.CodeModel
 		public static PackageBuilder UseJsonRpc(this PackageBuilder builder)
 		{
 			builder.Context.MethodDescriptors.Add(new JsonRpcMethodDescriptor());
-			
+
 			return builder;
 		}
 
@@ -50,11 +50,11 @@ namespace Odachi.CodeModel
 					{
 						foreach (var method in methods)
 						{
-							service.Method(method.MethodName.ToPascalInvariant(), ClrTypeReference.Create(method.ReturnType?.NetType ?? typeof(void)), method, m =>
+							service.Method(method.MethodName.ToPascalInvariant(), ClrTypeReference.Create(method.ReturnType ?? typeof(void)), method, m =>
 							{
 								foreach (var parameter in method.Parameters.Where(p => !p.IsInternal))
 								{
-									m.Parameter(parameter.Name, ClrTypeReference.Create(parameter.Type.NetType), parameter);
+									m.Parameter(parameter.Name, ClrTypeReference.Create(parameter.Type), parameter);
 								}
 							});
 						}
