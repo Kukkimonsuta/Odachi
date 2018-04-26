@@ -97,7 +97,6 @@ Pack(".\src\Odachi.JsonRpc.Client.Http")
 Pack(".\src\Odachi.JsonRpc.Common")
 Pack(".\src\Odachi.Mail")
 Pack(".\src\Odachi.RazorTemplating")
-Build(".\src\Odachi.RazorTemplating.MSBuild"); # to generate package in right location for MailSample
 Pack(".\src\Odachi.RazorTemplating.MSBuild")
 Pack(".\src\Odachi.Security")
 Pack(".\src\Odachi.Storage.Azure")
@@ -115,12 +114,14 @@ Build(".\samples\JsonRpcClientSample");
 Write-Host
 Write-Host "Build & run test.."
 Write-Host
-Test(".\test\Odachi.AspNetCore.JsonRpc.Tests");
 Test(".\test\Odachi.CodeGen.Tests");
+Test(".\test\Odachi.CodeGen.TypeScript.Tests");
+Test(".\test\Odachi.CodeModel.Tests");
 Test(".\test\Odachi.Extensions.Formatting.Tests");
 Test(".\test\Odachi.Extensions.Primitives.Tests");
 Test(".\test\Odachi.Extensions.Reflection.Tests");
 Test(".\test\Odachi.Gettext.Tests");
+Test(".\test\Odachi.JsonRpc.Server.Tests");
 Test(".\test\Odachi.RazorTemplating.Tests");
 Test(".\test\Odachi.Security.Tests");
 Test(".\test\Odachi.Storage.FileSystem.Tests");
