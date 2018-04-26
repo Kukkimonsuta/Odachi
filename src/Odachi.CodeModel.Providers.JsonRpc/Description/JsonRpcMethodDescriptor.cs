@@ -1,6 +1,6 @@
-using Odachi.AspNetCore.JsonRpc.Model;
 using Odachi.CodeModel.Builders;
 using Odachi.CodeModel.Description;
+using Odachi.JsonRpc.Server.Model;
 
 namespace Odachi.CodeModel.Providers.JsonRpc.Description
 {

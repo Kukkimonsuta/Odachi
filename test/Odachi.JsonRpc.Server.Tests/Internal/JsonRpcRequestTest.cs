@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Odachi.AspNetCore.JsonRpc.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +8,9 @@ using System.Threading.Tasks;
 using Xunit;
 using Odachi.Extensions.Collections;
 using Odachi.Abstractions;
+using Odachi.JsonRpc.Server;
 
-namespace Odachi.AspNetCore.JsonRpc.Internal
+namespace Odachi.JsonRpc.Server.Internal
 {
 	public class JsonRpcRequestTest
 	{

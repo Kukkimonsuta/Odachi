@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using System.Reflection;
 using Microsoft.Extensions.Options;
 using Odachi.AspNetCore.JsonRpc;
 using Microsoft.AspNetCore.Http;
+using Odachi.JsonRpc.Server;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

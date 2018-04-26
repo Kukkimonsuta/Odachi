@@ -1,6 +1,5 @@
-using Odachi.AspNetCore.JsonRpc.Internal;
-using Odachi.AspNetCore.JsonRpc.Modules;
 using Odachi.Annotations;
+using Odachi.JsonRpc.Server.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Odachi.AspNetCore.JsonRpc.Model
+namespace Odachi.JsonRpc.Server.Model
 {
 	public class JsonRpcMethodCollection : ICollection<JsonRpcMethod>
 	{

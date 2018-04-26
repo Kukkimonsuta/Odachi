@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Odachi.AspNetCore.JsonRpc.Model;
 using Odachi.CodeModel.Builders;
 using Odachi.CodeModel.Mapping;
 using Odachi.CodeModel.Providers.JsonRpc.Description;
 using Odachi.Extensions.Formatting;
+using Odachi.JsonRpc.Server.Model;
 
 namespace Odachi.CodeModel
 {
@@ -52,7 +52,7 @@ namespace Odachi.CodeModel
 						{
 							service.Method(method.MethodName.ToPascalInvariant(), ClrTypeReference.Create(method.ReturnType ?? typeof(void)), method, m =>
 							{
-								foreach (var parameter in method.Parameters.Where(p => !p.IsInternal))
+								foreach (var parameter in method.Parameters.Where(p => p.Source == JsonRpcParameterSource.Request))
 								{
 									m.Parameter(parameter.Name, ClrTypeReference.Create(parameter.Type), parameter);
 								}

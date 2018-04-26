@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Odachi.AspNetCore.JsonRpc.Internal
+namespace Odachi.JsonRpc.Server.Internal
 {
     public class JsonRpcLogEvents
     {

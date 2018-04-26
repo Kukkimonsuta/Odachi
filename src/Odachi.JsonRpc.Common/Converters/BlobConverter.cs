@@ -10,7 +10,7 @@ namespace Odachi.JsonRpc.Common.Converters
 	{
 		public BlobWriteHandler(Action<string, IBlob> handler)
 		{
-			if (Current.IsValueCreated && Current.Value != null)
+			if (Current.Value != null)
 				throw new InvalidOperationException($"Attempt to create nested {nameof(BlobWriteHandler)}");
 
 			Handler = handler;
@@ -30,7 +30,7 @@ namespace Odachi.JsonRpc.Common.Converters
 
 		#region Static members
 
-		public static ThreadLocal<BlobWriteHandler> Current = new ThreadLocal<BlobWriteHandler>();
+		public static AsyncLocal<BlobWriteHandler> Current = new AsyncLocal<BlobWriteHandler>();
 
 		#endregion
 	}
@@ -39,7 +39,7 @@ namespace Odachi.JsonRpc.Common.Converters
 	{
 		public BlobReadHandler(Func<string, string, IBlob> handler)
 		{
-			if (Current.IsValueCreated && Current.Value != null)
+			if (Current.Value != null)
 				throw new InvalidOperationException($"Attempt to create nested {nameof(BlobReadHandler)}");
 
 			Handler = handler;
@@ -59,7 +59,7 @@ namespace Odachi.JsonRpc.Common.Converters
 
 		#region Static members
 
-		public static ThreadLocal<BlobReadHandler> Current = new ThreadLocal<BlobReadHandler>();
+		public static AsyncLocal<BlobReadHandler> Current = new AsyncLocal<BlobReadHandler>();
 
 		#endregion
 	}

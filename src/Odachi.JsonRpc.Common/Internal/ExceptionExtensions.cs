@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odachi.AspNetCore.JsonRpc.Internal
+namespace Odachi.JsonRpc.Common.Internal
 {
 	public static class ExceptionExtensions
 	{

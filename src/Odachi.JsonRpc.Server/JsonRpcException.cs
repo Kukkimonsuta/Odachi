@@ -1,11 +1,10 @@
-﻿using Odachi.AspNetCore.JsonRpc.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Odachi.JsonRpc.Common;
 
-namespace Odachi.AspNetCore.JsonRpc
+namespace Odachi.JsonRpc.Server
 {
 	public class JsonRpcException : Exception
 	{

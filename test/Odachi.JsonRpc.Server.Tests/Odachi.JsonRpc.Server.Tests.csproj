@@ -9,8 +9,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\Odachi.AspNetCore.JsonRpc\Odachi.AspNetCore.JsonRpc.csproj" />
     <ProjectReference Include="..\..\src\Odachi.Extensions.Collections\Odachi.Extensions.Collections.csproj" />
+    <ProjectReference Include="..\..\src\Odachi.JsonRpc.Server\Odachi.JsonRpc.Server.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

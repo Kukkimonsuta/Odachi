@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Odachi.AspNetCore.JsonRpc.Internal;
 using Odachi.Annotations;
 
-namespace Odachi.AspNetCore.JsonRpc.Modules
+namespace Odachi.JsonRpc.Server.Modules
 {
 	public class ServerModule
 	{

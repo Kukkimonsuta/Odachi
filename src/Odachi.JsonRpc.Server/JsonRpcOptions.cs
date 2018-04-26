@@ -1,12 +1,18 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Odachi.AspNetCore.JsonRpc.Behaviors;
-using Odachi.AspNetCore.JsonRpc.Model;
-using Odachi.AspNetCore.JsonRpc.Modules;
 using Odachi.JsonRpc.Common.Converters;
 using Odachi.JsonRpc.Common.Internal;
+using Odachi.JsonRpc.Server.Internal;
+using Odachi.JsonRpc.Server.Model;
+using Odachi.JsonRpc.Server.Modules;
+using Odachi.JsonRpc.Server.Builder;
+using System;
+using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Odachi.JsonRpc.Common;
 
-namespace Odachi.AspNetCore.JsonRpc
+namespace Odachi.JsonRpc.Server
 {
 	public class JsonRpcOptions
 	{
@@ -28,16 +34,12 @@ namespace Odachi.AspNetCore.JsonRpc
 			JsonSerializerSettings.Converters.Add(new StreamReferenceConverter());
 #pragma warning restore CS0618 // Type or member is obsolete
 
-			Behaviors.Add(new SecurityErrorBehavior());
-
 			Methods.AddReflected<ServerModule>();
 		}
 
 		public bool UseJsonRpcConstant { get; set; } = false;
 
 		public JsonSerializerSettings JsonSerializerSettings { get; set; }
-
-		public JsonRpcBehaviorCollection Behaviors { get; } = new JsonRpcBehaviorCollection();
 
 		public JsonRpcMethodCollection Methods { get; } = new JsonRpcMethodCollection();
 	}

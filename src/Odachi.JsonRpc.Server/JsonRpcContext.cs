@@ -1,35 +1,28 @@
-﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Odachi.JsonRpc.Server.Model;
 
-namespace Odachi.AspNetCore.JsonRpc.Internal
+namespace Odachi.JsonRpc.Server
 {
 	public class JsonRpcContext
 	{
-		public JsonRpcContext(IServiceProvider appServices, IServiceProvider rpcServices, JsonRpcServer server, JsonRpcRequest request)
+		public JsonRpcContext(JsonRpcServer server, JsonRpcRequest request, IServiceProvider appServices)
 		{
-			if (appServices == null)
-				throw new ArgumentNullException(nameof(appServices));
-			if (server == null)
-				throw new ArgumentNullException(nameof(server));
-			if (request == null)
-				throw new ArgumentNullException(nameof(request));
-
-			AppServices = appServices;
-			RpcServices = rpcServices;
-			Server = server;
-			Request = request;
+			Server = server ?? throw new ArgumentNullException(nameof(server));
+			Request = request ?? throw new ArgumentNullException(nameof(request));
+			AppServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
 		}
 
-		public IServiceProvider AppServices { get; }
-		public IServiceProvider RpcServices { get; }
 		public JsonRpcServer Server { get; }
 		public JsonRpcRequest Request { get; }
+		public JsonRpcMethod Method { get; set; }
 		public JsonRpcResponse Response { get; protected set; }
 
-		public bool WasHandled { get; protected set; }
+		public IServiceProvider AppServices { get; }
+
+		public bool WasHandled { get; set; }
 
 		public void SetResponse(object result, bool handled = true)
 		{

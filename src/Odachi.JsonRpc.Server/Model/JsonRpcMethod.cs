@@ -1,11 +1,10 @@
-using Odachi.AspNetCore.JsonRpc.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Odachi.AspNetCore.JsonRpc.Model
+namespace Odachi.JsonRpc.Server.Model
 {
 	public abstract class JsonRpcMethod
 	{
@@ -50,10 +49,6 @@ namespace Odachi.AspNetCore.JsonRpc.Model
 		/// </summary>
 		public virtual Type ReturnType => null;
 
-		public virtual void Analyze(JsonRpcServer server, Type[] internalTypes)
-		{
-		}
-
-		public abstract Task HandleAsync(JsonRpcContext context);
+		public abstract Task InvokeAsync(JsonRpcContext context);
 	}
 }

@@ -11,7 +11,7 @@ namespace Odachi.JsonRpc.Common.Converters
 	{
 		public StreamReferenceWriteHandler(Action<string, IStreamReference> handler)
 		{
-			if (Current.IsValueCreated && Current.Value != null)
+			if (Current.Value != null)
 				throw new InvalidOperationException($"Attempt to create nested {nameof(StreamReferenceWriteHandler)}");
 
 			Handler = handler;
@@ -31,7 +31,7 @@ namespace Odachi.JsonRpc.Common.Converters
 
 		#region Static members
 
-		public static ThreadLocal<StreamReferenceWriteHandler> Current = new ThreadLocal<StreamReferenceWriteHandler>();
+		public static AsyncLocal<StreamReferenceWriteHandler> Current = new AsyncLocal<StreamReferenceWriteHandler>();
 
 		#endregion
 	}
@@ -41,7 +41,7 @@ namespace Odachi.JsonRpc.Common.Converters
 	{
 		public StreamReferenceReadHandler(Func<string, string, IStreamReference> handler)
 		{
-			if (Current.IsValueCreated && Current.Value != null)
+			if (Current.Value != null)
 				throw new InvalidOperationException($"Attempt to create nested {nameof(StreamReferenceReadHandler)}");
 
 			Handler = handler;
@@ -61,7 +61,7 @@ namespace Odachi.JsonRpc.Common.Converters
 
 		#region Static members
 
-		public static ThreadLocal<StreamReferenceReadHandler> Current = new ThreadLocal<StreamReferenceReadHandler>();
+		public static AsyncLocal<StreamReferenceReadHandler> Current = new AsyncLocal<StreamReferenceReadHandler>();
 
 		#endregion
 	}

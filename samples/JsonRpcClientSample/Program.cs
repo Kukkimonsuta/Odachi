@@ -16,7 +16,7 @@ namespace JsonRpcClientSample
 
 		static async Task MainAsync()
 		{
-			Console.WriteLine("Call (raw response):");
+			Console.WriteLine("Call `Server.listMethods` (raw response):");
 			using (var client = new JsonRpcHttpClient("http://localhost:56956/api"))
 			{
 				var response = await client.CallAsync("Server.listMethods", null);
@@ -26,7 +26,7 @@ namespace JsonRpcClientSample
 			}
 			Console.WriteLine();
 
-			Console.WriteLine("Call (typed response):");
+			Console.WriteLine("Call `Server.listMethods` (typed response):");
 			using (var client = new JsonRpcHttpClient("http://localhost:56956/api"))
 			{
 				var response = await client.CallAsync<string[]>("Server.listMethods", null);
@@ -35,7 +35,7 @@ namespace JsonRpcClientSample
 			}
 			Console.WriteLine();
 
-			Console.WriteLine("Call (typed response, stream request):");
+			Console.WriteLine("Call `Storage.upload` (typed response, stream request):");
 			using (var client = new JsonRpcHttpClient("http://localhost:56956/api"))
 			{
 				using (var stream = new MemoryStream())
