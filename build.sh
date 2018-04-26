@@ -44,6 +44,7 @@ _build "./src/Odachi.Gettext" netstandard1.3
 _build "./src/Odachi.JsonRpc.Client" netstandard2.0
 _build "./src/Odachi.JsonRpc.Client.Http" netstandard2.0
 _build "./src/Odachi.JsonRpc.Common" netstandard2.0
+_build "./src/Odachi.JsonRpc.Server" netstandard2.0
 _build "./src/Odachi.Mail" netstandard1.3
 _build "./src/Odachi.RazorTemplating" netstandard2.0
 _build "./src/Odachi.RazorTemplating.MSBuild" netstandard2.0
