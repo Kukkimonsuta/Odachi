@@ -40,6 +40,10 @@ namespace Odachi.JsonRpc.Server.Builder
 
 						context.SetResponse(JsonRpcError.UNAUTHORIZED, $"{JsonRpcError.GetMessage(JsonRpcError.UNAUTHORIZED)} - {securityException.Message}");
 					}
+					else
+					{
+						throw;
+					}
 				}
 			});
 		}

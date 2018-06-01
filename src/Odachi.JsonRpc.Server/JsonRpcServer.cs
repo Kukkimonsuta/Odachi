@@ -59,6 +59,11 @@ namespace Odachi.JsonRpc.Server
 
 					await _handler(context);
 
+					if (!context.Request.IsNotification && context.Response == null)
+					{
+						throw new JsonRpcException(JsonRpcError.INTERNAL_ERROR, "Handler failed to produce a response");
+					}
+
 					var elapsed = new TimeSpan((long)(TimestampToTicks * (Stopwatch.GetTimestamp() - startTimestamp)));
 					_logger.LogInformation(JsonRpcLogEvents.RequestFinished, "Rpc request {Method} finished in {ElapsedMilliseconds}ms", request.Method, elapsed.TotalMilliseconds);
 				}
