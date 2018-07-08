@@ -24,12 +24,12 @@ namespace Odachi.CodeGen.TypeScript
 
 		protected override TypeScriptPackageContext CreatePackageContext(Package package, TypeScriptOptions options)
 		{
-			return new TypeScriptPackageContext(package, options.Path);
+			return new TypeScriptPackageContext(package, options);
 		}
 
 		protected override TypeScriptModuleContext CreateModuleContext(TypeScriptPackageContext packageContext, Module module, TypeScriptOptions options)
 		{
-			return new TypeScriptModuleContext(packageContext.Package, module);
+			return new TypeScriptModuleContext(packageContext.Package, module, options);
 		}
 
 		public void RenderIndex(IEnumerable<(string module, string alias)> modules, string path)
@@ -88,7 +88,7 @@ namespace Odachi.CodeGen.TypeScript
 		{
 			Console.WriteLine($"Generating DI module");
 
-			var context = new TypeScriptModuleContext(packageContext.Package, new Module() { Name = "./di.tsx" });
+			var context = new TypeScriptModuleContext(packageContext.Package, new Module() { Name = "./di.tsx" }, packageContext.Options);
 			context.Import("inversify", "interfaces");
 			context.Import("inversify", "ContainerModule");
 

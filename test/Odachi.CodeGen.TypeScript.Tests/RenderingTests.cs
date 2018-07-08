@@ -20,7 +20,7 @@ namespace Odachi.CodeGen.TypeScript.Tests
 			var module = package.Modules
 				.Single(m => m.Name == name);
 
-			var moduleContext = new TypeScriptModuleContext(package, module);
+			var moduleContext = new TypeScriptModuleContext(package, module, new TypeScriptOptions());
 			var objectRenderer = new Renderers.ObjectRenderer();
 
 			var stringBuilder = new StringBuilder();

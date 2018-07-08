@@ -9,7 +9,7 @@ namespace Odachi.CodeGen.TypeScript
 {
 	public class TypeScriptModuleContext : ModuleContext
 	{
-		public TypeScriptModuleContext(Package package, Module module)
+		public TypeScriptModuleContext(Package package, Module module, TypeScriptOptions options)
 		{
 			if (package == null)
 				throw new ArgumentNullException(nameof(package));
@@ -18,8 +18,12 @@ namespace Odachi.CodeGen.TypeScript
 
 			Package = package;
 			Module = module;
+			Options = options;
+
 			FileName = TS.ModuleFileName(module.Name);
 		}
+
+		public TypeScriptOptions Options { get; }
 
 		private Dictionary<string, (List<string> named, string all)> _imports = new Dictionary<string, (List<string>, string)>();
 		private List<string> _helpers = new List<string>();
@@ -91,7 +95,7 @@ namespace Odachi.CodeGen.TypeScript
 		{
 			var didRender = false;
 
-			if (_defaultExport != null)
+			if (_defaultExport != null && Options.AllowDefaultExports)
 			{
 				writer.WriteIndentedLine($"export default {_defaultExport};");
 

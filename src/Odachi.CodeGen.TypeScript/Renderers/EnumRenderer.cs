@@ -84,6 +84,17 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					}
 				}
 
+				writer.WriteIndentedLine($@"export function getName(value: {enumFragment.Name}): string {{
+	const name = names[value];
+
+	if (name === undefined) {{
+		throw new Error(`Cannot get name of {enumFragment.Name} '${{value}}'`);
+	}}
+
+	return name;
+}}");
+				writer.WriteSeparatingLine();
+
 				if (itemHasDisplayNameHint)
 				{
 					writer.WriteIndentedLine($@"export function getDisplayName(value: {enumFragment.Name}): string {{
