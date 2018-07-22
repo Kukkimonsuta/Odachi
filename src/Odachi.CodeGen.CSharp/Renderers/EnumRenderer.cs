@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,18 +18,17 @@ namespace Odachi.CodeGen.CSharp.Renderers
 
 			if (enumFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
-				writer.WriteIndented($"// source: {sourceType}");
-				writer.WriteLine();
+				writer.WriteIndentedLine($"// source: {sourceType}");
+				writer.WriteSeparatingLine();
 			}
 
 			using (writer.WriteIndentedBlock(prefix: $"public enum {fragment.Name} "))
 			{
 				foreach (var item in enumFragment.Items)
 				{
-					writer.WriteIndented($"{CS.Field(item.Name)} = {item.Value},");
+					writer.WriteIndentedLine($"{CS.Field(item.Name)} = {item.Value},");
 				}
 			}
-			writer.WriteLine();
 
 			var itemHasDisplayNameHint = enumFragment.Items.Any(i => i.Hints.ContainsKey("display-name"));
 
@@ -50,12 +49,12 @@ namespace Odachi.CodeGen.CSharp.Renderers
 									continue;
 								}
 
-								writer.WriteIndented($"case {enumFragment.Name}.{CS.Field(item.Name)}:");
-								writer.WriteIndented($"{writer.IndentString}return \"{displayName}\";");
+								writer.WriteIndentedLine($"case {enumFragment.Name}.{CS.Field(item.Name)}:");
+								writer.WriteIndentedLine($"{writer.IndentString}return \"{displayName}\";");
 							}
 
-							writer.WriteIndented("default:");
-							writer.WriteIndented($"{writer.IndentString}throw new InvalidOperationException($\"Undefined behavior for '{{value}}'\");");
+							writer.WriteIndentedLine("default:");
+							writer.WriteIndentedLine($"{writer.IndentString}throw new InvalidOperationException($\"Undefined behavior for '{{value}}'\");");
 						}
 					}
 				}

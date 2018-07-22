@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\tools\common.props" />
+
+  <PropertyGroup>
+    <Description>Storage implementation for file system.</Description>
+    <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+    <PackageTags>odachi</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Odachi.Abstractions\Odachi.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

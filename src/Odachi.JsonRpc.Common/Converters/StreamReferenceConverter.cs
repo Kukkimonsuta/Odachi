@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Threading;
 using Newtonsoft.Json;
@@ -6,11 +6,12 @@ using Odachi.Abstractions;
 
 namespace Odachi.JsonRpc.Common.Converters
 {
+	[Obsolete("Use `Odachi.JsonRpc.Common.Converters.BlobWriteHandler`. Will be removed in next major version.")]
 	public class StreamReferenceWriteHandler : IDisposable
 	{
 		public StreamReferenceWriteHandler(Action<string, IStreamReference> handler)
 		{
-			if (Current.IsValueCreated && Current.Value != null)
+			if (Current.Value != null)
 				throw new InvalidOperationException($"Attempt to create nested {nameof(StreamReferenceWriteHandler)}");
 
 			Handler = handler;
@@ -30,16 +31,17 @@ namespace Odachi.JsonRpc.Common.Converters
 
 		#region Static members
 
-		public static ThreadLocal<StreamReferenceWriteHandler> Current = new ThreadLocal<StreamReferenceWriteHandler>();
+		public static AsyncLocal<StreamReferenceWriteHandler> Current = new AsyncLocal<StreamReferenceWriteHandler>();
 
 		#endregion
 	}
 
+	[Obsolete("Use `Odachi.JsonRpc.Common.Converters.BlobReadHandler`. Will be removed in next major version.")]
 	public class StreamReferenceReadHandler : IDisposable
 	{
 		public StreamReferenceReadHandler(Func<string, string, IStreamReference> handler)
 		{
-			if (Current.IsValueCreated && Current.Value != null)
+			if (Current.Value != null)
 				throw new InvalidOperationException($"Attempt to create nested {nameof(StreamReferenceReadHandler)}");
 
 			Handler = handler;
@@ -59,11 +61,12 @@ namespace Odachi.JsonRpc.Common.Converters
 
 		#region Static members
 
-		public static ThreadLocal<StreamReferenceReadHandler> Current = new ThreadLocal<StreamReferenceReadHandler>();
+		public static AsyncLocal<StreamReferenceReadHandler> Current = new AsyncLocal<StreamReferenceReadHandler>();
 
 		#endregion
 	}
 
+	[Obsolete("Use `Odachi.JsonRpc.Common.Converters.BlobConverter`. Will be removed in next major version.")]
 	public class StreamReferenceConverter : JsonConverter
 	{
 		public override bool CanConvert(Type objectType)

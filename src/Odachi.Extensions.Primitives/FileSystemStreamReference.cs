@@ -1,4 +1,4 @@
-﻿#if !NETSTANDARD1_0
+#if !NETSTANDARD1_0
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +9,9 @@ using Odachi.Abstractions;
 
 namespace Odachi.Extensions.Primitives
 {
+#pragma warning disable CS0618 // Type or member is obsolete
 	public class FileSystemStreamReference : IStreamReference
+#pragma warning restore CS0618 // Type or member is obsolete
 	{
 		public FileSystemStreamReference(string name, string fullPath)
 		{

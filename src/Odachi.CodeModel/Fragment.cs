@@ -1,4 +1,4 @@
-﻿using Odachi.CodeModel.Mapping;
+using Odachi.CodeModel.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;

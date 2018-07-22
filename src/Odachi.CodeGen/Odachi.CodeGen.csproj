@@ -13,7 +13,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.5' ">
-		<DefineConstants>$(DefineConstants);DOTNET</DefineConstants>
+		<DefineConstants>$(DefineConstants);NETSTANDARD15</DefineConstants>
 	</PropertyGroup>
 
   <ItemGroup>

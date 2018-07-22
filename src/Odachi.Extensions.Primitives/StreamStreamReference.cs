@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 using Odachi.Abstractions;
 using System.IO;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 namespace Odachi.Extensions.Primitives
 {
+	[Obsolete("Use `Odachi.Extensions.Primitives.StreamBlob`. Will be removed in next major version.")]
 	public class StreamStreamReference : IStreamReference, IDisposable
 	{
 		public StreamStreamReference(string name, Func<Stream> openReadStream)

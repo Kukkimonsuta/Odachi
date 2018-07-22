@@ -20,7 +20,7 @@ namespace Odachi.CodeModel
 		/// Package modules.
 		/// </summary>
 		public IList<Module> Modules { get; } = new List<Module>();
-		
+
 		/// <summary>
 		/// Hints.
 		/// </summary>

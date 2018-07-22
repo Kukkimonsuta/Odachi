@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Odachi.CodeGen.TypeScript.Internal;
@@ -9,7 +9,7 @@ namespace Odachi.CodeGen.TypeScript
 {
 	public class TypeScriptModuleContext : ModuleContext
 	{
-		public TypeScriptModuleContext(Package package, Module module)
+		public TypeScriptModuleContext(Package package, Module module, TypeScriptOptions options)
 		{
 			if (package == null)
 				throw new ArgumentNullException(nameof(package));
@@ -18,8 +18,12 @@ namespace Odachi.CodeGen.TypeScript
 
 			Package = package;
 			Module = module;
+			Options = options;
+
 			FileName = TS.ModuleFileName(module.Name);
 		}
+
+		public TypeScriptOptions Options { get; }
 
 		private Dictionary<string, (List<string> named, string all)> _imports = new Dictionary<string, (List<string>, string)>();
 		private List<string> _helpers = new List<string>();
@@ -30,13 +34,9 @@ namespace Odachi.CodeGen.TypeScript
 
 		public override bool RenderHeader(IndentedTextWriter writer)
 		{
-			var willRenderImports = _imports.Count > 0;
-			var willRenderHelpers = _helpers.Count > 0;
+			var didRender = false;
 
-			if (!willRenderImports && !willRenderHelpers)
-				return false;
-
-			if (willRenderImports)
+			if (_imports.Count > 0)
 			{
 				foreach (var group in _imports.OrderBy(i => i.Key))
 				{
@@ -58,21 +58,24 @@ namespace Odachi.CodeGen.TypeScript
 					}
 				}
 
-				if (willRenderHelpers)
-				{
-					writer.WriteLine();
-				}
+				writer.WriteSeparatingLine();
+
+				didRender = true;
 			}
 
-			if (willRenderHelpers)
+			if (_helpers.Count > 0)
 			{
 				foreach (var helper in _helpers)
 				{
-					writer.WriteIndented(helper);
+					writer.WriteIndentedLine(helper);
 				}
+
+				writer.WriteSeparatingLine();
+
+				didRender = true;
 			}
 
-			return true;
+			return didRender;
 		}
 
 		public override bool RenderBody(IndentedTextWriter writer, string body)
@@ -82,7 +85,8 @@ namespace Odachi.CodeGen.TypeScript
 				return false;
 			}
 
-			writer.WriteIndented(body);
+			writer.WriteIndentedLine(body);
+			writer.WriteSeparatingLine();
 
 			return true;
 		}
@@ -91,15 +95,15 @@ namespace Odachi.CodeGen.TypeScript
 		{
 			var didRender = false;
 
-			if (_defaultExport != null)
+			if (_defaultExport != null && Options.AllowDefaultExports)
 			{
-				writer.WriteIndented($"export default {_defaultExport};");
+				writer.WriteIndentedLine($"export default {_defaultExport};");
 
 				didRender = true;
 			}
 			if (_exports.Count > 0)
 			{
-				writer.WriteIndented($"export {{ {string.Join(", ", _exports)} }};");
+				writer.WriteIndentedLine($"export {{ {string.Join(", ", _exports)} }};");
 
 				didRender = true;
 			}
@@ -179,11 +183,16 @@ namespace Odachi.CodeGen.TypeScript
 		}
 
 		/// <summary>
-		/// Return string representation valid in code of a type reference.
+		/// Returns string representation valid in code of a type reference.
 		/// </summary>
-		public string Resolve(TypeReference type, bool includeNullability = true)
+		public string Resolve(TypeReference type, bool includeNullability = true, bool includeGenericArguments = true)
 		{
 			var nullableSuffix = includeNullability && type.IsNullable ? " | null" : "";
+
+			if (type.Kind == TypeKind.GenericParameter)
+			{
+				return $"{type.Name}{nullableSuffix}";
+			}
 
 			if (type.Module == null)
 			{
@@ -220,6 +229,9 @@ namespace Odachi.CodeGen.TypeScript
 						if (type.GenericArguments?.Length != 1)
 							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
 
+						if (!includeGenericArguments)
+							return "Array";
+
 						return $"Array<{Resolve(type.GenericArguments[0])}>{nullableSuffix}";
 
 					case "file":
@@ -240,11 +252,26 @@ namespace Odachi.CodeGen.TypeScript
 
 						Import("@stackino/uno", "core");
 
+						if (!includeGenericArguments)
+							return "core.Page";
+
 						return $"core.Page<{Resolve(type.GenericArguments[0])}>{nullableSuffix}";
+
+					case "Tuple":
+						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						if (!includeGenericArguments)
+							throw new InvalidOperationException("Cannot resolve tuple without generic arguments");
+
+						return $"[{string.Join(", ", type.GenericArguments.Select(t => Resolve(t)))}]{nullableSuffix}";
 
 					case "OneOf":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						if (!includeGenericArguments)
+							throw new InvalidOperationException("Cannot resolve oneof without generic arguments");
 
 						if (includeNullability && type.GenericArguments.Any(a => a.IsNullable))
 							nullableSuffix = " | null";
@@ -266,7 +293,7 @@ namespace Odachi.CodeGen.TypeScript
 
 			Import(type);
 
-			return $"{type.Name}{(type.GenericArguments?.Length > 0 ? $"<{string.Join(", ", type.GenericArguments.Select(a => Resolve(a)))}>" : "")}{nullableSuffix}";
+			return $"{type.Name}{(includeGenericArguments && type.GenericArguments?.Length > 0 ? $"<{string.Join(", ", type.GenericArguments.Select(a => Resolve(a)))}>" : "")}{nullableSuffix}";
 		}
 
 		/// <summary>
@@ -274,16 +301,11 @@ namespace Odachi.CodeGen.TypeScript
 		/// </summary>
 		public string CreateExpression(TypeReference type, string source)
 		{
-			var prefix = $"{source} === undefined || {source} === null ? ";
-			if (type.IsNullable)
+			if (type.Kind == TypeKind.GenericParameter)
 			{
-				prefix += "null : ";
-			}
-			else
-			{
-				Helper("function fail(message: string): never { throw new Error(message); }");
+				// handle generic parameters
 
-				prefix += $"fail('Contract violation: value of \\'{source}\\' cannot be null') : ";
+				return $"{Factory(type)}.create({source})";
 			}
 
 			if (type.Module == null)
@@ -298,32 +320,133 @@ namespace Odachi.CodeGen.TypeScript
 					case "file":
 						return "null";
 
+					default:
+						var factory = Factory(type);
+						return $"{factory}.create({source})";
+				}
+			}
+
+			// handle rest
+			Import(type);
+
+			return $"{Factory(type)}.create({source})";
+		}
+
+		/// <summary>
+		/// Returns reference to a factory for given type.
+		/// </summary>
+		public string Factory(TypeReference type)
+		{
+			const string privatePrefix = "_$$_";
+			const string factoryPrefix = privatePrefix + "factory_";
+
+			//if (type.GenericArguments.Any(t => t.Kind == TypeKind.GenericParameter))
+			//{
+			//	throw new InvalidOperationException("Cannot create factory for open generic type");
+			//}
+
+			if (type.Kind == TypeKind.GenericParameter)
+			{
+				// assume factory exists
+				return $"{type.Name}_factory";
+			}
+
+			var optHelper = $"{privatePrefix}opt";
+			if (type.IsNullable)
+			{
+				Helper($"function {privatePrefix}opt<T>(T_factory: {{ create: (source: any) => T }}): {{ create: (source: any) => T | null }} {{ return {{ create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }}; }}");
+			}
+
+			string MakeFactory(string name, string factory, params string[] genericParameterNames)
+			{
+				var factoryName = $"{factoryPrefix}{name}";
+
+				if (genericParameterNames.Length != type.GenericArguments.Length)
+					throw new InvalidOperationException("Generic parameter count mismatch");
+
+				if (genericParameterNames.Any())
+				{
+					var genericParameters = string.Join(", ", genericParameterNames);
+					var arguments = string.Join(", ", genericParameterNames.Select(n => $"{n}_factory: {{ create: (source: any) => {n} }}"));
+
+					Helper($"function {factoryName}<{genericParameters}>({arguments}) {{ return {{ create: {factory} }}; }}");
+
+					if (!type.IsNullable)
+					{
+						return factoryName;
+					}
+
+					var optFactoryName = $"{factoryName}_opt";
+					var argumentForward = string.Join(", ", genericParameterNames.Select(n => $"{n}_factory"));
+
+					Helper($"function {optFactoryName}<{genericParameters}>({arguments}) {{ return {optHelper}({factoryName}({argumentForward})); }}");
+					return optFactoryName;
+				}
+				else
+				{
+					Helper($"const {factoryName} = {{ create: {factory} }};");
+
+					if (!type.IsNullable)
+					{
+						return factoryName;
+					}
+
+					var optFactoryName = $"{factoryName}_opt";
+
+					Helper($"const {optFactoryName} = {optHelper}({factoryName});");
+					return optFactoryName;
+				}
+			}
+
+			if (type.Module == null)
+			{
+				Helper("function fail(message: string): never { throw new Error(message); }");
+
+				switch (type.Name)
+				{
 					case "boolean":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						return MakeFactory(type.Name, $"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'boolean' ? source : fail(`Contract violation: expected boolean, got \\'{{typeof(source)}}\\'`)");
+
 					case "string":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						return MakeFactory(type.Name, $"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \\'{{typeof(source)}}\\'`)");
+
 					case "integer":
 					case "long":
 					case "float":
 					case "double":
 					case "decimal":
-						return $"({prefix}{source})";
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						return MakeFactory("number", $"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \\'{{typeof(source)}}\\'`)");
 
 					case "datetime":
 						if (type.GenericArguments?.Length > 0)
-							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
 						Import("moment", "* as moment");
-						return $"({prefix}moment({source}))";
+						return MakeFactory(type.Name, $"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'string' ? moment(source) : fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)");
 
 					case "array":
 						if (type.GenericArguments?.Length != 1)
 							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
 
-						var itemName = $"{source.Replace(".", "$")}$_item_";
+						var arrayFactory = MakeFactory(
+							type.Name,
+							$@"(source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : fail(`Contract violation: expected array, got \\'{{typeof(source)}}\\'`)",
+							"T"
+						);
 
-						return $"({prefix}{source}.map(({itemName}: any) => {CreateExpression(type.GenericArguments[0], itemName)}))";
+						return $"{arrayFactory}({Factory(type.GenericArguments[0])})";
 
 					case "PagingOptions":
-						return $"({prefix}{source} as {Resolve(type)})";
+						return MakeFactory(type.Name, $"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'object' && source !== null ? source : fail(`Contract violation: expected paging options, got \\'{{typeof(source)}}\\'`)");
 
 					case "Page":
 						if (type.GenericArguments?.Length != 1)
@@ -331,28 +454,59 @@ namespace Odachi.CodeGen.TypeScript
 
 						Import("@stackino/uno", "core");
 
-						return $"({prefix}new core.Page<{Resolve(type.GenericArguments[0])}>({CreateExpression(new TypeReference(null, "array", TypeKind.Array, false, type.GenericArguments[0]), $"{source}.data")}, {CreateExpression(new TypeReference(null, "integer", TypeKind.Primitive, false), $"{source}.number")}, {CreateExpression(new TypeReference(null, "integer", TypeKind.Primitive, false), $"{source}.count")}))";
+						var pageFactory = MakeFactory(type.Name, $@"(source: any): core.Page<T> =>
+		typeof source === 'object' && source !== null ?
+			new core.Page<T>(
+				{CreateExpression(new TypeReference(null, "array", TypeKind.Array, false, new TypeReference(null, "T", TypeKind.GenericParameter, false)), "source.data")},
+				{CreateExpression(new TypeReference(null, "integer", TypeKind.Primitive, false), "source.number")},
+				{CreateExpression(new TypeReference(null, "integer", TypeKind.Primitive, false), "source.count")}
+			) :
+			fail(`Contract violation: expected page, got \\'{{typeof(source)}}\\'`)", "T");
+
+						return $"{pageFactory}({Factory(type.GenericArguments[0])})";
+
+					case "Tuple":
+						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						var tupleHelperGenericArguments = new string[type.GenericArguments.Length];
+						var tupleHelperBody = $"[";
+						for (var i = 0; i < type.GenericArguments.Length; i++)
+						{
+							var genericArgumentName = $"T{i + 1}";
+
+							tupleHelperGenericArguments[i] = genericArgumentName;
+							tupleHelperBody += $"{genericArgumentName}_factory.create(source.item{i + 1})";
+							if (i != type.GenericArguments.Length - 1)
+							{
+								tupleHelperBody += ", ";
+							}
+						}
+						tupleHelperBody += "]";
+
+						var tupleFactory = MakeFactory($"tuple{type.GenericArguments.Length}", $"(source: any): [{string.Join(", ", tupleHelperGenericArguments)}] => {tupleHelperBody}", tupleHelperGenericArguments);
+
+						return $"{tupleFactory}({string.Join(", ", type.GenericArguments.Select(a => Factory(a)))})";
 
 					case "OneOf":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
-						string makeTernary(string condition, string yes, string no)
+						var oneOfHelperGenericArguments = new string[type.GenericArguments.Length];
+						var oneOfHelperBody = "switch (source.index) { ";
+						for (var i = 0; i < type.GenericArguments.Length; i++)
 						{
-							return $"{condition} ? ({yes}) : ({no})";
+							var genericArgumentName = $"T{i + 1}";
+
+							oneOfHelperGenericArguments[i] = genericArgumentName;
+							oneOfHelperBody += $"case {i + 1}: return {genericArgumentName}_factory.create(source.option{i + 1}); ";
 						}
+						oneOfHelperBody += "default: return fail(`Contract violation: cannot handle OneOf index ${source.index}`); ";
+						oneOfHelperBody += "}";
 
-						string checkIndex(int index)
-						{
-							if (type.GenericArguments.Length <= index)
-								return $"fail(`Contract violation: cannot handle OneOf index ${{{source}.index}} of \\'{source}\\'`)";
+						var oneOfFactory = MakeFactory($"oneof{type.GenericArguments.Length}", $"(source: any): {string.Join(" | ", oneOfHelperGenericArguments)} => {{ {oneOfHelperBody} }}", oneOfHelperGenericArguments);
 
-							var t = type.GenericArguments[index];
-
-							return makeTernary($"{source}.index === {index + 1}", CreateExpression(type.GenericArguments[index], $"{source}.option{index + 1}"), checkIndex(index + 1));
-						}
-
-						return $"{prefix}{checkIndex(0)}";
+						return $"{oneOfFactory}({string.Join(", ", type.GenericArguments.Select(a => Factory(a)))})";
 
 					case "ValidationState":
 						if (type.GenericArguments?.Length > 0)
@@ -360,7 +514,7 @@ namespace Odachi.CodeGen.TypeScript
 
 						Import("@stackino/uno", "validation");
 
-						return $"{prefix}new validation.ValidationState({source}.state)";
+						return MakeFactory(type.Name, $@"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'object' && source !== null && typeof source.state === 'object' && source.state !== null ? new validation.ValidationState(source.state) : fail(`Contract violation: expected validation state, got \\'{{typeof(source)}}\\'`)");
 
 					default:
 						throw new NotSupportedException($"Undefined behavior for builtin '{type.Name}'");
@@ -369,7 +523,20 @@ namespace Odachi.CodeGen.TypeScript
 
 			Import(type);
 
-			return $"{prefix}{Resolve(type, includeNullability: false)}.create({source})";
+			var factoryBase = Resolve(type, includeNullability: false, includeGenericArguments: false);
+			if (type.GenericArguments.Any())
+			{
+				factoryBase = $"{factoryBase}.create({string.Join(", ", type.GenericArguments.Select(a => Factory(a)))})";
+			}
+
+			if (type.IsNullable)
+			{
+				return $"{optHelper}({factoryBase})";
+			}
+			else
+			{
+				return factoryBase;
+			}
 		}
 
 		#endregion

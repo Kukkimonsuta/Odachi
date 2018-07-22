@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +15,6 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.Options;
 using Odachi.AspNetCore.JsonRpc.Internal;
 using Microsoft.Extensions.Logging;
-using Odachi.AspNetCore.JsonRpc.Modules;
 using System.Threading;
 using System.Security;
 using System.Reflection;
@@ -23,6 +22,10 @@ using Odachi.JsonRpc.Common;
 using Odachi.JsonRpc.Common.Converters;
 using Odachi.Abstractions;
 using System.Net.Http;
+using Odachi.JsonRpc.Server;
+using Odachi.JsonRpc.Server.Internal;
+using Odachi.JsonRpc.Common.Internal;
+using Odachi.JsonRpc.Server.Builder;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
@@ -33,34 +36,23 @@ namespace Odachi.AspNetCore.JsonRpc
 			_logger = loggerFactory.CreateLogger<JsonRpcMiddleware>();
 			_next = next;
 			_options = options.Value;
-			_server = new JsonRpcServer(loggerFactory, _options.Methods, _options.Behaviors);
 
-			_serializer = JsonSerializer.Create(_options.JsonSerializerSettings);
+			var handler = new JsonRpcHandlerBuilder()
+				.UseSecurityExceptionHandler()
+				.UseBlobHandler()
+				.Build();
 
-			var container = new ServiceCollection();
-			container.AddSingleton(_server);
-			container.AddSingleton(_serializer);
-			foreach (var behavior in _options.Behaviors)
-				behavior.ConfigureRpcServices(container);
-			_rpcServices = container.BuildServiceProvider();
-
-			var internalTypes = container.Select(d => d.ServiceType).ToArray();
-			foreach (var method in _server.Methods)
-			{
-				method.Analyze(_server, internalTypes);
-			}
+			_server = new JsonRpcServer(options.Value, handler, loggerFactory.CreateLogger<JsonRpcServer>());
 		}
 
 		private readonly ILogger _logger;
 		private readonly RequestDelegate _next;
 		private readonly JsonRpcOptions _options;
 		private readonly JsonRpcServer _server;
-		private readonly IServiceProvider _rpcServices;
-		private readonly JsonSerializer _serializer;
 
 		private async Task SendResponse(HttpContext httpContext, JsonRpcResponse response)
 		{
-			var jObject = JObject.FromObject(response, _serializer);
+			var jObject = JObject.FromObject(response, _server.Serializer);
 
 			// append jsonrpc constant if enabled
 			if (_options.UseJsonRpcConstant)
@@ -90,36 +82,31 @@ namespace Odachi.AspNetCore.JsonRpc
 		{
 			try
 			{
-				using (var scope = _rpcServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+				JsonRpcRequest request;
+				try
 				{
-					JsonRpcRequest request;
-					try
-					{
-						request = await JsonRpcRequest.CreateAsync(httpContext, _serializer);
-					}
-					catch (Exception ex)
-					{
-						_logger.LogWarning(JsonRpcLogEvents.ParseError, ex, "Failed to parse request");
+					request = await CreateRequestAsync(httpContext, _server.Serializer);
+				}
+				catch (Exception ex)
+				{
+					_logger.LogWarning(JsonRpcLogEvents.ParseError, ex, "Failed to parse request");
 
-						if (!httpContext.Response.HasStarted && !httpContext.RequestAborted.IsCancellationRequested)
-						{
-							await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.PARSE_ERROR, errorData: ex.ToString()));
-						}
-						return;
-					}
-
-					var rpcContext = new JsonRpcContext(httpContext.RequestServices, scope.ServiceProvider, _server, request);
-
-					await _server.ProcessAsync(rpcContext);
-
-					if (rpcContext.Request.IsNotification)
+					if (!httpContext.Response.HasStarted && !httpContext.RequestAborted.IsCancellationRequested)
 					{
-						httpContext.Response.StatusCode = 204;
+						await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.PARSE_ERROR, errorData: ex.ToString()));
 					}
-					else
-					{
-						await SendResponse(httpContext, rpcContext.Response);
-					}
+					return;
+				}
+
+				var response = await _server.ProcessAsync(httpContext.RequestServices, request);
+
+				if (request.IsNotification)
+				{
+					httpContext.Response.StatusCode = 204;
+				}
+				else
+				{
+					await SendResponse(httpContext, response);
 				}
 			}
 			catch (Exception ex)
@@ -132,5 +119,65 @@ namespace Odachi.AspNetCore.JsonRpc
 				}
 			}
 		}
+
+		#region Static members
+
+		private static async Task<JsonReader> CreateRequestReaderAsync(HttpContext httpContext, JsonSerializer serializer)
+		{
+			if (!httpContext.Request.HasFormContentType)
+			{
+				return new JsonTextReader(new StreamReader(httpContext.Request.Body));
+			}
+
+			var form = await httpContext.Request.ReadFormAsync();
+
+			return new JsonTextReader(new StringReader(form.Single().Value));
+		}
+
+		private static async Task<JsonRpcRequest> CreateRequestAsync(HttpContext httpContext, JsonSerializer serializer)
+		{
+			using (var reader = await CreateRequestReaderAsync(httpContext, serializer))
+			{
+				var requestJsonToken = JToken.ReadFrom(reader);
+				if (requestJsonToken.Type != JTokenType.Object)
+					throw new JsonRpcException(JsonRpcError.INVALID_REQUEST, "Invalid request (wrong root type)");
+
+				var requestJson = (JObject)requestJsonToken;
+
+				object id = null;
+				if (requestJson.TryGetValue("id", out JToken idJson))
+				{
+					switch (idJson.Type)
+					{
+						case JTokenType.Null:
+							break;
+
+						case JTokenType.String:
+							id = idJson.Value<string>();
+							break;
+
+						case JTokenType.Integer:
+							id = idJson.Value<int>();
+							break;
+
+						default:
+							throw new JsonRpcException(JsonRpcError.INVALID_REQUEST, "Invalid request (wrong id type)");
+					}
+				}
+
+				if (!requestJson.TryGetValue("method", out JToken methodJson) || methodJson.Type != JTokenType.String)
+					throw new JsonRpcException(JsonRpcError.INVALID_REQUEST, "Invalid 'method' (missing or wrong type)");
+				var method = methodJson.Value<string>();
+
+				if (!requestJson.TryGetValue("params", out JToken paramsJson))
+					paramsJson = null;
+				if (paramsJson != null && paramsJson.Type != JTokenType.Object && paramsJson.Type != JTokenType.Array)
+					throw new JsonRpcException(JsonRpcError.INVALID_REQUEST, "Invalid 'params' (wrong type)");
+
+				return new JsonRpcRequest(id, method, paramsJson, serializer);
+			}
+		}
+
+		#endregion
 	}
 }

@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Odachi.CodeModel.Builders.Abstraction;
 
@@ -15,17 +16,40 @@ namespace Odachi.CodeModel.Builders
 
 		public IList<ITypeFragmentBuilder> Fragments { get; } = new List<ITypeFragmentBuilder>();
 
-		public ModuleBuilder Class(string name, Action<ClassBuilder> configure)
+		public ModuleBuilder Object(string name, Action<ObjectBuilder> configure)
 		{
-			return Class(name, null, configure);
+			return Object(name, null, null, configure);
 		}
-		public ModuleBuilder Class(string name, Type type, Action<ClassBuilder> configure)
+		public ModuleBuilder Object(string name, Type type, Action<ObjectBuilder> configure)
 		{
-			var classBuilder = new ClassBuilder(Context, name, source: type);
+			return Object(name, null, type, configure);
+		}
+		public ModuleBuilder Object(string name, IReadOnlyList<string> genericArguments, Action<ObjectBuilder> configure)
+		{
+			return Object(name, genericArguments, null, configure);
+		}
+		public ModuleBuilder Object(string name, IReadOnlyList<string> genericArguments, Type type, Action<ObjectBuilder> configure)
+		{
+			var objectBuilder = new ObjectBuilder(Context, name, genericArguments, source: type);
 
-			configure(classBuilder);
+			configure(objectBuilder);
 
-			Fragments.Add(classBuilder);
+			Fragments.Add(objectBuilder);
+
+			return this;
+		}
+
+		public ModuleBuilder Service(string name, Action<ServiceBuilder> configure)
+		{
+			return Service(name, null, configure);
+		}
+		public ModuleBuilder Service(string name, Type type, Action<ServiceBuilder> configure)
+		{
+			var serviceBuilder = new ServiceBuilder(Context, name, source: type);
+
+			configure(serviceBuilder);
+
+			Fragments.Add(serviceBuilder);
 
 			return this;
 		}
