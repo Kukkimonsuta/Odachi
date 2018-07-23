@@ -49,6 +49,17 @@ namespace Odachi.CodeModel.Tests
 		public ValidationState Foo { get; set; }
 	}
 
+	public class ObjectWithPrimitives
+	{
+		public byte Byte { get; set; }
+		public short Short { get; set; }
+		public int Integer { get; set; }
+		public long Long { get; set; }
+		public float Float { get; set; }
+		public double Double { get; set; }
+		public decimal Decimal { get; set; }
+	}
+
 	public class GenericsTests
 	{
 		[Fact]

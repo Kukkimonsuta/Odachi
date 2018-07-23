@@ -14,6 +14,16 @@ namespace Odachi.CodeModel.Tests
 		public string Bar;
 	}
 
+	public class ByteClass
+	{
+		public byte Bar;
+	}
+
+	public class ShortClass
+	{
+		public short Bar;
+	}
+
 	public class IntClass
 	{
 		public int Bar;
@@ -112,6 +122,68 @@ namespace Odachi.CodeModel.Tests
 			Assert.Single(package.Modules);
 			Assert.Single(package.Modules[0].Fragments);
 			Assert.Equal("service", package.Modules[0].Fragments[0].Kind);
+		}
+
+		[Fact]
+		public void Can_describe_byte()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<ByteClass>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Modules,
+				module =>
+				{
+					Assert.Collection(module.Fragments,
+						fragment =>
+						{
+							Assert.Equal("object", fragment.Kind);
+
+							Assert.Collection(((ObjectFragment)fragment).Fields,
+								field =>
+								{
+									Assert.Equal(nameof(ByteClass.Bar), field.Name);
+									Assert.Equal(TypeKind.Primitive, field.Type.Kind);
+									Assert.Equal("byte", field.Type.Name);
+									Assert.False(field.Type.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_short()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<ShortClass>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Modules,
+				module =>
+				{
+					Assert.Collection(module.Fragments,
+						fragment =>
+						{
+							Assert.Equal("object", fragment.Kind);
+
+							Assert.Collection(((ObjectFragment)fragment).Fields,
+								field =>
+								{
+									Assert.Equal(nameof(ShortClass.Bar), field.Name);
+									Assert.Equal(TypeKind.Primitive, field.Type.Kind);
+									Assert.Equal("short", field.Type.Name);
+									Assert.False(field.Type.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
 		}
 
 		[Fact]

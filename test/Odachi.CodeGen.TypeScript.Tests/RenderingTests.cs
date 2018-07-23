@@ -336,5 +336,61 @@ export default ObjectWithValidationState;
 export { ObjectWithValidationState };
 ", result);
 		}
+
+		[Fact]
+		public void Object_with_primitives()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default(typeof(ObjectWithPrimitives))
+				.Build();
+
+			var result = RenderModule(package, $".\\{nameof(ObjectWithPrimitives)}");
+
+			Assert.Equal(@"import { observable } from 'mobx';
+
+function fail(message: string): never { throw new Error(message); }
+const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
+
+// source: Odachi.CodeModel.Tests.ObjectWithPrimitives, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+
+class ObjectWithPrimitives {
+	@observable.ref
+	byte: number;
+
+	@observable.ref
+	short: number;
+
+	@observable.ref
+	integer: number;
+
+	@observable.ref
+	long: number;
+
+	@observable.ref
+	float: number;
+
+	@observable.ref
+	double: number;
+
+	@observable.ref
+	decimal: number;
+
+	static create(source: any): ObjectWithPrimitives {
+		const result = new ObjectWithPrimitives();
+		result.byte = _$$_factory_number.create(source.byte);
+		result.short = _$$_factory_number.create(source.short);
+		result.integer = _$$_factory_number.create(source.integer);
+		result.long = _$$_factory_number.create(source.long);
+		result.float = _$$_factory_number.create(source.float);
+		result.double = _$$_factory_number.create(source.double);
+		result.decimal = _$$_factory_number.create(source.decimal);
+		return result;
+	}
+}
+
+export default ObjectWithPrimitives;
+export { ObjectWithPrimitives };
+", result);
+		}
 	}
 }

@@ -208,6 +208,8 @@ namespace Odachi.CodeGen.TypeScript
 
 						return $"{type.Name}{nullableSuffix}";
 
+					case "byte":
+					case "short":
 					case "integer":
 					case "long":
 					case "float":
@@ -416,6 +418,8 @@ namespace Odachi.CodeGen.TypeScript
 
 						return MakeFactory(type.Name, $"(source: any): {Resolve(type, includeNullability: false)} => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \\'{{typeof(source)}}\\'`)");
 
+					case "byte":
+					case "short":
 					case "integer":
 					case "long":
 					case "float":

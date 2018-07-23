@@ -134,6 +134,8 @@ namespace Odachi.CodeGen.CSharp
 
 						return $"bool{(includeNullability && type.IsNullable ? "?" : "")}";
 
+					case "byte":
+					case "short":
 					case "long":
 					case "float":
 					case "double":
