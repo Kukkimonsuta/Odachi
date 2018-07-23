@@ -30,6 +30,7 @@ namespace Odachi.CodeModel.Mapping
 
 			Register(typeof(void), BuiltinTypeDefinition.Void);
 			Register(typeof(bool), BuiltinTypeDefinition.Boolean);
+			Register(typeof(short), BuiltinTypeDefinition.Short);
 			Register(typeof(int), BuiltinTypeDefinition.Integer);
 			Register(typeof(long), BuiltinTypeDefinition.Long);
 			Register(typeof(float), BuiltinTypeDefinition.Float);

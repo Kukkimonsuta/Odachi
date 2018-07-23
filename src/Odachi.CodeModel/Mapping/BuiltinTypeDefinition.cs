@@ -24,6 +24,7 @@ namespace Odachi.CodeModel.Mapping
 
 		public static readonly BuiltinTypeDefinition Void = new BuiltinTypeDefinition("void");
 		public static readonly BuiltinTypeDefinition Boolean = new BuiltinTypeDefinition("boolean");
+		public static readonly BuiltinTypeDefinition Short = new BuiltinTypeDefinition("short");
 		public static readonly BuiltinTypeDefinition Integer = new BuiltinTypeDefinition("integer");
 		public static readonly BuiltinTypeDefinition Long = new BuiltinTypeDefinition("long");
 		public static readonly BuiltinTypeDefinition Float = new BuiltinTypeDefinition("float");
