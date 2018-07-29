@@ -53,13 +53,40 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 
 			using (writer.WriteIndentedBlock(prefix: $"namespace {enumFragment.Name} "))
 			{
-				writer.WriteIndentedLine($@"export function create(value: any): {enumFragment.Name} {{
+				if (enumFragment.Hints.TryGetValue("enum-flags", out var enumFlags) && string.Equals(enumFlags, "true", StringComparison.OrdinalIgnoreCase))
+				{
+					writer.WriteIndentedLine($@"export function create(value: any): {enumFragment.Name} {{
+    if (typeof value !== 'number') {{
+        throw new Error(`Value '${{value}}' is not valid for enum {enumFragment.Name}`);
+    }}
+
+    let remainder = value;
+    for (let k in {enumFragment.Name}) {{
+        const v = {enumFragment.Name}[k];
+        if (!{enumFragment.Name}.hasOwnProperty(v)) {{
+            continue;
+        }}
+
+        remainder = remainder & ~v;
+    }}
+
+	if (remainder !== 0) {{
+		throw new Error(`Remainder '${{remainder}}' of '${{value}}' is not valid for enum {enumFragment.Name}`);
+	}}
+
+	return value as {enumFragment.Name};
+}};");
+				}
+				else
+				{
+					writer.WriteIndentedLine($@"export function create(value: any): {enumFragment.Name} {{
 	if (!{enumFragment.Name}.hasOwnProperty(value)) {{
 		throw new Error(`Value '${{value}}' is not valid for enum {enumFragment.Name}`);
 	}}
 
 	return value as {enumFragment.Name};
 }}");
+				}
 				writer.WriteSeparatingLine();
 
 				using (writer.WriteIndentedBlock(prefix: $"export function getValues(): {enumFragment.Name}[] "))

@@ -22,6 +22,10 @@ namespace Odachi.CodeGen.CSharp.Renderers
 				writer.WriteSeparatingLine();
 			}
 
+			if (enumFragment.Hints.TryGetValue("enum-flags", out var enumFlags) && string.Equals(enumFlags, "true", StringComparison.OrdinalIgnoreCase))
+			{
+				writer.WriteIndentedLine($"[Flags]");
+			}
 			using (writer.WriteIndentedBlock(prefix: $"public enum {fragment.Name} "))
 			{
 				foreach (var item in enumFragment.Items)

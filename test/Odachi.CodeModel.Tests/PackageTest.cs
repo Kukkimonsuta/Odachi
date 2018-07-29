@@ -57,6 +57,21 @@ namespace Odachi.CodeModel.Tests
 		public (string foo, string bar)? Value;
 	}
 
+	public enum StandardEnum
+	{
+		Foo = 1,
+		Bar = 2,
+	}
+
+	[Flags]
+	public enum FlagsEnum
+	{
+		Foo = 1,
+		Bar = 2,
+		Cookies = 32,
+		Combo = 33,
+	}
+
 	public class PackageTests
 	{
 		[Fact]
@@ -301,6 +316,58 @@ namespace Odachi.CodeModel.Tests
 									Assert.Equal(TypeKind.Tuple, field.Type.Kind);
 									Assert.True(field.Type.IsNullable);
 								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_enum()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Enum_Default<StandardEnum>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Modules,
+				module =>
+				{
+					Assert.Collection(module.Fragments,
+						fragment =>
+						{
+							Assert.Equal("enum", fragment.Kind);
+
+							Assert.DoesNotContain(
+								fragment.Hints,
+								x => x.Key == "enum-flags" && x.Value == "true"
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_flags_enum()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Enum_Default<FlagsEnum>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Modules,
+				module =>
+				{
+					Assert.Collection(module.Fragments,
+						fragment =>
+						{
+							Assert.Equal("enum", fragment.Kind);
+
+							Assert.Contains(
+								fragment.Hints,
+								x => x.Key == "enum-flags" && x.Value == "true"
 							);
 						}
 					);

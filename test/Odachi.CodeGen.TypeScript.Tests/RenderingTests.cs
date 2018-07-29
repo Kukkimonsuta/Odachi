@@ -21,6 +21,7 @@ namespace Odachi.CodeGen.TypeScript.Tests
 				.Single(m => m.Name == name);
 
 			var moduleContext = new TypeScriptModuleContext(package, module, new TypeScriptOptions());
+			var enumRenderer = new Renderers.EnumRenderer();
 			var objectRenderer = new Renderers.ObjectRenderer();
 
 			var stringBuilder = new StringBuilder();
@@ -28,7 +29,13 @@ namespace Odachi.CodeGen.TypeScript.Tests
 			{
 				using (var indentedWriter = new IndentedTextWriter(stringWriter))
 				{
-					objectRenderer.Render(moduleContext, module.Fragments.Single(), indentedWriter);
+					if (!objectRenderer.Render(moduleContext, module.Fragments.Single(), indentedWriter))
+					{
+						if (!enumRenderer.Render(moduleContext, module.Fragments.Single(), indentedWriter))
+						{
+							throw new InvalidOperationException("No renderer found");
+						}
+					}
 				}
 			}
 			stringBuilder.TrimEnd();
@@ -390,6 +397,148 @@ class ObjectWithPrimitives {
 
 export default ObjectWithPrimitives;
 export { ObjectWithPrimitives };
+", result);
+		}
+
+		[Fact]
+		public void Enum()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Enum_Default(typeof(StandardEnum))
+				.Build();
+
+			var result = RenderModule(package, $".\\{nameof(StandardEnum)}");
+
+			Assert.Equal(@"// source: Odachi.CodeModel.Tests.StandardEnum, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+
+enum StandardEnum {
+	foo = 1,
+	bar = 2,
+}
+
+const names = {
+	[StandardEnum.foo]: 'foo',
+	[StandardEnum.bar]: 'bar',
+};
+
+namespace StandardEnum {
+	export function create(value: any): StandardEnum {
+		if (!StandardEnum.hasOwnProperty(value)) {
+			throw new Error(`Value '${value}' is not valid for enum StandardEnum`);
+		}
+
+		return value as StandardEnum;
+	}
+
+	export function getValues(): StandardEnum[] {
+		return [
+			StandardEnum.foo,
+			StandardEnum.bar,
+		];
+	}
+
+	export function getNames(): string[] {
+		return [
+			'foo',
+			'bar',
+		];
+	}
+
+	export function getName(value: StandardEnum): string {
+		const name = names[value];
+
+		if (name === undefined) {
+			throw new Error(`Cannot get name of StandardEnum '${value}'`);
+		}
+
+		return name;
+	}
+}
+
+export default StandardEnum;
+export { StandardEnum };
+", result);
+		}
+
+		[Fact]
+		public void Enum_with_flags()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Enum_Default(typeof(FlagsEnum))
+				.Build();
+
+			var result = RenderModule(package, $".\\{nameof(FlagsEnum)}");
+
+			Assert.Equal(@"// source: Odachi.CodeModel.Tests.FlagsEnum, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+
+enum FlagsEnum {
+	foo = 1,
+	bar = 2,
+	cookies = 32,
+	combo = 33,
+}
+
+const names = {
+	[FlagsEnum.foo]: 'foo',
+	[FlagsEnum.bar]: 'bar',
+	[FlagsEnum.cookies]: 'cookies',
+	[FlagsEnum.combo]: 'combo',
+};
+
+namespace FlagsEnum {
+	export function create(value: any): FlagsEnum {
+	    if (typeof value !== 'number') {
+	        throw new Error(`Value '${value}' is not valid for enum FlagsEnum`);
+	    }
+
+	    let remainder = value;
+	    for (let k in FlagsEnum) {
+	        const v = FlagsEnum[k];
+	        if (!FlagsEnum.hasOwnProperty(v)) {
+	            continue;
+	        }
+
+	        remainder = remainder & ~v;
+	    }
+
+		if (remainder !== 0) {
+			throw new Error(`Remainder '${remainder}' of '${value}' is not valid for enum FlagsEnum`);
+		}
+
+		return value as FlagsEnum;
+	};
+
+	export function getValues(): FlagsEnum[] {
+		return [
+			FlagsEnum.foo,
+			FlagsEnum.bar,
+			FlagsEnum.cookies,
+			FlagsEnum.combo,
+		];
+	}
+
+	export function getNames(): string[] {
+		return [
+			'foo',
+			'bar',
+			'cookies',
+			'combo',
+		];
+	}
+
+	export function getName(value: FlagsEnum): string {
+		const name = names[value];
+
+		if (name === undefined) {
+			throw new Error(`Cannot get name of FlagsEnum '${value}'`);
+		}
+
+		return name;
+	}
+}
+
+export default FlagsEnum;
+export { FlagsEnum };
 ", result);
 		}
 	}

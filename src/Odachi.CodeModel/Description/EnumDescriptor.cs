@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -30,6 +30,10 @@ namespace Odachi.CodeModel.Description
 	{
 		protected virtual void DescribeType(EnumBuilder builder, Type type)
 		{
+			if (type.GetTypeInfo().GetCustomAttribute<FlagsAttribute>() != null)
+			{
+				builder.Hint("enum-flags", "true");
+			}
 			builder.Hint("source-type", type.AssemblyQualifiedName);
 		}
 
