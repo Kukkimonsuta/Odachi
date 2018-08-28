@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Odachi.Extensions.Primitives;
@@ -16,7 +16,7 @@ namespace JsonRpcClientSample
 
 		static async Task MainAsync()
 		{
-			Console.WriteLine("Call (raw response):");
+			Console.WriteLine("Call `Server.listMethods` (raw response):");
 			using (var client = new JsonRpcHttpClient("http://localhost:56956/api"))
 			{
 				var response = await client.CallAsync("Server.listMethods", null);
@@ -26,7 +26,7 @@ namespace JsonRpcClientSample
 			}
 			Console.WriteLine();
 
-			Console.WriteLine("Call (typed response):");
+			Console.WriteLine("Call `Server.listMethods` (typed response):");
 			using (var client = new JsonRpcHttpClient("http://localhost:56956/api"))
 			{
 				var response = await client.CallAsync<string[]>("Server.listMethods", null);
@@ -35,7 +35,7 @@ namespace JsonRpcClientSample
 			}
 			Console.WriteLine();
 
-			Console.WriteLine("Call (typed response, stream request):");
+			Console.WriteLine("Call `Storage.upload` (typed response, stream request):");
 			using (var client = new JsonRpcHttpClient("http://localhost:56956/api"))
 			{
 				using (var stream = new MemoryStream())
@@ -43,7 +43,7 @@ namespace JsonRpcClientSample
 					stream.Write(new byte[] { 0x01, 0x02, 0x03, 0x04 }, 0, 4);
 					stream.Seek(0, SeekOrigin.Begin);
 
-					var response = await client.CallAsync<string[]>("Storage.upload", new { file = new StreamStreamReference("test-file.bin", stream) });
+					var response = await client.CallAsync<string[]>("Storage.upload", new { file = new StreamBlob("test-file.bin", stream) });
 
 					Console.WriteLine($"\t=> {string.Join(", ", response)}");
 				}

@@ -30,6 +30,8 @@ namespace Odachi.CodeModel.Mapping
 
 			Register(typeof(void), BuiltinTypeDefinition.Void);
 			Register(typeof(bool), BuiltinTypeDefinition.Boolean);
+			Register(typeof(byte), BuiltinTypeDefinition.Byte);
+			Register(typeof(short), BuiltinTypeDefinition.Short);
 			Register(typeof(int), BuiltinTypeDefinition.Integer);
 			Register(typeof(long), BuiltinTypeDefinition.Long);
 			Register(typeof(float), BuiltinTypeDefinition.Float);
@@ -38,9 +40,17 @@ namespace Odachi.CodeModel.Mapping
 			Register(typeof(string), BuiltinTypeDefinition.String);
 			Register(typeof(DateTime), BuiltinTypeDefinition.DateTime);
 			Register(typeof(IEnumerable<>), BuiltinTypeDefinition.Array);
-			Register(typeof(IStreamReference), BuiltinTypeDefinition.File);
+			Register(typeof(IBlob), BuiltinTypeDefinition.File);
 
-			Register(typeof(IEntityReference), BuiltinTypeDefinition.EntityReference);
+			Register(typeof(ValueTuple<>), BuiltinTypeDefinition.Tuple1);
+			Register(typeof(ValueTuple<,>), BuiltinTypeDefinition.Tuple2);
+			Register(typeof(ValueTuple<,,>), BuiltinTypeDefinition.Tuple3);
+			Register(typeof(ValueTuple<,,,>), BuiltinTypeDefinition.Tuple4);
+			Register(typeof(ValueTuple<,,,,>), BuiltinTypeDefinition.Tuple5);
+			Register(typeof(ValueTuple<,,,,,>), BuiltinTypeDefinition.Tuple6);
+			Register(typeof(ValueTuple<,,,,,,>), BuiltinTypeDefinition.Tuple7);
+			Register(typeof(ValueTuple<,,,,,,,>), BuiltinTypeDefinition.Tuple8);
+
 			Register(typeof(OneOf<,>), BuiltinTypeDefinition.OneOf2);
 			Register(typeof(OneOf<,,>), BuiltinTypeDefinition.OneOf3);
 			Register(typeof(OneOf<,,,>), BuiltinTypeDefinition.OneOf4);
@@ -51,6 +61,11 @@ namespace Odachi.CodeModel.Mapping
 			Register(typeof(OneOf<,,,,,,,,>), BuiltinTypeDefinition.OneOf9);
 			Register(typeof(PagingOptions), BuiltinTypeDefinition.PagingOptions);
 			Register(typeof(Page<>), BuiltinTypeDefinition.Page);
+
+#pragma warning disable CS0618 // Type or member is obsolete
+			Register(typeof(IStreamReference), BuiltinTypeDefinition.File);
+			Register(typeof(IEntityReference), BuiltinTypeDefinition.EntityReference);
+#pragma warning restore CS0618 // Type or member is obsolete
 		}
 
 		private IDictionary<Type, TypeDefinition> _mapping;
@@ -69,11 +84,6 @@ namespace Odachi.CodeModel.Mapping
 			_mapping.Add(type, definition);
 		}
 
-		public TypeReference Map(ITypeReference reference)
-		{
-			return reference.Resolve(this);
-		}
-
 		private bool TryGet(ref Type type, out TypeDefinition definition)
 		{
 			// exact lookup
@@ -89,8 +99,7 @@ namespace Odachi.CodeModel.Mapping
 
 				if (_mapping.TryGetValue(genericTypeDefinition, out definition))
 				{
-					// allow stripping of generics.. todo: remove
-					if (type.GetGenericArguments().Length < definition.GenericArgumentDefinitions.Count)
+					if (type.GetGenericArguments().Length != definition.GenericArguments.Count)
 						throw new InvalidOperationException($"Invalid number of generic arguments between '{type.FullName}' and '{definition.GetFullyQualifiedName()}'");
 
 					return true;
@@ -103,7 +112,7 @@ namespace Odachi.CodeModel.Mapping
 			{
 				if (_mapping.TryGetValue(typeof(IEnumerable<>), out definition))
 				{
-					if (enumerableInterface.GetGenericArguments().Length != definition.GenericArgumentDefinitions.Count)
+					if (enumerableInterface.GetGenericArguments().Length != definition.GenericArguments.Count)
 						throw new InvalidOperationException($"Invalid number of generic arguments between '{type.FullName}' and '{definition.GetFullyQualifiedName()}'");
 
 					type = enumerableInterface;

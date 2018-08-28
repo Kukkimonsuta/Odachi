@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Odachi.Extensions.Formatting
@@ -15,6 +15,116 @@ namespace Odachi.Extensions.Formatting
 
 	public static class StringExtensions
 	{
+		private static readonly string[] LineSeparators = new[] { "\r\n", "\n" };
+
+		/// <summary>
+		/// Returns `start` (inclusive) and `end` (exclusive) indexes of all parts delimited by separators in given string.
+		/// </summary>
+		public static IEnumerable<(int start, int end)> GetPartBoundaries(this string source, params string[] separators)
+		{
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+			if (separators == null)
+				throw new ArgumentNullException(nameof(separators));
+			if (separators.Length <= 0)
+				throw new ArgumentException("At least one separator is required", nameof(separators));
+
+			var startIndex = 0;
+			for (var i = 0; i <= source.Length; i++)
+			{
+				var remaining = source.Length - i;
+				var isBreaking = false;
+				var breakLength = -1;
+
+				for (var si = 0; si < separators.Length; si++)
+				{
+					var separator = separators[si];
+
+					if (separator.Length > remaining)
+						continue;
+
+					var isMatch = true;
+
+					for (var sci = 0; sci < separator.Length; sci++)
+					{
+						if (separator[sci] != source[i + sci])
+						{
+							isMatch = false;
+							break;
+						}
+					}
+
+					if (isMatch)
+					{
+						isBreaking = true;
+						breakLength = separator.Length;
+						break;
+					}
+				}
+
+				if (isBreaking)
+				{
+					yield return (startIndex, i);
+
+					startIndex = i + breakLength;
+
+					// skip any additional breaking characters
+					if (breakLength > 1)
+					{
+						i += breakLength - 1;
+					}
+				}
+			}
+
+			if (startIndex <= source.Length)
+			{
+				yield return (startIndex, source.Length);
+			}
+		}
+
+		/// <summary>
+		/// Returns all parts of given string delimited by separators.
+		/// </summary>
+		public static IEnumerable<string> GetParts(this string source, params string[] separators)
+		{
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+			if (separators == null)
+				throw new ArgumentNullException(nameof(separators));
+			if (separators.Length <= 0)
+				throw new ArgumentException("At least one separator is required", nameof(separators));
+
+			foreach (var (start, end) in GetPartBoundaries(source, separators))
+			{
+				yield return source.Substring(start, end - start);
+			}
+		}
+
+		/// <summary>
+		/// Returns `start` (inclusive) and `end` (exclusive) indexes of all lines in given string.
+		/// </summary>
+		public static IEnumerable<(int start, int ent)> GetLineBoundaries(this string source)
+		{
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+
+			return GetPartBoundaries(source, LineSeparators);
+		}
+
+		/// <summary>
+		/// Returns all lines of given string.
+		/// </summary>
+		public static IEnumerable<string> GetLines(this string source)
+		{
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+
+			foreach (var (start, end) in GetLineBoundaries(source))
+			{
+				yield return source.Substring(start, end - start);
+			}
+		}
+
 		/// <summary>
 		/// Returns `start` (inclusive) and `end` (exclusive) indexes of all words in given string. A 'word' is considered to be any sequence of letters or digits.
 		/// </summary>

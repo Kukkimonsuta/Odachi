@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -6,12 +6,9 @@ namespace Odachi.Gettext.Internal
 {
 	internal class ContentType
 	{
-		private static readonly Regex Regex = new Regex(@"^(?<type>\w+)\/(?<subType>\w+)(?:\s*;\s*(?<paramName>\w+)\s*=\s*(?<paramValue>(?:[0-9\w_-]+)|(?:"".+ "")))*",
-#if DOTNET5_4
-			RegexOptions.IgnoreCase
-#else
+		private static readonly Regex Regex = new Regex(
+			@"^(?<type>\w+)\/(?<subType>\w+)(?:\s*;\s*(?<paramName>\w+)\s*=\s*(?<paramValue>(?:[0-9\w_-]+)|(?:"".+ "")))*",
 			RegexOptions.IgnoreCase | RegexOptions.Compiled
-#endif
 		);
 
 		public ContentType(string contentType)
@@ -60,8 +57,8 @@ namespace Odachi.Gettext.Internal
 
 			for (var i = 0; i < paramNames.Count; i++)
 			{
-				var paramName = (Capture)paramNames[i];
-				var paramValue = (Capture)paramValues[i];
+				var paramName = paramNames[i];
+				var paramValue = paramValues[i];
 
 				var name = paramName.Value.ToLowerInvariant();
 				var value = paramValue.Value;

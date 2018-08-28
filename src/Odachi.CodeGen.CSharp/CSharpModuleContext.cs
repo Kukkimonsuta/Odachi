@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +32,47 @@ namespace Odachi.CodeGen.CSharp
 
 		private StringBuilder _bodyBuilder = new StringBuilder();
 		private List<string> _imports = new List<string>();
+
+		#region General
+
+		public override bool RenderHeader(IndentedTextWriter writer)
+		{
+			if (_imports.Count <= 0)
+			{
+				return false;
+			}
+
+			foreach (var @namespace in _imports.OrderBy(x => x))
+			{
+				writer.WriteLine($"using {@namespace};");
+			}
+			writer.WriteSeparatingLine();
+
+			return true;
+		}
+
+		public override bool RenderBody(IndentedTextWriter writer, string body)
+		{
+			if (body.Length <= 0)
+			{
+				return false;
+			}
+
+			using (writer.WriteIndentedBlock(prefix: $"namespace {ModuleNamespace} ", writeSeparatingLine: false))
+			{
+				writer.WriteIndentedLine(body);
+			}
+			writer.WriteSeparatingLine();
+
+			return true;
+		}
+
+		public override bool RenderFooter(IndentedTextWriter writer)
+		{
+			return false;
+		}
+
+		#endregion
 
 		#region CS specific
 
@@ -72,6 +113,12 @@ namespace Odachi.CodeGen.CSharp
 		{
 			var includeNullability = type.Kind != TypeKind.Interface && type.Kind != TypeKind.Class;
 
+			if (type.Kind == TypeKind.GenericParameter)
+			{
+				// ignore nullability until C# 8
+				return $"{type.Name}";
+			}
+
 			if (type.Module == null)
 			{
 				// handle builtins
@@ -87,6 +134,8 @@ namespace Odachi.CodeGen.CSharp
 
 						return $"bool{(includeNullability && type.IsNullable ? "?" : "")}";
 
+					case "byte":
+					case "short":
 					case "long":
 					case "float":
 					case "double":
@@ -128,7 +177,7 @@ namespace Odachi.CodeGen.CSharp
 
 						Import("Odachi.Abstractions");
 
-						return $"IStreamReference";
+						return $"IBlob";
 
 					case "PagingOptions":
 						if (type.GenericArguments?.Length > 0)
@@ -145,6 +194,12 @@ namespace Odachi.CodeGen.CSharp
 						Import("Odachi.Extensions.Collections");
 
 						return $"Page<{Resolve(type.GenericArguments[0])}>";
+
+					case "Tuple":
+						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						return $"({string.Join(", ", type.GenericArguments.Select(t => Resolve(t)))}){(includeNullability && type.IsNullable ? "?" : "")}";
 
 					case "OneOf":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
@@ -186,45 +241,6 @@ namespace Odachi.CodeGen.CSharp
 			Import(type);
 
 			return $"{type.Name}{(type.GenericArguments?.Length > 0 ? $"<{string.Join(", ", type.GenericArguments.Select(a => Resolve(a)))}>" : "")}{(includeNullability && type.IsNullable ? "?" : "")}";
-		}
-
-		#endregion
-
-		#region General
-
-		public override bool RenderHeader(IndentedTextWriter writer)
-		{
-			if (_imports.Count <= 0)
-			{
-				return false;
-			}
-
-			foreach (var @namespace in _imports.OrderBy(x => x))
-			{
-				writer.WriteLine($"using {@namespace};");
-			}
-
-			return true;
-		}
-
-		public override bool RenderBody(IndentedTextWriter writer, string body)
-		{
-			if (body.Length <= 0)
-			{
-				return false;
-			}
-
-			using (writer.WriteIndentedBlock(prefix: $"namespace {ModuleNamespace} "))
-			{
-				writer.WriteIndented(body);
-			}
-
-			return true;
-		}
-
-		public override bool RenderFooter(IndentedTextWriter writer)
-		{
-			return false;
 		}
 
 		#endregion

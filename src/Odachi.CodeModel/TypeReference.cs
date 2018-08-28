@@ -16,29 +16,52 @@ namespace Odachi.CodeModel
 		Interface,
 		Struct,
 		Class,
+		GenericParameter,
+		Tuple,
 	}
 
 	public static class TypeKindExtensions
 	{
+		private static readonly HashSet<Type> ValueTupleTypes = new HashSet<Type>(new Type[]
+		{
+			typeof(ValueTuple<>),
+			typeof(ValueTuple<,>),
+			typeof(ValueTuple<,,>),
+			typeof(ValueTuple<,,,>),
+			typeof(ValueTuple<,,,,>),
+			typeof(ValueTuple<,,,,,>),
+			typeof(ValueTuple<,,,,,,>),
+			typeof(ValueTuple<,,,,,,,>),
+		});
+
 		public static TypeKind GetTypeKind(this Type type)
 		{
 			return type.GetTypeInfo().GetTypeKind();
 		}
 		public static TypeKind GetTypeKind(this TypeInfo info)
 		{
-			if (info.IsArray)
+			if (info.IsGenericParameter)
+				return TypeKind.GenericParameter;
+
+			var underlyingType = Nullable.GetUnderlyingType(info.UnderlyingSystemType) ?? info.UnderlyingSystemType;
+			var underlyingTypeInfo = underlyingType.GetTypeInfo();
+
+			if (underlyingTypeInfo.IsGenericType && ValueTupleTypes.Contains(underlyingType.GetGenericTypeDefinition()))
+				return TypeKind.Tuple;
+
+			if (underlyingTypeInfo.IsArray)
 				return TypeKind.Array;
 
-			if (info.IsEnum)
+			if (underlyingTypeInfo.IsEnum)
 				return TypeKind.Enum;
 
-			if (info.IsPrimitive)
+			if (underlyingTypeInfo.IsPrimitive)
 				return TypeKind.Primitive;
 
-			if (info.IsInterface)
+			if (underlyingTypeInfo.IsInterface)
 				return TypeKind.Interface;
 
-			if (info.IsValueType)
+			if (underlyingTypeInfo.IsValueType)
 				return TypeKind.Struct;
 
 			return TypeKind.Class;

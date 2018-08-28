@@ -13,16 +13,17 @@
     <ProjectReference Include="..\Odachi.Extensions.Reflection\Odachi.Extensions.Reflection.csproj" />
     <ProjectReference Include="..\Odachi.Extensions.Formatting\Odachi.Extensions.Formatting.csproj" />
     <ProjectReference Include="..\Odachi.JsonRpc.Common\Odachi.JsonRpc.Common.csproj" />
+    <ProjectReference Include="..\Odachi.JsonRpc.Server\Odachi.JsonRpc.Server.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="2.0.0" />
-		<PackageReference Include="Microsoft.Net.Http.Headers" Version="2.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="2.0.1" />
+		<PackageReference Include="Microsoft.Net.Http.Headers" Version="2.0.2" />
 	</ItemGroup>
 
   <ItemGroup>

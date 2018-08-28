@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,18 +18,17 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 
 			if (enumFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
-				writer.WriteIndented($"// source: {sourceType}");
-				writer.WriteLine();
+				writer.WriteIndentedLine($"// source: {sourceType}");
+				writer.WriteSeparatingLine();
 			}
 
 			using (writer.WriteIndentedBlock(prefix: $"enum {fragment.Name} "))
 			{
 				foreach (var item in enumFragment.Items)
 				{
-					writer.WriteIndented($"{TS.Field(item.Name)} = {item.Value},");
+					writer.WriteIndentedLine($"{TS.Field(item.Name)} = {item.Value},");
 				}
 			}
-			writer.WriteLine();
 
 			var itemHasDisplayNameHint = enumFragment.Items.Any(i => i.Hints.ContainsKey("display-name"));
 
@@ -37,10 +36,9 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 			{
 				foreach (var item in enumFragment.Items)
 				{
-					writer.WriteIndented($"[{enumFragment.Name}.{TS.Field(item.Name)}]: '{TS.Field(item.Name)}',");
+					writer.WriteIndentedLine($"[{enumFragment.Name}.{TS.Field(item.Name)}]: '{TS.Field(item.Name)}',");
 				}
 			}
-			writer.WriteLine();
 
 			if (itemHasDisplayNameHint)
 			{
@@ -48,22 +46,48 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 				{
 					foreach (var item in enumFragment.Items)
 					{
-						writer.WriteIndented($"[{enumFragment.Name}.{TS.Field(item.Name)}]: '{item.Hints["display-name"] ?? ""}',");
+						writer.WriteIndentedLine($"[{enumFragment.Name}.{TS.Field(item.Name)}]: '{item.Hints["display-name"] ?? ""}',");
 					}
 				}
-				writer.WriteLine();
 			}
 
 			using (writer.WriteIndentedBlock(prefix: $"namespace {enumFragment.Name} "))
 			{
-				writer.WriteIndented($@"export function create(value: any): {enumFragment.Name} {{
+				if (enumFragment.Hints.TryGetValue("enum-flags", out var enumFlags) && string.Equals(enumFlags, "true", StringComparison.OrdinalIgnoreCase))
+				{
+					writer.WriteIndentedLine($@"export function create(value: any): {enumFragment.Name} {{
+    if (typeof value !== 'number') {{
+        throw new Error(`Value '${{value}}' is not valid for enum {enumFragment.Name}`);
+    }}
+
+    let remainder = value;
+    for (let k in {enumFragment.Name}) {{
+        const v = {enumFragment.Name}[k];
+        if (!{enumFragment.Name}.hasOwnProperty(v)) {{
+            continue;
+        }}
+
+        remainder = remainder & ~v;
+    }}
+
+	if (remainder !== 0) {{
+		throw new Error(`Remainder '${{remainder}}' of '${{value}}' is not valid for enum {enumFragment.Name}`);
+	}}
+
+	return value as {enumFragment.Name};
+}};");
+				}
+				else
+				{
+					writer.WriteIndentedLine($@"export function create(value: any): {enumFragment.Name} {{
 	if (!{enumFragment.Name}.hasOwnProperty(value)) {{
 		throw new Error(`Value '${{value}}' is not valid for enum {enumFragment.Name}`);
 	}}
 
 	return value as {enumFragment.Name};
 }}");
-				writer.WriteLine();
+				}
+				writer.WriteSeparatingLine();
 
 				using (writer.WriteIndentedBlock(prefix: $"export function getValues(): {enumFragment.Name}[] "))
 				{
@@ -71,11 +95,10 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					{
 						foreach (var item in enumFragment.Items)
 						{
-							writer.WriteIndented($"{enumFragment.Name}.{TS.Field(item.Name)},");
+							writer.WriteIndentedLine($"{enumFragment.Name}.{TS.Field(item.Name)},");
 						}
 					}
 				}
-				writer.WriteLine();
 
 				using (writer.WriteIndentedBlock(prefix: $"export function getNames(): string[] "))
 				{
@@ -83,15 +106,25 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					{
 						foreach (var item in enumFragment.Items)
 						{
-							writer.WriteIndented($"'{TS.Field(item.Name)}',");
+							writer.WriteIndentedLine($"'{TS.Field(item.Name)}',");
 						}
 					}
 				}
-				writer.WriteLine();
+
+				writer.WriteIndentedLine($@"export function getName(value: {enumFragment.Name}): string {{
+	const name = names[value];
+
+	if (name === undefined) {{
+		throw new Error(`Cannot get name of {enumFragment.Name} '${{value}}'`);
+	}}
+
+	return name;
+}}");
+				writer.WriteSeparatingLine();
 
 				if (itemHasDisplayNameHint)
 				{
-					writer.WriteIndented($@"export function getDisplayName(value: {enumFragment.Name}): string {{
+					writer.WriteIndentedLine($@"export function getDisplayName(value: {enumFragment.Name}): string {{
 	const displayName = displayNames[value];
 
 	if (displayName === undefined) {{
@@ -100,9 +133,9 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 
 	return displayName;
 }}");
+					writer.WriteSeparatingLine();
 				}
 			}
-			writer.WriteLine();
 
 			context.Export(enumFragment.Name, @default: true);
 

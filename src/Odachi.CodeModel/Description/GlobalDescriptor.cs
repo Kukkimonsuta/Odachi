@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -32,12 +32,14 @@ namespace Odachi.CodeModel.Description
 		/// <inheritdoc />
 		public virtual string GetFragmentName(PackageContext context, Type type)
 		{
+			var typeName = type.GetTypeInfo().IsGenericType ? type.Name.Remove(type.Name.IndexOf('`')) : type.Name;
+
 			if (type.IsNested)
 			{
-				return $"{GetFragmentName(context, type.DeclaringType)}_{type.Name}";
+				return $"{GetFragmentName(context, type.DeclaringType)}_{typeName}";
 			}
 
-			return type.Name;
+			return typeName;
 		}
 	}
 }

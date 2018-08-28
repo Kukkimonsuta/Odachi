@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Odachi.CodeGen.IO;
 using Odachi.CodeModel;
 using Odachi.CodeGen.Rendering;
+using Odachi.CodeGen.Internal;
 
 namespace Odachi.CodeGen
 {
@@ -24,6 +25,11 @@ namespace Odachi.CodeGen
 		protected abstract TPackageContext CreatePackageContext(Package package, TOptions options);
 
 		protected abstract TModuleContext CreateModuleContext(TPackageContext packageContext, Module module, TOptions options);
+
+		protected virtual IndentedTextWriter CreateWriter(TextWriter writer)
+		{
+			return new IndentedTextWriter(writer);
+		}
 
 		protected virtual void OnPackageStart(TPackageContext packageContext) { }
 
@@ -57,22 +63,20 @@ namespace Odachi.CodeGen
 				Directory.CreateDirectory(directory);
 
 			using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
-			using (var writer = new IndentedTextWriter(new StreamWriter(stream, new UTF8Encoding(false))))
+			using (var writer = CreateWriter(new StreamWriter(stream, new UTF8Encoding(false))))
 			{
 				var bodyBuilder = new StringBuilder();
-				using (var bodyWriter = new IndentedTextWriter(new StringWriter(bodyBuilder)))
+				using (var bodyWriter = CreateWriter(new StringWriter(bodyBuilder)))
 				{
 					foreach (var fragment in context.Module.Fragments)
 					{
 						RenderTypeFragment(context, fragment, bodyWriter);
 					}
 				}
+				bodyBuilder.TrimEnd();
 
-				if (context.RenderHeader(writer))
-					writer.WriteLine();
-
-				writer.Write(bodyBuilder.ToString());
-
+				context.RenderHeader(writer);
+				context.RenderBody(writer, bodyBuilder.ToString());
 				context.RenderFooter(writer);
 			}
 		}

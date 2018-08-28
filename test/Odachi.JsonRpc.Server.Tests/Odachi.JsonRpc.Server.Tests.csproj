@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\tools\common.props" />
+
+  <PropertyGroup>
+		<Description>Odachi.AspNetCore.JsonRpc tests</Description>
+		<TargetFramework>netcoreapp2.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+    <ProjectReference Include="..\..\src\Odachi.Extensions.Collections\Odachi.Extensions.Collections.csproj" />
+    <ProjectReference Include="..\..\src\Odachi.JsonRpc.Server\Odachi.JsonRpc.Server.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+		<PackageReference Include="xunit" Version="2.3.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+	</ItemGroup>
+
+</Project>

@@ -109,6 +109,11 @@ JsonRpc client using `HttpClient` as backend.<br />
 Common classes of `JsonRpc.Client` and `Odachi.AspNetCore.JsonRpc`.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
+## Odachi.JsonRpc.Server
+
+JsonRpc server base.<br />
+🚧 In development. Happy with the current state. May change outside of semver.
+
 ## Odachi.Gettext
 
 Gettext file parsing library.<br />
@@ -133,6 +138,16 @@ MSBuild task to transform razor templates to c#.<br />
 
 Role/Permission definition helpers.<br />
 ❓ Internal use. May change outside of semver.
+
+## Odachi.Storage.Azure
+
+Azure implementation of storage defined in `Odachi.Abstractions`.<br />
+🚧 In development. May change outside of semver.
+
+## Odachi.Storage.FileSystem
+
+File system implementation of storage defined in `Odachi.Abstractions`.<br />
+🚧 In development. May change outside of semver.
 
 ## Odachi.Validation
 
