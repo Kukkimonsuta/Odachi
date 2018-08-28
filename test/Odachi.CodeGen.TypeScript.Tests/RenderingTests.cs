@@ -67,7 +67,7 @@ namespace Odachi.CodeGen.TypeScript.Tests
 function fail(message: string): never { throw new Error(message); }
 const _$$_factory_boolean = { create: (source: any): boolean => typeof source === 'boolean' ? source : fail(`Contract violation: expected boolean, got \'{typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.GenericObject`1, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.GenericObject`1, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class GenericObject<T> {
 	@observable.ref
@@ -112,7 +112,7 @@ const _$$_factory_string = { create: (source: any): string => typeof source === 
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ObjectWithGenericObject, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithGenericObject, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithGenericObject {
 	@observable.ref
@@ -155,7 +155,7 @@ const _$$_factory_string = { create: (source: any): string => typeof source === 
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObject, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObject, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithArrayOfGenericObject {
 	@observable.ref
@@ -208,7 +208,7 @@ function _$$_factory_Page_opt<T>(T_factory: { create: (source: any) => T }) { re
 const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 
-// source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObjectWithPages, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObjectWithPages, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithArrayOfGenericObjectWithPages {
 	@observable.ref
@@ -249,7 +249,7 @@ const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
 const _$$_factory_datetime = { create: (source: any): Moment => typeof source === 'string' ? moment(source) : fail(`Contract violation: expected datetime string, got \'{typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ObjectWithTuple, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithTuple, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithTuple {
 	@observable.ref
@@ -290,7 +290,7 @@ const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
 const _$$_factory_datetime = { create: (source: any): Moment => typeof source === 'string' ? moment(source) : fail(`Contract violation: expected datetime string, got \'{typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ObjectWithOneOf, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithOneOf, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithOneOf {
 	@observable.ref
@@ -326,7 +326,7 @@ function fail(message: string): never { throw new Error(message); }
 const _$$_factory_ValidationState = { create: (source: any): validation.ValidationState => typeof source === 'object' && source !== null && typeof source.state === 'object' && source.state !== null ? new validation.ValidationState(source.state) : fail(`Contract violation: expected validation state, got \\'{typeof(source)}\\'`) };
 const _$$_factory_ValidationState_opt = _$$_opt(_$$_factory_ValidationState);
 
-// source: Odachi.CodeModel.Tests.ObjectWithValidationState, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithValidationState, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithValidationState {
 	@observable.ref
@@ -358,7 +358,7 @@ export { ObjectWithValidationState };
 function fail(message: string): never { throw new Error(message); }
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ObjectWithPrimitives, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithPrimitives, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithPrimitives {
 	@observable.ref
@@ -409,7 +409,7 @@ export { ObjectWithPrimitives };
 
 			var result = RenderModule(package, $".\\{nameof(StandardEnum)}");
 
-			Assert.Equal(@"// source: Odachi.CodeModel.Tests.StandardEnum, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+			Assert.Equal(@"// source: Odachi.CodeModel.Tests.StandardEnum, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 enum StandardEnum {
 	foo = 1,
@@ -469,7 +469,7 @@ export { StandardEnum };
 
 			var result = RenderModule(package, $".\\{nameof(FlagsEnum)}");
 
-			Assert.Equal(@"// source: Odachi.CodeModel.Tests.FlagsEnum, Odachi.CodeModel.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null
+			Assert.Equal(@"// source: Odachi.CodeModel.Tests.FlagsEnum, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 enum FlagsEnum {
 	foo = 1,
