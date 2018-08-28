@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
 		<Description>Helpers for code generation.</Description>
-		<TargetFrameworks>net461;netstandard1.5</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;netstandard1.5</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
@@ -17,7 +17,7 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>

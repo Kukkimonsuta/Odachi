@@ -56,23 +56,23 @@ _build "./src/Odachi.Validation" netstandard1.0
 echo
 echo "Build samples.."
 echo
-_build "./samples/BasicAuthenticationSample" netcoreapp2.0
-_build "./samples/JsonRpcSample" netcoreapp2.0
-_build "./samples/JsonRpcClientSample" netcoreapp2.0
-_build "./samples/MailSample" netcoreapp2.0
+_build "./samples/BasicAuthenticationSample" netcoreapp2.1
+_build "./samples/JsonRpcSample" netcoreapp2.1
+_build "./samples/JsonRpcClientSample" netcoreapp2.1
+_build "./samples/MailSample" netcoreapp2.1
 
 echo
 echo "Build & run test.."
 echo
-_test "./test/Odachi.CodeGen.Tests" netcoreapp2.0
-_test "./test/Odachi.CodeGen.TypeScript.Tests" netcoreapp2.0
-_test "./test/Odachi.CodeModel.Tests" netcoreapp2.0
-_test "./test/Odachi.Extensions.Formatting.Tests" netcoreapp2.0
-_test "./test/Odachi.Extensions.Primitives.Tests" netcoreapp2.0
-_test "./test/Odachi.Extensions.Reflection.Tests" netcoreapp2.0
-_test "./test/Odachi.Gettext.Tests" netcoreapp2.0
-_test "./test/Odachi.JsonRpc.Server.Tests" netcoreapp2.0
-_test "./test/Odachi.RazorTemplating.Tests" netcoreapp2.0
-_test "./test/Odachi.Security.Tests" netcoreapp2.0
-_test "./test/Odachi.Storage.FileSystem.Tests" netcoreapp2.0
-_test "./test/Odachi.Validation.Tests" netcoreapp2.0
+_test "./test/Odachi.CodeGen.Tests" netcoreapp2.1
+_test "./test/Odachi.CodeGen.TypeScript.Tests" netcoreapp2.1
+_test "./test/Odachi.CodeModel.Tests" netcoreapp2.1
+_test "./test/Odachi.Extensions.Formatting.Tests" netcoreapp2.1
+_test "./test/Odachi.Extensions.Primitives.Tests" netcoreapp2.1
+_test "./test/Odachi.Extensions.Reflection.Tests" netcoreapp2.1
+_test "./test/Odachi.Gettext.Tests" netcoreapp2.1
+_test "./test/Odachi.JsonRpc.Server.Tests" netcoreapp2.1
+_test "./test/Odachi.RazorTemplating.Tests" netcoreapp2.1
+_test "./test/Odachi.Security.Tests" netcoreapp2.1
+_test "./test/Odachi.Storage.FileSystem.Tests" netcoreapp2.1
+_test "./test/Odachi.Validation.Tests" netcoreapp2.1
