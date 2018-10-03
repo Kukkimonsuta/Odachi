@@ -1,7 +1,5 @@
 using Odachi.CodeModel.Builders;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Odachi.CodeModel.Tests
@@ -70,6 +68,11 @@ namespace Odachi.CodeModel.Tests
 		Bar = 2,
 		Cookies = 32,
 		Combo = 33,
+	}
+
+	public class SelfReferencingClass
+	{
+		public SelfReferencingClass Self;
 	}
 
 	public class PackageTests
@@ -368,6 +371,36 @@ namespace Odachi.CodeModel.Tests
 							Assert.Contains(
 								fragment.Hints,
 								x => x.Key == "enum-flags" && x.Value == "true"
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_self_reference()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<SelfReferencingClass>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Modules,
+				module =>
+				{
+					Assert.Collection(module.Fragments,
+						fragment =>
+						{
+							Assert.Equal("object", fragment.Kind);
+							Assert.Equal(nameof(SelfReferencingClass), fragment.Name);
+
+							Assert.Collection(((ObjectFragment)fragment).Fields,
+								field =>
+								{
+									Assert.Equal(nameof(SelfReferencingClass.Self), field.Name);
+									Assert.Equal(nameof(SelfReferencingClass), field.Type.Name);
+								}
 							);
 						}
 					);

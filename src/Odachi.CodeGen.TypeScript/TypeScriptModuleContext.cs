@@ -120,7 +120,7 @@ namespace Odachi.CodeGen.TypeScript
 		/// </summary>
 		public void Import(TypeReference type)
 		{
-			if (type.Module != null)
+			if (type.Module != null && type.Module != Module.Name)
 			{
 				Import(TS.ModuleName(type.Module), type.Name);
 			}

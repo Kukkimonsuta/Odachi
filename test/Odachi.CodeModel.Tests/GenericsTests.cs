@@ -60,6 +60,11 @@ namespace Odachi.CodeModel.Tests
 		public decimal Decimal { get; set; }
 	}
 
+	public class ObjectWithSelfReference
+	{
+		public ObjectWithSelfReference Self { get; set; }
+	}
+
 	public class GenericsTests
 	{
 		[Fact]

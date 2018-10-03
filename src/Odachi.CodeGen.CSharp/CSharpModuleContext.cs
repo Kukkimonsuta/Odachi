@@ -78,7 +78,7 @@ namespace Odachi.CodeGen.CSharp
 
 		public void Import(TypeReference type)
 		{
-			if (type.Module != null)
+			if (type.Module != null && type.Module != Module.Name)
 			{
 				var @namespace = CS.ModuleNamespace(PackageNamespace, type.Module);
 

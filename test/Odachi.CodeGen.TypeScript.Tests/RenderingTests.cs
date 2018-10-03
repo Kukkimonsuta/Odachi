@@ -401,6 +401,37 @@ export { ObjectWithPrimitives };
 		}
 
 		[Fact]
+		public void Object_with_self_reference()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default(typeof(ObjectWithSelfReference))
+				.Build();
+
+			var result = RenderModule(package, $".\\{nameof(ObjectWithSelfReference)}");
+
+			Assert.Equal(@"import { observable } from 'mobx';
+
+function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
+
+// source: Odachi.CodeModel.Tests.ObjectWithSelfReference, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
+
+class ObjectWithSelfReference {
+	@observable.ref
+	self: ObjectWithSelfReference | null;
+
+	static create(source: any): ObjectWithSelfReference {
+		const result = new ObjectWithSelfReference();
+		result.self = _$$_opt(ObjectWithSelfReference).create(source.self);
+		return result;
+	}
+}
+
+export default ObjectWithSelfReference;
+export { ObjectWithSelfReference };
+", result);
+		}
+
+		[Fact]
 		public void Enum()
 		{
 			var package = new PackageBuilder("Test")
