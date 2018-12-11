@@ -447,8 +447,8 @@ export { ObjectWithSelfReference };
 			Assert.Equal(@"// source: Odachi.CodeModel.Tests.ConstantsClass, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ConstantsClass {
-	readonly testString: string = 'fiftyfive';
-	readonly testInt: number = 55;
+	static readonly testString: string = 'fiftyfive';
+	static readonly testInt: number = 55;
 
 	static create(source: any): ConstantsClass {
 		const result = new ConstantsClass();
@@ -477,8 +477,8 @@ import { injectable } from 'inversify';
 
 @injectable()
 class ConstantsClass {
-	readonly testString: string = 'fiftyfive';
-	readonly testInt: number = 55;
+	static readonly testString: string = 'fiftyfive';
+	static readonly testInt: number = 55;
 
 	constructor(client: net.JsonRpcClient) {
 		this.client = client;

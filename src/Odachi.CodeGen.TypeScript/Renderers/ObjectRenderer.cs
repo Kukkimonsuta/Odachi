@@ -32,7 +32,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 				{
 					foreach (var constant in objectFragment.Constants)
 					{
-						writer.WriteIndentedLine($"readonly {TS.Field(constant.Name)}: {context.Resolve(constant.Type)} = {TS.Constant(constant.Value)};");
+						writer.WriteIndentedLine($"static readonly {TS.Field(constant.Name)}: {context.Resolve(constant.Type)} = {TS.Constant(constant.Value)};");
 					}
 					writer.WriteSeparatingLine();
 				}
