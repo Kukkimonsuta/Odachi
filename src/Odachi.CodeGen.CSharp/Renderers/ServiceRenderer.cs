@@ -15,10 +15,10 @@ namespace Odachi.CodeGen.CSharp.Renderers
 	{
 		public bool Render(CSharpModuleContext context, Fragment fragment, IndentedTextWriter writer)
 		{
-			if (!(fragment is ServiceFragment classFragment))
+			if (!(fragment is ServiceFragment serviceFragment))
 				return false;
 
-			if (classFragment.Hints.TryGetValue("source-type", out var sourceType))
+			if (serviceFragment.Hints.TryGetValue("source-type", out var sourceType))
 			{
 				writer.WriteIndentedLine($"// source: {sourceType}");
 				writer.WriteSeparatingLine();
@@ -26,9 +26,18 @@ namespace Odachi.CodeGen.CSharp.Renderers
 
 			context.Import("Odachi.Abstractions");
 
-			using (writer.WriteIndentedBlock(prefix: $"public class {classFragment.Name} "))
+			using (writer.WriteIndentedBlock(prefix: $"public class {serviceFragment.Name} "))
 			{
-				using (writer.WriteIndentedBlock(prefix: $"public {classFragment.Name}(IRpcClient client) "))
+				if (serviceFragment.Constants.Any())
+				{
+					foreach (var constant in serviceFragment.Constants)
+					{
+						writer.WriteIndentedLine($"public const {context.Resolve(constant.Type)} {CS.Field(constant.Name)} = {CS.Constant(constant.Value)};");
+					}
+					writer.WriteSeparatingLine();
+				}
+
+				using (writer.WriteIndentedBlock(prefix: $"public {serviceFragment.Name}(IRpcClient client) "))
 				{
 					writer.WriteIndentedLine("this._client = client;");
 				}
@@ -36,7 +45,7 @@ namespace Odachi.CodeGen.CSharp.Renderers
 				writer.WriteIndentedLine("private IRpcClient _client;");
 				writer.WriteSeparatingLine();
 
-				foreach (var method in classFragment.Methods)
+				foreach (var method in serviceFragment.Methods)
 				{
 					context.Import("System.Threading.Tasks");
 

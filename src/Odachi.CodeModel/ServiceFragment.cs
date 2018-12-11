@@ -13,6 +13,7 @@ namespace Odachi.CodeModel
 	{
 		public override string Kind => "service";
 
+		public IList<ConstantFragment> Constants { get; } = new List<ConstantFragment>();
 		public IList<MethodFragment> Methods { get; } = new List<MethodFragment>();
 	}
 }

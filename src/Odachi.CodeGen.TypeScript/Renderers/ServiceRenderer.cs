@@ -28,6 +28,15 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 			writer.WriteIndentedLine("@injectable()");
 			using (writer.WriteIndentedBlock(prefix: $"class {serviceFragment.Name} "))
 			{
+				if (serviceFragment.Constants.Any())
+				{
+					foreach (var constant in serviceFragment.Constants)
+					{
+						writer.WriteIndentedLine($"readonly {TS.Field(constant.Name)}: {context.Resolve(constant.Type)} = {TS.Constant(constant.Value)};");
+					}
+					writer.WriteSeparatingLine();
+				}
+
 				context.Import("@stackino/uno", "net");
 				using (writer.WriteIndentedBlock(prefix: "constructor(client: net.JsonRpcClient) "))
 				{

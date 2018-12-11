@@ -20,8 +20,24 @@ namespace Odachi.CodeModel.Builders
 		}
 
 		public IReadOnlyList<string> GenericArguments { get; }
+		public IList<ConstantBuilder> Constants { get; } = new List<ConstantBuilder>();
 		public IList<FieldBuilder> Fields { get; } = new List<FieldBuilder>();
 		public object Source { get; }
+
+		public ObjectBuilder Constant(string name, ITypeReference type, object value, Action<ConstantBuilder> configure = null)
+		{
+			return Constant(name, type, null, configure: configure);
+		}
+		public ObjectBuilder Constant(string name, ITypeReference type, object value, object source, Action<ConstantBuilder> configure = null)
+		{
+			var constantBuilder = new ConstantBuilder(Context, name, type, value, source);
+
+			configure?.Invoke(constantBuilder);
+
+			Constants.Add(constantBuilder);
+
+			return this;
+		}
 
 		public ObjectBuilder Field(string name, ITypeReference type, Action<FieldBuilder> configure = null)
 		{
@@ -45,6 +61,11 @@ namespace Odachi.CodeModel.Builders
 				Name = Name,
 				GenericArguments = GenericArguments.Select(a => new GenericArgumentDefinition(a)).ToArray(),
 			};
+
+			foreach (var constant in Constants)
+			{
+				result.Constants.Add(constant.Build());
+			}
 
 			foreach (var field in Fields)
 			{

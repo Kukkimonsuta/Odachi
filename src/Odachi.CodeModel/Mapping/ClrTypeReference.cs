@@ -58,13 +58,13 @@ namespace Odachi.CodeModel.Mapping
 
 		#region Static members
 
-		public static ClrTypeReference Create<T>()
+		public static ClrTypeReference Create<T>(bool? isNullable = null)
 		{
-			return new ClrTypeReference(typeof(T));
+			return new ClrTypeReference(typeof(T), isNullable: isNullable);
 		}
-		public static ClrTypeReference Create(Type type)
+		public static ClrTypeReference Create(Type type, bool? isNullable = null)
 		{
-			return new ClrTypeReference(type);
+			return new ClrTypeReference(type, isNullable: isNullable);
 		}
 
 		#endregion

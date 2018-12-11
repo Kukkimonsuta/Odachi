@@ -45,6 +45,12 @@ namespace Odachi.CodeModel.Tests
 		}
 	}
 
+	public class ConstantsClass
+	{
+		public const string TestString = "fiftyfive";
+		public const int TestInt = 55;
+	}
+
 	public class ValueTupleClass
 	{
 		public (string foo, string bar) Value;
@@ -88,6 +94,56 @@ namespace Odachi.CodeModel.Tests
 			Assert.Single(package.Modules);
 			Assert.Single(package.Modules[0].Fragments);
 			Assert.Equal("object", package.Modules[0].Fragments[0].Kind);
+		}
+
+		[Fact]
+		public void Can_describe_constants_in_object()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<ConstantsClass>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Single(package.Modules);
+			Assert.Single(package.Modules[0].Fragments);
+			Assert.Equal("object", package.Modules[0].Fragments[0].Kind);
+			Assert.Collection(((ObjectFragment)package.Modules[0].Fragments[0]).Constants,
+				constant =>
+				{
+					Assert.Equal("TestString", constant.Name);
+					Assert.Equal("fiftyfive", constant.Value);
+				},
+				constant =>
+				{
+					Assert.Equal("TestInt", constant.Name);
+					Assert.Equal(55, constant.Value);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_constants_in_service()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Service_Default<ConstantsClass>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Single(package.Modules);
+			Assert.Single(package.Modules[0].Fragments);
+			Assert.Equal("service", package.Modules[0].Fragments[0].Kind);
+			Assert.Collection(((ServiceFragment)package.Modules[0].Fragments[0]).Constants,
+				constant =>
+				{
+					Assert.Equal("TestString", constant.Name);
+					Assert.Equal("fiftyfive", constant.Value);
+				},
+				constant =>
+				{
+					Assert.Equal("TestInt", constant.Name);
+					Assert.Equal(55, constant.Value);
+				}
+			);
 		}
 
 		[Fact]

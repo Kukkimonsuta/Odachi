@@ -64,7 +64,7 @@ namespace Odachi.CodeModel.Tests
 	{
 		public ObjectWithSelfReference Self { get; set; }
 	}
-
+	
 	public class GenericsTests
 	{
 		[Fact]

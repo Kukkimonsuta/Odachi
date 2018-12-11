@@ -17,6 +17,7 @@ namespace Odachi.CodeModel.Builders
 			GlobalDescriptor = new DefaultGlobalDescriptor();
 			ObjectDescriptors = new List<IObjectDescriptor>() { new DefaultObjectDescriptor() };
 			ServiceDescriptors = new List<IServiceDescriptor>() { new DefaultServiceDescriptor() };
+			ConstantDescriptors = new List<IConstantDescriptor>() { new DefaultConstantDescriptor() };
 			FieldDescriptors = new List<IFieldDescriptor>() { new DefaultFieldDescriptor() };
 			MethodDescriptors = new List<IMethodDescriptor>() { new DefaultMethodDescriptor() };
 			ParameterDescriptors = new List<IParameterDescriptor>() { new DefaultParameterDescriptor() };
@@ -25,28 +26,30 @@ namespace Odachi.CodeModel.Builders
 			TypeMapper = new TypeMapper();
 			ModulePath = ".";
 		}
-		public PackageContext(PackageContext copyFromContext, string newModulePath)
+		public PackageContext(PackageContext parentContext, string newModulePath)
 		{
-			if (copyFromContext == null)
-				throw new ArgumentNullException(nameof(copyFromContext));
+			if (parentContext == null)
+				throw new ArgumentNullException(nameof(parentContext));
 			if (string.IsNullOrEmpty(newModulePath))
 				throw new ArgumentNullException(nameof(newModulePath));
 
-			GlobalDescriptor = copyFromContext.GlobalDescriptor;
-			ObjectDescriptors = copyFromContext.ObjectDescriptors;
-			ServiceDescriptors = copyFromContext.ServiceDescriptors;
-			FieldDescriptors = copyFromContext.FieldDescriptors;
-			MethodDescriptors = copyFromContext.MethodDescriptors;
-			ParameterDescriptors = copyFromContext.ParameterDescriptors;
-			EnumDescriptors = copyFromContext.EnumDescriptors;
-			EnumItemDescriptors = copyFromContext.EnumItemDescriptors;
-			TypeMapper = copyFromContext.TypeMapper;
+			GlobalDescriptor = parentContext.GlobalDescriptor;
+			ObjectDescriptors = parentContext.ObjectDescriptors;
+			ServiceDescriptors = parentContext.ServiceDescriptors;
+			ConstantDescriptors = parentContext.ConstantDescriptors;
+			FieldDescriptors = parentContext.FieldDescriptors;
+			MethodDescriptors = parentContext.MethodDescriptors;
+			ParameterDescriptors = parentContext.ParameterDescriptors;
+			EnumDescriptors = parentContext.EnumDescriptors;
+			EnumItemDescriptors = parentContext.EnumItemDescriptors;
+			TypeMapper = parentContext.TypeMapper;
 			ModulePath = newModulePath;
 		}
 
 		public IGlobalDescriptor GlobalDescriptor { get; }
 		public IList<IObjectDescriptor> ObjectDescriptors { get; }
 		public IList<IServiceDescriptor> ServiceDescriptors { get; }
+		public IList<IConstantDescriptor> ConstantDescriptors { get; }
 		public IList<IFieldDescriptor> FieldDescriptors { get; }
 		public IList<IMethodDescriptor> MethodDescriptors { get; }
 		public IList<IParameterDescriptor> ParameterDescriptors { get; }
@@ -326,16 +329,28 @@ namespace Odachi.CodeModel.Builders
 
 			return builder.Module_Object(objectType, objectBuilder =>
 			{
-				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 				foreach (var member in members)
 				{
 					if (member is FieldInfo field)
 					{
-						objectBuilder.Field(field.Name, ClrTypeReference.Create(field.FieldType), (objectType, field));
+						if (field.IsLiteral && !field.IsInitOnly)
+						{
+							var value = field.GetRawConstantValue();
+
+							objectBuilder.Constant(field.Name, ClrTypeReference.Create(field.FieldType, isNullable: value == null), value, (objectType, field));
+						}
+						else if (!field.IsStatic)
+						{
+							objectBuilder.Field(field.Name, ClrTypeReference.Create(field.FieldType), (objectType, field));
+						}
 					}
 					else if (member is PropertyInfo property)
 					{
-						objectBuilder.Field(property.Name, ClrTypeReference.Create(property.PropertyType), (objectType, property));
+						if (!(property.GetMethod?.IsStatic ?? false) && !(property.SetMethod?.IsStatic ?? false))
+						{
+							objectBuilder.Field(property.Name, ClrTypeReference.Create(property.PropertyType), (objectType, property));
+						}
 					}
 				}
 
@@ -400,16 +415,28 @@ namespace Odachi.CodeModel.Builders
 
 			return builder.Module_Service(objectType, serviceBuilder =>
 			{
-				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 				foreach (var member in members)
 				{
 					// ignore GetType, GetHashCode, Equals, ToString
 					if (member.DeclaringType == typeof(object))
 						continue;
 
-					if (member is MethodInfo method)
+					if (member is FieldInfo field)
 					{
-						serviceBuilder.Method(method.Name, ClrTypeReference.Create(method.ReturnType), (objectType, method));
+						if (field.IsLiteral && !field.IsInitOnly)
+						{
+							var value = field.GetRawConstantValue();
+
+							serviceBuilder.Constant(field.Name, ClrTypeReference.Create(field.FieldType, isNullable: value == null), value, (objectType, field));
+						}
+					}
+					else if (member is MethodInfo method)
+					{
+						if (!method.IsStatic)
+						{
+							serviceBuilder.Method(method.Name, ClrTypeReference.Create(method.ReturnType), (objectType, method));
+						}
 					}
 				}
 

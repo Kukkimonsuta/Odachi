@@ -17,9 +17,25 @@ namespace Odachi.CodeModel.Builders
 
 			context.ServiceDescriptors.Describe(this);
 		}
-		
+
+		public IList<ConstantBuilder> Constants { get; } = new List<ConstantBuilder>();
 		public IList<MethodBuilder> Methods { get; } = new List<MethodBuilder>();
 		public object Source { get; }
+
+		public ServiceBuilder Constant(string name, ITypeReference type, object value, Action<ConstantBuilder> configure = null)
+		{
+			return Constant(name, type, null, configure: configure);
+		}
+		public ServiceBuilder Constant(string name, ITypeReference type, object value, object source, Action<ConstantBuilder> configure = null)
+		{
+			var constantBuilder = new ConstantBuilder(Context, name, type, value, source);
+
+			configure?.Invoke(constantBuilder);
+
+			Constants.Add(constantBuilder);
+
+			return this;
+		}
 
 		public ServiceBuilder Method(string name, ITypeReference returnType, Action<MethodBuilder> configure = null)
 		{
@@ -42,7 +58,12 @@ namespace Odachi.CodeModel.Builders
 			{
 				Name = Name
 			};
-			
+
+			foreach (var constant in Constants)
+			{
+				result.Constants.Add(constant.Build());
+			}
+
 			foreach (var method in Methods)
 			{
 				result.Methods.Add(method.Build());

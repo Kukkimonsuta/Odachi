@@ -28,6 +28,15 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 
 			using (writer.WriteIndentedBlock(prefix: $"class {objectFragment.Name}{(genericSuffix.Length > 0 ? $"<{genericSuffix}>" : "")} "))
 			{
+				if (objectFragment.Constants.Any())
+				{
+					foreach (var constant in objectFragment.Constants)
+					{
+						writer.WriteIndentedLine($"readonly {TS.Field(constant.Name)}: {context.Resolve(constant.Type)} = {TS.Constant(constant.Value)};");
+					}
+					writer.WriteSeparatingLine();
+				}
+
 				foreach (var field in objectFragment.Fields)
 				{
 					context.Import("mobx", "observable");

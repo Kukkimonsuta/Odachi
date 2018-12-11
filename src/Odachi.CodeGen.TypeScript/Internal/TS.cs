@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,8 +8,8 @@ using Odachi.Extensions.Formatting;
 
 namespace Odachi.CodeGen.TypeScript.Internal
 {
-    public class TS
-    {
+	public class TS
+	{
 		public static string Field(string name)
 		{
 			return name.ToCamelInvariant();
@@ -39,6 +40,54 @@ namespace Odachi.CodeGen.TypeScript.Internal
 				.Where(s => !string.IsNullOrEmpty(s));
 
 			return string.Join(Path.DirectorySeparatorChar.ToString(), segments) + ".ts";
+		}
+
+		public static string Constant(object value)
+		{
+			switch (value)
+			{
+				case null:
+					return "null";
+
+				case sbyte sb:
+					return sb.ToString(CultureInfo.InvariantCulture);
+
+				case byte b:
+					return b.ToString(CultureInfo.InvariantCulture);
+
+				case short s:
+					return s.ToString(CultureInfo.InvariantCulture);
+
+				case ushort us:
+					return us.ToString(CultureInfo.InvariantCulture);
+
+				case int i:
+					return i.ToString(CultureInfo.InvariantCulture);
+
+				case uint ui:
+					return ui.ToString(CultureInfo.InvariantCulture);
+
+				case long l:
+					return l.ToString(CultureInfo.InvariantCulture);
+
+				case ulong ul:
+					return ul.ToString(CultureInfo.InvariantCulture);
+
+				case float f:
+					return f.ToString(CultureInfo.InvariantCulture);
+
+				case double d:
+					return d.ToString(CultureInfo.InvariantCulture);
+
+				case decimal m:
+					return m.ToString(CultureInfo.InvariantCulture);
+
+				case string str:
+					return $"'{value}'";
+
+				default:
+					throw new InvalidOperationException($"Cannot render constant of type '{value}'");
+			}
 		}
 	}
 }

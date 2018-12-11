@@ -23,6 +23,7 @@ namespace Odachi.CodeGen.TypeScript.Tests
 			var moduleContext = new TypeScriptModuleContext(package, module, new TypeScriptOptions());
 			var enumRenderer = new Renderers.EnumRenderer();
 			var objectRenderer = new Renderers.ObjectRenderer();
+			var serviceRenderer = new Renderers.ServiceRenderer();
 
 			var stringBuilder = new StringBuilder();
 			using (var stringWriter = new StringWriter(stringBuilder))
@@ -33,7 +34,10 @@ namespace Odachi.CodeGen.TypeScript.Tests
 					{
 						if (!enumRenderer.Render(moduleContext, module.Fragments.Single(), indentedWriter))
 						{
-							throw new InvalidOperationException("No renderer found");
+							if (!serviceRenderer.Render(moduleContext, module.Fragments.Single(), indentedWriter))
+							{
+								throw new InvalidOperationException("No renderer found");
+							}
 						}
 					}
 				}
@@ -428,6 +432,63 @@ class ObjectWithSelfReference {
 
 export default ObjectWithSelfReference;
 export { ObjectWithSelfReference };
+", result);
+		}
+
+		[Fact]
+		public void Object_with_constants()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default(typeof(ConstantsClass))
+				.Build();
+
+			var result = RenderModule(package, $".\\{nameof(ConstantsClass)}");
+
+			Assert.Equal(@"// source: Odachi.CodeModel.Tests.ConstantsClass, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
+
+class ConstantsClass {
+	readonly testString: string = 'fiftyfive';
+	readonly testInt: number = 55;
+
+	static create(source: any): ConstantsClass {
+		const result = new ConstantsClass();
+		return result;
+	}
+}
+
+export default ConstantsClass;
+export { ConstantsClass };
+", result);
+		}
+
+		[Fact]
+		public void Service_with_constants()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Service_Default(typeof(ConstantsClass))
+				.Build();
+
+			var result = RenderModule(package, $".\\{nameof(ConstantsClass)}");
+
+			Assert.Equal(@"import { net } from '@stackino/uno';
+import { injectable } from 'inversify';
+
+// source: Odachi.CodeModel.Tests.ConstantsClass, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
+
+@injectable()
+class ConstantsClass {
+	readonly testString: string = 'fiftyfive';
+	readonly testInt: number = 55;
+
+	constructor(client: net.JsonRpcClient) {
+		this.client = client;
+	}
+
+	private client: net.JsonRpcClient;
+}
+
+export default ConstantsClass;
+export { ConstantsClass };
 ", result);
 		}
 
