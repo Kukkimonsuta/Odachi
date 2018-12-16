@@ -83,12 +83,26 @@ namespace Odachi.CodeGen
 
 		public void Generate(Package package, TOptions options)
 		{
+			if (package == null)
+				throw new ArgumentNullException(nameof(package));
+			if (options == null)
+				throw new ArgumentNullException(nameof(options));
+			if (string.IsNullOrWhiteSpace(options.Path))
+				throw new ArgumentException("Output path is required", nameof(options));
+
 			Console.WriteLine($"Generating package '{package.Name}'");
 
 			var packageContext = CreatePackageContext(package, options);
 
+			if (options.CleanOutputPath)
+			{
+				Directory.Delete(packageContext.Path, true);
+			}
+
 			if (!Directory.Exists(packageContext.Path))
+			{
 				Directory.CreateDirectory(packageContext.Path);
+			}
 
 			OnPackageStart(packageContext);
 
