@@ -20,7 +20,7 @@ namespace Odachi.CodeGen
 		{
 		}
 
-		public IList<IFragmentRenderer<TModuleContext>> Renderers { get; } = new List<IFragmentRenderer<TModuleContext>>();
+		public IList<IFragmentRenderer<TModuleContext>> FragmentRenderers { get; } = new List<IFragmentRenderer<TModuleContext>>();
 
 		protected abstract TPackageContext CreatePackageContext(Package package, TOptions options);
 
@@ -43,7 +43,7 @@ namespace Odachi.CodeGen
 		{
 			Console.WriteLine($"\t\t- fragment '{fragment.Name}'");
 
-			foreach (var renderer in Renderers)
+			foreach (var renderer in FragmentRenderers)
 			{
 				if (renderer.Render(context, fragment, writer))
 				{

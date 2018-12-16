@@ -9,7 +9,7 @@ using Odachi.CodeGen.IO;
 using Odachi.CodeModel;
 using Odachi.CodeGen.Rendering;
 
-namespace Odachi.CodeGen.TypeScript.Renderers
+namespace Odachi.CodeGen.TypeScript.StackinoUno.Renderers
 {
 	public class ServiceRenderer : IFragmentRenderer<TypeScriptModuleContext>
 	{
@@ -24,6 +24,8 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 				writer.WriteSeparatingLine();
 			}
 
+			context.Import("inversify", "injectable");
+			writer.WriteIndentedLine("@injectable()");
 			using (writer.WriteIndentedBlock(prefix: $"class {serviceFragment.Name} "))
 			{
 				if (serviceFragment.Constants.Any())
@@ -35,14 +37,14 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					writer.WriteSeparatingLine();
 				}
 
-				context.Import("@odachi/rpc-client", "RpcClient");
-				using (writer.WriteIndentedBlock(prefix: "constructor(client: RpcClient) "))
+				context.Import("@stackino/uno", "net");
+				using (writer.WriteIndentedBlock(prefix: "constructor(client: net.JsonRpcClient) "))
 				{
 					writer.WriteIndentedLine("this.client = client;");
 				}
 				writer.WriteSeparatingLine();
 
-				writer.WriteIndentedLine("private client: RpcClient;");
+				writer.WriteIndentedLine("private client: net.JsonRpcClient;");
 				writer.WriteSeparatingLine();
 
 				foreach (var method in serviceFragment.Methods)

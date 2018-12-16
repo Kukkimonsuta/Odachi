@@ -10,6 +10,7 @@ using Odachi.CodeGen.IO;
 using Odachi.CodeModel;
 using Odachi.Extensions.Formatting;
 using Odachi.CodeGen.Internal;
+using Odachi.CodeGen.TypeScript.TypeHandlers;
 
 namespace Odachi.CodeGen.TypeScript
 {
@@ -17,10 +18,9 @@ namespace Odachi.CodeGen.TypeScript
 	{
 		public TypeScriptCodeGenerator()
 		{
-			Renderers.Add(new EnumRenderer());
-			Renderers.Add(new ObjectRenderer());
-			Renderers.Add(new ServiceRenderer());
 		}
+
+		public IList<ITypeHandler> TypeHandlers { get; } = new List<ITypeHandler>() { new DefaultTypeHandler() };
 
 		protected override TypeScriptPackageContext CreatePackageContext(Package package, TypeScriptOptions options)
 		{
@@ -29,7 +29,7 @@ namespace Odachi.CodeGen.TypeScript
 
 		protected override TypeScriptModuleContext CreateModuleContext(TypeScriptPackageContext packageContext, Module module, TypeScriptOptions options)
 		{
-			return new TypeScriptModuleContext(packageContext.Package, module, options);
+			return new TypeScriptModuleContext(packageContext.Package, module, TypeHandlers.ToArray() /* todo: nocopy */, options);
 		}
 
 		public void RenderIndex(IEnumerable<(string module, string alias)> modules, string path)
@@ -88,7 +88,7 @@ namespace Odachi.CodeGen.TypeScript
 		{
 			Console.WriteLine($"Generating DI module");
 
-			var context = new TypeScriptModuleContext(packageContext.Package, new Module() { Name = "./di.tsx" }, packageContext.Options);
+			var context = new TypeScriptModuleContext(packageContext.Package, new Module() { Name = "./di.tsx" }, TypeHandlers.ToArray() /* todo: nocopy */, packageContext.Options);
 			context.Import("inversify", "interfaces");
 			context.Import("inversify", "ContainerModule");
 

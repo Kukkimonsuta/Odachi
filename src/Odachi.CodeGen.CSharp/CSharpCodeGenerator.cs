@@ -11,9 +11,6 @@ namespace Odachi.CodeGen.CSharp
 	{
 		public CSharpCodeGenerator()
 		{
-			Renderers.Add(new EnumRenderer());
-			Renderers.Add(new ObjectRenderer());
-			Renderers.Add(new ServiceRenderer());
 		}
 
 		protected override CSharpModuleContext CreateModuleContext(CSharpPackageContext packageContext, Module module, CSharpOptions options)

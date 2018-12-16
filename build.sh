@@ -31,6 +31,7 @@ _build "./src/Odachi.AspNetCore.MvcPages" netstandard2.0
 _build "./src/Odachi.CodeGen" netstandard1.5
 _build "./src/Odachi.CodeGen.CSharp" netstandard1.6
 _build "./src/Odachi.CodeGen.TypeScript" netstandard1.6
+_build "./src/Odachi.CodeGen.TypeScript.StackinoUno" netstandard1.6
 _build "./src/Odachi.CodeModel" netstandard1.5
 _build "./src/Odachi.CodeModel.Providers.FluentValidation" netstandard1.5
 _build "./src/Odachi.CodeModel.Providers.JsonRpc" netstandard2.0
@@ -66,6 +67,7 @@ echo "Build & run test.."
 echo
 _test "./test/Odachi.CodeGen.Tests" netcoreapp2.1
 _test "./test/Odachi.CodeGen.TypeScript.Tests" netcoreapp2.1
+_test "./test/Odachi.CodeGen.TypeScript.StackinoUno.Tests" netcoreapp2.1
 _test "./test/Odachi.CodeModel.Tests" netcoreapp2.1
 _test "./test/Odachi.Extensions.Formatting.Tests" netcoreapp2.1
 _test "./test/Odachi.Extensions.Primitives.Tests" netcoreapp2.1

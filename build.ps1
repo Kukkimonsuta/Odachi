@@ -82,6 +82,7 @@ Pack(".\src\Odachi.AspNetCore.MvcPages")
 Pack(".\src\Odachi.CodeGen")
 Pack(".\src\Odachi.CodeGen.CSharp")
 Pack(".\src\Odachi.CodeGen.TypeScript")
+Pack(".\src\Odachi.CodeGen.TypeScript.StackinoUno")
 Pack(".\src\Odachi.CodeModel")
 Pack(".\src\Odachi.CodeModel.Providers.FluentValidation")
 Pack(".\src\Odachi.CodeModel.Providers.JsonRpc")
@@ -117,6 +118,7 @@ Write-Host "Build & run test.."
 Write-Host
 Test(".\test\Odachi.CodeGen.Tests");
 Test(".\test\Odachi.CodeGen.TypeScript.Tests");
+Test(".\test\Odachi.CodeGen.TypeScript.StackinoUno.Tests");
 Test(".\test\Odachi.CodeModel.Tests");
 Test(".\test\Odachi.Extensions.Formatting.Tests");
 Test(".\test\Odachi.Extensions.Primitives.Tests");

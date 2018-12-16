@@ -1,5 +1,7 @@
 using Odachi.CodeGen.Internal;
 using Odachi.CodeGen.IO;
+using Odachi.CodeGen.TypeScript.StackinoUno.Renderers;
+using Odachi.CodeGen.TypeScript.StackinoUno.TypeHandlers;
 using Odachi.CodeGen.TypeScript.TypeHandlers;
 using Odachi.CodeModel;
 using Odachi.CodeModel.Builders;
@@ -12,7 +14,7 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace Odachi.CodeGen.TypeScript.Tests
+namespace Odachi.CodeGen.TypeScript.StackinoUno.Tests
 {
 	public class GenericsTests
 	{
@@ -21,10 +23,11 @@ namespace Odachi.CodeGen.TypeScript.Tests
 			var module = package.Modules
 				.Single(m => m.Name == name);
 
-			var moduleContext = new TypeScriptModuleContext(package, module, new ITypeHandler[] { new DefaultTypeHandler() }, new TypeScriptOptions());
-			var enumRenderer = new Renderers.EnumRenderer();
-			var objectRenderer = new Renderers.ObjectRenderer();
-			var serviceRenderer = new Renderers.ServiceRenderer();
+			var moduleContext = new TypeScriptModuleContext(package, module, new ITypeHandler[] { new DefaultTypeHandler() , new StackinoUnoTypeHandler() }, new TypeScriptOptions());
+
+			var enumRenderer = new EnumRenderer();
+			var objectRenderer = new ObjectRenderer();
+			var serviceRenderer = new ServiceRenderer();
 
 			var stringBuilder = new StringBuilder();
 			using (var stringWriter = new StringWriter(stringBuilder))
@@ -67,14 +70,18 @@ namespace Odachi.CodeGen.TypeScript.Tests
 
 			var result = RenderModule(package, $".\\{nameof(GenericObject<object>)}");
 
-			Assert.Equal(@"function fail(message: string): never { throw new Error(message); }
+			Assert.Equal(@"import { observable } from 'mobx';
+
+function fail(message: string): never { throw new Error(message); }
 const _$$_factory_boolean = { create: (source: any): boolean => typeof source === 'boolean' ? source : fail(`Contract violation: expected boolean, got \'{typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.GenericObject`1, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class GenericObject<T> {
+	@observable.ref
 	value: T | null;
 
+	@observable.ref
 	test: boolean;
 
 	static create<T>(T_factory: { create(source: any): T }): { create: (source: any) => GenericObject<T> } {
@@ -105,6 +112,7 @@ export { GenericObject };
 			var result = RenderModule(package, $".\\{nameof(ObjectWithGenericObject)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
+import { observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function fail(message: string): never { throw new Error(message); }
@@ -115,8 +123,10 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 // source: Odachi.CodeModel.Tests.ObjectWithGenericObject, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithGenericObject {
+	@observable.ref
 	strings: GenericObject<string | null> | null;
 
+	@observable.ref
 	ints: GenericObject<number> | null;
 
 	static create(source: any): ObjectWithGenericObject {
@@ -143,6 +153,7 @@ export { ObjectWithGenericObject };
 			var result = RenderModule(package, $".\\{nameof(ObjectWithArrayOfGenericObject)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
+import { observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function fail(message: string): never { throw new Error(message); }
@@ -155,8 +166,10 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 // source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObject, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithArrayOfGenericObject {
+	@observable.ref
 	strings: Array<GenericObject<string | null> | null> | null;
 
+	@observable.ref
 	ints: Array<GenericObject<number> | null> | null;
 
 	static create(source: any): ObjectWithArrayOfGenericObject {
@@ -173,6 +186,55 @@ export { ObjectWithArrayOfGenericObject };
 		}
 
 		[Fact]
+		public void Object_with_array_of_generic_object_with_pages()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default(typeof(GenericObject<>))
+				.Module_Object_Default<ObjectWithArrayOfGenericObjectWithPages>()
+				.Build();
+
+			var result = RenderModule(package, $".\\{nameof(ObjectWithArrayOfGenericObjectWithPages)}");
+
+			Assert.Equal(@"import { GenericObject } from './generic-object';
+import { core } from '@stackino/uno';
+import { observable } from 'mobx';
+
+function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
+function fail(message: string): never { throw new Error(message); }
+function _$$_factory_array<T>(T_factory: { create: (source: any) => T }) { return { create: (source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : fail(`Contract violation: expected array, got \\'{typeof(source)}\\'`) }; }
+function _$$_factory_array_opt<T>(T_factory: { create: (source: any) => T }) { return _$$_opt(_$$_factory_array(T_factory)); }
+const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
+function _$$_factory_Page<T>(T_factory: { create: (source: any) => T }) { return { create: (source: any): core.Page<T> =>
+		typeof source === 'object' && source !== null ?
+			new core.Page<T>(
+				_$$_factory_array(T_factory).create(source.data),
+				_$$_factory_number.create(source.number),
+				_$$_factory_number.create(source.count)
+			) :
+			fail(`Contract violation: expected page, got \\'{typeof(source)}\\'`) }; }
+function _$$_factory_Page_opt<T>(T_factory: { create: (source: any) => T }) { return _$$_opt(_$$_factory_Page(T_factory)); }
+const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
+
+// source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObjectWithPages, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
+
+class ObjectWithArrayOfGenericObjectWithPages {
+	@observable.ref
+	strings: Array<GenericObject<core.Page<string | null> | null> | null> | null;
+
+	static create(source: any): ObjectWithArrayOfGenericObjectWithPages {
+		const result = new ObjectWithArrayOfGenericObjectWithPages();
+		result.strings = _$$_factory_array_opt(_$$_opt(GenericObject.create(_$$_factory_Page_opt(_$$_factory_string_opt)))).create(source.strings);
+		return result;
+	}
+}
+
+export default ObjectWithArrayOfGenericObjectWithPages;
+export { ObjectWithArrayOfGenericObjectWithPages };
+", result);
+		}
+
+		[Fact]
 		public void Object_with_tuple()
 		{
 			var package = new PackageBuilder("Test")
@@ -183,6 +245,7 @@ export { ObjectWithArrayOfGenericObject };
 			var result = RenderModule(package, $".\\{nameof(ObjectWithTuple)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
+import { observable } from 'mobx';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 
@@ -197,6 +260,7 @@ const _$$_factory_datetime = { create: (source: any): Moment => typeof source ==
 // source: Odachi.CodeModel.Tests.ObjectWithTuple, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithTuple {
+	@observable.ref
 	foo: [string | null, number, GenericObject<Moment> | null];
 
 	static create(source: any): ObjectWithTuple {
@@ -222,6 +286,7 @@ export { ObjectWithTuple };
 			var result = RenderModule(package, $".\\{nameof(ObjectWithOneOf)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
+import { observable } from 'mobx';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 
@@ -236,6 +301,7 @@ const _$$_factory_datetime = { create: (source: any): Moment => typeof source ==
 // source: Odachi.CodeModel.Tests.ObjectWithOneOf, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithOneOf {
+	@observable.ref
 	foo: string | number | GenericObject<Moment> | null;
 
 	static create(source: any): ObjectWithOneOf {
@@ -251,6 +317,42 @@ export { ObjectWithOneOf };
 		}
 
 		[Fact]
+		public void Can_render_validation_state()
+		{
+			var package = new PackageBuilder("Test")
+				.UseValidation()
+				.Module_Object_Default<ObjectWithValidationState>()
+				.Build();
+
+			var result = RenderModule(package, $".\\{nameof(ObjectWithValidationState)}");
+
+			Assert.Equal(@"import { validation } from '@stackino/uno';
+import { observable } from 'mobx';
+
+function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
+function fail(message: string): never { throw new Error(message); }
+const _$$_factory_ValidationState = { create: (source: any): validation.ValidationState => typeof source === 'object' && source !== null && typeof source.state === 'object' && source.state !== null ? new validation.ValidationState(source.state) : fail(`Contract violation: expected validation state, got \\'{typeof(source)}\\'`) };
+const _$$_factory_ValidationState_opt = _$$_opt(_$$_factory_ValidationState);
+
+// source: Odachi.CodeModel.Tests.ObjectWithValidationState, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
+
+class ObjectWithValidationState {
+	@observable.ref
+	foo: validation.ValidationState | null;
+
+	static create(source: any): ObjectWithValidationState {
+		const result = new ObjectWithValidationState();
+		result.foo = _$$_factory_ValidationState_opt.create(source.foo);
+		return result;
+	}
+}
+
+export default ObjectWithValidationState;
+export { ObjectWithValidationState };
+", result);
+		}
+
+		[Fact]
 		public void Object_with_primitives()
 		{
 			var package = new PackageBuilder("Test")
@@ -259,24 +361,33 @@ export { ObjectWithOneOf };
 
 			var result = RenderModule(package, $".\\{nameof(ObjectWithPrimitives)}");
 
-			Assert.Equal(@"function fail(message: string): never { throw new Error(message); }
+			Assert.Equal(@"import { observable } from 'mobx';
+
+function fail(message: string): never { throw new Error(message); }
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ObjectWithPrimitives, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithPrimitives {
+	@observable.ref
 	byte: number;
 
+	@observable.ref
 	short: number;
 
+	@observable.ref
 	integer: number;
 
+	@observable.ref
 	long: number;
 
+	@observable.ref
 	float: number;
 
+	@observable.ref
 	double: number;
 
+	@observable.ref
 	decimal: number;
 
 	static create(source: any): ObjectWithPrimitives {
@@ -306,11 +417,14 @@ export { ObjectWithPrimitives };
 
 			var result = RenderModule(package, $".\\{nameof(ObjectWithSelfReference)}");
 
-			Assert.Equal(@"function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
+			Assert.Equal(@"import { observable } from 'mobx';
+
+function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 
 // source: Odachi.CodeModel.Tests.ObjectWithSelfReference, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithSelfReference {
+	@observable.ref
 	self: ObjectWithSelfReference | null;
 
 	static create(source: any): ObjectWithSelfReference {
@@ -360,19 +474,21 @@ export { ConstantsClass };
 
 			var result = RenderModule(package, $".\\{nameof(ConstantsClass)}");
 
-			Assert.Equal(@"import { RpcClient } from '@odachi/rpc-client';
+			Assert.Equal(@"import { net } from '@stackino/uno';
+import { injectable } from 'inversify';
 
 // source: Odachi.CodeModel.Tests.ConstantsClass, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
+@injectable()
 class ConstantsClass {
 	static readonly testString: string = 'fiftyfive';
 	static readonly testInt: number = 55;
 
-	constructor(client: RpcClient) {
+	constructor(client: net.JsonRpcClient) {
 		this.client = client;
 	}
 
-	private client: RpcClient;
+	private client: net.JsonRpcClient;
 }
 
 export default ConstantsClass;

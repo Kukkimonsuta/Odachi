@@ -12,18 +12,11 @@ namespace Odachi.CodeGen.CSharp
 	{
 		public CSharpModuleContext(Package package, Module module, string packageNamespace)
 		{
-			if (package == null)
-				throw new ArgumentNullException(nameof(package));
-			if (module == null)
-				throw new ArgumentNullException(nameof(module));
-			if (packageNamespace == null)
-				throw new ArgumentNullException(nameof(packageNamespace));
-
-			Package = package;
-			Module = module;
+			Package = package ?? throw new ArgumentNullException(nameof(package));
+			Module = module ?? throw new ArgumentNullException(nameof(module));
 			FileName = CS.ModuleFileName(module.Name);
 
-			PackageNamespace = packageNamespace;
+			PackageNamespace = packageNamespace ?? throw new ArgumentNullException(nameof(packageNamespace));
 			ModuleNamespace = CS.ModuleNamespace(packageNamespace, module.Name);
 		}
 

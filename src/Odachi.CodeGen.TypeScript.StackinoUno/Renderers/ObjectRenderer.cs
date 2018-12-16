@@ -9,7 +9,7 @@ using Odachi.CodeGen.IO;
 using Odachi.CodeModel;
 using Odachi.CodeGen.Rendering;
 
-namespace Odachi.CodeGen.TypeScript.Renderers
+namespace Odachi.CodeGen.TypeScript.StackinoUno.Renderers
 {
 	public class ObjectRenderer : IFragmentRenderer<TypeScriptModuleContext>
 	{
@@ -39,6 +39,9 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 
 				foreach (var field in objectFragment.Fields)
 				{
+					context.Import("mobx", "observable");
+
+					writer.WriteIndentedLine("@observable.ref");
 					writer.WriteIndentedLine($"{TS.Field(field.Name)}: {context.Resolve(field.Type)};");
 					writer.WriteSeparatingLine();
 				}
