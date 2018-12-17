@@ -94,7 +94,7 @@ namespace Odachi.CodeGen
 
 			var packageContext = CreatePackageContext(package, options);
 
-			if (options.CleanOutputPath)
+			if (options.CleanOutputPath && Directory.Exists(packageContext.Path))
 			{
 				Directory.Delete(packageContext.Path, true);
 			}
