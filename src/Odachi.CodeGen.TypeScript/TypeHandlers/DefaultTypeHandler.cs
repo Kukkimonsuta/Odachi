@@ -48,8 +48,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
 
-						context.Import("moment", "Moment");
-						return $"Moment{nullableSuffix}";
+						return $"Date{nullableSuffix}";
 
 					case "array":
 						if (type.GenericArguments?.Length != 1)
@@ -98,55 +97,6 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 				context.Import(type);
 
 				return $"{type.Name}{(includeGenericArguments && type.GenericArguments?.Length > 0 ? $"<{string.Join(", ", type.GenericArguments.Select(a => context.Resolve(a)))}>" : "")}{nullableSuffix}";
-			}
-		}
-
-		/// <summary>
-		/// Return a javascript expression converting transport representation into runtime representation of given type reference.
-		/// </summary>
-		public string CreateExpression(TypeScriptModuleContext context, TypeReference type, string source)
-		{
-			if (type.Kind == TypeKind.GenericParameter)
-			{
-				// handle generic parameters
-				var factory = context.Factory(type);
-				if (factory == null)
-				{
-					return null;
-				}
-
-				return $"{context.Factory(type)}.create({source})";
-			}
-
-			if (type.Module == null)
-			{
-				// handle builtins
-
-				switch (type.Name)
-				{
-					case "void":
-						throw new InvalidOperationException("Cannot create void");
-
-					case "file":
-						return "null";
-
-					default:
-						var factory = context.Factory(type);
-						if (factory == null)
-						{
-							return null;
-						}
-
-						return $"{factory}.create({source})";
-				}
-			}
-			else
-			{
-				// handle modules
-
-				context.Import(type);
-
-				return $"{context.Factory(type)}.create({source})";
 			}
 		}
 
@@ -250,8 +200,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
-						context.Import("moment", "* as moment");
-						return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? moment(source) : fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)");
+						return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? new Date(source) : fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)");
 
 					case "array":
 						if (type.GenericArguments?.Length != 1)

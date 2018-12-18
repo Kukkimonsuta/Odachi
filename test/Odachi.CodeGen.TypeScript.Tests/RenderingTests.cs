@@ -183,8 +183,6 @@ export { ObjectWithArrayOfGenericObject };
 			var result = RenderModule(package, $".\\{nameof(ObjectWithTuple)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
-import * as moment from 'moment';
-import { Moment } from 'moment';
 
 function fail(message: string): never { throw new Error(message); }
 function _$$_factory_tuple3<T1, T2, T3>(T1_factory: { create: (source: any) => T1 }, T2_factory: { create: (source: any) => T2 }, T3_factory: { create: (source: any) => T3 }) { return { create: (source: any): [T1, T2, T3] => [T1_factory.create(source.item1), T2_factory.create(source.item2), T3_factory.create(source.item3)] }; }
@@ -192,12 +190,12 @@ function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (sourc
 const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
-const _$$_factory_datetime = { create: (source: any): Moment => typeof source === 'string' ? moment(source) : fail(`Contract violation: expected datetime string, got \'{typeof(source)}\'`) };
+const _$$_factory_datetime = { create: (source: any): Date => typeof source === 'string' ? new Date(source) : fail(`Contract violation: expected datetime string, got \'{typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ObjectWithTuple, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithTuple {
-	foo: [string | null, number, GenericObject<Moment> | null];
+	foo: [string | null, number, GenericObject<Date> | null];
 
 	static create(source: any): ObjectWithTuple {
 		const result = new ObjectWithTuple();
@@ -222,8 +220,6 @@ export { ObjectWithTuple };
 			var result = RenderModule(package, $".\\{nameof(ObjectWithOneOf)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
-import * as moment from 'moment';
-import { Moment } from 'moment';
 
 function fail(message: string): never { throw new Error(message); }
 function _$$_factory_oneof3<T1, T2, T3>(T1_factory: { create: (source: any) => T1 }, T2_factory: { create: (source: any) => T2 }, T3_factory: { create: (source: any) => T3 }) { return { create: (source: any): T1 | T2 | T3 => { switch (source.index) { case 1: return T1_factory.create(source.option1); case 2: return T2_factory.create(source.option2); case 3: return T3_factory.create(source.option3); default: return fail(`Contract violation: cannot handle OneOf index ${source.index}`); } } }; }
@@ -231,12 +227,12 @@ function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (sourc
 const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
-const _$$_factory_datetime = { create: (source: any): Moment => typeof source === 'string' ? moment(source) : fail(`Contract violation: expected datetime string, got \'{typeof(source)}\'`) };
+const _$$_factory_datetime = { create: (source: any): Date => typeof source === 'string' ? new Date(source) : fail(`Contract violation: expected datetime string, got \'{typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ObjectWithOneOf, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithOneOf {
-	foo: string | number | GenericObject<Moment> | null;
+	foo: string | number | GenericObject<Date> | null;
 
 	static create(source: any): ObjectWithOneOf {
 		const result = new ObjectWithOneOf();

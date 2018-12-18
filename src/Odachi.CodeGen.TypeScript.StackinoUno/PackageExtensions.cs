@@ -18,7 +18,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno
 
 			var generator = new TypeScriptCodeGenerator();
 
-			generator.TypeHandlers.Add(new StackinoUnoTypeHandler());
+			generator.TypeHandlers.Insert(0, new StackinoUnoTypeHandler());
 
 			generator.FragmentRenderers.Add(new EnumRenderer());
 			generator.FragmentRenderers.Add(new ObjectRenderer());

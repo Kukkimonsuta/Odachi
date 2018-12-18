@@ -198,22 +198,54 @@ namespace Odachi.CodeGen.TypeScript
 			throw new InvalidOperationException($"Failed to resolve type '{type.ToString()}'");
 		}
 
+
 		/// <summary>
-		/// Due to inability of JS deserializers to use classes we first deserialize raw transport into js objects and then map them to generated classes.
+		/// Return a javascript expression converting transport representation into runtime representation of given type reference.
 		/// </summary>
 		public string CreateExpression(TypeReference type, string source)
 		{
-			for (var i = 0; i < TypeHandlers.Count; i++)
+			if (type.Kind == TypeKind.GenericParameter)
 			{
-				var result = TypeHandlers[i].CreateExpression(this, type, source);
-
-				if (result != null)
+				// handle generic parameters
+				var factory = Factory(type);
+				if (factory == null)
 				{
-					return result;
+					return null;
 				}
+
+				return $"{Factory(type)}.create({source})";
 			}
 
-			throw new InvalidOperationException($"Failed to find create expression for type '{type.ToString()}'");
+			if (type.Module == null)
+			{
+				// handle builtins
+
+				switch (type.Name)
+				{
+					case "void":
+						throw new InvalidOperationException("Cannot create void");
+
+					case "file":
+						return "null";
+
+					default:
+						var factory = Factory(type);
+						if (factory == null)
+						{
+							return null;
+						}
+
+						return $"{factory}.create({source})";
+				}
+			}
+			else
+			{
+				// handle modules
+
+				Import(type);
+
+				return $"{Factory(type)}.create({source})";
+			}
 		}
 
 		/// <summary>

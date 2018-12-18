@@ -23,7 +23,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.Tests
 			var module = package.Modules
 				.Single(m => m.Name == name);
 
-			var moduleContext = new TypeScriptModuleContext(package, module, new ITypeHandler[] { new DefaultTypeHandler() , new StackinoUnoTypeHandler() }, new TypeScriptOptions());
+			var moduleContext = new TypeScriptModuleContext(package, module, new ITypeHandler[] { new StackinoUnoTypeHandler(), new DefaultTypeHandler() }, new TypeScriptOptions());
 
 			var enumRenderer = new EnumRenderer();
 			var objectRenderer = new ObjectRenderer();

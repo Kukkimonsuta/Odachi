@@ -9,9 +9,53 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.TypeHandlers
 {
 	public class StackinoUnoTypeHandler : ITypeHandler
 	{
-		public string CreateExpression(TypeScriptModuleContext context, TypeReference type, string source)
+		public string Resolve(TypeScriptModuleContext context, TypeReference type, bool includeNullability = true, bool includeGenericArguments = true)
 		{
-			return null;
+			// accept only builtins
+			if (type.Kind == TypeKind.GenericParameter || type.Module != null)
+			{
+				return null;
+			}
+
+			var nullableSuffix = includeNullability && type.IsNullable ? " | null" : "";
+
+			switch (type.Name)
+			{
+				case "datetime":
+					if (type.GenericArguments?.Length > 0)
+						throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+					context.Import("moment", "Moment");
+					return $"Moment{nullableSuffix}";
+
+				case "PagingOptions":
+					if (type.GenericArguments?.Length > 0)
+						throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+					return $"{{ number: number, size?: number }}{nullableSuffix}";
+
+				case "Page":
+					if (type.GenericArguments?.Length != 1)
+						throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+					context.Import("@stackino/uno", "core");
+
+					if (!includeGenericArguments)
+						return "core.Page";
+
+					return $"core.Page<{context.Resolve(type.GenericArguments[0])}>{nullableSuffix}";
+
+				case "ValidationState":
+					if (type.GenericArguments?.Length > 0)
+						throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+					context.Import("@stackino/uno", "validation");
+
+					return $"validation.ValidationState{nullableSuffix}";
+
+				default:
+					return null;
+			}
 		}
 
 		public string Factory(TypeScriptModuleContext context, TypeReference type)
@@ -71,8 +115,17 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.TypeHandlers
 				}
 			}
 
+			context.Helper("function fail(message: string): never { throw new Error(message); }");
+
 			switch (type.Name)
 			{
+				case "datetime":
+					if (type.GenericArguments?.Length > 0)
+						throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+					context.Import("moment", "* as moment");
+					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? moment(source) : fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)");
+
 				case "PagingOptions":
 					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'object' && source !== null ? source : fail(`Contract violation: expected paging options, got \\'{{typeof(source)}}\\'`)");
 
@@ -100,49 +153,6 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.TypeHandlers
 					context.Import("@stackino/uno", "validation");
 
 					return MakeFactory(type.Name, $@"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'object' && source !== null && typeof source.state === 'object' && source.state !== null ? new validation.ValidationState(source.state) : fail(`Contract violation: expected validation state, got \\'{{typeof(source)}}\\'`)");
-
-				default:
-					return null;
-			}
-		}
-
-		public string Resolve(TypeScriptModuleContext context, TypeReference type, bool includeNullability = true, bool includeGenericArguments = true)
-		{
-			// accept only builtins
-			if (type.Kind == TypeKind.GenericParameter || type.Module != null)
-			{
-				return null;
-			}
-
-			var nullableSuffix = includeNullability && type.IsNullable ? " | null" : "";
-
-			switch (type.Name)
-			{
-
-				case "PagingOptions":
-					if (type.GenericArguments?.Length > 0)
-						throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
-
-					return $"{{ number: number, size?: number }}{nullableSuffix}";
-
-				case "Page":
-					if (type.GenericArguments?.Length != 1)
-						throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
-
-					context.Import("@stackino/uno", "core");
-
-					if (!includeGenericArguments)
-						return "core.Page";
-
-					return $"core.Page<{context.Resolve(type.GenericArguments[0])}>{nullableSuffix}";
-
-				case "ValidationState":
-					if (type.GenericArguments?.Length > 0)
-						throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
-
-					context.Import("@stackino/uno", "validation");
-
-					return $"validation.ValidationState{nullableSuffix}";
 
 				default:
 					return null;
