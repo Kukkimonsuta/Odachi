@@ -32,6 +32,7 @@ _build "./src/Odachi.CodeGen" netstandard1.5
 _build "./src/Odachi.CodeGen.CSharp" netstandard1.6
 _build "./src/Odachi.CodeGen.TypeScript" netstandard1.6
 _build "./src/Odachi.CodeGen.TypeScript.StackinoUno" netstandard1.6
+_build "./src/Odachi.CodeGen.TypeScript.StackinoDue" netstandard1.6
 _build "./src/Odachi.CodeModel" netstandard1.5
 _build "./src/Odachi.CodeModel.Providers.FluentValidation" netstandard1.5
 _build "./src/Odachi.CodeModel.Providers.JsonRpc" netstandard2.0
