@@ -43,6 +43,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 
 				context.Import("@stackino/due", "inject");
 				context.Import("@stackino/due-plugin-odachirpcclient", "RpcClientTag");
+				context.Import("@odachi/rpc-client", "RpcClient");
 				writer.WriteIndentedLine("@inject(RpcClientTag)");
 				writer.WriteIndentedLine("private readonly client!: RpcClient;");
 				writer.WriteSeparatingLine();

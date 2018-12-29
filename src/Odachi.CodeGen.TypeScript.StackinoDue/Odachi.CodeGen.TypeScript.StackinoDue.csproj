@@ -3,7 +3,7 @@
   <Import Project="..\..\tools\common.props" />
 
   <PropertyGroup>
-    <Description>TypeScript code generator for `@stackino/uno`.</Description>
+    <Description>TypeScript code generator for `@stackino/due`.</Description>
     <TargetFrameworks>netstandard2.0;netstandard1.6</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
