@@ -39,7 +39,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 
 				foreach (var field in objectFragment.Fields)
 				{
-					writer.WriteIndentedLine($"{TS.Field(field.Name)}: {context.Resolve(field.Type)};");
+					writer.WriteIndentedLine($"{TS.Field(field.Name)}: {context.Resolve(field.Type)} = {context.ResolveDefaultValue(field.Type)};");
 					writer.WriteSeparatingLine();
 				}
 

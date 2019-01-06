@@ -100,6 +100,82 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 			}
 		}
 
+		public string ResolveDefaultValue(TypeScriptModuleContext context, TypeReference type)
+		{
+			if (type.IsNullable)
+			{
+				return "null";
+			}
+
+			if (type.Kind == TypeKind.GenericParameter)
+			{
+				return null;
+			}
+
+			if (type.Module == null)
+			{
+				// handle builtins
+
+				switch (type.Name)
+				{
+					case "boolean":
+						return "false";
+
+					case "string":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						return "''";
+
+					case "byte":
+					case "short":
+					case "integer":
+					case "long":
+					case "float":
+					case "double":
+					case "decimal":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						return "0";
+
+					case "datetime":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						return "new Date(NaN)";
+
+					case "array":
+						if (type.GenericArguments?.Length != 1)
+							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
+						
+						return "[]";
+						
+					case "Tuple":
+						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+						
+						return $"[{string.Join(", ", type.GenericArguments.Select(t => context.ResolveDefaultValue(t)))}]";
+
+					case "OneOf":
+						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						if (type.GenericArguments.Any(a => a.IsNullable))
+							return "null";
+
+						return null;
+
+					default:
+						return null;
+				}
+			}
+			else
+			{
+				return null;
+			}
+		}
+
 		/// <summary>
 		/// Returns reference to a factory for given type.
 		/// </summary>

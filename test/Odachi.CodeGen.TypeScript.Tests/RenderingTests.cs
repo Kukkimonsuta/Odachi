@@ -73,9 +73,9 @@ const _$$_factory_boolean = { create: (source: any): boolean => typeof source ==
 // source: Odachi.CodeModel.Tests.GenericObject`1, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class GenericObject<T> {
-	value: T | null;
+	value: T | null = null;
 
-	test: boolean;
+	test: boolean = false;
 
 	static create<T>(T_factory: { create(source: any): T }): { create: (source: any) => GenericObject<T> } {
 		return {
@@ -115,9 +115,9 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 // source: Odachi.CodeModel.Tests.ObjectWithGenericObject, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithGenericObject {
-	strings: GenericObject<string | null> | null;
+	strings: GenericObject<string | null> | null = null;
 
-	ints: GenericObject<number> | null;
+	ints: GenericObject<number> | null = null;
 
 	static create(source: any): ObjectWithGenericObject {
 		const result = new ObjectWithGenericObject();
@@ -155,9 +155,9 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 // source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObject, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithArrayOfGenericObject {
-	strings: Array<GenericObject<string | null> | null> | null;
+	strings: Array<GenericObject<string | null> | null> | null = null;
 
-	ints: Array<GenericObject<number> | null> | null;
+	ints: Array<GenericObject<number> | null> | null = null;
 
 	static create(source: any): ObjectWithArrayOfGenericObject {
 		const result = new ObjectWithArrayOfGenericObject();
@@ -195,7 +195,7 @@ const _$$_factory_datetime = { create: (source: any): Date => typeof source === 
 // source: Odachi.CodeModel.Tests.ObjectWithTuple, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithTuple {
-	foo: [string | null, number, GenericObject<Date> | null];
+	foo: [string | null, number, GenericObject<Date> | null] = [null, 0, null];
 
 	static create(source: any): ObjectWithTuple {
 		const result = new ObjectWithTuple();
@@ -232,7 +232,7 @@ const _$$_factory_datetime = { create: (source: any): Date => typeof source === 
 // source: Odachi.CodeModel.Tests.ObjectWithOneOf, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithOneOf {
-	foo: string | number | GenericObject<Date> | null;
+	foo: string | number | GenericObject<Date> | null = null;
 
 	static create(source: any): ObjectWithOneOf {
 		const result = new ObjectWithOneOf();
@@ -261,19 +261,19 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 // source: Odachi.CodeModel.Tests.ObjectWithPrimitives, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithPrimitives {
-	byte: number;
+	byte: number = 0;
 
-	short: number;
+	short: number = 0;
 
-	integer: number;
+	integer: number = 0;
 
-	long: number;
+	long: number = 0;
 
-	float: number;
+	float: number = 0;
 
-	double: number;
+	double: number = 0;
 
-	decimal: number;
+	decimal: number = 0;
 
 	static create(source: any): ObjectWithPrimitives {
 		const result = new ObjectWithPrimitives();
@@ -307,7 +307,7 @@ export { ObjectWithPrimitives };
 // source: Odachi.CodeModel.Tests.ObjectWithSelfReference, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithSelfReference {
-	self: ObjectWithSelfReference | null;
+	self: ObjectWithSelfReference | null = null;
 
 	static create(source: any): ObjectWithSelfReference {
 		const result = new ObjectWithSelfReference();

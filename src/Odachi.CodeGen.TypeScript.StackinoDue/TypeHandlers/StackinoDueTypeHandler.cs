@@ -33,6 +33,28 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.TypeHandlers
 			}
 		}
 
+		public string ResolveDefaultValue(TypeScriptModuleContext context, TypeReference type)
+		{
+			// accept only builtins
+			if (type.Kind == TypeKind.GenericParameter || type.Module != null)
+			{
+				return null;
+			}
+			
+			switch (type.Name)
+			{
+				case "datetime":
+					if (type.GenericArguments?.Length > 0)
+						throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+					context.Import("luxon", "DateTime");
+					return $"DateTime.invalid('default value')";
+
+				default:
+					return null;
+			}
+		}
+
 		public string Factory(TypeScriptModuleContext context, TypeReference type)
 		{
 			const string privatePrefix = "_$$_";

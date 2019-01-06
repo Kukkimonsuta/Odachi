@@ -58,6 +58,50 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.TypeHandlers
 			}
 		}
 
+		public string ResolveDefaultValue(TypeScriptModuleContext context, TypeReference type)
+		{
+			// accept only builtins
+			if (type.Kind == TypeKind.GenericParameter || type.Module != null)
+			{
+				return null;
+			}
+
+			switch (type.Name)
+			{
+				case "datetime":
+					if (type.GenericArguments?.Length > 0)
+						throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+					context.Import("moment", "* as Moment");
+					return $"moment.invalid()";
+
+				case "PagingOptions":
+					if (type.GenericArguments?.Length > 0)
+						throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+					return $"{{ number: 0 }}";
+
+				case "Page":
+					if (type.GenericArguments?.Length != 1)
+						throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+					context.Import("@stackino/uno", "core");
+					
+					return $"new core.Page<{context.Resolve(type.GenericArguments[0])}>([], 0, 0)";
+
+				case "ValidationState":
+					if (type.GenericArguments?.Length > 0)
+						throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+					context.Import("@stackino/uno", "validation");
+
+					return $"new validation.ValidationState()";
+
+				default:
+					return null;
+			}
+		}
+
 		public string Factory(TypeScriptModuleContext context, TypeReference type)
 		{
 			const string privatePrefix = "_$$_";

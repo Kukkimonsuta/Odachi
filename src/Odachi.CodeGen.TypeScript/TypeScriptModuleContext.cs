@@ -5,6 +5,7 @@ using Odachi.CodeGen.TypeScript.Internal;
 using Odachi.CodeGen.IO;
 using Odachi.CodeModel;
 using Odachi.CodeGen.TypeScript.TypeHandlers;
+using Odachi.CodeModel.Mapping;
 
 namespace Odachi.CodeGen.TypeScript
 {
@@ -198,6 +199,28 @@ namespace Odachi.CodeGen.TypeScript
 			throw new InvalidOperationException($"Failed to resolve type '{type.ToString()}'");
 		}
 
+		/// <summary>
+		/// Returns string representation valid in code of a type reference.
+		/// </summary>
+		public string ResolveDefaultValue(TypeReference type)
+		{
+			if (type.IsNullable)
+			{
+				return "null";
+			}
+
+			for (var i = 0; i < TypeHandlers.Count; i++)
+			{
+				var result = TypeHandlers[i].ResolveDefaultValue(this, type);
+
+				if (result != null)
+				{
+					return result;
+				}
+			}
+
+			throw new InvalidOperationException($"Failed to resolve type '{type.ToString()}'");
+		}
 
 		/// <summary>
 		/// Return a javascript expression converting transport representation into runtime representation of given type reference.
