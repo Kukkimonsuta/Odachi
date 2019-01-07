@@ -1,3 +1,4 @@
+using Odachi.CodeGen.TypeScript.Internal;
 using Odachi.CodeModel;
 using System;
 using System.Linq;
@@ -102,11 +103,6 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 		public string ResolveDefaultValue(TypeScriptModuleContext context, TypeReference type)
 		{
-			if (type.IsNullable)
-			{
-				return "null";
-			}
-
 			if (type.Kind == TypeKind.GenericParameter)
 			{
 				return null;
@@ -172,6 +168,11 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 			}
 			else
 			{
+				if (type.Kind == TypeKind.Enum)
+				{
+					return "0";
+				}
+
 				return null;
 			}
 		}
