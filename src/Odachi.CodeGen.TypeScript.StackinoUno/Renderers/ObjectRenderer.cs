@@ -42,7 +42,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.Renderers
 					context.Import("mobx", "observable");
 
 					writer.WriteIndentedLine("@observable.ref");
-					writer.WriteIndentedLine($"{TS.Field(field.Name)}: {context.Resolve(field.Type)};");
+					writer.WriteIndentedLine($"{TS.Field(field.Name)}: {context.Resolve(field.Type)} = {context.ResolveDefaultValue(field.Type)};");
 					writer.WriteSeparatingLine();
 				}
 

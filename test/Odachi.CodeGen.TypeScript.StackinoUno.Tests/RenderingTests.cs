@@ -79,10 +79,10 @@ const _$$_factory_boolean = { create: (source: any): boolean => typeof source ==
 
 class GenericObject<T> {
 	@observable.ref
-	value: T | null;
+	value: T | null = null;
 
 	@observable.ref
-	test: boolean;
+	test: boolean = false;
 
 	static create<T>(T_factory: { create(source: any): T }): { create: (source: any) => GenericObject<T> } {
 		return {
@@ -124,10 +124,10 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 
 class ObjectWithGenericObject {
 	@observable.ref
-	strings: GenericObject<string | null> | null;
+	strings: GenericObject<string | null> | null = null;
 
 	@observable.ref
-	ints: GenericObject<number> | null;
+	ints: GenericObject<number> | null = null;
 
 	static create(source: any): ObjectWithGenericObject {
 		const result = new ObjectWithGenericObject();
@@ -167,10 +167,10 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 
 class ObjectWithArrayOfGenericObject {
 	@observable.ref
-	strings: Array<GenericObject<string | null> | null> | null;
+	strings: Array<GenericObject<string | null> | null> | null = null;
 
 	@observable.ref
-	ints: Array<GenericObject<number> | null> | null;
+	ints: Array<GenericObject<number> | null> | null = null;
 
 	static create(source: any): ObjectWithArrayOfGenericObject {
 		const result = new ObjectWithArrayOfGenericObject();
@@ -220,7 +220,7 @@ const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 
 class ObjectWithArrayOfGenericObjectWithPages {
 	@observable.ref
-	strings: Array<GenericObject<core.Page<string | null> | null> | null> | null;
+	strings: Array<GenericObject<core.Page<string | null> | null> | null> | null = null;
 
 	static create(source: any): ObjectWithArrayOfGenericObjectWithPages {
 		const result = new ObjectWithArrayOfGenericObjectWithPages();
@@ -261,7 +261,7 @@ const _$$_factory_datetime = { create: (source: any): Moment => typeof source ==
 
 class ObjectWithTuple {
 	@observable.ref
-	foo: [string | null, number, GenericObject<Moment> | null];
+	foo: [string | null, number, GenericObject<Moment> | null] = [null, 0, null];
 
 	static create(source: any): ObjectWithTuple {
 		const result = new ObjectWithTuple();
@@ -302,7 +302,7 @@ const _$$_factory_datetime = { create: (source: any): Moment => typeof source ==
 
 class ObjectWithOneOf {
 	@observable.ref
-	foo: string | number | GenericObject<Moment> | null;
+	foo: string | number | GenericObject<Moment> | null = null;
 
 	static create(source: any): ObjectWithOneOf {
 		const result = new ObjectWithOneOf();
@@ -338,7 +338,7 @@ const _$$_factory_ValidationState_opt = _$$_opt(_$$_factory_ValidationState);
 
 class ObjectWithValidationState {
 	@observable.ref
-	foo: validation.ValidationState | null;
+	foo: validation.ValidationState | null = null;
 
 	static create(source: any): ObjectWithValidationState {
 		const result = new ObjectWithValidationState();
@@ -370,25 +370,25 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 
 class ObjectWithPrimitives {
 	@observable.ref
-	byte: number;
+	byte: number = 0;
 
 	@observable.ref
-	short: number;
+	short: number = 0;
 
 	@observable.ref
-	integer: number;
+	integer: number = 0;
 
 	@observable.ref
-	long: number;
+	long: number = 0;
 
 	@observable.ref
-	float: number;
+	float: number = 0;
 
 	@observable.ref
-	double: number;
+	double: number = 0;
 
 	@observable.ref
-	decimal: number;
+	decimal: number = 0;
 
 	static create(source: any): ObjectWithPrimitives {
 		const result = new ObjectWithPrimitives();
@@ -425,7 +425,7 @@ function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (sourc
 
 class ObjectWithSelfReference {
 	@observable.ref
-	self: ObjectWithSelfReference | null;
+	self: ObjectWithSelfReference | null = null;
 
 	static create(source: any): ObjectWithSelfReference {
 		const result = new ObjectWithSelfReference();
