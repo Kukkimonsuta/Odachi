@@ -322,6 +322,50 @@ export { ObjectWithSelfReference };
 		}
 
 		[Fact]
+		public void Object_with_paging()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default(typeof(ObjectWithPaging))
+				.Build();
+
+			var result = RenderModule(package, $".\\{nameof(ObjectWithPaging)}");
+
+			Assert.Equal(@"import { @odachi/collections } from 'Page';
+import { @odachi/collections } from 'PagingOptions';
+
+function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
+function fail(message: string): never { throw new Error(message); }
+const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
+function _$$_und<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | undefined } { return { create: (source: any): T | undefined => source === undefined || source === null ? undefined : T_factory.create(source) }; }
+const _$$_factory_number_und = _$$_und(_$$_factory_number);
+const _$$_factory_PagingOptions = { create: (source: any): PagingOptions => ({ page: _$$_factory_number.create(source.page), size: _$$_factory_number_und.create(source.size), offset: _$$_factory_number_und.create(source.offset), maximumCount: _$$_factory_number_und.create(source.maximumCount) }) };
+const _$$_factory_PagingOptions_opt = _$$_opt(_$$_factory_PagingOptions);
+function _$$_factory_Page<T>(T_factory: { create: (source: any) => T }) { return { create: (source: any): Page<T> => new Page(Array.isArray(source.data) ? source.data.map((item: any) => T_factory.create(item)) : fail(`Contract violation: expected array, got \\'{typeof(source)}\\'`), _$$_factory_number.create(source.number), _$$_factory_number.create(source.count)) }; }
+function _$$_factory_Page_opt<T>(T_factory: { create: (source: any) => T }) { return _$$_opt(_$$_factory_Page(T_factory)); }
+const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
+
+// source: Odachi.CodeModel.Tests.ObjectWithPaging, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
+
+class ObjectWithPaging {
+	options: PagingOptions | null = null;
+
+	strings: Page<string | null> | null = null;
+
+	static create(source: any): ObjectWithPaging {
+		const result = new ObjectWithPaging();
+		result.options = _$$_factory_PagingOptions_opt.create(source.options);
+		result.strings = _$$_factory_Page_opt(_$$_factory_string_opt).create(source.strings);
+		return result;
+	}
+}
+
+export default ObjectWithPaging;
+export { ObjectWithPaging };
+", result);
+		}
+
+		[Fact]
 		public void Object_with_constants()
 		{
 			var package = new PackageBuilder("Test")

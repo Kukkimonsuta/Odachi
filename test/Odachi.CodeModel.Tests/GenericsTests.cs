@@ -64,7 +64,13 @@ namespace Odachi.CodeModel.Tests
 	{
 		public ObjectWithSelfReference Self { get; set; }
 	}
-	
+
+	public class ObjectWithPaging
+	{
+		public PagingOptions Options { get; set; }
+		public Page<string> Strings { get; set; }
+	}
+
 	public class GenericsTests
 	{
 		[Fact]

@@ -71,7 +71,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
 
 						context.Import("Page", "@odachi/collections");
-						return $"Page{nullableSuffix}";
+						return $"Page<{context.Resolve(type.GenericArguments[0])}>{nullableSuffix}";
 
 					case "PagingOptions":
 						if (type.GenericArguments?.Length > 0)
@@ -167,6 +167,19 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return $"[{string.Join(", ", type.GenericArguments.Select(t => context.ResolveDefaultValue(t)))}]";
 
+					case "Page":
+						if (type.GenericArguments?.Length != 1)
+							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
+
+						context.Import("Page", "@odachi/collections");
+						return $"new Page<{context.Resolve(type.GenericArguments[0])}>([], 0, 0)";
+
+					case "PagingOptions":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						return $"{{ page: 0 }}";
+
 					case "OneOf":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
@@ -216,8 +229,16 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 				context.Helper($"function {privatePrefix}opt<T>(T_factory: {{ create: (source: any) => T }}): {{ create: (source: any) => T | null }} {{ return {{ create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }}; }}");
 			}
 
-			string MakeFactory(string name, string factory, params string[] genericParameterNames)
+			string GetUndHelper()
 			{
+				context.Helper($"function {privatePrefix}und<T>(T_factory: {{ create: (source: any) => T }}): {{ create: (source: any) => T | undefined }} {{ return {{ create: (source: any): T | undefined => source === undefined || source === null ? undefined : T_factory.create(source) }}; }}");
+				return $"{privatePrefix}und";
+			}
+
+			string MakeFactory(string name, string factory, string[] genericParameterNames, string noValueHelper = null)
+			{
+				noValueHelper = noValueHelper ?? optHelper;
+
 				var factoryName = $"{factoryPrefix}{name}";
 
 				if (genericParameterNames.Length != type.GenericArguments.Length)
@@ -267,13 +288,21 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
-						return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'boolean' ? source : fail(`Contract violation: expected boolean, got \\'{{typeof(source)}}\\'`)");
+						return MakeFactory(
+							type.Name,
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'boolean' ? source : fail(`Contract violation: expected boolean, got \\'{{typeof(source)}}\\'`)",
+							Array.Empty<string>()
+						);
 
 					case "string":
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
-						return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \\'{{typeof(source)}}\\'`)");
+						return MakeFactory(
+							type.Name,
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \\'{{typeof(source)}}\\'`)",
+							Array.Empty<string>()
+						);
 
 					case "byte":
 					case "short":
@@ -285,25 +314,70 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
-						return MakeFactory("number", $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \\'{{typeof(source)}}\\'`)");
+						return MakeFactory(
+							"number",
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \\'{{typeof(source)}}\\'`)",
+							Array.Empty<string>()
+						);
 
 					case "datetime":
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
-						return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? new Date(source) : fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)");
-
-					case "array":
-						if (type.GenericArguments?.Length != 1)
-							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
-
-						var arrayFactory = MakeFactory(
+						return MakeFactory(
 							type.Name,
-							$@"(source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : fail(`Contract violation: expected array, got \\'{{typeof(source)}}\\'`)",
-							"T"
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? new Date(source) : fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)",
+							Array.Empty<string>()
 						);
 
-						return $"{arrayFactory}({context.Factory(type.GenericArguments[0])})";
+					case "array":
+						{
+							if (type.GenericArguments?.Length != 1)
+								throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
+
+							var arrayFactory = MakeFactory(
+								type.Name,
+								$@"(source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : fail(`Contract violation: expected array, got \\'{{typeof(source)}}\\'`)",
+								new[] { "T" }
+							);
+
+							return $"{arrayFactory}({context.Factory(type.GenericArguments[0])})";
+						}
+
+					case "Page":
+						{
+							if (type.GenericArguments?.Length != 1)
+								throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
+
+							var numberFactory = context.Factory(new TypeReference(null, "integer", TypeKind.Primitive, false));
+
+							var pageFactory = MakeFactory(
+								type.Name,
+								$@"(source: any): Page<T> => new Page(Array.isArray(source.data) ? source.data.map((item: any) => T_factory.create(item)) : fail(`Contract violation: expected array, got \\'{{typeof(source)}}\\'`), {numberFactory}.create(source.number), {numberFactory}.create(source.count))",
+								new[] { "T" }
+							);
+
+							context.Import("Page", "@odachi/collections");
+							return $"{pageFactory}({context.Factory(type.GenericArguments[0])})";
+						}
+
+					case "PagingOptions":
+						{
+							if (type.GenericArguments?.Length > 0)
+								throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+							var numberFactory = context.Factory(new TypeReference(null, "integer", TypeKind.Primitive, false));
+
+							var numberFactoryUnd = $"{numberFactory}_und";
+							context.Helper($"const {numberFactoryUnd} = {GetUndHelper()}({numberFactory});");
+
+							context.Import("PagingOptions", "@odachi/collections");
+							return MakeFactory(
+								type.Name,
+								$@"(source: any): PagingOptions => ({{ page: {numberFactory}.create(source.page), size: {numberFactoryUnd}.create(source.size), offset: {numberFactoryUnd}.create(source.offset), maximumCount: {numberFactoryUnd}.create(source.maximumCount) }})",
+								Array.Empty<string>()
+							);
+						}
 
 					case "Tuple":
 						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
