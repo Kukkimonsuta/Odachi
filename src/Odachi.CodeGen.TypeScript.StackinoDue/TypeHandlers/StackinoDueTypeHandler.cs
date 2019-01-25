@@ -40,7 +40,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.TypeHandlers
 			{
 				return null;
 			}
-			
+
 			switch (type.Name)
 			{
 				case "datetime":

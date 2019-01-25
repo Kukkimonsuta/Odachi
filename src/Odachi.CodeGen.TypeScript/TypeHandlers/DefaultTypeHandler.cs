@@ -66,6 +66,20 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return $"File{nullableSuffix}";
 
+					case "Page":
+						if (type.GenericArguments?.Length != 1)
+							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
+
+						context.Import("Page", "@odachi/collections");
+						return $"Page{nullableSuffix}";
+
+					case "PagingOptions":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						context.Import("PagingOptions", "@odachi/collections");
+						return $"PagingOptions{nullableSuffix}";
+
 					case "Tuple":
 						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
@@ -144,13 +158,13 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 					case "array":
 						if (type.GenericArguments?.Length != 1)
 							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
-						
+
 						return "[]";
-						
+
 					case "Tuple":
 						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
-						
+
 						return $"[{string.Join(", ", type.GenericArguments.Select(t => context.ResolveDefaultValue(t)))}]";
 
 					case "OneOf":

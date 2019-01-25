@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +15,7 @@ namespace Odachi.Extensions.Collections
 		public const int DefaultMaximumCount = 20;
 
 		public PagingOptions()
-			: this(0, DefaultPageSize)
+			: this(0)
 		{
 		}
 		public PagingOptions(int number, int size = DefaultPageSize, bool acquireTotal = true, int offset = 0, int? maximumCount = DefaultMaximumCount)
