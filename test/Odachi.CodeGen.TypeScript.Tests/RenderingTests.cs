@@ -330,8 +330,7 @@ export { ObjectWithSelfReference };
 
 			var result = RenderModule(package, $".\\{nameof(ObjectWithPaging)}");
 
-			Assert.Equal(@"import { @odachi/collections } from 'Page';
-import { @odachi/collections } from 'PagingOptions';
+			Assert.Equal(@"import { Page, PagingOptions } from '@odachi/collections';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function fail(message: string): never { throw new Error(message); }

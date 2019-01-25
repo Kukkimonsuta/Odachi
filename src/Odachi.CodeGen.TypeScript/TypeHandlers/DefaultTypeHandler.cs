@@ -70,14 +70,14 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 						if (type.GenericArguments?.Length != 1)
 							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
 
-						context.Import("Page", "@odachi/collections");
+						context.Import("@odachi/collections", "Page");
 						return $"Page<{context.Resolve(type.GenericArguments[0])}>{nullableSuffix}";
 
 					case "PagingOptions":
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
 
-						context.Import("PagingOptions", "@odachi/collections");
+						context.Import("@odachi/collections", "PagingOptions");
 						return $"PagingOptions{nullableSuffix}";
 
 					case "Tuple":
@@ -171,7 +171,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 						if (type.GenericArguments?.Length != 1)
 							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
 
-						context.Import("Page", "@odachi/collections");
+						context.Import("@odachi/collections", "Page");
 						return $"new Page<{context.Resolve(type.GenericArguments[0])}>([], 0, 0)";
 
 					case "PagingOptions":
@@ -357,7 +357,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 								new[] { "T" }
 							);
 
-							context.Import("Page", "@odachi/collections");
+							context.Import("@odachi/collections", "Page");
 							return $"{pageFactory}({context.Factory(type.GenericArguments[0])})";
 						}
 
@@ -371,7 +371,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 							var numberFactoryUnd = $"{numberFactory}_und";
 							context.Helper($"const {numberFactoryUnd} = {GetUndHelper()}({numberFactory});");
 
-							context.Import("PagingOptions", "@odachi/collections");
+							context.Import("@odachi/collections", "PagingOptions");
 							return MakeFactory(
 								type.Name,
 								$@"(source: any): PagingOptions => ({{ page: {numberFactory}.create(source.page), size: {numberFactoryUnd}.create(source.size), offset: {numberFactoryUnd}.create(source.offset), maximumCount: {numberFactoryUnd}.create(source.maximumCount) }})",
