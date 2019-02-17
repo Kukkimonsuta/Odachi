@@ -85,11 +85,11 @@ namespace Odachi.CodeModel
 		/// package://./my-dal-thing
 		/// package://odachi.extensions.collections/page
 		/// </summary>
-		public string Module { get; }
-		public string Name { get; }
-		public TypeKind Kind { get; }
+		public string Module { get; set; }
+		public string Name { get; set; }
+		public TypeKind Kind { get; set; }
 		public bool IsNullable { get; set; }
-		public TypeReference[] GenericArguments { get; }
+		public TypeReference[] GenericArguments { get; set; }
 
 		public override string ToString()
 		{

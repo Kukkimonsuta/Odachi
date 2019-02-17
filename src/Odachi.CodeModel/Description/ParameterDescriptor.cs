@@ -11,7 +11,7 @@ namespace Odachi.CodeModel.Description
 	public interface IParameterDescriptor
 	{
 		/// <summary>
-		/// Describe enum item. Called after builder creation for every enum item in package.
+		/// Describe parameter. Called after builder creation for every parameter in package.
 		/// </summary>
 		void Describe(ParameterBuilder builder);
 	}

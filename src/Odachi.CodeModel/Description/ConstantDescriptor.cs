@@ -34,7 +34,7 @@ namespace Odachi.CodeModel.Description
 			builder.Hint("net-kind", "constant");
 			builder.Hint("net-type", fieldInfo.FieldType.AssemblyQualifiedName);
 		}
-		
+
 		/// <inheritdoc />
 		public virtual void Describe(ConstantBuilder builder)
 		{

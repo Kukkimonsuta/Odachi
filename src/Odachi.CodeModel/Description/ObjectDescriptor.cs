@@ -10,7 +10,7 @@ namespace Odachi.CodeModel.Description
 	public interface IObjectDescriptor
 	{
 		/// <summary>
-		/// Describe class. Called after builder creation for every class in package.
+		/// Describe object. Called after builder creation for every object in package.
 		/// </summary>
 		void Describe(ObjectBuilder builder);
 	}
