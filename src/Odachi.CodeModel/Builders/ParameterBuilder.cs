@@ -10,19 +10,16 @@ namespace Odachi.CodeModel.Builders
 {
 	public class ParameterBuilder : FragmentBuilderBase<ParameterBuilder, ParameterFragment>
 	{
-		public ParameterBuilder(PackageContext context, string name, ITypeReference type, object source)
+		public ParameterBuilder(PackageContext context, string name, Type type, object source)
 			: base(context, name)
 		{
-			if (type == null)
-				throw new ArgumentNullException(nameof(type));
-
-			Type = type;
+			Type = new TypeReferenceBuilder(context, type ?? throw new ArgumentNullException(nameof(type)));
 			Source = source;
 
 			Context.ParameterDescriptors.Describe(this);
 		}
 
-		public ITypeReference Type { get; }
+		public TypeReferenceBuilder Type { get; }
 		public object Source { get; }
 
 		public override ParameterFragment Build()
@@ -30,7 +27,7 @@ namespace Odachi.CodeModel.Builders
 			var result = new ParameterFragment()
 			{
 				Name = Name,
-				Type = Type.Resolve(Context.TypeMapper),
+				Type = Type.Build(),
 			};
 
 			return result;

@@ -10,20 +10,17 @@ namespace Odachi.CodeModel.Builders
 {
 	public class ConstantBuilder : FragmentBuilderBase<ConstantBuilder, ConstantFragment>
 	{
-		public ConstantBuilder(PackageContext context, string name, ITypeReference type, object value, object source)
+		public ConstantBuilder(PackageContext context, string name, Type type, object value, object source)
 			: base(context, name)
 		{
-			if (type == null)
-				throw new ArgumentNullException(nameof(type));
-
-			Type = type;
+			Type = new TypeReferenceBuilder(context, type ?? throw new ArgumentNullException(nameof(type)));
 			Value = value;
 			Source = source;
 
 			Context.ConstantDescriptors.Describe(this);
 		}
 
-		public ITypeReference Type { get; }
+		public TypeReferenceBuilder Type { get; }
 		public object Value { get; }
 		public object Source { get; }
 
@@ -32,7 +29,7 @@ namespace Odachi.CodeModel.Builders
 			var result = new ConstantFragment()
 			{
 				Name = Name,
-				Type = Type.Resolve(Context.TypeMapper),
+				Type = Type.Build(),
 				Value = Value,
 			};
 

@@ -9,11 +9,8 @@ namespace Odachi.CodeModel.Mapping
 	{
 		public BuiltinTypeDefinition(string name, params GenericArgumentDefinition[] genericArguments)
 		{
-			if (name == null)
-				throw new ArgumentNullException(nameof(name));
-
-			Name = name;
-			GenericArguments = genericArguments;
+			Name = name ?? throw new ArgumentNullException(nameof(name));
+			GenericArguments = genericArguments ?? throw new ArgumentNullException(nameof(genericArguments));
 		}
 
 		public override string Module { get; } = null;
@@ -47,16 +44,15 @@ namespace Odachi.CodeModel.Mapping
 		public static readonly BuiltinTypeDefinition Tuple7 = new BuiltinTypeDefinition("tuple", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"), new GenericArgumentDefinition("T7"));
 		public static readonly BuiltinTypeDefinition Tuple8 = new BuiltinTypeDefinition("tuple", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"), new GenericArgumentDefinition("T7"), new GenericArgumentDefinition("T8"));
 
-		[Obsolete("")]
-		public static readonly BuiltinTypeDefinition EntityReference = new BuiltinTypeDefinition("EntityReference");
-		public static readonly BuiltinTypeDefinition OneOf2 = new BuiltinTypeDefinition("OneOf", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"));
-		public static readonly BuiltinTypeDefinition OneOf3 = new BuiltinTypeDefinition("OneOf", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"));
-		public static readonly BuiltinTypeDefinition OneOf4 = new BuiltinTypeDefinition("OneOf", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"));
-		public static readonly BuiltinTypeDefinition OneOf5 = new BuiltinTypeDefinition("OneOf", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"));
-		public static readonly BuiltinTypeDefinition OneOf6 = new BuiltinTypeDefinition("OneOf", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"));
-		public static readonly BuiltinTypeDefinition OneOf7 = new BuiltinTypeDefinition("OneOf", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"), new GenericArgumentDefinition("T7"));
-		public static readonly BuiltinTypeDefinition OneOf8 = new BuiltinTypeDefinition("OneOf", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"), new GenericArgumentDefinition("T7"), new GenericArgumentDefinition("T8"));
-		public static readonly BuiltinTypeDefinition OneOf9 = new BuiltinTypeDefinition("OneOf", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"), new GenericArgumentDefinition("T7"), new GenericArgumentDefinition("T8"), new GenericArgumentDefinition("T9"));
+		public static readonly BuiltinTypeDefinition OneOf2 = new BuiltinTypeDefinition("oneof", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"));
+		public static readonly BuiltinTypeDefinition OneOf3 = new BuiltinTypeDefinition("oneof", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"));
+		public static readonly BuiltinTypeDefinition OneOf4 = new BuiltinTypeDefinition("oneof", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"));
+		public static readonly BuiltinTypeDefinition OneOf5 = new BuiltinTypeDefinition("oneof", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"));
+		public static readonly BuiltinTypeDefinition OneOf6 = new BuiltinTypeDefinition("oneof", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"));
+		public static readonly BuiltinTypeDefinition OneOf7 = new BuiltinTypeDefinition("oneof", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"), new GenericArgumentDefinition("T7"));
+		public static readonly BuiltinTypeDefinition OneOf8 = new BuiltinTypeDefinition("oneof", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"), new GenericArgumentDefinition("T7"), new GenericArgumentDefinition("T8"));
+		public static readonly BuiltinTypeDefinition OneOf9 = new BuiltinTypeDefinition("oneof", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"), new GenericArgumentDefinition("T3"), new GenericArgumentDefinition("T4"), new GenericArgumentDefinition("T5"), new GenericArgumentDefinition("T6"), new GenericArgumentDefinition("T7"), new GenericArgumentDefinition("T8"), new GenericArgumentDefinition("T9"));
+
 		public static readonly BuiltinTypeDefinition PagingOptions = new BuiltinTypeDefinition("PagingOptions");
 		public static readonly BuiltinTypeDefinition Page = new BuiltinTypeDefinition("Page", new GenericArgumentDefinition("TItem"));
 

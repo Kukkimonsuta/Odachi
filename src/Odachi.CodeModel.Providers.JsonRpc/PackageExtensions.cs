@@ -47,11 +47,11 @@ namespace Odachi.CodeModel
 				{
 					foreach (var method in methods)
 					{
-						service.Method(method.MethodName.ToPascalInvariant(), ClrTypeReference.Create(method.ReturnType ?? typeof(void)), method, m =>
+						service.Method(method.MethodName.ToPascalInvariant(), method.ReturnType ?? typeof(void), method, m =>
 						{
 							foreach (var parameter in method.Parameters.Where(p => p.Source == JsonRpcParameterSource.Request))
 							{
-								m.Parameter(parameter.Name, ClrTypeReference.Create(parameter.Type), parameter);
+								m.Parameter(parameter.Name, parameter.Type, parameter);
 							}
 						});
 					}

@@ -89,7 +89,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return $"[{string.Join(", ", type.GenericArguments.Select(t => context.Resolve(t)))}]{nullableSuffix}";
 
-					case "OneOf":
+					case "oneof":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
@@ -180,7 +180,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return $"{{ page: 0 }}";
 
-					case "OneOf":
+					case "oneof":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
@@ -402,7 +402,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return $"{tupleFactory}({string.Join(", ", type.GenericArguments.Select(a => context.Factory(a)))})";
 
-					case "OneOf":
+					case "oneof":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 

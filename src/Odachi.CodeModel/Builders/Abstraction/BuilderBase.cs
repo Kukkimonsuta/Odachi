@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 
 namespace Odachi.CodeModel.Builders.Abstraction
 {
-	public abstract class FragmentBuilderBase<TSelf, TItem>
-		where TSelf : FragmentBuilderBase<TSelf, TItem>
+	public abstract class BuilderBase<TSelf, TItem>
+		where TSelf : BuilderBase<TSelf, TItem>
 	{
-		public FragmentBuilderBase(PackageContext context, string name)
+		public BuilderBase(PackageContext context)
 		{
 			Context = context ?? throw new ArgumentNullException(nameof(context));
-			Name = name ?? throw new ArgumentNullException(nameof(name));
 		}
 
 		public PackageContext Context { get; }
-		public string Name { get; }
 
 		public IDictionary<string, string> Hints { get; } = new Dictionary<string, string>();
 
@@ -28,6 +26,18 @@ namespace Odachi.CodeModel.Builders.Abstraction
 		}
 
 		public abstract TItem Build();
+	}
+
+	public abstract class FragmentBuilderBase<TSelf, TItem> : BuilderBase<TSelf, TItem>
+		where TSelf : FragmentBuilderBase<TSelf, TItem>
+	{
+		public FragmentBuilderBase(PackageContext context, string name)
+			: base(context)
+		{
+			Name = name ?? throw new ArgumentNullException(nameof(name));
+		}
+
+		public string Name { get; }
 	}
 
 	public abstract class TypeFragmentBuilderBase<TSelf, TItem> : FragmentBuilderBase<TSelf, TItem>

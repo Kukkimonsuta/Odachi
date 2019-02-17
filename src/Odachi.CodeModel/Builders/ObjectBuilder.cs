@@ -24,11 +24,11 @@ namespace Odachi.CodeModel.Builders
 		public IList<FieldBuilder> Fields { get; } = new List<FieldBuilder>();
 		public object Source { get; }
 
-		public ObjectBuilder Constant(string name, ITypeReference type, object value, Action<ConstantBuilder> configure = null)
+		public ObjectBuilder Constant(string name, Type type, object value, Action<ConstantBuilder> configure = null)
 		{
 			return Constant(name, type, null, configure: configure);
 		}
-		public ObjectBuilder Constant(string name, ITypeReference type, object value, object source, Action<ConstantBuilder> configure = null)
+		public ObjectBuilder Constant(string name, Type type, object value, object source, Action<ConstantBuilder> configure = null)
 		{
 			var constantBuilder = new ConstantBuilder(Context, name, type, value, source);
 
@@ -39,11 +39,11 @@ namespace Odachi.CodeModel.Builders
 			return this;
 		}
 
-		public ObjectBuilder Field(string name, ITypeReference type, Action<FieldBuilder> configure = null)
+		public ObjectBuilder Field(string name, Type type, Action<FieldBuilder> configure = null)
 		{
 			return Field(name, type, null, configure: configure);
 		}
-		public ObjectBuilder Field(string name, ITypeReference type, object source, Action<FieldBuilder> configure = null)
+		public ObjectBuilder Field(string name, Type type, object source, Action<FieldBuilder> configure = null)
 		{
 			var fieldBuilder = new FieldBuilder(Context, name, type, source);
 

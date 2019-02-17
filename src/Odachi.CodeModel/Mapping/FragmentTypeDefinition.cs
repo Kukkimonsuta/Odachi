@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,13 +9,8 @@ namespace Odachi.CodeModel.Mapping
 	{
 		public FragmentTypeDefinition(string moduleName, string fragmentName, params GenericArgumentDefinition[] genericArgumentDefinitions)
 		{
-			if (moduleName == null)
-				throw new ArgumentNullException(nameof(moduleName));
-			if (fragmentName == null)
-				throw new ArgumentNullException(nameof(fragmentName));
-
-			Module = moduleName;
-			Name = fragmentName;
+			Module = moduleName ?? throw new ArgumentNullException(nameof(moduleName));
+			Name = fragmentName ?? throw new ArgumentNullException(nameof(fragmentName));
 			GenericArguments = genericArgumentDefinitions;
 		}
 

@@ -22,11 +22,11 @@ namespace Odachi.CodeModel.Builders
 		public IList<MethodBuilder> Methods { get; } = new List<MethodBuilder>();
 		public object Source { get; }
 
-		public ServiceBuilder Constant(string name, ITypeReference type, object value, Action<ConstantBuilder> configure = null)
+		public ServiceBuilder Constant(string name, Type type, object value, Action<ConstantBuilder> configure = null)
 		{
 			return Constant(name, type, null, configure: configure);
 		}
-		public ServiceBuilder Constant(string name, ITypeReference type, object value, object source, Action<ConstantBuilder> configure = null)
+		public ServiceBuilder Constant(string name, Type type, object value, object source, Action<ConstantBuilder> configure = null)
 		{
 			var constantBuilder = new ConstantBuilder(Context, name, type, value, source);
 
@@ -37,11 +37,11 @@ namespace Odachi.CodeModel.Builders
 			return this;
 		}
 
-		public ServiceBuilder Method(string name, ITypeReference returnType, Action<MethodBuilder> configure = null)
+		public ServiceBuilder Method(string name, Type returnType, Action<MethodBuilder> configure = null)
 		{
 			return Method(name, returnType, configure: configure);
 		}
-		public ServiceBuilder Method(string name, ITypeReference returnType, object source, Action<MethodBuilder> configure = null)
+		public ServiceBuilder Method(string name, Type returnType, object source, Action<MethodBuilder> configure = null)
 		{
 			var methodBuilder = new MethodBuilder(Context, name, returnType, source);
 

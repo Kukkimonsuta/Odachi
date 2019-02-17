@@ -194,7 +194,7 @@ namespace Odachi.CodeGen.CSharp
 
 						return $"({string.Join(", ", type.GenericArguments.Select(t => Resolve(t)))}){(includeNullability && type.IsNullable ? "?" : "")}";
 
-					case "OneOf":
+					case "oneof":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 

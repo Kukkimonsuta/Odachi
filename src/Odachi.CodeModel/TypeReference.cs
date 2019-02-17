@@ -72,18 +72,19 @@ namespace Odachi.CodeModel
 	{
 		public TypeReference(string module, string name, TypeKind kind, bool isNullable, params TypeReference[] genericArguments)
 		{
-			if (name == null)
-				throw new ArgumentNullException(nameof(name));
-			if (genericArguments == null)
-				throw new ArgumentNullException(nameof(genericArguments));
-
 			Module = module;
-			Name = name;
+			Name = name ?? throw new ArgumentNullException(nameof(name));
 			Kind = kind;
 			IsNullable = isNullable;
-			GenericArguments = genericArguments;
+			GenericArguments = genericArguments ?? throw new ArgumentNullException(nameof(genericArguments));
 		}
 
+		/// <summary>
+		/// generic-parameter://
+		/// builtin://odachi.code-gen/file
+		/// package://./my-dal-thing
+		/// package://odachi.extensions.collections/page
+		/// </summary>
 		public string Module { get; }
 		public string Name { get; }
 		public TypeKind Kind { get; }

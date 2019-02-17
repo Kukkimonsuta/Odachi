@@ -23,6 +23,7 @@ namespace Odachi.CodeModel.Builders
 			ParameterDescriptors = new List<IParameterDescriptor>() { new DefaultParameterDescriptor() };
 			EnumDescriptors = new List<IEnumDescriptor>() { new DefaultEnumDescriptor() };
 			EnumItemDescriptors = new List<IEnumItemDescriptor>() { new DefaultEnumItemDescriptor() };
+			TypeReferenceDescriptors = new List<ITypeReferenceDescriptor>() { new DefaultTypeReferenceDescriptor() };
 			TypeMapper = new TypeMapper();
 			ModulePath = ".";
 		}
@@ -42,6 +43,7 @@ namespace Odachi.CodeModel.Builders
 			ParameterDescriptors = parentContext.ParameterDescriptors;
 			EnumDescriptors = parentContext.EnumDescriptors;
 			EnumItemDescriptors = parentContext.EnumItemDescriptors;
+			TypeReferenceDescriptors = parentContext.TypeReferenceDescriptors;
 			TypeMapper = parentContext.TypeMapper;
 			ModulePath = newModulePath;
 		}
@@ -55,6 +57,7 @@ namespace Odachi.CodeModel.Builders
 		public IList<IParameterDescriptor> ParameterDescriptors { get; }
 		public IList<IEnumDescriptor> EnumDescriptors { get; }
 		public IList<IEnumItemDescriptor> EnumItemDescriptors { get; }
+		public IList<ITypeReferenceDescriptor> TypeReferenceDescriptors { get; }
 		public TypeMapper TypeMapper { get; }
 		public string ModulePath { get; }
 
@@ -355,7 +358,7 @@ namespace Odachi.CodeModel.Builders
 
 			var fragmentName = builder.Context.GlobalDescriptor.GetFragmentName(builder.Context, objectType);
 			var moduleName = builder.Context.GlobalDescriptor.GetModuleName(builder.Context, fragmentName);
-			var genericArguments = objectTypeInfo.ContainsGenericParameters? objectTypeInfo.GenericTypeParameters.Select(p => p.Name).ToArray() : null;
+			var genericArguments = objectTypeInfo.ContainsGenericParameters ? objectTypeInfo.GenericTypeParameters.Select(p => p.Name).ToArray() : null;
 
 			return builder
 				.MapFragment(objectType, moduleName, fragmentName)
@@ -393,18 +396,21 @@ namespace Odachi.CodeModel.Builders
 						{
 							var value = field.GetRawConstantValue();
 
-							objectBuilder.Constant(field.Name, ClrTypeReference.Create(field.FieldType, isNullable: value == null), value, (objectType, field));
+							objectBuilder.Constant(field.Name, field.FieldType, value, (objectType, field), constantBuilder =>
+							{
+								constantBuilder.Type.IsNullable = value == null;
+							});
 						}
 						else if (!field.IsStatic)
 						{
-							objectBuilder.Field(field.Name, ClrTypeReference.Create(field.FieldType), (objectType, field));
+							objectBuilder.Field(field.Name, field.FieldType, (objectType, field));
 						}
 					}
 					else if (member is PropertyInfo property)
 					{
 						if (!(property.GetMethod?.IsStatic ?? false) && !(property.SetMethod?.IsStatic ?? false))
 						{
-							objectBuilder.Field(property.Name, ClrTypeReference.Create(property.PropertyType), (objectType, property));
+							objectBuilder.Field(property.Name, property.PropertyType, (objectType, property));
 						}
 					}
 				}
@@ -480,14 +486,17 @@ namespace Odachi.CodeModel.Builders
 						{
 							var value = field.GetRawConstantValue();
 
-							serviceBuilder.Constant(field.Name, ClrTypeReference.Create(field.FieldType, isNullable: value == null), value, (objectType, field));
+							serviceBuilder.Constant(field.Name, field.FieldType, value, (objectType, field), constantBuilder =>
+							{
+								constantBuilder.Type.IsNullable = value == null;
+							});
 						}
 					}
 					else if (member is MethodInfo method)
 					{
 						if (!method.IsStatic)
 						{
-							serviceBuilder.Method(method.Name, ClrTypeReference.Create(method.ReturnType), (objectType, method));
+							serviceBuilder.Method(method.Name, method.ReturnType, (objectType, method));
 						}
 					}
 				}

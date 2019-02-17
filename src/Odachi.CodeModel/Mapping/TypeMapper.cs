@@ -13,10 +13,7 @@ namespace Odachi.CodeModel.Mapping
 	{
 		public UnresolvedTypeEventArgs(Type type)
 		{
-			if (type == null)
-				throw new ArgumentNullException(nameof(type));
-
-			Type = type;
+			Type = type ?? throw new ArgumentNullException(nameof(type));
 		}
 
 		public Type Type { get; }
@@ -125,8 +122,7 @@ namespace Odachi.CodeModel.Mapping
 		}
 		public TypeDefinition Get(Type type, bool tryRegister = true)
 		{
-			Type tmp;
-			return Get(type, out tmp, tryRegister: tryRegister);
+			return Get(type, out _, tryRegister: tryRegister);
 		}
 		public TypeDefinition Get(Type type, out Type resolvedType, bool tryRegister = true)
 		{
