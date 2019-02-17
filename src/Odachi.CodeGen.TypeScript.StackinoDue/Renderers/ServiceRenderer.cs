@@ -25,12 +25,12 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 			}
 
 			context.Import("@stackino/due", "Tag");
-			writer.WriteIndentedLine($"export const {serviceFragment.Name}Tag = new Tag<{serviceFragment.Name}>('{context.Package.Name} {serviceFragment.Name}');");
+			writer.WriteIndentedLine($"export const {TS.Type(serviceFragment.Name)}Tag = new Tag<{TS.Type(serviceFragment.Name)}>('{context.PackageContext.Package.Name} {TS.Type(serviceFragment.Name)}');");
 			writer.WriteSeparatingLine();
 
 			context.Import("@stackino/due", "injectable");
-			writer.WriteIndentedLine($"@injectable({serviceFragment.Name}Tag)");
-			using (writer.WriteIndentedBlock(prefix: $"class {serviceFragment.Name} "))
+			writer.WriteIndentedLine($"@injectable({TS.Type(serviceFragment.Name)}Tag)");
+			using (writer.WriteIndentedBlock(prefix: $"class {TS.Type(serviceFragment.Name)} "))
 			{
 				if (serviceFragment.Constants.Any())
 				{
@@ -53,18 +53,18 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 					var rpcMethodName = method.Hints["jsonrpc-name"] ?? method.Name;
 
 					var parameters = method.Parameters
-						.Select(p => $"{p.Name}: {context.Resolve(p.Type)}")
+						.Select(p => $"{TS.Parameter(p.Name)}: {context.Resolve(p.Type)}")
 						.ToList();
 
 					using (writer.WriteIndentedBlock(prefix: $"async {TS.Method(method.Name)}Async({string.Join(", ", parameters)}): Promise<{context.Resolve(method.ReturnType)}> "))
 					{
 						if (method.ReturnType.Name == "void")
 						{
-							writer.WriteIndentedLine($"await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
+							writer.WriteIndentedLine($"await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", parameters)} }});");
 						}
 						else
 						{
-							writer.WriteIndentedLine($"const result = await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
+							writer.WriteIndentedLine($"const result = await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", parameters)} }});");
 							writer.WriteIndentedLine($"return {context.CreateExpression(method.ReturnType, "result")};");
 						}
 					}

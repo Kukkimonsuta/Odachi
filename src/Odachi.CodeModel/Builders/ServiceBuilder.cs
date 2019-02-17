@@ -8,7 +8,7 @@ using Odachi.CodeModel.Builders.Abstraction;
 
 namespace Odachi.CodeModel.Builders
 {
-	public class ServiceBuilder : BuilderBase<ServiceBuilder, ServiceFragment>, ITypeFragmentBuilder
+	public class ServiceBuilder : TypeFragmentBuilderBase<ServiceBuilder, ServiceFragment>
 	{
 		public ServiceBuilder(PackageContext context, string name, object source)
 			: base(context, name)
@@ -56,7 +56,8 @@ namespace Odachi.CodeModel.Builders
 		{
 			var result = new ServiceFragment()
 			{
-				Name = Name
+				Name = Name,
+				ModuleName = ModuleName,
 			};
 
 			foreach (var constant in Constants)
@@ -76,14 +77,5 @@ namespace Odachi.CodeModel.Builders
 
 			return result;
 		}
-
-		#region ITypeFragmentBuilder
-
-		TypeFragment ITypeFragmentBuilder.Build()
-		{
-			return Build();
-		}
-
-		#endregion
 	}
 }

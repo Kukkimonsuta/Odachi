@@ -41,8 +41,6 @@ namespace Odachi.JsonRpc.Client
 				NamingStrategy = new MultiWordCamelCaseNamingStrategy(true, false)
 			};
 			Serializer.Converters.Add(new PageConverter());
-			Serializer.Converters.Add(new EntityReferenceConverter());
-			Serializer.Converters.Add(new StreamReferenceConverter());
 			Serializer.Converters.Add(new BlobConverter());
 
 			RequestFilters = new List<IRequestFilter>();
@@ -56,16 +54,13 @@ namespace Odachi.JsonRpc.Client
 
 		public bool UseJsonRpcConstant { get; set; } = false;
 
-		protected string SerializeRequest(JsonRpcRequest request, Action<string, IStreamReference> streamReferenceHandler, Action<string, IBlob> blobHandler)
+		protected string SerializeRequest(JsonRpcRequest request, Action<string, IBlob> blobHandler)
 		{
 			if (request == null)
 				throw new ArgumentNullException(nameof(request));
-			if (streamReferenceHandler == null)
-				throw new ArgumentNullException(nameof(streamReferenceHandler));
 
 			JObject jObject;
 			using (new BlobWriteHandler(blobHandler))
-			using (new StreamReferenceWriteHandler(streamReferenceHandler))
 			{
 				jObject = JObject.FromObject(request, Serializer);
 			}

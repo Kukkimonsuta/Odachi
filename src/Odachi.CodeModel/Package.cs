@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Odachi.CodeModel
 {
 	/// <summary>
-	/// Represents a folder.
+	/// Represents a SDK.
 	/// </summary>
 	public class Package
 	{
@@ -17,9 +17,19 @@ namespace Odachi.CodeModel
 		public string Name { get; set; }
 
 		/// <summary>
-		/// Package modules.
+		/// Objects.
 		/// </summary>
-		public IList<Module> Modules { get; } = new List<Module>();
+		public IList<ObjectFragment> Objects { get; } = new List<ObjectFragment>();
+
+		/// <summary>
+		/// Enums.
+		/// </summary>
+		public IList<EnumFragment> Enums { get; } = new List<EnumFragment>();
+
+		/// <summary>
+		/// Services.
+		/// </summary>
+		public IList<ServiceFragment> Services { get; } = new List<ServiceFragment>();
 
 		/// <summary>
 		/// Hints.

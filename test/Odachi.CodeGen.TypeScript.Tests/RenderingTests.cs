@@ -16,12 +16,11 @@ namespace Odachi.CodeGen.TypeScript.Tests
 {
 	public class GenericsTests
 	{
-		private string RenderModule(Package package, string name)
+		private string RenderModule(Package package, string moduleName)
 		{
-			var module = package.Modules
-				.Single(m => m.Name == name);
+			var packageContext = new TypeScriptPackageContext(package, new TypeScriptOptions());
+			var moduleContext = new TypeScriptModuleContext(packageContext, moduleName, new ITypeHandler[] { new DefaultTypeHandler(), new DefaultTypeHandler() });
 
-			var moduleContext = new TypeScriptModuleContext(package, module, new ITypeHandler[] { new DefaultTypeHandler() }, new TypeScriptOptions());
 			var enumRenderer = new Renderers.EnumRenderer();
 			var objectRenderer = new Renderers.ObjectRenderer();
 			var serviceRenderer = new Renderers.ServiceRenderer();
@@ -31,15 +30,17 @@ namespace Odachi.CodeGen.TypeScript.Tests
 			{
 				using (var indentedWriter = new IndentedTextWriter(stringWriter))
 				{
-					if (!objectRenderer.Render(moduleContext, module.Fragments.Single(), indentedWriter))
+					foreach (var @enum in package.Enums.Where(e => e.ModuleName == moduleName))
 					{
-						if (!enumRenderer.Render(moduleContext, module.Fragments.Single(), indentedWriter))
-						{
-							if (!serviceRenderer.Render(moduleContext, module.Fragments.Single(), indentedWriter))
-							{
-								throw new InvalidOperationException("No renderer found");
-							}
-						}
+						enumRenderer.Render(moduleContext, @enum, indentedWriter);
+					}
+					foreach (var @object in package.Objects.Where(e => e.ModuleName == moduleName))
+					{
+						objectRenderer.Render(moduleContext, @object, indentedWriter);
+					}
+					foreach (var service in package.Services.Where(e => e.ModuleName == moduleName))
+					{
+						serviceRenderer.Render(moduleContext, service, indentedWriter);
 					}
 				}
 			}

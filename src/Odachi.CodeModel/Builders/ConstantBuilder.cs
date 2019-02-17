@@ -8,7 +8,7 @@ using Odachi.CodeModel.Builders.Abstraction;
 
 namespace Odachi.CodeModel.Builders
 {
-	public class ConstantBuilder : BuilderBase<ConstantBuilder, ConstantFragment>
+	public class ConstantBuilder : FragmentBuilderBase<ConstantBuilder, ConstantFragment>
 	{
 		public ConstantBuilder(PackageContext context, string name, ITypeReference type, object value, object source)
 			: base(context, name)

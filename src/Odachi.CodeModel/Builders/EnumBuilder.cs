@@ -7,7 +7,7 @@ using Odachi.CodeModel.Builders.Abstraction;
 
 namespace Odachi.CodeModel.Builders
 {
-	public class EnumBuilder : BuilderBase<EnumBuilder, EnumFragment>, ITypeFragmentBuilder
+	public class EnumBuilder : TypeFragmentBuilderBase<EnumBuilder, EnumFragment>
 	{
 		public EnumBuilder(PackageContext context, string name, object source)
 			: base(context, name)
@@ -36,6 +36,7 @@ namespace Odachi.CodeModel.Builders
 			var result = new EnumFragment()
 			{
 				Name = Name,
+				ModuleName = ModuleName,
 			};
 
 			foreach (var item in Items)
@@ -50,14 +51,5 @@ namespace Odachi.CodeModel.Builders
 
 			return result;
 		}
-
-		#region ITypeFragmentBuilder
-
-		TypeFragment ITypeFragmentBuilder.Build()
-		{
-			return Build();
-		}
-
-		#endregion
 	}
 }

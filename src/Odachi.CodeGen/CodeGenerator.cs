@@ -13,8 +13,8 @@ namespace Odachi.CodeGen
 {
 	public abstract class CodeGenerator<TOptions, TPackageContext, TModuleContext>
 		where TOptions : CodeGeneratorOptions
-		where TPackageContext : PackageContext
-		where TModuleContext : ModuleContext
+		where TPackageContext : PackageContext<TOptions>
+		where TModuleContext : ModuleContext<TOptions>
 	{
 		public CodeGenerator()
 		{
@@ -24,7 +24,7 @@ namespace Odachi.CodeGen
 
 		protected abstract TPackageContext CreatePackageContext(Package package, TOptions options);
 
-		protected abstract TModuleContext CreateModuleContext(TPackageContext packageContext, Module module, TOptions options);
+		protected abstract TModuleContext CreateModuleContext(TPackageContext packageContext, string moduleName);
 
 		protected virtual IndentedTextWriter CreateWriter(TextWriter writer)
 		{
@@ -33,15 +33,11 @@ namespace Odachi.CodeGen
 
 		protected virtual void OnPackageStart(TPackageContext packageContext) { }
 
-		protected virtual void OnModuleStart(TModuleContext moduleContext) { }
-
-		protected virtual void OnModuleFinish(TModuleContext moduleContext) { }
-
 		protected virtual void OnPackageFinish(TPackageContext packageContext) { }
 
 		private void RenderTypeFragment(TModuleContext context, TypeFragment fragment, IndentedTextWriter writer)
 		{
-			Console.WriteLine($"\t\t- fragment '{fragment.Name}'");
+			Console.WriteLine($"\t\t- fragment '{fragment.ModuleName}'");
 
 			foreach (var renderer in FragmentRenderers)
 			{
@@ -51,12 +47,14 @@ namespace Odachi.CodeGen
 				}
 			}
 
-			throw new NotSupportedException($"Type fragment '{fragment.Kind}' is not supported");
+			throw new NotSupportedException($"Type fragment '{fragment.ModuleName}' has no renderer");
 		}
 
-		private void RenderModule(TModuleContext context, string path)
+		private void RenderModule(TModuleContext context)
 		{
-			Console.WriteLine($"\t- module '{context.Module.Name}'");
+			Console.WriteLine($"\t- module '{context.ModuleName}'");
+
+			var path = Path.Combine(context.PackageContext.Options.Path, context.FileName);
 
 			var directory = Path.GetDirectoryName(path);
 			if (!Directory.Exists(directory))
@@ -68,9 +66,17 @@ namespace Odachi.CodeGen
 				var bodyBuilder = new StringBuilder();
 				using (var bodyWriter = CreateWriter(new StringWriter(bodyBuilder)))
 				{
-					foreach (var fragment in context.Module.Fragments)
+					foreach (var @enum in context.Enums)
 					{
-						RenderTypeFragment(context, fragment, bodyWriter);
+						RenderTypeFragment(context, @enum, bodyWriter);
+					}
+					foreach (var @object in context.Objects)
+					{
+						RenderTypeFragment(context, @object, bodyWriter);
+					}
+					foreach (var service in context.Services)
+					{
+						RenderTypeFragment(context, service, bodyWriter);
 					}
 				}
 				bodyBuilder.TrimEnd();
@@ -94,27 +100,54 @@ namespace Odachi.CodeGen
 
 			var packageContext = CreatePackageContext(package, options);
 
-			if (options.CleanOutputPath && Directory.Exists(packageContext.Path))
+			if (options.CleanOutputPath && Directory.Exists(options.Path))
 			{
-				Directory.Delete(packageContext.Path, true);
+				Directory.Delete(options.Path, true);
 			}
 
-			if (!Directory.Exists(packageContext.Path))
+			if (!Directory.Exists(options.Path))
 			{
-				Directory.CreateDirectory(packageContext.Path);
+				Directory.CreateDirectory(options.Path);
 			}
 
 			OnPackageStart(packageContext);
 
-			foreach (var module in package.Modules)
+			var moduleContexts = new Dictionary<string, TModuleContext>();
+
+			TModuleContext GetOrCreateModuleContext(string moduleName)
 			{
-				var moduleContext = CreateModuleContext(packageContext, module, options);
+				if (!moduleContexts.TryGetValue(moduleName, out var moduleContext))
+				{
+					moduleContext = CreateModuleContext(packageContext, moduleName);
 
-				OnModuleStart(moduleContext);
+					moduleContexts.Add(moduleName, moduleContext);
+				}
 
-				RenderModule(moduleContext, Path.Combine(packageContext.Path, moduleContext.FileName));
+				return moduleContext;
+			}
 
-				OnModuleFinish(moduleContext);
+			foreach (var @enum in package.Enums)
+			{
+				var moduleContext = GetOrCreateModuleContext(@enum.ModuleName);
+
+				moduleContext.Enums.Add(@enum);
+			}
+			foreach (var @object in package.Objects)
+			{
+				var moduleContext = GetOrCreateModuleContext(@object.ModuleName);
+
+				moduleContext.Objects.Add(@object);
+			}
+			foreach (var service in package.Services)
+			{
+				var moduleContext = GetOrCreateModuleContext(service.ModuleName);
+
+				moduleContext.Services.Add(service);
+			}
+
+			foreach (var moduleContext in moduleContexts.Values)
+			{
+				RenderModule(moduleContext);
 			}
 
 			OnPackageFinish(packageContext);

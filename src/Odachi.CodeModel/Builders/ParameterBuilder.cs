@@ -8,7 +8,7 @@ using Odachi.CodeModel.Description;
 
 namespace Odachi.CodeModel.Builders
 {
-	public class ParameterBuilder : BuilderBase<ParameterBuilder, ParameterFragment>
+	public class ParameterBuilder : FragmentBuilderBase<ParameterBuilder, ParameterFragment>
 	{
 		public ParameterBuilder(PackageContext context, string name, ITypeReference type, object source)
 			: base(context, name)

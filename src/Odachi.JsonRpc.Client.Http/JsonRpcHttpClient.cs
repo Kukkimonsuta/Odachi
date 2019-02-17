@@ -38,12 +38,6 @@ namespace Odachi.JsonRpc.Client.Http
 		{
 			var content = new MultipartFormDataContent();
 
-#pragma warning disable CS0618 // Type or member is obsolete
-			void HandleReference(string path, IStreamReference reference)
-#pragma warning restore CS0618 // Type or member is obsolete
-			{
-				content.Add(new StreamContent(reference.OpenReadStream()), path, reference.Name);
-			}
 			void HandleBlob(string path, IBlob blob)
 			{
 				content.Add(new StreamContent(blob.OpenRead()), path, blob.Name);
@@ -51,7 +45,7 @@ namespace Odachi.JsonRpc.Client.Http
 
 			try
 			{
-				var requestString = SerializeRequest(request, HandleReference, HandleBlob);
+				var requestString = SerializeRequest(request, HandleBlob);
 
 				if (_logger != null && _logger.IsEnabled(LogLevel.Debug))
 				{

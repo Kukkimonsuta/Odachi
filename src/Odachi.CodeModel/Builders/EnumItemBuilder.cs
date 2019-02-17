@@ -7,7 +7,7 @@ using Odachi.CodeModel.Builders.Abstraction;
 
 namespace Odachi.CodeModel.Builders
 {
-	public class EnumItemBuilder : BuilderBase<EnumItemBuilder, EnumItemFragment>
+	public class EnumItemBuilder : FragmentBuilderBase<EnumItemBuilder, EnumItemFragment>
 	{
 		public EnumItemBuilder(PackageContext context, string name, int value, object source)
 			: base(context, name)

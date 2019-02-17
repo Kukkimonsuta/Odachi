@@ -8,7 +8,7 @@ using Odachi.CodeModel.Builders.Abstraction;
 
 namespace Odachi.CodeModel.Builders
 {
-	public class ObjectBuilder : BuilderBase<ObjectBuilder, ObjectFragment>, ITypeFragmentBuilder
+	public class ObjectBuilder : TypeFragmentBuilderBase<ObjectBuilder, ObjectFragment>
 	{
 		public ObjectBuilder(PackageContext context, string name, IReadOnlyList<string> genericArguments, object source)
 			: base(context, name)
@@ -59,6 +59,7 @@ namespace Odachi.CodeModel.Builders
 			var result = new ObjectFragment()
 			{
 				Name = Name,
+				ModuleName = ModuleName,
 				GenericArguments = GenericArguments.Select(a => new GenericArgumentDefinition(a)).ToArray(),
 			};
 
@@ -79,14 +80,5 @@ namespace Odachi.CodeModel.Builders
 
 			return result;
 		}
-
-		#region ITypeFragmentBuilder
-
-		TypeFragment ITypeFragmentBuilder.Build()
-		{
-			return Build();
-		}
-
-		#endregion
 	}
 }

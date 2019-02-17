@@ -64,23 +64,29 @@ namespace Odachi.CodeModel.Builders
 		}
 	}
 
-	public class PackageBuilder : BuilderBase<PackageBuilder, Package>
+	public class PackageBuilder : FragmentBuilderBase<PackageBuilder, Package>
 	{
 		private PackageBuilder(PackageBuilder parent, PackageContext context)
-			: base(context, parent?.Name)
+			: base(context, parent.Name)
 		{
 			if (parent == null)
 				throw new ArgumentNullException(nameof(parent));
 
-			Modules = parent.Modules;
+			Enums = parent.Enums;
+			Objects = parent.Objects;
+			Services = parent.Services;
 		}
 		public PackageBuilder(string name)
 			: base(new PackageContext(), name)
 		{
-			Modules = new List<ModuleBuilder>();
+			Enums = new List<EnumBuilder>();
+			Objects = new List<ObjectBuilder>();
+			Services = new List<ServiceBuilder>();
 		}
 
-		public IList<ModuleBuilder> Modules { get; }
+		public IList<EnumBuilder> Enums { get; set; }
+		public IList<ObjectBuilder> Objects { get; set; }
+		public IList<ServiceBuilder> Services { get; set; }
 
 		public PackageBuilder Folder(string name, Action<PackageBuilder> configure)
 		{
@@ -91,13 +97,55 @@ namespace Odachi.CodeModel.Builders
 			return this;
 		}
 
-		public PackageBuilder Module(string name, Action<ModuleBuilder> configure)
+		public PackageBuilder Enum(string name, Action<EnumBuilder> configure)
 		{
-			var moduleBuilder = new ModuleBuilder(Context, Context.MapPath(name));
+			return Enum(name, null, configure);
+		}
+		public PackageBuilder Enum(string name, Type type, Action<EnumBuilder> configure)
+		{
+			var enumBuilder = new EnumBuilder(Context, name, source: type);
 
-			configure(moduleBuilder);
+			configure(enumBuilder);
 
-			Modules.Add(moduleBuilder);
+			Enums.Add(enumBuilder);
+
+			return this;
+		}
+
+		public PackageBuilder Object(string name, Action<ObjectBuilder> configure)
+		{
+			return Object(name, null, null, configure);
+		}
+		public PackageBuilder Object(string name, Type type, Action<ObjectBuilder> configure)
+		{
+			return Object(name, null, type, configure);
+		}
+		public PackageBuilder Object(string name, IReadOnlyList<string> genericArguments, Action<ObjectBuilder> configure)
+		{
+			return Object(name, genericArguments, null, configure);
+		}
+		public PackageBuilder Object(string name, IReadOnlyList<string> genericArguments, Type type, Action<ObjectBuilder> configure)
+		{
+			var objectBuilder = new ObjectBuilder(Context, name, genericArguments, source: type);
+
+			configure(objectBuilder);
+
+			Objects.Add(objectBuilder);
+
+			return this;
+		}
+
+		public PackageBuilder Service(string name, Action<ServiceBuilder> configure)
+		{
+			return Service(name, null, configure);
+		}
+		public PackageBuilder Service(string name, Type type, Action<ServiceBuilder> configure)
+		{
+			var serviceBuilder = new ServiceBuilder(Context, name, source: type);
+
+			configure(serviceBuilder);
+
+			Services.Add(serviceBuilder);
 
 			return this;
 		}
@@ -168,12 +216,23 @@ namespace Odachi.CodeModel.Builders
 				Name = Name,
 			};
 
-			// assume that autoregister adds new modules to the end of collection
-			for (var i = 0; i < Modules.Count; i++)
+			for (var i = 0; i < Enums.Count; i++)
 			{
-				var module = Modules[i];
+				var @enum = Enums[i];
 
-				result.Modules.Add(module.Build());
+				result.Enums.Add(@enum.Build());
+			}
+			for (var i = 0; i < Objects.Count; i++)
+			{
+				var @object = Objects[i];
+
+				result.Objects.Add(@object.Build());
+			}
+			for (var i = 0; i < Services.Count; i++)
+			{
+				var service = Services[i];
+
+				result.Services.Add(service.Build());
 			}
 
 			foreach (var hint in Hints)
@@ -231,9 +290,7 @@ namespace Odachi.CodeModel.Builders
 
 			return builder
 				.MapFragment(enumType, moduleName, fragmentName)
-				.Module(moduleName, module => module
-					.Enum(fragmentName, enumType, configure)
-				);
+				.Enum(fragmentName, enumType, configure);
 		}
 
 		/// <summary>
@@ -302,9 +359,7 @@ namespace Odachi.CodeModel.Builders
 
 			return builder
 				.MapFragment(objectType, moduleName, fragmentName)
-				.Module(moduleName, module => module
-					.Object(fragmentName, genericArguments, objectType, configure)
-				);
+				.Object(fragmentName, genericArguments, objectType, configure);
 		}
 
 		/// <summary>
@@ -358,7 +413,6 @@ namespace Odachi.CodeModel.Builders
 			});
 		}
 
-
 		/// <summary>
 		/// Shortcut for creating a module with single service fragment from specified .NET type.
 		/// </summary>
@@ -388,9 +442,7 @@ namespace Odachi.CodeModel.Builders
 
 			return builder
 				.MapFragment(objectType, moduleName, fragmentName)
-				.Module(moduleName, module => module
-					.Service(fragmentName, objectType, configure)
-				);
+				.Service(fragmentName, objectType, configure);
 		}
 
 		/// <summary>

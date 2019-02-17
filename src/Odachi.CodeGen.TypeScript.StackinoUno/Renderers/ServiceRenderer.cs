@@ -26,7 +26,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.Renderers
 
 			context.Import("inversify", "injectable");
 			writer.WriteIndentedLine("@injectable()");
-			using (writer.WriteIndentedBlock(prefix: $"class {serviceFragment.Name} "))
+			using (writer.WriteIndentedBlock(prefix: $"class {TS.Type(serviceFragment.Name)} "))
 			{
 				if (serviceFragment.Constants.Any())
 				{
@@ -52,7 +52,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.Renderers
 					var rpcMethodName = method.Hints["jsonrpc-name"] ?? method.Name;
 
 					var parameters = method.Parameters
-						.Select(p => $"{p.Name}: {context.Resolve(p.Type)}")
+						.Select(p => $"{TS.Parameter(p.Name)}: {context.Resolve(p.Type)}")
 						.ToList();
 
 					using (writer.WriteIndentedBlock(prefix: $"async {TS.Method(method.Name)}Async({string.Join(", ", parameters)}): Promise<{context.Resolve(method.ReturnType)}> "))

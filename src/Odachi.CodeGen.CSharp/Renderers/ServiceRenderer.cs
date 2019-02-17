@@ -26,7 +26,7 @@ namespace Odachi.CodeGen.CSharp.Renderers
 
 			context.Import("Odachi.Abstractions");
 
-			using (writer.WriteIndentedBlock(prefix: $"public class {serviceFragment.Name} "))
+			using (writer.WriteIndentedBlock(prefix: $"public class {CS.Type(serviceFragment.Name)} "))
 			{
 				if (serviceFragment.Constants.Any())
 				{
@@ -37,7 +37,7 @@ namespace Odachi.CodeGen.CSharp.Renderers
 					writer.WriteSeparatingLine();
 				}
 
-				using (writer.WriteIndentedBlock(prefix: $"public {serviceFragment.Name}(IRpcClient client) "))
+				using (writer.WriteIndentedBlock(prefix: $"public {CS.Type(serviceFragment.Name)}(IRpcClient client) "))
 				{
 					writer.WriteIndentedLine("this._client = client;");
 				}
@@ -61,16 +61,16 @@ namespace Odachi.CodeGen.CSharp.Renderers
 					{
 						writer.Write($"public Task<{context.Resolve(method.ReturnType)}> ");
 					}
-					writer.Write($"{CS.Method(method.Name)}Async({string.Join(", ", method.Parameters.Select(p => $"{context.Resolve(p.Type)} {p.Name}"))})");
+					writer.Write($"{CS.Method(method.Name)}Async({string.Join(", ", method.Parameters.Select(p => $"{context.Resolve(p.Type)} {CS.Parameter(p.Name)}"))})");
 					using (writer.WriteBlock())
 					{
 						if (method.ReturnType.Name == "void")
 						{
-							writer.WriteIndentedLine($"return _client.CallAsync(\"{rpcModuleName}\", \"{rpcMethodName}\", new {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
+							writer.WriteIndentedLine($"return _client.CallAsync(\"{rpcModuleName}\", \"{rpcMethodName}\", new {{ {string.Join(", ", method.Parameters.Select(p => CS.Parameter(p.Name)))} }});");
 						}
 						else
 						{
-							writer.WriteIndentedLine($"return _client.CallAsync<{context.Resolve(method.ReturnType)}>(\"{rpcModuleName}\", \"{rpcMethodName}\", new {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
+							writer.WriteIndentedLine($"return _client.CallAsync<{context.Resolve(method.ReturnType)}>(\"{rpcModuleName}\", \"{rpcMethodName}\", new {{ {string.Join(", ", method.Parameters.Select(p => CS.Parameter(p.Name)))} }});");
 						}
 					}
 					writer.WriteLine();

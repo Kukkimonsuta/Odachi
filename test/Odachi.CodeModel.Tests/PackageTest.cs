@@ -91,9 +91,8 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Single(package.Modules);
-			Assert.Single(package.Modules[0].Fragments);
-			Assert.Equal("object", package.Modules[0].Fragments[0].Kind);
+			Assert.Single(package.Objects);
+			Assert.Equal(nameof(EmptyClass), package.Objects[0].Name);
 		}
 
 		[Fact]
@@ -104,10 +103,8 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Single(package.Modules);
-			Assert.Single(package.Modules[0].Fragments);
-			Assert.Equal("object", package.Modules[0].Fragments[0].Kind);
-			Assert.Collection(((ObjectFragment)package.Modules[0].Fragments[0]).Constants,
+			Assert.Single(package.Objects);
+			Assert.Collection(package.Objects[0].Constants,
 				constant =>
 				{
 					Assert.Equal("TestString", constant.Name);
@@ -129,10 +126,8 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Single(package.Modules);
-			Assert.Single(package.Modules[0].Fragments);
-			Assert.Equal("service", package.Modules[0].Fragments[0].Kind);
-			Assert.Collection(((ServiceFragment)package.Modules[0].Fragments[0]).Constants,
+			Assert.Single(package.Services);
+			Assert.Collection(package.Services[0].Constants,
 				constant =>
 				{
 					Assert.Equal("TestString", constant.Name);
@@ -154,9 +149,8 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Single(package.Modules);
-			Assert.Single(package.Modules[0].Fragments);
-			Assert.Equal("service", package.Modules[0].Fragments[0].Kind);
+			Assert.Single(package.Services);
+			Assert.Equal(nameof(EmptyClass), package.Services[0].Name);
 		}
 
 		[Fact]
@@ -167,9 +161,8 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Single(package.Modules);
-			Assert.Single(package.Modules[0].Fragments);
-			Assert.Equal("object", package.Modules[0].Fragments[0].Kind);
+			Assert.Single(package.Objects);
+			Assert.Equal(nameof(FieldClass), package.Objects[0].Name);
 		}
 
 		[Fact]
@@ -180,9 +173,8 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Single(package.Modules);
-			Assert.Single(package.Modules[0].Fragments);
-			Assert.Equal("object", package.Modules[0].Fragments[0].Kind);
+			Assert.Single(package.Objects);
+			Assert.Equal(nameof(PropertyClass), package.Objects[0].Name);
 		}
 
 		[Fact]
@@ -193,9 +185,8 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Single(package.Modules);
-			Assert.Single(package.Modules[0].Fragments);
-			Assert.Equal("service", package.Modules[0].Fragments[0].Kind);
+			Assert.Single(package.Services);
+			Assert.Equal(nameof(MethodClass), package.Services[0].Name);
 		}
 
 		[Fact]
@@ -206,23 +197,16 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Collection(package.Modules,
-				module =>
+			Assert.Collection(package.Objects,
+				fragment =>
 				{
-					Assert.Collection(module.Fragments,
-						fragment =>
+					Assert.Collection(fragment.Fields,
+						field =>
 						{
-							Assert.Equal("object", fragment.Kind);
-
-							Assert.Collection(((ObjectFragment)fragment).Fields,
-								field =>
-								{
-									Assert.Equal(nameof(ByteClass.Bar), field.Name);
-									Assert.Equal(TypeKind.Primitive, field.Type.Kind);
-									Assert.Equal("byte", field.Type.Name);
-									Assert.False(field.Type.IsNullable);
-								}
-							);
+							Assert.Equal(nameof(ByteClass.Bar), field.Name);
+							Assert.Equal(TypeKind.Primitive, field.Type.Kind);
+							Assert.Equal("byte", field.Type.Name);
+							Assert.False(field.Type.IsNullable);
 						}
 					);
 				}
@@ -237,23 +221,16 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Collection(package.Modules,
-				module =>
+			Assert.Collection(package.Objects,
+				fragment =>
 				{
-					Assert.Collection(module.Fragments,
-						fragment =>
+					Assert.Collection(fragment.Fields,
+						field =>
 						{
-							Assert.Equal("object", fragment.Kind);
-
-							Assert.Collection(((ObjectFragment)fragment).Fields,
-								field =>
-								{
-									Assert.Equal(nameof(ShortClass.Bar), field.Name);
-									Assert.Equal(TypeKind.Primitive, field.Type.Kind);
-									Assert.Equal("short", field.Type.Name);
-									Assert.False(field.Type.IsNullable);
-								}
-							);
+							Assert.Equal(nameof(ShortClass.Bar), field.Name);
+							Assert.Equal(TypeKind.Primitive, field.Type.Kind);
+							Assert.Equal("short", field.Type.Name);
+							Assert.False(field.Type.IsNullable);
 						}
 					);
 				}
@@ -268,23 +245,16 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Collection(package.Modules,
-				module =>
+			Assert.Collection(package.Objects,
+				fragment =>
 				{
-					Assert.Collection(module.Fragments,
-						fragment =>
+					Assert.Collection(fragment.Fields,
+						field =>
 						{
-							Assert.Equal("object", fragment.Kind);
-
-							Assert.Collection(((ObjectFragment)fragment).Fields,
-								field =>
-								{
-									Assert.Equal(nameof(IntClass.Bar), field.Name);
-									Assert.Equal(TypeKind.Primitive, field.Type.Kind);
-									Assert.Equal("integer", field.Type.Name);
-									Assert.False(field.Type.IsNullable);
-								}
-							);
+							Assert.Equal(nameof(IntClass.Bar), field.Name);
+							Assert.Equal(TypeKind.Primitive, field.Type.Kind);
+							Assert.Equal("integer", field.Type.Name);
+							Assert.False(field.Type.IsNullable);
 						}
 					);
 				}
@@ -299,23 +269,16 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Collection(package.Modules,
-				module =>
+			Assert.Collection(package.Objects,
+				fragment =>
 				{
-					Assert.Collection(module.Fragments,
-						fragment =>
+					Assert.Collection(fragment.Fields,
+						field =>
 						{
-							Assert.Equal("object", fragment.Kind);
-
-							Assert.Collection(((ObjectFragment)fragment).Fields,
-								field =>
-								{
-									Assert.Equal(nameof(NullableIntClass.Bar), field.Name);
-									Assert.Equal(TypeKind.Primitive, field.Type.Kind);
-									Assert.Equal("integer", field.Type.Name);
-									Assert.True(field.Type.IsNullable);
-								}
-							);
+							Assert.Equal(nameof(NullableIntClass.Bar), field.Name);
+							Assert.Equal(TypeKind.Primitive, field.Type.Kind);
+							Assert.Equal("integer", field.Type.Name);
+							Assert.True(field.Type.IsNullable);
 						}
 					);
 				}
@@ -330,22 +293,15 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Collection(package.Modules,
-				module =>
+			Assert.Collection(package.Objects,
+				fragment =>
 				{
-					Assert.Collection(module.Fragments,
-						fragment =>
+					Assert.Collection(((ObjectFragment)fragment).Fields,
+						field =>
 						{
-							Assert.Equal("object", fragment.Kind);
-
-							Assert.Collection(((ObjectFragment)fragment).Fields,
-								field =>
-								{
-									Assert.Equal(nameof(ValueTupleClass.Value), field.Name);
-									Assert.Equal(TypeKind.Tuple, field.Type.Kind);
-									Assert.False(field.Type.IsNullable);
-								}
-							);
+							Assert.Equal(nameof(ValueTupleClass.Value), field.Name);
+							Assert.Equal(TypeKind.Tuple, field.Type.Kind);
+							Assert.False(field.Type.IsNullable);
 						}
 					);
 				}
@@ -360,22 +316,15 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Collection(package.Modules,
-				module =>
+			Assert.Collection(package.Objects,
+				fragment =>
 				{
-					Assert.Collection(module.Fragments,
-						fragment =>
+					Assert.Collection(((ObjectFragment)fragment).Fields,
+						field =>
 						{
-							Assert.Equal("object", fragment.Kind);
-
-							Assert.Collection(((ObjectFragment)fragment).Fields,
-								field =>
-								{
-									Assert.Equal(nameof(NullableValueTupleClass.Value), field.Name);
-									Assert.Equal(TypeKind.Tuple, field.Type.Kind);
-									Assert.True(field.Type.IsNullable);
-								}
-							);
+							Assert.Equal(nameof(NullableValueTupleClass.Value), field.Name);
+							Assert.Equal(TypeKind.Tuple, field.Type.Kind);
+							Assert.True(field.Type.IsNullable);
 						}
 					);
 				}
@@ -390,19 +339,14 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Collection(package.Modules,
-				module =>
+			Assert.Collection(package.Enums,
+				fragment =>
 				{
-					Assert.Collection(module.Fragments,
-						fragment =>
-						{
-							Assert.Equal("enum", fragment.Kind);
+					Assert.Equal(nameof(StandardEnum), fragment.Name);
 
-							Assert.DoesNotContain(
-								fragment.Hints,
-								x => x.Key == "enum-flags" && x.Value == "true"
-							);
-						}
+					Assert.DoesNotContain(
+						fragment.Hints,
+						x => x.Key == "enum-flags" && x.Value == "true"
 					);
 				}
 			);
@@ -416,19 +360,14 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Collection(package.Modules,
-				module =>
+			Assert.Collection(package.Enums,
+				fragment =>
 				{
-					Assert.Collection(module.Fragments,
-						fragment =>
-						{
-							Assert.Equal("enum", fragment.Kind);
+					Assert.Equal(nameof(FlagsEnum), fragment.Name);
 
-							Assert.Contains(
-								fragment.Hints,
-								x => x.Key == "enum-flags" && x.Value == "true"
-							);
-						}
+					Assert.Contains(
+						fragment.Hints,
+						x => x.Key == "enum-flags" && x.Value == "true"
 					);
 				}
 			);
@@ -442,22 +381,16 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Collection(package.Modules,
-				module =>
+			Assert.Collection(package.Objects,
+				fragment =>
 				{
-					Assert.Collection(module.Fragments,
-						fragment =>
-						{
-							Assert.Equal("object", fragment.Kind);
-							Assert.Equal(nameof(SelfReferencingClass), fragment.Name);
+					Assert.Equal(nameof(SelfReferencingClass), fragment.Name);
 
-							Assert.Collection(((ObjectFragment)fragment).Fields,
-								field =>
-								{
-									Assert.Equal(nameof(SelfReferencingClass.Self), field.Name);
-									Assert.Equal(nameof(SelfReferencingClass), field.Type.Name);
-								}
-							);
+					Assert.Collection(fragment.Fields,
+						field =>
+						{
+							Assert.Equal(nameof(SelfReferencingClass.Self), field.Name);
+							Assert.Equal(nameof(SelfReferencingClass), field.Type.Name);
 						}
 					);
 				}

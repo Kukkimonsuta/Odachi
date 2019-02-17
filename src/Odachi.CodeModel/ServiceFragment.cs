@@ -11,8 +11,6 @@ namespace Odachi.CodeModel
 	/// </summary>
 	public class ServiceFragment : TypeFragment
 	{
-		public override string Kind => "service";
-
 		public IList<ConstantFragment> Constants { get; } = new List<ConstantFragment>();
 		public IList<MethodFragment> Methods { get; } = new List<MethodFragment>();
 	}

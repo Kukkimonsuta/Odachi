@@ -80,7 +80,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 						context.Import("@odachi/collections", "PagingOptions");
 						return $"PagingOptions{nullableSuffix}";
 
-					case "Tuple":
+					case "tuple":
 						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
@@ -161,7 +161,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return "[]";
 
-					case "Tuple":
+					case "tuple":
 						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
@@ -379,7 +379,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 							);
 						}
 
-					case "Tuple":
+					case "tuple":
 						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 

@@ -9,20 +9,18 @@ using Odachi.CodeModel.Mapping;
 
 namespace Odachi.CodeGen.TypeScript
 {
-	public class TypeScriptModuleContext : ModuleContext
+	public class TypeScriptModuleContext : ModuleContext<TypeScriptOptions>
 	{
-		public TypeScriptModuleContext(Package package, Module module, IReadOnlyList<ITypeHandler> typeHandlers, TypeScriptOptions options)
+		public TypeScriptModuleContext(TypeScriptPackageContext packageContext, string moduleName, IReadOnlyList<ITypeHandler> typeHandlers)
 		{
-			Package = package ?? throw new ArgumentNullException(nameof(package));
-			Module = module ?? throw new ArgumentNullException(nameof(module));
+			PackageContext = packageContext ?? throw new ArgumentNullException(nameof(packageContext));
+			ModuleName = moduleName ?? throw new ArgumentNullException(nameof(moduleName));
 			TypeHandlers = typeHandlers ?? throw new ArgumentNullException(nameof(typeHandlers));
-			Options = options ?? throw new ArgumentNullException(nameof(options));
 
-			FileName = TS.ModuleFileName(module.Name);
+			FileName = TS.ModuleFileName(ModuleName);
 		}
 
 		public IReadOnlyList<ITypeHandler> TypeHandlers { get; }
-		public TypeScriptOptions Options { get; }
 
 		private Dictionary<string, (List<string> named, string all)> _imports = new Dictionary<string, (List<string>, string)>();
 		private List<string> _helpers = new List<string>();
@@ -43,7 +41,7 @@ namespace Odachi.CodeGen.TypeScript
 
 					if (name.StartsWith("."))
 					{
-						name = PathTools.GetRelativePath(Module.Name, group.Key);
+						name = PathTools.GetRelativePath(ModuleName, group.Key);
 					}
 
 					writer.WriteIndent();
@@ -94,7 +92,7 @@ namespace Odachi.CodeGen.TypeScript
 		{
 			var didRender = false;
 
-			if (_defaultExport != null && Options.AllowDefaultExports)
+			if (_defaultExport != null && PackageContext.Options.AllowDefaultExports)
 			{
 				writer.WriteIndentedLine($"export default {_defaultExport};");
 
@@ -119,7 +117,7 @@ namespace Odachi.CodeGen.TypeScript
 		/// </summary>
 		public void Import(TypeReference type)
 		{
-			if (type.Module != null && type.Module != Module.Name)
+			if (type.Module != null && type.Module != ModuleName)
 			{
 				Import(TS.ModuleName(type.Module), type.Name);
 			}

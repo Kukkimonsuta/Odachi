@@ -17,8 +17,6 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 		{
 			return builder.Use(async (context, next) =>
 			{
-#pragma warning disable CS0618
-
 				var httpContextAccessor = context.AppServices.GetRequiredService<IHttpContextAccessor>();
 
 				IBlob HandleBlob(string path, string name)
@@ -34,26 +32,10 @@ namespace Odachi.AspNetCore.JsonRpc.Internal
 					return new FormFileBlob(file);
 				}
 
-				IStreamReference HandleReference(string path, string name)
-				{
-					var form = httpContextAccessor.HttpContext?.Request?.Form;
-					if (form == null)
-						return null;
-
-					var file = form.Files[name];
-					if (file == null)
-						return null;
-
-					return new FormFileStreamReference(file);
-				}
-
 				using (new BlobReadHandler(HandleBlob))
-				using (new StreamReferenceReadHandler(HandleReference))
 				{
 					await next();
 				}
-
-#pragma warning restore CS0618
 			});
 		}
 	}

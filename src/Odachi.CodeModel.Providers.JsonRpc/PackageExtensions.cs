@@ -42,24 +42,20 @@ namespace Odachi.CodeModel
 			if (methods == null)
 				throw new ArgumentNullException(nameof(methods));
 
-			var moduleName = builder.Context.GlobalDescriptor.GetModuleName(builder.Context, fragmentName);
-
 			return builder
-				.Module(moduleName, module => module
-					.Service(fragmentName, service =>
+				.Service(fragmentName, service =>
+				{
+					foreach (var method in methods)
 					{
-						foreach (var method in methods)
+						service.Method(method.MethodName.ToPascalInvariant(), ClrTypeReference.Create(method.ReturnType ?? typeof(void)), method, m =>
 						{
-							service.Method(method.MethodName.ToPascalInvariant(), ClrTypeReference.Create(method.ReturnType ?? typeof(void)), method, m =>
+							foreach (var parameter in method.Parameters.Where(p => p.Source == JsonRpcParameterSource.Request))
 							{
-								foreach (var parameter in method.Parameters.Where(p => p.Source == JsonRpcParameterSource.Request))
-								{
-									m.Parameter(parameter.Name, ClrTypeReference.Create(parameter.Type), parameter);
-								}
-							});
-						}
-					})
-				);
+								m.Parameter(parameter.Name, ClrTypeReference.Create(parameter.Type), parameter);
+							}
+						});
+					}
+				});
 		}
 	}
 }

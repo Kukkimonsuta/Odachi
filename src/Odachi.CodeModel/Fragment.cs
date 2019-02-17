@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Odachi.CodeModel
 {
 	/// <summary>
-	/// Represents part of module.
+	/// Base class for all schema building blocks.
 	/// </summary>
 	public abstract class Fragment
 	{
@@ -17,10 +17,10 @@ namespace Odachi.CodeModel
 	}
 
 	/// <summary>
-	/// Represents a fragment containing type.
+	/// Base class for all types (enums, objects, services).
 	/// </summary>
 	public abstract class TypeFragment : Fragment
 	{
-		public abstract string Kind { get; }
+		public string ModuleName { get; set; }
 	}
 }

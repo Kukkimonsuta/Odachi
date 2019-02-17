@@ -8,16 +8,16 @@ using Odachi.CodeModel;
 
 namespace Odachi.CodeGen.CSharp
 {
-	public class CSharpModuleContext : ModuleContext
+	public class CSharpModuleContext : ModuleContext<CSharpOptions>
 	{
-		public CSharpModuleContext(Package package, Module module, string packageNamespace)
+		public CSharpModuleContext(CSharpPackageContext packageContext, string moduleName)
 		{
-			Package = package ?? throw new ArgumentNullException(nameof(package));
-			Module = module ?? throw new ArgumentNullException(nameof(module));
-			FileName = CS.ModuleFileName(module.Name);
+			PackageContext = packageContext ?? throw new ArgumentNullException(nameof(packageContext));
+			ModuleName = moduleName ?? throw new ArgumentNullException(nameof(moduleName));
+			FileName = CS.ModuleFileName(ModuleName);
 
-			PackageNamespace = packageNamespace ?? throw new ArgumentNullException(nameof(packageNamespace));
-			ModuleNamespace = CS.ModuleNamespace(packageNamespace, module.Name);
+			PackageNamespace = packageContext.Options.Namespace ?? throw new ArgumentNullException(nameof(packageContext.Options));
+			ModuleNamespace = CS.ModuleNamespace(PackageNamespace, ModuleName);
 		}
 
 		public string PackageNamespace { get; }
@@ -71,7 +71,7 @@ namespace Odachi.CodeGen.CSharp
 
 		public void Import(TypeReference type)
 		{
-			if (type.Module != null && type.Module != Module.Name)
+			if (type.Module != null && type.Module != ModuleName)
 			{
 				var @namespace = CS.ModuleNamespace(PackageNamespace, type.Module);
 
@@ -188,7 +188,7 @@ namespace Odachi.CodeGen.CSharp
 
 						return $"Page<{Resolve(type.GenericArguments[0])}>";
 
-					case "Tuple":
+					case "tuple":
 						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 

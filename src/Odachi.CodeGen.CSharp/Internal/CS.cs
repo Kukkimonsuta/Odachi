@@ -4,12 +4,18 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Odachi.CodeModel;
 using Odachi.Extensions.Formatting;
 
 namespace Odachi.CodeGen.CSharp.Internal
 {
 	public class CS
 	{
+		public static string Type(string name)
+		{
+			return name.ToPascalInvariant();
+		}
+
 		public static string Field(string name)
 		{
 			return name.ToPascalInvariant();
@@ -18,6 +24,11 @@ namespace Odachi.CodeGen.CSharp.Internal
 		public static string Method(string name)
 		{
 			return name.ToPascalInvariant();
+		}
+
+		public static string Parameter(string name)
+		{
+			return name.ToCamelInvariant();
 		}
 
 		public static string ModuleFileName(string moduleName)

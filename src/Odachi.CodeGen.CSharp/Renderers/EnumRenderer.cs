@@ -26,7 +26,7 @@ namespace Odachi.CodeGen.CSharp.Renderers
 			{
 				writer.WriteIndentedLine($"[Flags]");
 			}
-			using (writer.WriteIndentedBlock(prefix: $"public enum {fragment.Name} "))
+			using (writer.WriteIndentedBlock(prefix: $"public enum {CS.Type(fragment.Name)} "))
 			{
 				foreach (var item in enumFragment.Items)
 				{
@@ -40,9 +40,9 @@ namespace Odachi.CodeGen.CSharp.Renderers
 			{
 				context.Import("System");
 
-				using (writer.WriteIndentedBlock(prefix: $"public static class {enumFragment.Name}Extensions "))
+				using (writer.WriteIndentedBlock(prefix: $"public static class {CS.Type(enumFragment.Name)}Extensions "))
 				{
-					using (writer.WriteIndentedBlock(prefix: $"public static string GetDisplayName(this {enumFragment.Name} value) "))
+					using (writer.WriteIndentedBlock(prefix: $"public static string GetDisplayName(this {CS.Type(enumFragment.Name)} value) "))
 					{
 						using (writer.WriteIndentedBlock(prefix: $"switch (value) "))
 						{
@@ -53,7 +53,7 @@ namespace Odachi.CodeGen.CSharp.Renderers
 									continue;
 								}
 
-								writer.WriteIndentedLine($"case {enumFragment.Name}.{CS.Field(item.Name)}:");
+								writer.WriteIndentedLine($"case {CS.Type(enumFragment.Name)}.{CS.Field(item.Name)}:");
 								writer.WriteIndentedLine($"{writer.IndentString}return \"{displayName}\";");
 							}
 

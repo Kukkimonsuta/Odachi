@@ -11,8 +11,6 @@ namespace Odachi.CodeModel
 	/// </summary>
 	public class EnumFragment : TypeFragment
 	{
-		public override string Kind => "enum";
-
 		public IList<EnumItemFragment> Items { get; } = new List<EnumItemFragment>();
 	}
 }

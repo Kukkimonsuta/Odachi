@@ -26,7 +26,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.Renderers
 
 			var genericSuffix = string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name));
 
-			using (writer.WriteIndentedBlock(prefix: $"class {objectFragment.Name}{(genericSuffix.Length > 0 ? $"<{genericSuffix}>" : "")} "))
+			using (writer.WriteIndentedBlock(prefix: $"class {TS.Type(objectFragment.Name)}{(genericSuffix.Length > 0 ? $"<{genericSuffix}>" : "")} "))
 			{
 				if (objectFragment.Constants.Any())
 				{
@@ -51,13 +51,13 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.Renderers
 					var genericParameters = $"<{string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name))}>";
 					var factoryParameters = string.Join(", ", objectFragment.GenericArguments.Select(a => $"{a.Name}_factory: {{ create(source: any): {a.Name} }}"));
 
-					using (writer.WriteIndentedBlock(prefix: $"static create{genericParameters}({factoryParameters}): {{ create: (source: any) => {objectFragment.Name}{genericParameters} }} "))
+					using (writer.WriteIndentedBlock(prefix: $"static create{genericParameters}({factoryParameters}): {{ create: (source: any) => {TS.Type(objectFragment.Name)}{genericParameters} }} "))
 					{
 						using (writer.WriteIndentedBlock(prefix: $"return ", suffix: ";"))
 						{
 							using (writer.WriteIndentedBlock(prefix: $"create: (source: any) => "))
 							{
-								writer.WriteIndentedLine($"const result = new {objectFragment.Name}{genericParameters}();");
+								writer.WriteIndentedLine($"const result = new {TS.Type(objectFragment.Name)}{genericParameters}();");
 								foreach (var field in objectFragment.Fields)
 								{
 									writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
@@ -69,9 +69,9 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.Renderers
 				}
 				else
 				{
-					using (writer.WriteIndentedBlock(prefix: $"static create(source: any): {objectFragment.Name} "))
+					using (writer.WriteIndentedBlock(prefix: $"static create(source: any): {TS.Type(objectFragment.Name)} "))
 					{
-						writer.WriteIndentedLine($"const result = new {objectFragment.Name}();");
+						writer.WriteIndentedLine($"const result = new {TS.Type(objectFragment.Name)}();");
 						foreach (var field in objectFragment.Fields)
 						{
 							writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
