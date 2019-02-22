@@ -219,23 +219,29 @@ namespace Odachi.CodeModel.Builders
 				Name = Name,
 			};
 
-			for (var i = 0; i < Enums.Count; i++)
+			int enumIndex = 0;
+			int objectIndex = 0;
+			int serviceIndex = 0;
+			while (enumIndex < Enums.Count || objectIndex < Objects.Count || serviceIndex < Services.Count)
 			{
-				var @enum = Enums[i];
+				for (; enumIndex < Enums.Count; enumIndex++)
+				{
+					var @enum = Enums[enumIndex];
 
-				result.Enums.Add(@enum.Build());
-			}
-			for (var i = 0; i < Objects.Count; i++)
-			{
-				var @object = Objects[i];
+					result.Enums.Add(@enum.Build());
+				}
+				for (; objectIndex < Objects.Count; objectIndex++)
+				{
+					var @object = Objects[objectIndex];
 
-				result.Objects.Add(@object.Build());
-			}
-			for (var i = 0; i < Services.Count; i++)
-			{
-				var service = Services[i];
+					result.Objects.Add(@object.Build());
+				}
+				for (; serviceIndex < Services.Count; serviceIndex++)
+				{
+					var service = Services[serviceIndex];
 
-				result.Services.Add(service.Build());
+					result.Services.Add(service.Build());
+				}
 			}
 
 			foreach (var hint in Hints)
@@ -496,7 +502,13 @@ namespace Odachi.CodeModel.Builders
 					{
 						if (!method.IsStatic)
 						{
-							serviceBuilder.Method(method.Name, method.ReturnType, (objectType, method));
+							serviceBuilder.Method(method.Name, method.ReturnType, (objectType, method), methodBuilder =>
+							{
+								foreach (var parameter in method.GetParameters())
+								{
+									methodBuilder.Parameter(parameter.Name, parameter.ParameterType, parameter);
+								}
+							});
 						}
 					}
 				}

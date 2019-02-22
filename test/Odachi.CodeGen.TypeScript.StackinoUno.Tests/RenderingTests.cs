@@ -497,6 +497,42 @@ export { ConstantsClass };
 		}
 
 		[Fact]
+		public void Service()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Service_Default(typeof(ServiceClass))
+				.Build();
+
+			var result = RenderModule(package, $".\\{nameof(ServiceClass)}");
+
+			Assert.Equal(@"import { net } from '@stackino/uno';
+import { injectable } from 'inversify';
+
+function fail(message: string): never { throw new Error(message); }
+const _$$_factory_boolean = { create: (source: any): boolean => typeof source === 'boolean' ? source : fail(`Contract violation: expected boolean, got \'{typeof(source)}\'`) };
+
+// source: Odachi.CodeModel.Tests.ServiceClass, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
+
+@injectable()
+class ServiceClass {
+	constructor(client: net.JsonRpcClient) {
+		this.client = client;
+	}
+
+	private client: net.JsonRpcClient;
+
+	async testAsync(foo: string | null, bar: number): Promise<boolean> {
+		const result = await this.client.callAsync('Test', { foo, bar });
+		return _$$_factory_boolean.create(result);
+	}
+}
+
+export default ServiceClass;
+export { ServiceClass };
+", result);
+		}
+
+		[Fact]
 		public void Enum()
 		{
 			var package = new PackageBuilder("Test")

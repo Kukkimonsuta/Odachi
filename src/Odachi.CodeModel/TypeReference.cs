@@ -79,12 +79,13 @@ namespace Odachi.CodeModel
 			GenericArguments = genericArguments ?? throw new ArgumentNullException(nameof(genericArguments));
 		}
 
-		/// <summary>
-		/// generic-parameter://
-		/// builtin://odachi.code-gen/file
-		/// package://./my-dal-thing
-		/// package://odachi.extensions.collections/page
-		/// </summary>
+		/*
+		Future?
+		 generic-parameter://
+		 builtin://odachi.code-gen/file
+		 package://./my-dal-thing
+		 package://odachi.extensions.collections/page
+		*/
 		public string Module { get; set; }
 		public string Name { get; set; }
 		public TypeKind Kind { get; set; }

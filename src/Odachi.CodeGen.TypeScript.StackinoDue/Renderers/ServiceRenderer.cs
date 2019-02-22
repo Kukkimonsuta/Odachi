@@ -60,11 +60,11 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 					{
 						if (method.ReturnType.Name == "void")
 						{
-							writer.WriteIndentedLine($"await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", parameters)} }});");
+							writer.WriteIndentedLine($"await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
 						}
 						else
 						{
-							writer.WriteIndentedLine($"const result = await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", parameters)} }});");
+							writer.WriteIndentedLine($"const result = await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
 							writer.WriteIndentedLine($"return {context.CreateExpression(method.ReturnType, "result")};");
 						}
 					}

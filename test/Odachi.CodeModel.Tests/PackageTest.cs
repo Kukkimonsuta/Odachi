@@ -45,6 +45,14 @@ namespace Odachi.CodeModel.Tests
 		}
 	}
 
+	public class ServiceClass
+	{
+		public bool Test(string foo, int bar)
+		{
+			return true;
+		}
+	}
+
 	public class ConstantsClass
 	{
 		public const string TestString = "fiftyfive";

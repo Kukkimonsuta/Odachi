@@ -9,13 +9,8 @@ namespace Odachi.CodeModel
 	/// <summary>
 	/// Represents a SDK.
 	/// </summary>
-	public class Package
+	public class Package : Fragment
 	{
-		/// <summary>
-		/// Package name.
-		/// </summary>
-		public string Name { get; set; }
-
 		/// <summary>
 		/// Objects.
 		/// </summary>
@@ -30,10 +25,5 @@ namespace Odachi.CodeModel
 		/// Services.
 		/// </summary>
 		public IList<ServiceFragment> Services { get; } = new List<ServiceFragment>();
-
-		/// <summary>
-		/// Hints.
-		/// </summary>
-		public IDictionary<string, string> Hints { get; } = new Dictionary<string, string>();
 	}
 }

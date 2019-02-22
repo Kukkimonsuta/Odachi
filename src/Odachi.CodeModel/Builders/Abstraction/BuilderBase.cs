@@ -16,7 +16,7 @@ namespace Odachi.CodeModel.Builders.Abstraction
 
 		public PackageContext Context { get; }
 
-		public IDictionary<string, string> Hints { get; } = new Dictionary<string, string>();
+		public IDictionary<string, string> Hints { get; } = new HintCollection();
 
 		public TSelf Hint(string key, string value)
 		{
