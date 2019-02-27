@@ -38,7 +38,7 @@ namespace Odachi.CodeModel.Builders
 				var type = Context.TypeMapper.Get(underlyingType, out var resolvedType, tryRegister: true);
 				if (type == null)
 				{
-					throw new InvalidOperationException($"Cannot resolve reference '{ToString()}'");
+					throw new InvalidOperationException($"Cannot resolve reference '{underlyingType.FullName}'");
 				}
 
 				var resolvedTypeGenericArguments = resolvedType.GetGenericArguments();
