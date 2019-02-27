@@ -375,12 +375,12 @@ export { ObjectWithPaging };
 			var result = RenderModule(package, $".\\{nameof(GuidClass)}");
 
 			Assert.Equal(@"function fail(message: string): never { throw new Error(message); }
-const _$$_factory_guid = { create: (source: any): guid => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+const _$$_factory_guid = { create: (source: any): string => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.GuidClass, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class GuidClass {
-	foo: guid = '00000000-0000-0000-0000-000000000000';
+	foo: string = '00000000-0000-0000-0000-000000000000';
 
 	static create(source: any): GuidClass {
 		const result = new GuidClass();

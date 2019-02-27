@@ -28,11 +28,16 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 					case "void":
 					case "boolean":
 					case "string":
-					case "guid": /* TODO: specialize guid? */
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
 
 						return $"{type.Name}{nullableSuffix}";
+
+					case "guid": /* TODO: specialize guid? */
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						return $"string{nullableSuffix}";
 
 					case "byte":
 					case "short":
