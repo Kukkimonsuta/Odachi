@@ -34,6 +34,7 @@ namespace Odachi.CodeModel.Mapping
 		public static readonly BuiltinTypeDefinition DateTime = new BuiltinTypeDefinition("datetime");
 		public static readonly BuiltinTypeDefinition Array = new BuiltinTypeDefinition("array", new GenericArgumentDefinition("T"));
 		public static readonly BuiltinTypeDefinition File = new BuiltinTypeDefinition("file");
+		public static readonly BuiltinTypeDefinition Guid = new BuiltinTypeDefinition("guid");
 
 		public static readonly BuiltinTypeDefinition Tuple1 = new BuiltinTypeDefinition("tuple", new GenericArgumentDefinition("T1"));
 		public static readonly BuiltinTypeDefinition Tuple2 = new BuiltinTypeDefinition("tuple", new GenericArgumentDefinition("T1"), new GenericArgumentDefinition("T2"));

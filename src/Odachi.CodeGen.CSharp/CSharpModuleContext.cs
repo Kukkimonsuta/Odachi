@@ -172,6 +172,14 @@ namespace Odachi.CodeGen.CSharp
 
 						return $"IBlob";
 
+					case "guid":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						Import("System");
+
+						return "Guid";
+
 					case "PagingOptions":
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");

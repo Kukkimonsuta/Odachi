@@ -37,6 +37,11 @@ namespace Odachi.CodeModel.Tests
 		public string Foo { get; set; }
 	}
 
+	public class GuidClass
+	{
+		public Guid Foo { get; set; }
+	}
+
 	public class MethodClass
 	{
 		public bool Test()
@@ -287,6 +292,30 @@ namespace Odachi.CodeModel.Tests
 							Assert.Equal(TypeKind.Primitive, field.Type.Kind);
 							Assert.Equal("integer", field.Type.Name);
 							Assert.True(field.Type.IsNullable);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_guid()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<GuidClass>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Objects,
+				fragment =>
+				{
+					Assert.Collection(fragment.Fields,
+						field =>
+						{
+							Assert.Equal(nameof(GuidClass.Foo), field.Name);
+							Assert.Equal(TypeKind.Struct, field.Type.Kind);
+							Assert.Equal("guid", field.Type.Name);
+							Assert.False(field.Type.IsNullable);
 						}
 					);
 				}

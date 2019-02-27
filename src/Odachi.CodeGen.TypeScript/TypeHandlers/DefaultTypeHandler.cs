@@ -28,6 +28,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 					case "void":
 					case "boolean":
 					case "string":
+					case "guid": /* TODO: specialize guid? */
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
 
@@ -136,6 +137,12 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
 
 						return "''";
+
+					case "guid":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						return "'00000000-0000-0000-0000-000000000000'";
 
 					case "byte":
 					case "short":
@@ -295,6 +302,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 						);
 
 					case "string":
+					case "guid":
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 

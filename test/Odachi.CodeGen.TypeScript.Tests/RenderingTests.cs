@@ -366,6 +366,35 @@ export { ObjectWithPaging };
 		}
 
 		[Fact]
+		public void Object_with_guid()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default(typeof(GuidClass))
+				.Build();
+
+			var result = RenderModule(package, $".\\{nameof(GuidClass)}");
+
+			Assert.Equal(@"function fail(message: string): never { throw new Error(message); }
+const _$$_factory_guid = { create: (source: any): guid => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+
+// source: Odachi.CodeModel.Tests.GuidClass, Odachi.CodeModel.Tests, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null
+
+class GuidClass {
+	foo: guid = '00000000-0000-0000-0000-000000000000';
+
+	static create(source: any): GuidClass {
+		const result = new GuidClass();
+		result.foo = _$$_factory_guid.create(source.foo);
+		return result;
+	}
+}
+
+export default GuidClass;
+export { GuidClass };
+", result);
+		}
+
+		[Fact]
 		public void Object_with_constants()
 		{
 			var package = new PackageBuilder("Test")
