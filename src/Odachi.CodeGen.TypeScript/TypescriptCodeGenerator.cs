@@ -108,7 +108,7 @@ namespace Odachi.CodeGen.TypeScript
 
 			context.Export($"sdkModule", @default: true);
 
-			using (var stream = new FileStream(Path.Combine(packageContext.Options.Path, context.ModuleName), FileMode.Create, FileAccess.Write, FileShare.Read))
+			using (var stream = new FileStream(Path.Combine(packageContext.Options.Path, context.FileName), FileMode.Create, FileAccess.Write, FileShare.Read))
 			using (var writer = new IndentedTextWriter(new StreamWriter(stream, new UTF8Encoding(false))))
 			{
 				context.RenderHeader(writer);

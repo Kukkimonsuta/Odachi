@@ -11,8 +11,21 @@ using Odachi.CodeGen.Rendering;
 
 namespace Odachi.CodeGen.TypeScript.Renderers
 {
+	public class ServiceRendererOptions
+	{
+		public string RpcClientModule { get; set; } = "@odachi/rpc-client";
+		public string RpcClientImport { get; set; } = "RpcClient";
+	}
+
 	public class ServiceRenderer : IFragmentRenderer<TypeScriptModuleContext>
 	{
+		public ServiceRenderer(ServiceRendererOptions options = null)
+		{
+			Options = options ?? new ServiceRendererOptions();
+		}
+
+		public ServiceRendererOptions Options { get; }
+
 		public bool Render(TypeScriptModuleContext context, Fragment fragment, IndentedTextWriter writer)
 		{
 			if (!(fragment is ServiceFragment serviceFragment))
@@ -35,14 +48,14 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					writer.WriteSeparatingLine();
 				}
 
-				context.Import("@odachi/rpc-client", "RpcClient");
-				using (writer.WriteIndentedBlock(prefix: "constructor(client: RpcClient) "))
+				context.Import(Options.RpcClientModule, Options.RpcClientImport);
+				using (writer.WriteIndentedBlock(prefix: $"constructor(client: {Options.RpcClientImport}) "))
 				{
 					writer.WriteIndentedLine("this.client = client;");
 				}
 				writer.WriteSeparatingLine();
 
-				writer.WriteIndentedLine("private client: RpcClient;");
+				writer.WriteIndentedLine($"private client: {Options.RpcClientImport};");
 				writer.WriteSeparatingLine();
 
 				foreach (var method in serviceFragment.Methods)
