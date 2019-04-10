@@ -249,7 +249,7 @@ namespace Odachi.Validation
 			}
 		}
 
-		bool ICollection<ValidationMessage>.IsReadOnly => throw new NotImplementedException();
+		bool ICollection<ValidationMessage>.IsReadOnly => false;
 
 		#endregion
 
