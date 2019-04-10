@@ -13,10 +13,7 @@ namespace Odachi.Validation
 		}
 		public Validator(ValidationState state)
 		{
-			if (state == null)
-				throw new ArgumentNullException(nameof(state));
-
-			State = state;
+			State = state ?? throw new ArgumentNullException(nameof(state));
 		}
 
 		public ValidationState State { get; }
@@ -25,30 +22,32 @@ namespace Odachi.Validation
 
 		public bool HasErrors => State.HasErrors;
 
-		public Validator Message(string name, ValidationMessage message)
+		public Validator Message(ValidationMessage message)
 		{
-			State.Add(name, message);
+			State.Add(message);
 
 			return this;
 		}
 
-		public Validator Warning(string name, string message)
+		public Validator Warning(string key, string message)
 		{
-			Message(name, new ValidationMessage()
+			State.Add(new ValidationMessage()
 			{
-				Level = ValidationLevel.Warning,
-				Message = message,
+				Key = key,
+				Severity = ValidationSeverity.Warning,
+				Text = message,
 			});
 
 			return this;
 		}
 
-		public Validator Error(string name, string message)
+		public Validator Error(string key, string message)
 		{
-			Message(name, new ValidationMessage()
+			State.Add(new ValidationMessage()
 			{
-				Level = ValidationLevel.Error,
-				Message = message,
+				Key = key,
+				Severity = ValidationSeverity.Error,
+				Text = message,
 			});
 
 			return this;

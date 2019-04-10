@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -11,93 +12,158 @@ namespace Odachi.Validation
 	/// Collection of validation messages.
 	/// </summary>
 	[DataContract]
-	public class ValidationState
+	public class ValidationState : ICollection<ValidationMessage>
 	{
 		public ValidationState()
 		{
-			State = new Dictionary<string, IList<ValidationMessage>>();
-		}
-		public ValidationState(IDictionary<string, IList<ValidationMessage>> state)
-		{
-			if (state == null)
-				throw new ArgumentNullException(nameof(state));
-
-			State = state;
+			_messages = new Dictionary<string, IList<ValidationMessage>>();
 		}
 
-		[DataMember]
-		public IDictionary<string, IList<ValidationMessage>> State { get; private set; }
+		private IDictionary<string, IList<ValidationMessage>> _messages;
+
+		public int Count => _messages.Sum(p => p.Value.Count);
 
 		/// <summary>
 		/// Returns validation messages for given field name. Returns zero results if there are no results.
 		/// </summary>
-		public IEnumerable<ValidationMessage> this[string name]
+		public IEnumerable<ValidationMessage> this[string key]
 		{
 			get
 			{
-				if (name == null)
-					throw new ArgumentNullException(nameof(name));
+				if (key == null)
+					throw new ArgumentNullException(nameof(key));
 
-				return State.TryGetValue(name, out var result) ? result : Enumerable.Empty<ValidationMessage>();
+				return _messages.TryGetValue(key, out var result) ? result : Enumerable.Empty<ValidationMessage>();
 			}
 		}
 
 		/// <summary>
-		/// Adds message into the dictionary.
+		/// Adds a message for given key.
 		/// </summary>
-		public void Add(string name, ValidationMessage message)
+		public void Add(ValidationSeverity severity, string key, string text)
 		{
-			if (!State.TryGetValue(name, out var propertyState))
-				State.Add(name, propertyState = new List<ValidationMessage>());
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
+			if (text == null)
+				throw new ArgumentNullException(nameof(text));
+
+			Add(new ValidationMessage()
+			{
+				Severity = severity,
+				Key = key,
+				Text = text,
+			});
+		}
+		/// <summary>
+		/// Adds a message for given key.
+		/// </summary>
+		public void Add(ValidationMessage message)
+		{
+			if (!_messages.TryGetValue(message.Key, out var propertyState))
+				_messages.Add(message.Key, propertyState = new List<ValidationMessage>());
 
 			propertyState.Add(message);
+		}
+
+		/// <summary>
+		/// Determines whether collection contains given message.
+		/// </summary>
+		public bool Contains(ValidationMessage message)
+		{
+			return _messages.Any(p => p.Value.Contains(message));
+		}
+
+		/// <summary>
+		/// Remove all messages for given key.
+		/// </summary>
+		public void Remove(string key)
+		{
+			_messages.Remove(key);
+		}
+
+		/// <summary>
+		/// Remove given message.
+		/// </summary>
+		public bool Remove(ValidationMessage message)
+		{
+			if (!_messages.TryGetValue(message.Key, out var propertyState))
+				return false;
+
+			return propertyState.Remove(message);
+		}
+
+		/// <summary>
+		/// Remove all messages.
+		/// </summary>
+		public void Clear()
+		{
+			_messages.Clear();
 		}
 
 		#region Warnings
 
 		/// <summary>
-		/// Adds warning into the dictionary.
-		/// </summary>
-		public void AddWarning(string name, string message)
-		{
-			Add(name, new ValidationMessage()
-			{
-				Level = ValidationLevel.Warning,
-				Message = message,
-			});
-		}
-
-		/// <summary>
 		/// Returns whether there are any warnings.
 		/// </summary>
-		public bool HasWarnings => State.Any(s => s.Value.Any(m => m.Level == ValidationLevel.Error));
+		public bool HasWarnings => _messages.Any(s => s.Value.Any(m => m.Severity == ValidationSeverity.Warning));
 
 		/// <summary>
-		/// Returns an warning or null for given field name.
+		/// Adds warning into the dictionary.
 		/// </summary>
-		public string GetWarning(string name)
+		public void AddWarning(string key, string message)
 		{
-			if (name == null)
-				throw new ArgumentNullException(nameof(name));
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
+			if (message == null)
+				throw new ArgumentNullException(nameof(message));
 
-			if (!State.TryGetValue(name, out var state))
-				return null;
-
-			return state.FirstOrDefault().Message;
+			Add(ValidationSeverity.Warning, key, message);
 		}
 
 		/// <summary>
-		/// Returns all warnings for given field name.
+		/// Returns all warning messages for given key.
 		/// </summary>
-		public IEnumerable<string> GetWarnings(string name)
+		public IEnumerable<ValidationMessage> GetWarningMessages(string key)
 		{
-			if (name == null)
-				throw new ArgumentNullException(nameof(name));
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
 
-			if (!State.TryGetValue(name, out var state))
-				return null;
+			if (!_messages.TryGetValue(key, out var propertyState))
+			{
+				yield break;
+			}
 
-			return state.Select(s => s.Message);
+			foreach (var message in propertyState)
+			{
+				if (message.Severity != ValidationSeverity.Warning)
+				{
+					continue;
+				}
+
+				yield return message;
+			}
+		}
+
+		/// <summary>
+		/// Returns first warning message or null for given key.
+		/// </summary>
+		public ValidationMessage GetWarningMessage(string key)
+		{
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
+
+			return GetWarningMessages(key).FirstOrDefault();
+		}
+
+		/// <summary>
+		/// Returns first warning message text or null for given key.
+		/// </summary>
+		public string GetWarningText(string key)
+		{
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
+
+			return GetWarningMessages(key).FirstOrDefault()?.Text;
 		}
 
 		#endregion
@@ -105,48 +171,98 @@ namespace Odachi.Validation
 		#region Errors
 
 		/// <summary>
-		/// Adds error into the dictionary.
-		/// </summary>
-		public void AddError(string name, string message)
-		{
-			Add(name, new ValidationMessage()
-			{
-				Level = ValidationLevel.Error,
-				Message = message,
-			});
-		}
-
-		/// <summary>
 		/// Returns whether there are any errors.
 		/// </summary>
-		public bool HasErrors => State.Any(s => s.Value.Any(m => m.Level == ValidationLevel.Error));
+		public bool HasErrors => _messages.Any(s => s.Value.Any(m => m.Severity == ValidationSeverity.Error));
 
 		/// <summary>
-		/// Returns an error or null for given field name.
+		/// Adds error into the dictionary.
 		/// </summary>
-		public string GetError(string name)
+		public void AddError(string key, string message)
 		{
-			if (name == null)
-				throw new ArgumentNullException(nameof(name));
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
+			if (message == null)
+				throw new ArgumentNullException(nameof(message));
 
-			if (!State.TryGetValue(name, out var state))
-				return null;
-
-			return state.FirstOrDefault().Message;
+			Add(ValidationSeverity.Error, key, message);
 		}
 
 		/// <summary>
-		/// Returns all errors for given field name.
+		/// Returns all error messages for given key.
 		/// </summary>
-		public IEnumerable<string> GetErrors(string name)
+		public IEnumerable<ValidationMessage> GetErrorMessages(string key)
 		{
-			if (name == null)
-				throw new ArgumentNullException(nameof(name));
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
 
-			if (!State.TryGetValue(name, out var state))
-				return null;
+			if (!_messages.TryGetValue(key, out var propertyState))
+			{
+				yield break;
+			}
 
-			return state.Select(s => s.Message);
+			foreach (var message in propertyState)
+			{
+				if (message.Severity != ValidationSeverity.Error)
+				{
+					continue;
+				}
+
+				yield return message;
+			}
+		}
+
+		/// <summary>
+		/// Returns first error message or null for given key.
+		/// </summary>
+		public ValidationMessage GetErrorMessage(string key)
+		{
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
+
+			return GetErrorMessages(key).FirstOrDefault();
+		}
+
+		/// <summary>
+		/// Returns first error message text or null for given key.
+		/// </summary>
+		public string GetErrorText(string key)
+		{
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
+
+			return GetErrorMessages(key).FirstOrDefault()?.Text;
+		}
+
+		#endregion
+
+		#region ICollection
+
+		public void CopyTo(ValidationMessage[] array, int arrayIndex)
+		{
+			foreach (var pair in _messages)
+			{
+				foreach (var message in pair.Value)
+				{
+					array[arrayIndex++] = message;
+				}
+			}
+		}
+
+		bool ICollection<ValidationMessage>.IsReadOnly => throw new NotImplementedException();
+
+		#endregion
+
+		#region IEnumerable
+
+		public IEnumerator<ValidationMessage> GetEnumerator()
+		{
+			return _messages.SelectMany(p => p.Value).GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 
 		#endregion

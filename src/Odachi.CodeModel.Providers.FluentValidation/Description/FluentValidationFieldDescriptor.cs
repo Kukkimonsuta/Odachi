@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Odachi.CodeModel.Builders;
 using Odachi.CodeModel.Description;
@@ -12,7 +12,7 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description
 		{
 			if (FluentValidationDescriptionHelper.IsRequired(type, fieldInfo))
 			{
-				builder.Type.IsNullable = false;
+				builder.Hint("validation:is-required", "true");
 			}
 		}
 
@@ -20,7 +20,7 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description
 		{
 			if (FluentValidationDescriptionHelper.IsRequired(type, propertyInfo))
 			{
-				builder.Type.IsNullable = false;
+				builder.Hint("validation:is-required", "true");
 			}
 		}
 
