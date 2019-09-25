@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\tools\common.props" />
 
@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../Odachi.CodeModel/Odachi.CodeModel.csproj" />
-    <ProjectReference Include="..\Odachi.JsonRpc.Server\Odachi.JsonRpc.Server.csproj" />
+    <ProjectReference Include="../Odachi.JsonRpc.Server/Odachi.JsonRpc.Server.csproj" />
   </ItemGroup>
 
 </Project>

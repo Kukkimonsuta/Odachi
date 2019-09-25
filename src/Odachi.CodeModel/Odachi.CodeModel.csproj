@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
 		<Description>Code description library.</Description>
-		<TargetFrameworks>netstandard2.0;netstandard1.5</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
@@ -16,9 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
   </ItemGroup>
 
 </Project>

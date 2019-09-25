@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\tools\common.props" />
 
@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

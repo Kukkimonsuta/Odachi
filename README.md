@@ -29,11 +29,6 @@ ASP.NET Core jsonrpc middleware.<br />
 ASP.NET MVC extensions and helpers.<br />
 ❓ Internal use. May change outside of semver.
 
-## Odachi.AspNetCore.MvcPages
-
-Alternative way to structure MVC projects.<br />
-❗ Internal use. Most likely will be removed after asp.net core 2.0 with razor pages which accomplishes same goal.
-
 ## Odachi.CodeGen
 
 Base for code generators using `Odachi.CodeModel`.<br />

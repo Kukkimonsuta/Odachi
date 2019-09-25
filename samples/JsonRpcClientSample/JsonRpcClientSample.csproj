@@ -3,7 +3,7 @@
   <Import Project="..\..\tools\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 

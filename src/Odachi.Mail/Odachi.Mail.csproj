@@ -1,16 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="..\..\tools\common.props" />
 
 	<PropertyGroup>
 		<Description>E-mail template based on `Razor`.</Description>
-		<TargetFrameworks>netstandard2.0;netstandard1.3</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Text.Encodings.Web" Version="4.5.0" />
-		<PackageReference Include="MimeKit" Version="2.0.6" />
+		<PackageReference Include="System.Text.Encodings.Web" Version="4.6.0" />
+		<PackageReference Include="MimeKit" Version="2.3.1" />
 	</ItemGroup>
 
 </Project>

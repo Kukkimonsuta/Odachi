@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="..\..\tools\common.props" />
 
   <PropertyGroup>
 		<Description>Alternative way to structure MVC projects.</Description>
-		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 

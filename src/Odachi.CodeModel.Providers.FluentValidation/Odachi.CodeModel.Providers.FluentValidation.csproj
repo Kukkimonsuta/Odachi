@@ -4,7 +4,7 @@
 
 	<PropertyGroup>
 		<Description>Code description providers for `FluentValidation`.</Description>
-		<TargetFrameworks>netstandard2.0;netstandard1.5</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="8.0.0" />
-    <PackageReference Include="FluentValidation.ValidatorAttribute" Version="8.0.0" />
+    <PackageReference Include="FluentValidation" Version="8.5.0" />
+    <PackageReference Include="FluentValidation.ValidatorAttribute" Version="8.5.0" />
   </ItemGroup>
 
 </Project>

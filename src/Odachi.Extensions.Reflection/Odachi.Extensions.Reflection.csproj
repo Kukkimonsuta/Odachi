@@ -4,12 +4,8 @@
 
   <PropertyGroup>
     <Description>Reflection extensions. Includes awaitable detection and execution helpers.</Description>
-    <TargetFrameworks>netstandard2.0;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
-  </ItemGroup>
 
 </Project>

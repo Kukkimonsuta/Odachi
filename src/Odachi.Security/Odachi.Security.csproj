@@ -4,12 +4,8 @@
 
 	<PropertyGroup>
 		<Description>Role/Permission definition helpers. This is just a proof of concept, usage is not recommended.</Description>
-		<TargetFrameworks>netstandard2.0;netstandard1.3</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="System.Security.Claims" Version="4.3.0" />
-	</ItemGroup>
 
 </Project>

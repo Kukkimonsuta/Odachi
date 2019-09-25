@@ -138,7 +138,7 @@ namespace Odachi.AspNetCore.JsonRpc
 		{
 			using (var reader = await CreateRequestReaderAsync(httpContext, serializer))
 			{
-				var requestJsonToken = JToken.ReadFrom(reader);
+				var requestJsonToken = await JToken.ReadFromAsync(reader);
 				if (requestJsonToken.Type != JTokenType.Object)
 					throw new JsonRpcException(JsonRpcError.INVALID_REQUEST, "Invalid request (wrong root type)");
 

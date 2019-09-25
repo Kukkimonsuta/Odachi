@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="..\..\tools\common.props" />
 
   <PropertyGroup>
 		<Description>ASP.NET Core jsonrpc middleware.</Description>
-		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
@@ -16,18 +16,8 @@
     <ProjectReference Include="..\Odachi.JsonRpc.Server\Odachi.JsonRpc.Server.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="2.1.1" />
-		<PackageReference Include="Microsoft.Net.Http.Headers" Version="2.1.1" />
-	</ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
 </Project>

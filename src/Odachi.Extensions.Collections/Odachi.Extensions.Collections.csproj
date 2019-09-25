@@ -4,16 +4,12 @@
 
   <PropertyGroup>
     <Description>Collection extensions. Includes paging and sorting.</Description>
-    <TargetFrameworks>netstandard2.0;netstandard1.3;netstandard1.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="../Odachi.Abstractions/Odachi.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
   </ItemGroup>
 
 </Project>

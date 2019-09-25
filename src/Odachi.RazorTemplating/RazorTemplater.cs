@@ -55,7 +55,7 @@ namespace Odachi.RazorTemplating
 				RazorProjectFileSystem.Create(ProjectDirectory),
 				config =>
 				{
-					InheritsDirective.Register(config);
+					//InheritsDirective.Register(config);
 
 					config.Features.Add(new ChangeNamespacePass(ProjectDirectory, RootNamespace));
 
@@ -70,11 +70,9 @@ namespace Odachi.RazorTemplating
 					}
 				}
 			);
-			templateEngine = new RazorTemplateEngine(engine.Engine, engine.FileSystem);
 		}
 
 		private RazorProjectEngine engine;
-		private RazorTemplateEngine templateEngine;
 
 		public string ProjectDirectory { get; }
 		public string RootNamespace { get; }
@@ -89,8 +87,11 @@ namespace Odachi.RazorTemplating
 			using (var stream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
 			using (var reader = new StreamReader(stream))
 			{
-				var codeDocument = templateEngine.CreateCodeDocument(inputFileName);
-				var result = templateEngine.GenerateCode(codeDocument);
+				var relativeInputFileName = $"{Path.DirectorySeparatorChar}{PathTools.GetRelativePath($"{ProjectDirectory}{Path.DirectorySeparatorChar}", inputFileName)}";
+				var item = engine.FileSystem.GetItem(relativeInputFileName, "mvc");
+
+				var codeDocument = engine.Process(item);
+				var result = codeDocument.GetCSharpDocument();
 				// normalize new lines (is there better way to do this?)
 				var code = result.GeneratedCode.Replace("\r\n", "\n");
 

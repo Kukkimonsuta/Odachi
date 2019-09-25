@@ -4,12 +4,8 @@
 
 	<PropertyGroup>
 		<Description>Object validation library.</Description>
-		<TargetFrameworks>netstandard2.0;netstandard1.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
-  </ItemGroup>
 
 </Project>
