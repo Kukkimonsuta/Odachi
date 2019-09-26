@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\tools\common.props" />
 
@@ -9,14 +9,14 @@
   <PackageReference Include="Odachi.RazorTemplating.MSBuild" Version="2.0.0" />
   -->
   <Target Name="RazorTemplatingRun" BeforeTargets="CoreCompile">
-    <Exec Condition="'$(MSBuildRuntimeType)' == 'Core'" Command="dotnet &quot;$(MSBuildToolsPath)\MSBuild.dll&quot; &quot;$(MSBuildThisFileDirectory)Preprocess.msbuild&quot; /property:IntermediateOutputPath=$(IntermediateOutputPath) /property:Configuration=$(Configuration)" />
+    <Exec Condition="'$(MSBuildRuntimeType)' == 'Core'" Command="dotnet &quot;msbuild&quot; &quot;$(MSBuildThisFileDirectory)Preprocess.msbuild&quot; /property:IntermediateOutputPath=$(IntermediateOutputPath) /property:Configuration=$(Configuration)" />
     <Exec Condition="'$(MSBuildRuntimeType)' != 'Core'" Command="&quot;$(MSBuildToolsPath)\MSBuild.exe&quot; &quot;$(MSBuildThisFileDirectory)Preprocess.msbuild&quot; /property:IntermediateOutputPath=$(IntermediateOutputPath) /property:Configuration=$(Configuration)" />
     <ItemGroup>
       <Compile Include="$(IntermediateOutputPath)OdachiRazorTemplatingCache/*.cs" Exclude="@(Compile)" />
     </ItemGroup>
   </Target>
   <Target Name="RazorTemplatingClean" BeforeTargets="Clean">
-    <Exec Condition="'$(MSBuildRuntimeType)' == 'Core'" Command="dotnet &quot;$(MSBuildToolsPath)\MSBuild.dll&quot; &quot;$(MSBuildThisFileDirectory)Preprocess.msbuild&quot; /target:Clean /property:IntermediateOutputPath=$(IntermediateOutputPath) /property:Configuration=$(Configuration)" />
+    <Exec Condition="'$(MSBuildRuntimeType)' == 'Core'" Command="dotnet &quot;msbuild&quot; &quot;$(MSBuildThisFileDirectory)Preprocess.msbuild&quot; /target:Clean /property:IntermediateOutputPath=$(IntermediateOutputPath) /property:Configuration=$(Configuration)" />
     <Exec Condition="'$(MSBuildRuntimeType)' != 'Core'" Command="&quot;$(MSBuildToolsPath)\MSBuild.exe&quot; &quot;$(MSBuildThisFileDirectory)Preprocess.msbuild&quot; /target:Clean /property:IntermediateOutputPath=$(IntermediateOutputPath) /property:Configuration=$(Configuration)" />
   </Target>
 
