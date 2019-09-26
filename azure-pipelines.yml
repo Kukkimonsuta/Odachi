@@ -24,9 +24,13 @@ steps:
   inputs:
     command: 'build'
     arguments: '--configuration $(buildConfiguration)'
-    projects: |
-      src/**/*.csproj
-      samples/**/*.csproj
+    projects: src/**/*.csproj
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration)'
+    projects: samples/**/*.csproj
 
 - task: DotNetCoreCLI@2
   inputs:
