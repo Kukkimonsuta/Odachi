@@ -8,10 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0DA18258-DC3F-475D-B6CA-AB3BD6E2DD76}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		.travis.yml = .travis.yml
 		appveyor.yml = appveyor.yml
+		azure-pipelines.yml = azure-pipelines.yml
 		build.ps1 = build.ps1
-		build.sh = build.sh
 		global.json = global.json
 		NuGet.Config = NuGet.Config
 		README.md = README.md
@@ -124,7 +123,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.CodeGen.TypeScript.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.CodeGen.TypeScript.StackinoDue", "src\Odachi.CodeGen.TypeScript.StackinoDue\Odachi.CodeGen.TypeScript.StackinoDue.csproj", "{1547C4B8-1091-407A-8CB9-EBE7C6CE7F0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicAuthenticationSample", "samples\BasicAuthenticationSample\BasicAuthenticationSample.csproj", "{C519AAED-1C33-4753-A69D-E78AE1BC0A22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicAuthenticationSample", "samples\BasicAuthenticationSample\BasicAuthenticationSample.csproj", "{C519AAED-1C33-4753-A69D-E78AE1BC0A22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

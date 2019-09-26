@@ -1,4 +1,4 @@
-# Odachi [![Build Status](https://travis-ci.org/Kukkimonsuta/Odachi.svg?branch=master)](https://travis-ci.org/Kukkimonsuta/Odachi) [![Build status](https://ci.appveyor.com/api/projects/status/spbrm8id15t27y08/branch/master?svg=true)](https://ci.appveyor.com/project/Kukkimonsuta/odachi/branch/master)
+# Odachi [![Build Status](https://dev.azure.com/odachi/Odachi/_apis/build/status/Kukkimonsuta.Odachi?branchName=master)](https://dev.azure.com/odachi/Odachi/_build/latest?definitionId=1&branchName=master) [![Build status](https://ci.appveyor.com/api/projects/status/spbrm8id15t27y08/branch/master?svg=true)](https://ci.appveyor.com/project/Kukkimonsuta/odachi/branch/master)
 
 Set of miscellaneous extensions for .NET Core. Please note that while we will try to follow semver we also have no intention of keeping apis stable between major versions which may or may not come somewhat often depending on our needs.
 
