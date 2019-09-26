@@ -22,7 +22,6 @@ jobs:
       command: 'restore'
       projects: '**/*.csproj'
       feedsToUse: 'config'
-      nugetConfigPath: 'NuGet.config'
 
   - task: DotNetCoreCLI@2
     inputs:
@@ -59,7 +58,6 @@ jobs:
       command: 'restore'
       projects: '**/*.csproj'
       feedsToUse: 'config'
-      nugetConfigPath: 'NuGet.config'
 
   - task: DotNetCoreCLI@2
     inputs:
