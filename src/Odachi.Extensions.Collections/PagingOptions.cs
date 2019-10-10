@@ -11,17 +11,18 @@ namespace Odachi.Extensions.Collections
 	/// </summary>
 	public class PagingOptions
 	{
-		public static int DefaultPageSize = 10;
+		public static int DefaultNumber = 0;
+		public static int DefaultSize = 10;
 		public static bool DefaultAcquireTotal = true;
 		public static int DefaultOffset = 0;
-		public static int DefaultMaximumCount = 20;
+		public static int? DefaultMaximumCount = 20;
 
 		public PagingOptions()
-			: this(0)
+			: this(DefaultNumber)
 		{
 		}
 		public PagingOptions(int number)
-			: this(number, DefaultPageSize, DefaultAcquireTotal, DefaultOffset, DefaultMaximumCount)
+			: this(number, DefaultSize, DefaultAcquireTotal, DefaultOffset, DefaultMaximumCount)
 		{
 		}
 		public PagingOptions(int number, int size)
