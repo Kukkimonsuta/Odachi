@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -80,6 +81,55 @@ namespace Odachi.Extensions.Reflection.Tests
 
 			Assert.False(typeof(NullableBasicModel).GetMethod(nameof(NullableBasicModel.NullableResultWithNonNullableParam)).ReturnParameter.IsNonNullable());
 			Assert.False(typeof(NullableBasicModel).GetMethod(nameof(NullableBasicModel.NullableResultWithNonNullableParam)).ReturnParameter.IsNonNullableReferenceType());
+		}
+
+		[Fact]
+		public void Generic_model()
+		{
+			var nonNullableProperty = typeof(NullableGenericModel).GetProperty(nameof(NullableGenericModel.NonNullable));
+
+			Assert.True(nonNullableProperty.IsNonNullable());
+			Assert.False(nonNullableProperty.IsNonNullableValueType());
+			Assert.True(nonNullableProperty.IsNonNullableReferenceType());
+
+			Assert.True(nonNullableProperty.IsGenericArgumentNonNullable(0));
+			Assert.False(nonNullableProperty.IsGenericArgumentNonNullableValueType(0));
+			Assert.True(nonNullableProperty.IsGenericArgumentNonNullableReferenceType(0));
+
+			var nullableProperty = typeof(NullableGenericModel).GetProperty(nameof(NullableGenericModel.Nullable));
+
+			Assert.True(nullableProperty.IsNonNullable());
+			Assert.False(nullableProperty.IsNonNullableValueType());
+			Assert.True(nullableProperty.IsNonNullableReferenceType());
+
+			Assert.False(nullableProperty.IsGenericArgumentNonNullable(0));
+			Assert.False(nullableProperty.IsGenericArgumentNonNullableValueType(0));
+			Assert.False(nullableProperty.IsGenericArgumentNonNullableReferenceType(0));
+		}
+
+		[Fact]
+		public void Array_model()
+		{
+			var nullableProperty = typeof(NullableArray).GetProperty(nameof(NullableArray.Nullable));
+
+			Assert.True(nullableProperty.IsNonNullable());
+			Assert.False(nullableProperty.IsNonNullableValueType());
+			Assert.True(nullableProperty.IsNonNullableReferenceType());
+
+			Assert.False(nullableProperty.IsGenericArgumentNonNullable(0));
+			Assert.False(nullableProperty.IsGenericArgumentNonNullableValueType(0));
+			Assert.False(nullableProperty.IsGenericArgumentNonNullableReferenceType(0));
+
+
+			var nonNullableProperty = typeof(NullableArray).GetProperty(nameof(NullableArray.NonNullable));
+
+			Assert.True(nonNullableProperty.IsNonNullable());
+			Assert.False(nonNullableProperty.IsNonNullableValueType());
+			Assert.True(nonNullableProperty.IsNonNullableReferenceType());
+
+			Assert.True(nonNullableProperty.IsGenericArgumentNonNullable(0));
+			Assert.False(nonNullableProperty.IsGenericArgumentNonNullableValueType(0));
+			Assert.True(nonNullableProperty.IsGenericArgumentNonNullableReferenceType(0));
 		}
 	}
 }

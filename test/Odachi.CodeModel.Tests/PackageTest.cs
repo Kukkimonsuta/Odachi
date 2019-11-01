@@ -1,5 +1,7 @@
 using Odachi.CodeModel.Builders;
+using Odachi.CodeModel.Tests.Model;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Odachi.CodeModel.Tests
@@ -428,6 +430,59 @@ namespace Odachi.CodeModel.Tests
 						{
 							Assert.Equal(nameof(SelfReferencingClass.Self), field.Name);
 							Assert.Equal(nameof(SelfReferencingClass), field.Type.Name);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_nonnullable_generics()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default(typeof(NonNullableGenericItem<,>))
+				.Module_Object_Default<NonNullableGeneric>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Objects,
+				fragment => { },
+				fragment =>
+				{
+					Assert.Collection(((ObjectFragment)fragment).Fields,
+						field =>
+						{
+							Assert.Equal(nameof(NonNullableGeneric.Foo), field.Name);
+							Assert.Equal(TypeKind.Class, field.Type.Kind);
+							Assert.False(field.Type.IsNullable);
+
+							Assert.Collection(field.Type.GenericArguments,
+								arg =>
+								{
+									Assert.Equal(nameof(NonNullableGenericItem<List<string>, string>), arg.Name);
+									Assert.False(arg.IsNullable);
+
+									Assert.Collection(arg.GenericArguments,
+										arg =>
+										{
+											Assert.Equal("array", arg.Name);
+											Assert.False(arg.IsNullable);
+											Assert.Collection(arg.GenericArguments,
+												arg =>
+												{
+													Assert.Equal("string", arg.Name);
+													Assert.True(arg.IsNullable);
+												}
+											);
+										},
+										arg =>
+										{
+											Assert.Equal("string", arg.Name);
+											Assert.False(arg.IsNullable);
+										}
+									);
+								}
+							);
 						}
 					);
 				}

@@ -13,7 +13,7 @@ namespace Odachi.CodeModel.Builders
 		public MethodBuilder(PackageContext context, string name, Type returnType, object source)
 			: base(context, name)
 		{
-			ReturnType = new TypeReferenceBuilder(context, returnType ?? throw new ArgumentNullException(nameof(returnType)));
+			ReturnType = new TypeReferenceBuilder(context, returnType ?? throw new ArgumentNullException(nameof(returnType)), source);
 			Source = source;
 
 			Context.MethodDescriptors.Describe(this);

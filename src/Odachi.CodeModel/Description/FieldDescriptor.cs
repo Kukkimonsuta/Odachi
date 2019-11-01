@@ -40,11 +40,6 @@ namespace Odachi.CodeModel.Description
 			{
 				builder.Hint("display-name", displayName);
 			}
-
-			if (fieldInfo.IsNonNullable())
-			{
-				builder.Type.IsNullable = false;
-			}
 		}
 
 		protected virtual void DescribePropertyInfo(FieldBuilder builder, Type type, PropertyInfo propertyInfo)
@@ -56,11 +51,6 @@ namespace Odachi.CodeModel.Description
 			if (displayName != null)
 			{
 				builder.Hint("display-name", displayName);
-			}
-
-			if (propertyInfo.IsNonNullable())
-			{
-				builder.Type.IsNullable = false;
 			}
 		}
 

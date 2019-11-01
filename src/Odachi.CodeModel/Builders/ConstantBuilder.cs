@@ -13,7 +13,7 @@ namespace Odachi.CodeModel.Builders
 		public ConstantBuilder(PackageContext context, string name, Type type, object value, object source)
 			: base(context, name)
 		{
-			Type = new TypeReferenceBuilder(context, type ?? throw new ArgumentNullException(nameof(type)));
+			Type = new TypeReferenceBuilder(context, type ?? throw new ArgumentNullException(nameof(type)), source);
 			Value = value;
 			Source = source;
 

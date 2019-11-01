@@ -13,6 +13,34 @@ namespace Odachi.Extensions.Reflection
 		private const string _nullableContextAttributeFullName = "System.Runtime.CompilerServices.NullableContextAttribute";
 		private const string _maybeNullAttributeFullName = "System.Diagnostics.CodeAnalysis.MaybeNullAttribute";
 
+		private static byte? GetNullableAttributeFlag(Attribute[] attributes, int index = 0)
+		{
+			if (attributes.FirstOrDefault(a => a.GetType().FullName == _nullableAttributeFullName) is Attribute attribute)
+			{
+				var attributeType = attribute.GetType();
+				var flagsField = attributeType.GetField("NullableFlags");
+
+				if (flagsField?.GetValue(attribute) is byte[] flags)
+				{
+					if (flags.Length <= 0)
+					{
+						return null;
+					}
+					else if (flags.Length == 1)
+					{
+						// optimized value, all bits are the same
+						return flags.Single();
+					}
+					else
+					{
+						return flags[index];
+					}
+				}
+			}
+
+			return null;
+		}
+
 		#region Type
 
 		public static bool? IsNonNullableContext(this Type type)
@@ -38,6 +66,55 @@ namespace Odachi.Extensions.Reflection
 		public static bool IsNonNullableValueType(this Type type)
 		{
 			return type.IsValueType && Nullable.GetUnderlyingType(type) == null;
+		}
+
+		private static Type GetGenericArgumentByOrdinal(Type type, int n)
+		{
+			var r = n;
+			return GetGenericArgumentByOrdinal(type, ref r);
+		}
+		private static Type GetGenericArgumentByOrdinal(Type type, ref int remaining)
+		{
+			// treat arrays as having single generic argument
+			if (type.IsArray)
+			{
+				 var current = type.GetElementType();
+				if (remaining == 0)
+				{
+					return current;
+				}
+
+				remaining -= 1;
+
+				var result = GetGenericArgumentByOrdinal(current, ref remaining);
+				if (result != null && remaining == 0)
+				{
+					return current;
+				}
+			}
+			else
+			{
+				var genericArguments = type.GetGenericArguments();
+
+				for (var i = 0; i < genericArguments.Length; i++)
+				{
+					var current = genericArguments[i];
+					if (remaining == 0)
+					{
+						return current;
+					}
+
+					remaining -= 1;
+
+					var result = GetGenericArgumentByOrdinal(current, ref remaining);
+					if (result != null && remaining == 0)
+					{
+						return current;
+					}
+				}
+			}
+
+			return null;
 		}
 
 		#endregion
@@ -93,20 +170,15 @@ namespace Odachi.Extensions.Reflection
 			}
 
 			// check member
-			if (Attribute.GetCustomAttributes(fieldInfo).FirstOrDefault(a => a.GetType().FullName == _nullableAttributeFullName) is Attribute attribute)
+			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(fieldInfo));
+			if (flag != null)
 			{
-				var attributeType = attribute.GetType();
-				var flagsField = attributeType.GetField("NullableFlags");
-
-				if (flagsField?.GetValue(attribute) is byte[] flags)
-				{
-					return flags.FirstOrDefault() == 1;
-				}
+				return flag == 1;
 			}
 
 			// check declaring type
 			var declaringType = fieldInfo.DeclaringType;
-			if (declaringType != null && declaringType.IsNonNullableContext() == true)
+			if (declaringType?.IsNonNullableContext() == true)
 			{
 				return true;
 			}
@@ -121,20 +193,100 @@ namespace Odachi.Extensions.Reflection
 
 		#endregion
 
+		#region FieldInfo generic arguments
+
+		public static bool IsGenericArgumentValueType(this FieldInfo fieldInfo, int index)
+		{
+			if (fieldInfo == null)
+				throw new ArgumentNullException(nameof(fieldInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			var argument = GetGenericArgumentByOrdinal(fieldInfo.FieldType, index);
+			if (argument == null)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			return argument.IsValueType;
+		}
+
+		public static bool IsGenericArgumentNonNullableValueType(this FieldInfo fieldInfo, int index)
+		{
+			if (fieldInfo == null)
+				throw new ArgumentNullException(nameof(fieldInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			var argument = GetGenericArgumentByOrdinal(fieldInfo.FieldType, index);
+			if (argument == null)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			return argument.IsNonNullableValueType();
+		}
+
+		public static bool IsGenericArgumentNonNullableReferenceType(this FieldInfo fieldInfo, int index)
+		{
+			if (fieldInfo == null)
+				throw new ArgumentNullException(nameof(fieldInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			if (fieldInfo.IsGenericArgumentValueType(index))
+			{
+				return false;
+			}
+
+			// check member
+			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(fieldInfo), 1 + index);
+			if (flag != null)
+			{
+				return flag == 1;
+			}
+
+			// check declaring type
+			var declaringType = fieldInfo.DeclaringType;
+			if (declaringType?.IsNonNullableContext() == true)
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		public static bool IsGenericArgumentNonNullable(this FieldInfo fieldInfo, int index)
+		{
+			if (fieldInfo == null)
+				throw new ArgumentNullException(nameof(fieldInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			return fieldInfo.IsGenericArgumentNonNullableValueType(index) || fieldInfo.IsGenericArgumentNonNullableReferenceType(index);
+		}
+
+		#endregion
+
 		#region PropertyInfo
 
 		public static bool IsValueType(this PropertyInfo propertyInfo)
 		{
+			if (propertyInfo == null)
+				throw new ArgumentNullException(nameof(propertyInfo));
+
 			return propertyInfo.PropertyType.IsValueType;
 		}
 
 		public static bool IsNonNullableValueType(this PropertyInfo propertyInfo)
 		{
+			if (propertyInfo == null)
+				throw new ArgumentNullException(nameof(propertyInfo));
+
 			return propertyInfo.PropertyType.IsNonNullableValueType();
 		}
 
 		public static bool IsNonNullableReferenceType(this PropertyInfo propertyInfo)
 		{
+			if (propertyInfo == null)
+				throw new ArgumentNullException(nameof(propertyInfo));
+
 			// value type => not a non nullable reference type
 			if (propertyInfo.IsValueType())
 			{
@@ -149,20 +301,15 @@ namespace Odachi.Extensions.Reflection
 			}
 
 			// check member
-			if (Attribute.GetCustomAttributes(propertyInfo).FirstOrDefault(a => a.GetType().FullName == _nullableAttributeFullName) is Attribute attribute)
+			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(propertyInfo));
+			if (flag != null)
 			{
-				var attributeType = attribute.GetType();
-				var flagsField = attributeType.GetField("NullableFlags");
-
-				if (flagsField?.GetValue(attribute) is byte[] flags)
-				{
-					return flags.FirstOrDefault() == 1;
-				}
+				return flag == 1;
 			}
 
 			// check declaring type
 			var declaringType = propertyInfo.DeclaringType;
-			if (declaringType != null && declaringType.IsNonNullableContext() == true)
+			if (declaringType?.IsNonNullableContext() == true)
 			{
 				return true;
 			}
@@ -172,7 +319,81 @@ namespace Odachi.Extensions.Reflection
 
 		public static bool IsNonNullable(this PropertyInfo propertyInfo)
 		{
+			if (propertyInfo == null)
+				throw new ArgumentNullException(nameof(propertyInfo));
+
 			return propertyInfo.IsNonNullableValueType() || propertyInfo.IsNonNullableReferenceType();
+		}
+
+		#endregion
+
+		#region PropertyInfo generic arguments
+
+		public static bool IsGenericArgumentValueType(this PropertyInfo propertyInfo, int index)
+		{
+			if (propertyInfo == null)
+				throw new ArgumentNullException(nameof(propertyInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			var argument = GetGenericArgumentByOrdinal(propertyInfo.PropertyType, index);
+			if (argument == null)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			return argument.IsValueType;
+		}
+
+		public static bool IsGenericArgumentNonNullableValueType(this PropertyInfo propertyInfo, int index)
+		{
+			if (propertyInfo == null)
+				throw new ArgumentNullException(nameof(propertyInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			var argument = GetGenericArgumentByOrdinal(propertyInfo.PropertyType, index);
+			if (argument == null)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			return argument.IsNonNullableValueType();
+		}
+
+		public static bool IsGenericArgumentNonNullableReferenceType(this PropertyInfo propertyInfo, int index)
+		{
+			if (propertyInfo == null)
+				throw new ArgumentNullException(nameof(propertyInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			if (propertyInfo.IsGenericArgumentValueType(index))
+			{
+				return false;
+			}
+
+			// check member
+			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(propertyInfo), 1 + index);
+			if (flag != null)
+			{
+				return flag == 1;
+			}
+
+			// check declaring type
+			var declaringType = propertyInfo.DeclaringType;
+			if (declaringType?.IsNonNullableContext() == true)
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		public static bool IsGenericArgumentNonNullable(this PropertyInfo propertyInfo, int index)
+		{
+			if (propertyInfo == null)
+				throw new ArgumentNullException(nameof(propertyInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			return propertyInfo.IsGenericArgumentNonNullableValueType(index) || propertyInfo.IsGenericArgumentNonNullableReferenceType(index);
 		}
 
 		#endregion
@@ -205,15 +426,10 @@ namespace Odachi.Extensions.Reflection
 			}
 
 			// check parameter
-			if (Attribute.GetCustomAttributes(parameterInfo).FirstOrDefault(a => a.GetType().FullName == _nullableAttributeFullName) is Attribute attribute)
+			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(parameterInfo));
+			if (flag != null)
 			{
-				var attributeType = attribute.GetType();
-				var flagsField = attributeType.GetField("NullableFlags");
-
-				if (flagsField?.GetValue(attribute) is byte[] flags)
-				{
-					return flags.FirstOrDefault() == 1;
-				}
+				return flag == 1;
 			}
 
 			// check method and declaring types
@@ -229,6 +445,77 @@ namespace Odachi.Extensions.Reflection
 		public static bool IsNonNullable(this ParameterInfo parameterInfo)
 		{
 			return parameterInfo.IsNonNullableValueType() || parameterInfo.IsNonNullableReferenceType();
+		}
+
+		#endregion
+
+		#region ParameterInfo generic arguments
+
+		public static bool IsGenericArgumentValueType(this ParameterInfo parameterInfo, int index)
+		{
+			if (parameterInfo == null)
+				throw new ArgumentNullException(nameof(parameterInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			var argument = GetGenericArgumentByOrdinal(parameterInfo.ParameterType, index);
+			if (argument == null)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			return argument.IsValueType;
+		}
+
+		public static bool IsGenericArgumentNonNullableValueType(this ParameterInfo parameterInfo, int index)
+		{
+			if (parameterInfo == null)
+				throw new ArgumentNullException(nameof(parameterInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			var argument = GetGenericArgumentByOrdinal(parameterInfo.ParameterType, index);
+			if (argument == null)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			return argument.IsNonNullableValueType();
+		}
+
+		public static bool IsGenericArgumentNonNullableReferenceType(this ParameterInfo parameterInfo, int index)
+		{
+			if (parameterInfo == null)
+				throw new ArgumentNullException(nameof(parameterInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			if (parameterInfo.IsGenericArgumentValueType(index))
+			{
+				return false;
+			}
+
+			// check member
+			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(parameterInfo), 1 + index);
+			if (flag != null)
+			{
+				return flag == 1;
+			}
+
+			// check method and declaring types
+			var method = parameterInfo.Member as MethodInfo;
+			if (method?.IsNonNullableContext() == true)
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		public static bool IsGenericArgumentNonNullable(this ParameterInfo parameterInfo, int index)
+		{
+			if (parameterInfo == null)
+				throw new ArgumentNullException(nameof(parameterInfo));
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			return parameterInfo.IsGenericArgumentNonNullableValueType(index) || parameterInfo.IsGenericArgumentNonNullableReferenceType(index);
 		}
 
 		#endregion

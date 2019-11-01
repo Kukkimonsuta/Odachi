@@ -44,4 +44,21 @@ namespace Odachi.Extensions.Reflection.Tests.Model
 			public int? NullableValue { get; set; }
 		}
 	}
+
+	public class NullableGenericModel
+	{
+		public List<string> NonNullable { get; set; } = new List<string>();
+		public List<string?> Nullable { get; set; } = new List<string?>();
+	}
+
+	public class NullableGenericComplex
+	{
+		public List<Dictionary<List<string?>, string>> Foo { get; set; } = new List<Dictionary<List<string?>, string>>();
+	}
+
+	public class NullableArray
+	{
+		public string?[] Nullable { get; set; } = Array.Empty<string>();
+		public string[] NonNullable { get; set; } = Array.Empty<string>();
+	}
 }

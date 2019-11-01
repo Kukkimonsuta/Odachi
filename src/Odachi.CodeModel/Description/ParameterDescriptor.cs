@@ -34,11 +34,6 @@ namespace Odachi.CodeModel.Description
 		{
 			builder.Hint("net-kind", "parameter");
 			builder.Hint("net-type", parameterInfo.ParameterType.AssemblyQualifiedName);
-
-			if (parameterInfo.IsNonNullable())
-			{
-				builder.Type.IsNullable = false;
-			}
 		}
 
 		/// <inheritdoc />
