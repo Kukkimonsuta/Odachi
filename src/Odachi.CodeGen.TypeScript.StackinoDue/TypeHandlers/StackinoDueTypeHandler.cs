@@ -128,7 +128,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.TypeHandlers
 				}
 			}
 
-			context.Helper("function fail(message: string): never { throw new Error(message); }");
+			context.Helper($"function {privatePrefix}fail(message: string): never {{ throw new Error(message); }}");
 
 			switch (type.Name)
 			{
@@ -137,7 +137,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.TypeHandlers
 						throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
 					context.Import("luxon", "DateTime");
-					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? DateTime.fromISO(source) : fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)");
+					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? DateTime.fromISO(source) : {privatePrefix}fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)");
 
 				case "ValidationState":
 					if (type.GenericArguments?.Length > 0)
@@ -145,7 +145,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.TypeHandlers
 
 					context.Import("@odachi/validation", "ValidationState");
 
-					return MakeFactory(type.Name, $@"(source: any): {context.Resolve(type, includeNullability: false)} => typeof Array.isArray(source) ? new ValidationState(source) : fail(`Contract violation: expected validation state, got \\'{{typeof(source)}}\\'`)");
+					return MakeFactory(type.Name, $@"(source: any): {context.Resolve(type, includeNullability: false)} => typeof Array.isArray(source) ? new ValidationState(source) : {privatePrefix}fail(`Contract violation: expected validation state, got \\'{{typeof(source)}}\\'`)");
 
 				default:
 					return null;

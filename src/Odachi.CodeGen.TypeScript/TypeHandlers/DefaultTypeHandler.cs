@@ -212,7 +212,10 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 					return "0";
 				}
 
-				return null;
+				// handle modules
+				context.Import(type);
+
+				return $"new {type.Name}{(type.GenericArguments?.Length > 0 ? $"<{string.Join(", ", type.GenericArguments.Select(a => context.Resolve(a)))}>" : "")}()";
 			}
 		}
 
@@ -292,7 +295,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 			if (type.Module == null)
 			{
-				context.Helper("function fail(message: string): never { throw new Error(message); }");
+				context.Helper($"function {privatePrefix}fail(message: string): never {{ throw new Error(message); }}");
 
 				switch (type.Name)
 				{
@@ -302,7 +305,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return MakeFactory(
 							type.Name,
-							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'boolean' ? source : fail(`Contract violation: expected boolean, got \\'{{typeof(source)}}\\'`)",
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'boolean' ? source : {privatePrefix}fail(`Contract violation: expected boolean, got \\'{{typeof(source)}}\\'`)",
 							Array.Empty<string>()
 						);
 
@@ -313,7 +316,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return MakeFactory(
 							type.Name,
-							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? source : fail(`Contract violation: expected string, got \\'{{typeof(source)}}\\'`)",
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? source : {privatePrefix}fail(`Contract violation: expected string, got \\'{{typeof(source)}}\\'`)",
 							Array.Empty<string>()
 						);
 
@@ -329,7 +332,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return MakeFactory(
 							"number",
-							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'number' ? source : fail(`Contract violation: expected number, got \\'{{typeof(source)}}\\'`)",
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'number' ? source : {privatePrefix}fail(`Contract violation: expected number, got \\'{{typeof(source)}}\\'`)",
 							Array.Empty<string>()
 						);
 
@@ -339,7 +342,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return MakeFactory(
 							type.Name,
-							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? new Date(source) : fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)",
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? new Date(source) : {privatePrefix}fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)",
 							Array.Empty<string>()
 						);
 
@@ -350,7 +353,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 							var arrayFactory = MakeFactory(
 								type.Name,
-								$@"(source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : fail(`Contract violation: expected array, got \\'{{typeof(source)}}\\'`)",
+								$@"(source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : {privatePrefix}fail(`Contract violation: expected array, got \\'{{typeof(source)}}\\'`)",
 								new[] { "T" }
 							);
 
@@ -366,7 +369,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 							var pageFactory = MakeFactory(
 								type.Name,
-								$@"(source: any): Page<T> => new Page(Array.isArray(source.data) ? source.data.map((item: any) => T_factory.create(item)) : fail(`Contract violation: expected array, got \\'{{typeof(source)}}\\'`), {numberFactory}.create(source.number), {numberFactory}.create(source.count))",
+								$@"(source: any): Page<T> => new Page(Array.isArray(source.data) ? source.data.map((item: any) => T_factory.create(item)) : {privatePrefix}fail(`Contract violation: expected array, got \\'{{typeof(source)}}\\'`), {numberFactory}.create(source.number), {numberFactory}.create(source.count))",
 								new[] { "T" }
 							);
 
@@ -428,7 +431,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 							oneOfHelperGenericArguments[i] = genericArgumentName;
 							oneOfHelperBody += $"case {i + 1}: return {genericArgumentName}_factory.create(source.option{i + 1}); ";
 						}
-						oneOfHelperBody += "default: return fail(`Contract violation: cannot handle OneOf index ${source.index}`); ";
+						oneOfHelperBody += $"default: return {privatePrefix}fail(`Contract violation: cannot handle OneOf index ${{source.index}}`); ";
 						oneOfHelperBody += "}";
 
 						var oneOfFactory = MakeFactory($"oneof{type.GenericArguments.Length}", $"(source: any): {string.Join(" | ", oneOfHelperGenericArguments)} => {{ {oneOfHelperBody} }}", oneOfHelperGenericArguments);

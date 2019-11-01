@@ -10,6 +10,18 @@ using Xunit;
 
 namespace Odachi.CodeModel.Tests
 {
+	public class BasicObject
+	{
+		public string Foo { get; set; }
+	}
+
+	public class ComplexObject
+	{
+		public string Foo { get; set; }
+
+		public BasicObject Basic { get; set; }
+	}
+
 	public class GenericObject<T>
 	{
 		public T Value { get; set; }

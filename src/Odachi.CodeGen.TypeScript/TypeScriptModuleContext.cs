@@ -217,6 +217,8 @@ namespace Odachi.CodeGen.TypeScript
 				}
 			}
 
+
+
 			throw new InvalidOperationException($"Failed to resolve default value for type '{type.ToString()}'");
 		}
 
