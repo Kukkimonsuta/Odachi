@@ -35,11 +35,6 @@ namespace Odachi.CodeModel.Description
 		{
 			builder.Hint("net-kind", "method");
 			builder.Hint("net-return-type", methodInfo.ReturnType.AssemblyQualifiedName);
-
-			if (methodInfo.ReturnParameter.IsNonNullable())
-			{
-				builder.ReturnType.IsNullable = false;
-			}
 		}
 
 		/// <inheritdoc />

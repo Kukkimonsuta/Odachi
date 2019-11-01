@@ -61,4 +61,10 @@ namespace Odachi.Extensions.Reflection.Tests.Model
 		public string?[] Nullable { get; set; } = Array.Empty<string>();
 		public string[] NonNullable { get; set; } = Array.Empty<string>();
 	}
+
+	public class NullableMethodParameters
+	{
+		public void Nullable(string?[] param) { }
+		public void NonNullable(string[] param) { }
+	}
 }

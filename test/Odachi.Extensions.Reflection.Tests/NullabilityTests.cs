@@ -131,5 +131,29 @@ namespace Odachi.Extensions.Reflection.Tests
 			Assert.False(nonNullableProperty.IsGenericArgumentNonNullableValueType(0));
 			Assert.True(nonNullableProperty.IsGenericArgumentNonNullableReferenceType(0));
 		}
+
+		[Fact]
+		public void Method_params_model()
+		{
+			var nullableProperty = typeof(NullableMethodParameters).GetMethod(nameof(NullableMethodParameters.Nullable)).GetParameters().Single();
+
+			Assert.True(nullableProperty.IsNonNullable());
+			Assert.False(nullableProperty.IsNonNullableValueType());
+			Assert.True(nullableProperty.IsNonNullableReferenceType());
+
+			Assert.False(nullableProperty.IsGenericArgumentNonNullable(0));
+			Assert.False(nullableProperty.IsGenericArgumentNonNullableValueType(0));
+			Assert.False(nullableProperty.IsGenericArgumentNonNullableReferenceType(0));
+
+			var nonNullableProperty = typeof(NullableMethodParameters).GetMethod(nameof(NullableMethodParameters.NonNullable)).GetParameters().Single();
+
+			Assert.True(nonNullableProperty.IsNonNullable());
+			Assert.False(nonNullableProperty.IsNonNullableValueType());
+			Assert.True(nonNullableProperty.IsNonNullableReferenceType());
+
+			Assert.True(nonNullableProperty.IsGenericArgumentNonNullable(0));
+			Assert.False(nonNullableProperty.IsGenericArgumentNonNullableValueType(0));
+			Assert.True(nonNullableProperty.IsGenericArgumentNonNullableReferenceType(0));
+		}
 	}
 }

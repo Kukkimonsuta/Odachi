@@ -12,4 +12,10 @@ namespace Odachi.CodeModel.Tests.Model
 	{
 		public List<NonNullableGenericItem<List<string?>, string>> Foo { get; } = new List<NonNullableGenericItem<List<string?>, string>>();
 	}
+
+	public class NullableMethodParameters
+	{
+		public void Nullable(string?[] param) { }
+		public void NonNullable(string[] param) { }
+	}
 }

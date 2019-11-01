@@ -87,6 +87,23 @@ namespace Odachi.CodeModel.Description
 					DescribeFromFieldInfo(builder, fieldInfo);
 					break;
 
+				case MethodInfo methodInfo:
+					if (builder.SourceIndex == 0)
+					{
+						if (methodInfo.ReturnParameter?.IsNonNullable() == true)
+						{
+							builder.IsNullable = false;
+						}
+					}
+					else
+					{
+						if (methodInfo.ReturnParameter?.IsGenericArgumentNonNullable(builder.SourceIndex - 1) == true)
+						{
+							builder.IsNullable = false;
+						}
+					}
+					break;
+
 				case ParameterInfo parameterInfo:
 					if (builder.SourceIndex == 0)
 					{

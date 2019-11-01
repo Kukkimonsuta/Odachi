@@ -488,5 +488,64 @@ namespace Odachi.CodeModel.Tests
 				}
 			);
 		}
+
+		[Fact]
+		public void Can_describe_nonnullable_service()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Service_Default<NullableMethodParameters>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Services,
+				fragment =>
+				{
+					Assert.Collection(fragment.Methods,
+						method =>
+						{
+							Assert.Equal(nameof(NullableMethodParameters.Nullable), method.Name);
+
+							Assert.Collection(method.Parameters,
+								arg =>
+								{
+									Assert.Equal("param", arg.Name);
+
+									Assert.False(arg.Type.IsNullable);
+									Assert.Equal("array", arg.Type.Name);
+									Assert.Collection(arg.Type.GenericArguments,
+										arg =>
+										{
+											Assert.Equal("string", arg.Name);
+											Assert.True(arg.IsNullable);
+										}
+									);
+								}
+							);
+						},
+						method =>
+						{
+							Assert.Equal(nameof(NullableMethodParameters.NonNullable), method.Name);
+
+							Assert.Collection(method.Parameters,
+								arg =>
+								{
+									Assert.Equal("param", arg.Name);
+
+									Assert.False(arg.Type.IsNullable);
+									Assert.Equal("array", arg.Type.Name);
+									Assert.Collection(arg.Type.GenericArguments,
+										arg =>
+										{
+											Assert.Equal("string", arg.Name);
+											Assert.False(arg.IsNullable);
+										}
+									);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
 	}
 }

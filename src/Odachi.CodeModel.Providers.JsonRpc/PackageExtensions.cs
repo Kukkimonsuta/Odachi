@@ -14,6 +14,7 @@ namespace Odachi.CodeModel
 		public static PackageBuilder UseJsonRpc(this PackageBuilder builder)
 		{
 			builder.Context.MethodDescriptors.Add(new JsonRpcMethodDescriptor());
+			builder.Context.TypeReferenceDescriptors.Add(new JsonRpcTypeReferenceDescriptor());
 
 			return builder;
 		}
