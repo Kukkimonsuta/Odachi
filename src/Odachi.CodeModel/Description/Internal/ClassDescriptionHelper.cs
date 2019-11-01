@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Odachi.Extensions.Reflection;
 
 namespace Odachi.CodeModel.Description.Internal
 {
@@ -20,15 +21,6 @@ namespace Odachi.CodeModel.Description.Internal
 				return null;
 
 			return displayName;
-		}
-
-		public static bool IsRequired(MemberInfo member)
-		{
-			var requiredAttribute = member.GetCustomAttribute<RequiredAttribute>();
-			if (requiredAttribute == null)
-				return false;
-
-			return true;
 		}
 	}
 }

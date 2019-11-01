@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Odachi.CodeModel.Builders;
+using Odachi.Extensions.Reflection;
 
 namespace Odachi.CodeModel.Description
 {
@@ -33,6 +34,11 @@ namespace Odachi.CodeModel.Description
 		{
 			builder.Hint("net-kind", "constant");
 			builder.Hint("net-type", fieldInfo.FieldType.AssemblyQualifiedName);
+
+			if (fieldInfo.IsNonNullable())
+			{
+				builder.Type.IsNullable = false;
+			}
 		}
 
 		/// <inheritdoc />

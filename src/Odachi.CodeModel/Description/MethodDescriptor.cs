@@ -1,4 +1,4 @@
-﻿using Odachi.CodeModel.Description.Internal;
+using Odachi.CodeModel.Description.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Odachi.CodeModel.Builders;
+using Odachi.Extensions.Reflection;
 
 namespace Odachi.CodeModel.Description
 {
@@ -34,6 +35,11 @@ namespace Odachi.CodeModel.Description
 		{
 			builder.Hint("net-kind", "method");
 			builder.Hint("net-return-type", methodInfo.ReturnType.AssemblyQualifiedName);
+
+			if (methodInfo.ReturnParameter.IsNonNullable())
+			{
+				builder.ReturnType.IsNullable = false;
+			}
 		}
 
 		/// <inheritdoc />
