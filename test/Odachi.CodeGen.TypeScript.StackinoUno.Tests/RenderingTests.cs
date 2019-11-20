@@ -74,7 +74,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.Tests
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
-const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 
 // source: Odachi.CodeModel.Tests.BasicObject, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -110,7 +110,7 @@ import { observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
-const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 
 // source: Odachi.CodeModel.Tests.ComplexObject, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -155,7 +155,7 @@ export { ComplexObject };
 import { observable } from 'mobx';
 
 function _$$_fail(message: string): never { throw new Error(message); }
-const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ComplexObject, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null
 
@@ -191,7 +191,7 @@ export { ComplexObject };
 			Assert.Equal(@"import { observable } from 'mobx';
 
 function _$$_fail(message: string): never { throw new Error(message); }
-const _$$_factory_boolean = { create: (source: any): boolean => typeof source === 'boolean' ? source : _$$_fail(`Contract violation: expected boolean, got \'{typeof(source)}\'`) };
+const _$$_factory_boolean = { create: (source: any): boolean => typeof source === 'boolean' ? source : _$$_fail(`Contract violation: expected boolean, got \'${typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.GenericObject`1, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null
 
@@ -234,9 +234,9 @@ import { observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
-const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
-const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
+const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ObjectWithGenericObject, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null
 
@@ -275,11 +275,11 @@ import { observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
-function _$$_factory_array<T>(T_factory: { create: (source: any) => T }) { return { create: (source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : _$$_fail(`Contract violation: expected array, got \\'{typeof(source)}\\'`) }; }
+function _$$_factory_array<T>(T_factory: { create: (source: any) => T }) { return { create: (source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : _$$_fail(`Contract violation: expected array, got \\'${typeof(source)}\\'`) }; }
 function _$$_factory_array_opt<T>(T_factory: { create: (source: any) => T }) { return _$$_opt(_$$_factory_array(T_factory)); }
-const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
-const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
+const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObject, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null
 
@@ -319,9 +319,9 @@ import { observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
-function _$$_factory_array<T>(T_factory: { create: (source: any) => T }) { return { create: (source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : _$$_fail(`Contract violation: expected array, got \\'{typeof(source)}\\'`) }; }
+function _$$_factory_array<T>(T_factory: { create: (source: any) => T }) { return { create: (source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : _$$_fail(`Contract violation: expected array, got \\'${typeof(source)}\\'`) }; }
 function _$$_factory_array_opt<T>(T_factory: { create: (source: any) => T }) { return _$$_opt(_$$_factory_array(T_factory)); }
-const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
+const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
 function _$$_factory_Page<T>(T_factory: { create: (source: any) => T }) { return { create: (source: any): core.Page<T> =>
 		typeof source === 'object' && source !== null ?
 			new core.Page<T>(
@@ -329,9 +329,9 @@ function _$$_factory_Page<T>(T_factory: { create: (source: any) => T }) { return
 				_$$_factory_number.create(source.number),
 				_$$_factory_number.create(source.count)
 			) :
-			_$$_fail(`Contract violation: expected page, got \\'{typeof(source)}\\'`) }; }
+			_$$_fail(`Contract violation: expected page, got \\'${typeof(source)}\\'`) }; }
 function _$$_factory_Page_opt<T>(T_factory: { create: (source: any) => T }) { return _$$_opt(_$$_factory_Page(T_factory)); }
-const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 
 // source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObjectWithPages, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -370,10 +370,10 @@ import { Moment } from 'moment';
 function _$$_fail(message: string): never { throw new Error(message); }
 function _$$_factory_tuple3<T1, T2, T3>(T1_factory: { create: (source: any) => T1 }, T2_factory: { create: (source: any) => T2 }, T3_factory: { create: (source: any) => T3 }) { return { create: (source: any): [T1, T2, T3] => [T1_factory.create(source.item1), T2_factory.create(source.item2), T3_factory.create(source.item3)] }; }
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
-const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
-const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
-const _$$_factory_datetime = { create: (source: any): Moment => typeof source === 'string' ? moment(source) : _$$_fail(`Contract violation: expected datetime string, got \'{typeof(source)}\'`) };
+const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
+const _$$_factory_datetime = { create: (source: any): Moment => typeof source === 'string' ? moment(source) : _$$_fail(`Contract violation: expected datetime string, got \'${typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ObjectWithTuple, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null
 
@@ -411,10 +411,10 @@ import { Moment } from 'moment';
 function _$$_fail(message: string): never { throw new Error(message); }
 function _$$_factory_oneof3<T1, T2, T3>(T1_factory: { create: (source: any) => T1 }, T2_factory: { create: (source: any) => T2 }, T3_factory: { create: (source: any) => T3 }) { return { create: (source: any): T1 | T2 | T3 => { switch (source.index) { case 1: return T1_factory.create(source.option1); case 2: return T2_factory.create(source.option2); case 3: return T3_factory.create(source.option3); default: return _$$_fail(`Contract violation: cannot handle OneOf index ${source.index}`); } } }; }
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
-const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'{typeof(source)}\'`) };
+const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
-const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
-const _$$_factory_datetime = { create: (source: any): Moment => typeof source === 'string' ? moment(source) : _$$_fail(`Contract violation: expected datetime string, got \'{typeof(source)}\'`) };
+const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
+const _$$_factory_datetime = { create: (source: any): Moment => typeof source === 'string' ? moment(source) : _$$_fail(`Contract violation: expected datetime string, got \'${typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ObjectWithOneOf, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null
 
@@ -446,7 +446,7 @@ export { ObjectWithOneOf };
 			Assert.Equal(@"import { observable } from 'mobx';
 
 function _$$_fail(message: string): never { throw new Error(message); }
-const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'{typeof(source)}\'`) };
+const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ObjectWithPrimitives, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null
 
@@ -591,7 +591,7 @@ export { ConstantsClass };
 import { injectable } from 'inversify';
 
 function _$$_fail(message: string): never { throw new Error(message); }
-const _$$_factory_boolean = { create: (source: any): boolean => typeof source === 'boolean' ? source : _$$_fail(`Contract violation: expected boolean, got \'{typeof(source)}\'`) };
+const _$$_factory_boolean = { create: (source: any): boolean => typeof source === 'boolean' ? source : _$$_fail(`Contract violation: expected boolean, got \'${typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ServiceClass, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null
 
@@ -771,7 +771,7 @@ import { observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
-const _$$_factory_ValidationState = { create: (source: any): validation.ValidationState => typeof source === 'object' && source !== null && typeof source.state === 'object' && source.state !== null ? new validation.ValidationState(source.state) : _$$_fail(`Contract violation: expected validation state, got \\'{typeof(source)}\\'`) };
+const _$$_factory_ValidationState = { create: (source: any): validation.ValidationState => typeof source === 'object' && source !== null && typeof source.state === 'object' && source.state !== null ? new validation.ValidationState(source.state) : _$$_fail(`Contract violation: expected validation state, got \\'${typeof(source)}\\'`) };
 const _$$_factory_ValidationState_opt = _$$_opt(_$$_factory_ValidationState);
 
 // source: Odachi.CodeModel.Tests.ObjectWithValidationState, Odachi.CodeModel.Tests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null

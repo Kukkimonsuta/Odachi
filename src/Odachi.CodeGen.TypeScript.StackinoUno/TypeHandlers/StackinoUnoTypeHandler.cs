@@ -168,10 +168,10 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.TypeHandlers
 						throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
 					context.Import("moment", "* as moment");
-					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? moment(source) : {privatePrefix}fail(`Contract violation: expected datetime string, got \\'{{typeof(source)}}\\'`)");
+					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? moment(source) : {privatePrefix}fail(`Contract violation: expected datetime string, got \\'${{typeof(source)}}\\'`)");
 
 				case "PagingOptions":
-					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'object' && source !== null ? source : {privatePrefix}fail(`Contract violation: expected paging options, got \\'{{typeof(source)}}\\'`)");
+					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'object' && source !== null ? source : {privatePrefix}fail(`Contract violation: expected paging options, got \\'${{typeof(source)}}\\'`)");
 
 				case "Page":
 					if (type.GenericArguments?.Length != 1)
@@ -186,7 +186,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.TypeHandlers
 				{context.CreateExpression(new TypeReference(null, "integer", TypeKind.Primitive, false), "source.number")},
 				{context.CreateExpression(new TypeReference(null, "integer", TypeKind.Primitive, false), "source.count")}
 			) :
-			{privatePrefix}fail(`Contract violation: expected page, got \\'{{typeof(source)}}\\'`)", "T");
+			{privatePrefix}fail(`Contract violation: expected page, got \\'${{typeof(source)}}\\'`)", "T");
 
 					return $"{pageFactory}({context.Factory(type.GenericArguments[0])})";
 
@@ -196,7 +196,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.TypeHandlers
 
 					context.Import("@stackino/uno", "validation");
 
-					return MakeFactory(type.Name, $@"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'object' && source !== null && typeof source.state === 'object' && source.state !== null ? new validation.ValidationState(source.state) : {privatePrefix}fail(`Contract violation: expected validation state, got \\'{{typeof(source)}}\\'`)");
+					return MakeFactory(type.Name, $@"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'object' && source !== null && typeof source.state === 'object' && source.state !== null ? new validation.ValidationState(source.state) : {privatePrefix}fail(`Contract violation: expected validation state, got \\'${{typeof(source)}}\\'`)");
 
 				default:
 					return null;
