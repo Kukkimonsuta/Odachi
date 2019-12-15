@@ -1,31 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Odachi.AspNetCore.JsonRpc.Internal;
-using Microsoft.Extensions.Logging;
-using System.Threading;
-using System.Security;
-using System.Reflection;
 using Odachi.JsonRpc.Common;
-using Odachi.JsonRpc.Common.Converters;
-using Odachi.Abstractions;
-using System.Net.Http;
-using Odachi.JsonRpc.Server;
-using Odachi.JsonRpc.Server.Internal;
 using Odachi.JsonRpc.Common.Internal;
+using Odachi.JsonRpc.Server;
 using Odachi.JsonRpc.Server.Builder;
+using Odachi.JsonRpc.Server.Internal;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Odachi.AspNetCore.JsonRpc
 {
@@ -68,15 +55,21 @@ namespace Odachi.AspNetCore.JsonRpc
 
 			httpContext.Response.StatusCode = 200;
 			httpContext.Response.ContentType = "application/json";
-			await using (var writer = new StreamWriter(httpContext.Response.Body))
-			using (var jsonWriter = new JsonTextWriter(writer))
+
+			// todo: move to System.Text.Json
+
+			await using (var tempStream = new MemoryStream())
 			{
-				await jObject.WriteToAsync(jsonWriter);
+				await using (var tempStreamWriter = new StreamWriter(tempStream, leaveOpen: true))
+				using (var jsonWriter = new JsonTextWriter(tempStreamWriter))
+				{
+					await jObject.WriteToAsync(jsonWriter);
+					await jsonWriter.FlushAsync();
+					await jsonWriter.CloseAsync();
+				}
 
-				await jsonWriter.FlushAsync();
-				await writer.FlushAsync();
-
-				await jsonWriter.CloseAsync();
+				tempStream.Seek(0, SeekOrigin.Begin);
+				await tempStream.CopyToAsync(httpContext.Response.Body);
 			}
 		}
 
