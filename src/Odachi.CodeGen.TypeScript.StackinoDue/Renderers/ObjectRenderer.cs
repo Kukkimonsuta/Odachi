@@ -37,46 +37,79 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 					writer.WriteSeparatingLine();
 				}
 
-				foreach (var field in objectFragment.Fields)
+				if (objectFragment.Fields.Count > 0)
 				{
-					context.Import("mobx", "observable");
-
-					writer.WriteIndentedLine("@observable.ref");
-					writer.WriteIndentedLine($"{TS.Field(field.Name)}: {context.Resolve(field.Type)} = {context.ResolveDefaultValue(field.Type)};");
-					writer.WriteSeparatingLine();
-				}
-
-				if (objectFragment.GenericArguments.Any())
-				{
-					var genericParameters = $"<{string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name))}>";
-					var factoryParameters = string.Join(", ", objectFragment.GenericArguments.Select(a => $"{a.Name}_factory: {{ create(source: any): {a.Name} }}"));
-
-					using (writer.WriteIndentedBlock(prefix: $"static create{genericParameters}({factoryParameters}): {{ create: (source: any) => {TS.Type(objectFragment.Name)}{genericParameters} }} "))
+					foreach (var field in objectFragment.Fields)
 					{
-						using (writer.WriteIndentedBlock(prefix: $"return ", suffix: ";"))
+						context.Import("mobx", "observable");
+
+						writer.WriteIndentedLine("@observable.ref");
+						writer.WriteIndentedLine($"{TS.Field(field.Name)}: {context.Resolve(field.Type)} = {context.ResolveDefaultValue(field.Type)};");
+						writer.WriteSeparatingLine();
+					}
+
+					if (objectFragment.GenericArguments.Any())
+					{
+						var genericParameters = $"<{string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name))}>";
+						var factoryParameters = string.Join(", ", objectFragment.GenericArguments.Select(a => $"{a.Name}_factory: {{ create(source: any): {a.Name} }}"));
+
+						using (writer.WriteIndentedBlock(prefix: $"static create{genericParameters}({factoryParameters}): {{ create: (source: any) => {TS.Type(objectFragment.Name)}{genericParameters} }} "))
 						{
-							using (writer.WriteIndentedBlock(prefix: $"create: (source: any) => "))
+							using (writer.WriteIndentedBlock(prefix: $"return ", suffix: ";"))
 							{
-								writer.WriteIndentedLine($"const result = new {TS.Type(objectFragment.Name)}{genericParameters}();");
-								foreach (var field in objectFragment.Fields)
+								using (writer.WriteIndentedBlock(prefix: $"create: (source: any) => "))
 								{
-									writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
+									writer.WriteIndentedLine($"const result = new {TS.Type(objectFragment.Name)}{genericParameters}();");
+									foreach (var field in objectFragment.Fields)
+									{
+										writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
+									}
+									writer.WriteIndentedLine("return result;");
 								}
-								writer.WriteIndentedLine("return result;");
 							}
 						}
-					}
-				}
-				else
-				{
-					using (writer.WriteIndentedBlock(prefix: $"static create(source: any): {TS.Type(objectFragment.Name)} "))
-					{
-						writer.WriteIndentedLine($"const result = new {TS.Type(objectFragment.Name)}();");
-						foreach (var field in objectFragment.Fields)
+						writer.WriteSeparatingLine();
+						using (writer.WriteIndentedBlock(prefix: $"static copy{genericParameters}(source: {TS.Type(objectFragment.Name)}{genericParameters}, destination: {TS.Type(objectFragment.Name)}{genericParameters}): void "))
 						{
-							writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
+							foreach (var field in objectFragment.Fields)
+							{
+								writer.WriteIndentedLine($"destination.{TS.Field(field.Name)} = source.{TS.Field(field.Name)};");
+							}
 						}
-						writer.WriteIndentedLine("return result;");
+						writer.WriteSeparatingLine();
+						using (writer.WriteIndentedBlock(prefix: $"static clone{genericParameters}(source: {TS.Type(objectFragment.Name)}{genericParameters}): {TS.Type(objectFragment.Name)}{genericParameters} "))
+						{
+							writer.WriteIndentedLine($"const result = new {TS.Type(objectFragment.Name)}{genericParameters}();");
+							writer.WriteIndentedLine($"{TS.Type(objectFragment.Name)}.copy{genericParameters}(source, result);");
+							writer.WriteIndentedLine("return result;");
+						}
+					}
+					else
+					{
+						using (writer.WriteIndentedBlock(prefix: $"static create(source: any): {TS.Type(objectFragment.Name)} "))
+						{
+							writer.WriteIndentedLine($"const result = new {TS.Type(objectFragment.Name)}();");
+							foreach (var field in objectFragment.Fields)
+							{
+								writer.WriteIndentedLine($"result.{TS.Field(field.Name)} = {context.CreateExpression(field.Type, $"source.{TS.Field(field.Name)}")};");
+							}
+							writer.WriteIndentedLine("return result;");
+						}
+						writer.WriteSeparatingLine();
+						using (writer.WriteIndentedBlock(prefix: $"static copy(source: {TS.Type(objectFragment.Name)}, destination: {TS.Type(objectFragment.Name)}): void "))
+						{
+							foreach (var field in objectFragment.Fields)
+							{
+								writer.WriteIndentedLine($"destination.{TS.Field(field.Name)} = source.{TS.Field(field.Name)};");
+							}
+						}
+						writer.WriteSeparatingLine();
+						using (writer.WriteIndentedBlock(prefix: $"static clone(source: {TS.Type(objectFragment.Name)}): {TS.Type(objectFragment.Name)} "))
+						{
+							writer.WriteIndentedLine($"const result = new {TS.Type(objectFragment.Name)}();");
+							writer.WriteIndentedLine($"{TS.Type(objectFragment.Name)}.copy(source, result);");
+							writer.WriteIndentedLine("return result;");
+						}
 					}
 				}
 			}

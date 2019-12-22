@@ -272,6 +272,55 @@ namespace Odachi.CodeGen.TypeScript
 		}
 
 		/// <summary>
+		/// Return a javascript expression copying value of given type reference.
+		/// </summary>
+		public string CopyExpression(TypeReference type, string source)
+		{
+			if (type.Kind == TypeKind.GenericParameter)
+			{
+				// handle generic parameters
+				var factory = Factory(type);
+				if (factory == null)
+				{
+					return null;
+				}
+
+				return $"{Factory(type)}.clone({source})";
+			}
+
+			if (type.Module == null)
+			{
+				// handle builtins
+
+				switch (type.Name)
+				{
+					case "void":
+						throw new InvalidOperationException("Cannot create void");
+
+					case "file":
+						return "null";
+
+					default:
+						var factory = Factory(type);
+						if (factory == null)
+						{
+							return null;
+						}
+
+						return $"{factory}.create({source})";
+				}
+			}
+			else
+			{
+				// handle modules
+
+				Import(type);
+
+				return $"{Factory(type)}.create({source})";
+			}
+		}
+
+		/// <summary>
 		/// Returns reference to a factory for given type.
 		/// </summary>
 		public string Factory(TypeReference type)
