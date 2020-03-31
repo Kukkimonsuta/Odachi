@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\Odachi.CodeModel.Providers.Validation\Odachi.CodeModel.Providers.Validation.csproj" />
+		<ProjectReference Include="..\..\src\Odachi.CodeModel.Providers.FluentValidation\Odachi.CodeModel.Providers.FluentValidation.csproj" />
 		<ProjectReference Include="..\..\src\Odachi.CodeModel\Odachi.CodeModel.csproj" />
 	</ItemGroup>
 
