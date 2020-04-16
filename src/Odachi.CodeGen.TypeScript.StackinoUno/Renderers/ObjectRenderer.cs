@@ -79,6 +79,47 @@ namespace Odachi.CodeGen.TypeScript.StackinoUno.Renderers
 						writer.WriteIndentedLine("return result;");
 					}
 				}
+
+				var hasValidation = objectFragment.Fields.Any(f => f.Hints.Any(h => h.Key.StartsWith("validation:")));
+				if (hasValidation)
+				{
+					using (writer.WriteIndentedBlock(prefix: $"static validation = ", suffix: ";"))
+					{
+						foreach (var field in objectFragment.Fields)
+						{
+							field.Hints.TryGetValue("validation:is-required", out var isRequired);
+							field.Hints.TryGetValue("validation:min-length", out var minLength);
+							field.Hints.TryGetValue("validation:max-length", out var maxLength);
+
+							if (string.IsNullOrEmpty(isRequired) && string.IsNullOrEmpty(minLength) && string.IsNullOrEmpty(maxLength))
+							{
+								continue;
+							}
+
+							using (writer.WriteIndentedBlock(prefix: $"{TS.Field(field.Name)}: ", suffix: ","))
+							{
+								if (isRequired == "true")
+								{
+									writer.WriteIndentedLine("required: true,");
+								}
+								if ((!string.IsNullOrEmpty(minLength) && minLength != "-1") || (!string.IsNullOrEmpty(maxLength) && maxLength != "-1"))
+								{
+									using (writer.WriteIndentedBlock(prefix: "length: ", suffix: ","))
+									{
+										if (!string.IsNullOrEmpty(minLength) && minLength != "-1")
+										{
+											writer.WriteIndentedLine($"min: {minLength},");
+										}
+										if (!string.IsNullOrEmpty(maxLength) && maxLength != "-1")
+										{
+											writer.WriteIndentedLine($"max: {maxLength},");
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 
 			context.Export(objectFragment.Name, @default: true);
