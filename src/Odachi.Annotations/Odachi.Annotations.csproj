@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="..\..\tools\common.props" />
-
+  <Import Project="..\..\tools\library.props" />
+  
 	<PropertyGroup>
 		<Description>Annotations used across Odachi framework.</Description>
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>

@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\library.props" />
 
   <PropertyGroup>
     <Description>TypeScript code generator for `@stackino/due`.</Description>

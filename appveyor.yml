@@ -24,6 +24,7 @@ test: off
 
 artifacts:
   - path: 'build/*.nupkg'
+  - path: 'build/*.snupkg'
 
 deploy:
   - provider: Environment

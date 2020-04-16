@@ -1,6 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\library.props" />
 
   <PropertyGroup>
     <Description>Storage implementation for Azure.</Description>

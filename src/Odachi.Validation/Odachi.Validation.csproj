@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\library.props" />
 
 	<PropertyGroup>
-		<Description>Object validation library.</Description>
+		<Description>Basic object validation infrastructure.</Description>
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>

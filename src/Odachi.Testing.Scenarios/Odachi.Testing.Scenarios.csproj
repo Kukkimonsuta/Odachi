@@ -1,10 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\library.props" />
 
   <PropertyGroup>
+    <Description>Infrastructure for scenario testing.</Description>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
+    <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\library.props" />
 
   <PropertyGroup>
     <Description>MSBuild task to transform razor templates to c#.</Description>

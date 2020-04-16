@@ -9,8 +9,9 @@
 		<Authors>Lukáš Novotný</Authors>
 		<RepositoryUrl>https://github.com/Kukkimonsuta/Odachi</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageLicenseUrl>https://github.com/Kukkimonsuta/Odachi/blob/master/LICENSE</PackageLicenseUrl>
 		<LangVersion>8.0</LangVersion>
+		<Deterministic>true</Deterministic>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<PropertyGroup>

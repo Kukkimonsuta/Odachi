@@ -1,15 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\library.props" />
 
   <PropertyGroup>
+    <Description>Oracle support for scenario testing.</Description>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
+    <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.30" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="1.1.2" />
+    <PackageReference Include="Devart.Data.Oracle" Version="9.11.951" />
   </ItemGroup>
 
   <ItemGroup>
