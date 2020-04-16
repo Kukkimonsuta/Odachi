@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\tools\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.30" />
+    <PackageReference Include="Devart.Data.Oracle" Version="9.11.951" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Odachi.Testing.Scenarios.Data\Odachi.Testing.Scenarios.Data.csproj" />
+    <ProjectReference Include="..\Odachi.Testing.Scenarios\Odachi.Testing.Scenarios.csproj" />
+  </ItemGroup>
+
+</Project>

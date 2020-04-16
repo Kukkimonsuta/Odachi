@@ -103,6 +103,11 @@ Pack(".\src\Odachi.RazorTemplating.MSBuild")
 Pack(".\src\Odachi.Security")
 Pack(".\src\Odachi.Storage.Azure")
 Pack(".\src\Odachi.Storage.FileSystem")
+Pack(".\src\Odachi.Testing.Scenarios")
+Pack(".\src\Odachi.Testing.Scenarios.Data")
+Pack(".\src\Odachi.Testing.Scenarios.Data.MySql")
+Pack(".\src\Odachi.Testing.Scenarios.Data.Oracle")
+Pack(".\src\Odachi.Storage.Scenarios.Xunit")
 Pack(".\src\Odachi.Validation")
 
 Write-Host
