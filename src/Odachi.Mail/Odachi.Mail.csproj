@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Text.Encodings.Web" Version="4.7.0" />
-    <PackageReference Include="MimeKit" Version="2.4.1" />
+    <PackageReference Include="MimeKit" Version="2.6.0" />
   </ItemGroup>
 
 </Project>
