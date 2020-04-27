@@ -76,6 +76,7 @@ Write-Host
 Pack(".\src\Odachi.Abstractions")
 Pack(".\src\Odachi.Annotations")
 Pack(".\src\Odachi.AspNetCore.Authentication.Basic")
+Pack(".\src\Odachi.AspNetCore.Authentication.ApiKey")
 Pack(".\src\Odachi.AspNetCore.JsonRpc")
 Pack(".\src\Odachi.AspNetCore.Mvc")
 Pack(".\src\Odachi.CodeGen")

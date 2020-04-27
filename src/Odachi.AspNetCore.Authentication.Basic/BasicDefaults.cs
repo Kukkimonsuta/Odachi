@@ -1,7 +1,7 @@
-﻿namespace Odachi.AspNetCore.Authentication.Basic
+namespace Odachi.AspNetCore.Authentication.Basic
 {
     /// <summary>
-    /// Default values used by <see cref="BasicMiddleware"/> when not defined in <see cref="BasicOptions"/>.
+    /// Default values used by <see cref="BasicHandler"/> when not defined in <see cref="BasicOptions"/>.
     /// </summary>
     public static class BasicDefaults
     {

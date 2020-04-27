@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
 
-namespace Odachi.AspNetCore.Authentication.Basic
+namespace Odachi.AspNetCore.Authentication.ApiKey
 {
     /// <summary>
-    /// Specifies callback methods which the <see cref="BasicHandler"></see> invokes to enable developer control over the authentication process.
+    /// Specifies callback methods which the <see cref="ApiKeyHandler"></see> invokes to enable developer control over the authentication process.
     /// </summary>
-    public interface IBasicEvents
+    public interface IApiKeyEvents
     {
 		/// <summary>
 		/// Called when an exception occurs during request or response processing.
@@ -14,10 +14,10 @@ namespace Odachi.AspNetCore.Authentication.Basic
 		Task AuthenticationFailed(AuthenticationFailedContext context);
 
 		/// <summary>
-		/// Called when a request came with basic authentication credentials. By implementing this method the credentials can be converted to
+		/// Called when a request came with api key authentication credentials. By implementing this method the api key can be converted to
 		/// a principal.
 		/// </summary>
 		/// <param name="context">Contains information about the sign in request.</param>
-		Task SignIn(BasicSignInContext context);
+		Task SignIn(ApiKeySignInContext context);
 	}
 }

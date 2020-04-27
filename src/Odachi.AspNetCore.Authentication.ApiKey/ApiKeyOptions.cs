@@ -7,31 +7,26 @@ using System.Security.Claims;
 using System;
 using Microsoft.AspNetCore.Builder;
 
-namespace Odachi.AspNetCore.Authentication.Basic
+namespace Odachi.AspNetCore.Authentication.ApiKey
 {
 	/// <summary>
-	/// Contains the options used by the <see cref="BasicHandler"/>.
+	/// Contains the options used by the <see cref="ApiKeyHandler"/>.
 	/// </summary>
-	public class BasicOptions : AuthenticationSchemeOptions
+	public class ApiKeyOptions : AuthenticationSchemeOptions
 	{
-		/// <summary>
-		/// The default realm used by basic authentication.
-		/// </summary>
-		public string Realm { get; set; } = BasicDefaults.Realm;
-
 		/// <summary>
 		/// Allowed credentials.
 		/// </summary>
-		public BasicCredential[] Credentials { get; set; } = new BasicCredential[0];
+		public ApiKeyCredential[] Credentials { get; set; } = new ApiKeyCredential[0];
 
 		/// <summary>
 		/// The object provided by the application to process events raised by the bearer authentication handler.
 		/// The application may implement the interface fully, or it may create an instance of JwtBearerEvents
 		/// and assign delegates only to the events it wants to process.
 		/// </summary>
-		public new BasicEvents Events
+		public new ApiKeyEvents Events
 		{
-			get { return (BasicEvents)base.Events; }
+			get { return (ApiKeyEvents)base.Events; }
 			set { base.Events = value; }
 		}
 	}

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\library.props" />
+  
+  <PropertyGroup>
+    <Description>ASP.NET Core middleware for api key authentication.</Description>
+		<TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+		<PackageTags>odachi</PackageTags>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+</Project>
