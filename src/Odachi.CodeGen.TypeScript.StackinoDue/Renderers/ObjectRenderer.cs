@@ -43,7 +43,9 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 					{
 						context.Import("mobx", "observable");
 
-						if (field.Type.Kind == TypeKind.Array)
+						// this seem to be sometimes wrong? todo: investigate
+						//if (field.Type.Kind == TypeKind.Array)
+						if (field.Type.Module == null && field.Type.Name == "array")
 						{
 							writer.WriteIndentedLine("@observable.shallow");
 						}
