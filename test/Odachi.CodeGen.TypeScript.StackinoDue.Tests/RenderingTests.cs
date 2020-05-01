@@ -338,10 +338,10 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 // source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObject, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithArrayOfGenericObject {
-	@observable.ref
+	@observable.shallow
 	strings: Array<GenericObject<string | null> | null> | null = null;
 
-	@observable.ref
+	@observable.shallow
 	ints: Array<GenericObject<number> | null> | null = null;
 
 	static create(source: any): ObjectWithArrayOfGenericObject {
@@ -395,7 +395,7 @@ const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 // source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObjectWithPages, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
 
 class ObjectWithArrayOfGenericObjectWithPages {
-	@observable.ref
+	@observable.shallow
 	strings: Array<GenericObject<Page<string | null> | null> | null> | null = null;
 
 	static create(source: any): ObjectWithArrayOfGenericObjectWithPages {

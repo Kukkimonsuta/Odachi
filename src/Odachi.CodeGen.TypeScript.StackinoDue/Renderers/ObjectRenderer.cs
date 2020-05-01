@@ -43,7 +43,14 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 					{
 						context.Import("mobx", "observable");
 
-						writer.WriteIndentedLine("@observable.ref");
+						if (field.Type.Kind == TypeKind.Array)
+						{
+							writer.WriteIndentedLine("@observable.shallow");
+						}
+						else
+						{
+							writer.WriteIndentedLine("@observable.ref");
+						}
 						writer.WriteIndentedLine($"{TS.Field(field.Name)}: {context.Resolve(field.Type)} = {context.ResolveDefaultValue(field.Type)};");
 						writer.WriteSeparatingLine();
 					}
