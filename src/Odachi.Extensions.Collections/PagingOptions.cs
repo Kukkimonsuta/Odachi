@@ -15,7 +15,7 @@ namespace Odachi.Extensions.Collections
 		public static int DefaultSize = 10;
 		public static bool DefaultAcquireTotal = true;
 		public static int DefaultOffset = 0;
-		public static int? DefaultMaximumCount = 20;
+		public static int? DefaultMaximumCount = null;
 
 		public PagingOptions()
 			: this(DefaultNumber)
@@ -102,7 +102,7 @@ namespace Odachi.Extensions.Collections
 		}
 
 		/// <summary>
-		/// Maximum expected number of pages.
+		/// Maximum expected number of pages. Note that this option can break EF queries.
 		/// </summary>
 		public int? MaximumCount
 		{
