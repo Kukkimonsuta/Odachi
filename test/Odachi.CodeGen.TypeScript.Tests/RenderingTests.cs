@@ -340,7 +340,7 @@ function _$$_und<T>(T_factory: { create: (source: any) => T }): { create: (sourc
 const _$$_factory_number_und = _$$_und(_$$_factory_number);
 const _$$_factory_PagingOptions = { create: (source: any): PagingOptions => ({ page: _$$_factory_number.create(source.page), size: _$$_factory_number_und.create(source.size), offset: _$$_factory_number_und.create(source.offset), maximumCount: _$$_factory_number_und.create(source.maximumCount) }) };
 const _$$_factory_PagingOptions_opt = _$$_opt(_$$_factory_PagingOptions);
-function _$$_factory_Page<T>(T_factory: { create: (source: any) => T }) { return { create: (source: any): Page<T> => new Page(Array.isArray(source.data) ? source.data.map((item: any) => T_factory.create(item)) : _$$_fail(`Contract violation: expected array, got \\'${typeof(source)}\\'`), _$$_factory_number.create(source.number), _$$_factory_number.create(source.count)) }; }
+function _$$_factory_Page<T>(T_factory: { create: (source: any) => T }) { return { create: (source: any): Page<T> => new Page(Array.isArray(source.data) ? source.data.map((item: any) => T_factory.create(item)) : _$$_fail(`Contract violation: expected array, got \\'${typeof(source)}\\'`), _$$_factory_number.create(source.number), _$$_factory_number.create(source.count), _$$_factory_number.create(source.size)) }; }
 function _$$_factory_Page_opt<T>(T_factory: { create: (source: any) => T }) { return _$$_opt(_$$_factory_Page(T_factory)); }
 const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);

@@ -184,7 +184,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
 
 						context.Import("@odachi/collections", "Page");
-						return $"new Page<{context.Resolve(type.GenericArguments[0])}>([], 0, 0)";
+						return $"new Page<{context.Resolve(type.GenericArguments[0])}>()";
 
 					case "PagingOptions":
 						if (type.GenericArguments?.Length > 0)
@@ -369,7 +369,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 							var pageFactory = MakeFactory(
 								type.Name,
-								$@"(source: any): Page<T> => new Page(Array.isArray(source.data) ? source.data.map((item: any) => T_factory.create(item)) : {privatePrefix}fail(`Contract violation: expected array, got \\'${{typeof(source)}}\\'`), {numberFactory}.create(source.number), {numberFactory}.create(source.count))",
+								$@"(source: any): Page<T> => new Page(Array.isArray(source.data) ? source.data.map((item: any) => T_factory.create(item)) : {privatePrefix}fail(`Contract violation: expected array, got \\'${{typeof(source)}}\\'`), {numberFactory}.create(source.number), {numberFactory}.create(source.count), {numberFactory}.create(source.size))",
 								new[] { "T" }
 							);
 
