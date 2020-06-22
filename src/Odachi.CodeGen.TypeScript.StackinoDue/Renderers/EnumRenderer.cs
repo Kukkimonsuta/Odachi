@@ -36,7 +36,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 			{
 				foreach (var item in enumFragment.Items)
 				{
-					writer.WriteIndentedLine($"[{TS.Type(enumFragment.Name)}.{TS.Field(item.Name)}]: '{TS.Field(item.Name)}',");
+					writer.WriteIndentedLine($"[{TS.Type(enumFragment.Name)}.{TS.Field(item.Name)}]: {TS.String(TS.Field(item.Name))},");
 				}
 			}
 
@@ -46,7 +46,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 				{
 					foreach (var item in enumFragment.Items)
 					{
-						writer.WriteIndentedLine($"[{TS.Type(enumFragment.Name)}.{TS.Field(item.Name)}]: '{item.Hints["display-name"] ?? ""}',");
+						writer.WriteIndentedLine($"[{TS.Type(enumFragment.Name)}.{TS.Field(item.Name)}]: {TS.String(item.Hints["display-name"] ?? "")},");
 					}
 				}
 			}
@@ -106,7 +106,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 					{
 						foreach (var item in enumFragment.Items)
 						{
-							writer.WriteIndentedLine($"'{TS.Field(item.Name)}',");
+							writer.WriteIndentedLine($"{TS.String(TS.Field(item.Name))},");
 						}
 					}
 				}

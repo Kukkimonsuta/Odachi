@@ -663,21 +663,11 @@ export { ConstantsClass };
 
 			var result = RenderModule(package, $".\\{nameof(ConstantsClass)}");
 
-			Assert.Equal(@"import { RpcClient } from '@odachi/rpc-client';
-import { inject, injectable, Tag } from '@stackino/due';
-import { RpcClientTag } from '@stackino/due-plugin-odachirpcclient';
+			Assert.Equal(@"// source: Odachi.CodeModel.Tests.ConstantsClass, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
 
-// source: Odachi.CodeModel.Tests.ConstantsClass, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
-
-export const ConstantsClassTag = new Tag<ConstantsClass>('Test ConstantsClass');
-
-@injectable(ConstantsClassTag)
 class ConstantsClass {
 	static readonly testString: string = 'fiftyfive';
 	static readonly testInt: number = 55;
-
-	@inject(RpcClientTag)
-	private readonly client!: RpcClient;
 }
 
 export default ConstantsClass;
@@ -694,8 +684,7 @@ export { ConstantsClass };
 
 			var result = RenderModule(package, $".\\{nameof(ServiceClass)}");
 
-			Assert.Equal(@"import { RpcClient } from '@odachi/rpc-client';
-import { inject, injectable, Tag } from '@stackino/due';
+			Assert.Equal(@"import { Injectable, Tag } from '@stackino/due';
 import { RpcClientTag } from '@stackino/due-plugin-odachirpcclient';
 
 function _$$_fail(message: string): never { throw new Error(message); }
@@ -703,12 +692,10 @@ const _$$_factory_boolean = { create: (source: any): boolean => typeof source ==
 
 // source: Odachi.CodeModel.Tests.ServiceClass, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
 
-export const ServiceClassTag = new Tag<ServiceClass>('Test ServiceClass');
+const ServiceClassTag = new Tag<ServiceClass>('Test ServiceClass');
 
-@injectable(ServiceClassTag)
-class ServiceClass {
-	@inject(RpcClientTag)
-	private readonly client!: RpcClient;
+class ServiceClass extends Injectable {
+	private readonly client = this.$dependency(RpcClientTag);
 
 	async testAsync(foo: string | null, bar: number): Promise<boolean> {
 		const result = await this.client.callAsync('Test', { foo, bar });
@@ -717,7 +704,7 @@ class ServiceClass {
 }
 
 export default ServiceClass;
-export { ServiceClass };
+export { ServiceClassTag, ServiceClass };
 ", result);
 		}
 

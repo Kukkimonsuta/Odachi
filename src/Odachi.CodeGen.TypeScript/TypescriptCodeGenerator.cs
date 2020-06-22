@@ -120,7 +120,10 @@ namespace Odachi.CodeGen.TypeScript
 		protected override void OnPackageFinish(TypeScriptPackageContext packageContext)
 		{
 			RenderIndexes(packageContext);
-			RenderDi(packageContext);
+			if (packageContext.Options.RenderDi)
+			{
+				RenderDi(packageContext);
+			}
 		}
 	}
 }

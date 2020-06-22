@@ -55,50 +55,28 @@ namespace Odachi.CodeGen.TypeScript.Internal
 
 		public static string Constant(object value)
 		{
-			switch (value)
+			return value switch
 			{
-				case null:
-					return "null";
+				null => "null",
+				sbyte sb => sb.ToString(CultureInfo.InvariantCulture),
+				byte b => b.ToString(CultureInfo.InvariantCulture),
+				short s => s.ToString(CultureInfo.InvariantCulture),
+				ushort us => us.ToString(CultureInfo.InvariantCulture),
+				int i => i.ToString(CultureInfo.InvariantCulture),
+				uint ui => ui.ToString(CultureInfo.InvariantCulture),
+				long l => l.ToString(CultureInfo.InvariantCulture),
+				ulong ul => ul.ToString(CultureInfo.InvariantCulture),
+				float f => f.ToString(CultureInfo.InvariantCulture),
+				double d => d.ToString(CultureInfo.InvariantCulture),
+				decimal m => m.ToString(CultureInfo.InvariantCulture),
+				string str => String(str),
+				_ => throw new InvalidOperationException($"Cannot render constant of type '{value}'"),
+			};
+		}
 
-				case sbyte sb:
-					return sb.ToString(CultureInfo.InvariantCulture);
-
-				case byte b:
-					return b.ToString(CultureInfo.InvariantCulture);
-
-				case short s:
-					return s.ToString(CultureInfo.InvariantCulture);
-
-				case ushort us:
-					return us.ToString(CultureInfo.InvariantCulture);
-
-				case int i:
-					return i.ToString(CultureInfo.InvariantCulture);
-
-				case uint ui:
-					return ui.ToString(CultureInfo.InvariantCulture);
-
-				case long l:
-					return l.ToString(CultureInfo.InvariantCulture);
-
-				case ulong ul:
-					return ul.ToString(CultureInfo.InvariantCulture);
-
-				case float f:
-					return f.ToString(CultureInfo.InvariantCulture);
-
-				case double d:
-					return d.ToString(CultureInfo.InvariantCulture);
-
-				case decimal m:
-					return m.ToString(CultureInfo.InvariantCulture);
-
-				case string str:
-					return $"'{value}'";
-
-				default:
-					throw new InvalidOperationException($"Cannot render constant of type '{value}'");
-			}
+		public static string String(string value)
+		{
+			return $"'{value.Replace("'", "\\'")}'";
 		}
 	}
 }

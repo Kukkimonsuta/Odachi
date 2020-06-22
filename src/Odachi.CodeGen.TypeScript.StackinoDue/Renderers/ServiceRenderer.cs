@@ -24,15 +24,24 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 				writer.WriteSeparatingLine();
 			}
 
-			context.Import("@stackino/due", "Tag");
-			writer.WriteIndentedLine($"export const {TS.Type(serviceFragment.Name)}Tag = new Tag<{TS.Type(serviceFragment.Name)}>('{context.PackageContext.Package.Name} {TS.Type(serviceFragment.Name)}');");
-			writer.WriteSeparatingLine();
+			var hasConstants = serviceFragment.Constants.Any();
+			var hasMethods = serviceFragment.Methods.Any();
 
-			context.Import("@stackino/due", "injectable");
-			writer.WriteIndentedLine($"@injectable({TS.Type(serviceFragment.Name)}Tag)");
-			using (writer.WriteIndentedBlock(prefix: $"class {TS.Type(serviceFragment.Name)} "))
+			var classDeclaration = $"class {TS.Type(serviceFragment.Name)} ";
+			if (hasMethods)
 			{
-				if (serviceFragment.Constants.Any())
+				context.Import("@stackino/due", "Tag");
+				writer.WriteIndentedLine($"const {TS.Type(serviceFragment.Name)}Tag = new Tag<{TS.Type(serviceFragment.Name)}>('{context.PackageContext.Package.Name} {TS.Type(serviceFragment.Name)}');");
+				writer.WriteSeparatingLine();
+
+				context.Export($"{TS.Type(serviceFragment.Name)}Tag");
+
+				context.Import("@stackino/due", "Injectable");
+				classDeclaration += "extends Injectable ";
+			}
+			using (writer.WriteIndentedBlock(prefix: classDeclaration))
+			{
+				if (hasConstants)
 				{
 					foreach (var constant in serviceFragment.Constants)
 					{
@@ -41,34 +50,34 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 					writer.WriteSeparatingLine();
 				}
 
-				context.Import("@stackino/due", "inject");
-				context.Import("@stackino/due-plugin-odachirpcclient", "RpcClientTag");
-				context.Import("@odachi/rpc-client", "RpcClient");
-				writer.WriteIndentedLine("@inject(RpcClientTag)");
-				writer.WriteIndentedLine("private readonly client!: RpcClient;");
-				writer.WriteSeparatingLine();
-
-				foreach (var method in serviceFragment.Methods)
+				if (hasMethods)
 				{
-					var rpcMethodName = method.Hints["jsonrpc-name"] ?? method.Name;
-
-					var parameters = method.Parameters
-						.Select(p => $"{TS.Parameter(p.Name)}: {context.Resolve(p.Type)}")
-						.ToList();
-
-					using (writer.WriteIndentedBlock(prefix: $"async {TS.Method(method.Name)}Async({string.Join(", ", parameters)}): Promise<{context.Resolve(method.ReturnType)}> "))
-					{
-						if (method.ReturnType.Name == "void")
-						{
-							writer.WriteIndentedLine($"await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
-						}
-						else
-						{
-							writer.WriteIndentedLine($"const result = await this.client.callAsync('{rpcMethodName}', {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
-							writer.WriteIndentedLine($"return {context.CreateExpression(method.ReturnType, "result")};");
-						}
-					}
+					context.Import("@stackino/due-plugin-odachirpcclient", "RpcClientTag");
+					writer.WriteIndentedLine("private readonly client = this.$dependency(RpcClientTag);");
 					writer.WriteSeparatingLine();
+
+					foreach (var method in serviceFragment.Methods)
+					{
+						var rpcMethodName = method.Hints["jsonrpc-name"] ?? method.Name;
+
+						var parameters = method.Parameters
+							.Select(p => $"{TS.Parameter(p.Name)}: {context.Resolve(p.Type)}")
+							.ToList();
+
+						using (writer.WriteIndentedBlock(prefix: $"async {TS.Method(method.Name)}Async({string.Join(", ", parameters)}): Promise<{context.Resolve(method.ReturnType)}> "))
+						{
+							if (method.ReturnType.Name == "void")
+							{
+								writer.WriteIndentedLine($"await this.client.callAsync({TS.String(rpcMethodName)}, {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
+							}
+							else
+							{
+								writer.WriteIndentedLine($"const result = await this.client.callAsync({TS.String(rpcMethodName)}, {{ {string.Join(", ", method.Parameters.Select(p => p.Name))} }});");
+								writer.WriteIndentedLine($"return {context.CreateExpression(method.ReturnType, "result")};");
+							}
+						}
+						writer.WriteSeparatingLine();
+					}
 				}
 			}
 			writer.WriteSeparatingLine();
