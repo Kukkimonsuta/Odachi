@@ -55,36 +55,6 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Tests
 		}
 
 		[Fact]
-		public void Can_describe_object_with_attribute_validation()
-		{
-			var package = new PackageBuilder("Test")
-				.UseFluentValidation()
-				.Module_Object_Default<ObjectWithAttributeValidation>()
-				.Build();
-
-			Assert.NotNull(package);
-			Assert.Single(package.Objects);
-
-			var obj = package.Objects[0];
-			Assert.Equal(nameof(ObjectWithAttributeValidation), obj.Name);
-
-			var optionalIntField = obj.Fields.Where(f => f.Name == nameof(ObjectWithAttributeValidation.OptionalInt)).SingleOrDefault();
-			Assert.NotNull(optionalIntField);
-			AssertIsRequired(optionalIntField, false);
-			AssertLength(optionalIntField, -1, -1);
-
-			var requiredStringField = obj.Fields.Where(f => f.Name == nameof(ObjectWithAttributeValidation.RequiredString)).SingleOrDefault();
-			Assert.NotNull(requiredStringField);
-			AssertIsRequired(requiredStringField, true);
-			AssertLength(requiredStringField, -1, -1);
-
-			var requiredLengthString = obj.Fields.Where(f => f.Name == nameof(ObjectWithAttributeValidation.RequiredLengthString)).SingleOrDefault();
-			Assert.NotNull(requiredLengthString);
-			AssertIsRequired(requiredLengthString, true);
-			AssertLength(requiredLengthString, 10, 20);
-		}
-
-		[Fact]
 		public void Can_describe_object_with_ambient_validation()
 		{
 			var package = new PackageBuilder("Test")

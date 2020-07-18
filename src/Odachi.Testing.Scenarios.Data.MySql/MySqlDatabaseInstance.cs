@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
 using Dapper;
+using MySqlConnector;
 
 namespace Odachi.Testing.Scenarios.Data.MySql
 {

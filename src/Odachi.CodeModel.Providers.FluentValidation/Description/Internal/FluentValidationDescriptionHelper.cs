@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentValidation;
-using FluentValidation.Attributes;
 using FluentValidation.Internal;
 using FluentValidation.Validators;
 
@@ -14,23 +13,15 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 	public static class FluentValidationDescriptionHelper
 	{
 		private static HashSet<Assembly> _scannedAssemblies = new HashSet<Assembly>();
-		private static Dictionary<Type, Type> _explicitValidators = new Dictionary<Type, Type>();
 		private static Dictionary<Type, Type> _scannedValidators = new Dictionary<Type, Type>();
 
 		private static Type? GetValidatorTypeForType(Type type)
 		{
 			// todo: is this the best way to find matching validators?
 
-			if (_explicitValidators.TryGetValue(type, out var validatorType) || _scannedValidators.TryGetValue(type, out validatorType))
+			if (_scannedValidators.TryGetValue(type, out var validatorType))
 			{
 				return validatorType;
-			}
-
-			// try explicitly set validator using an attribute
-			var validatorAttribute = (ValidatorAttribute)type.GetCustomAttribute(typeof(ValidatorAttribute));
-			if (validatorAttribute?.ValidatorType != null)
-			{
-				return _explicitValidators[type] = validatorAttribute.ValidatorType;
 			}
 
 			// try scan types assembly for matching validator
@@ -78,9 +69,9 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 			var rules = descriptor.GetRulesForMember(null);
 			if (rules != null)
 			{
-				foreach (var includeRule in rules.OfType<IncludeRule>())
+				foreach (var includeRule in rules)
 				{
-					var includedPropertyRules = includeRule.Validators.OfType<ChildValidatorAdaptor>()
+					var includedPropertyRules = includeRule.Validators.OfType<IChildValidatorAdaptor>()
 						.Select(a => Activator.CreateInstance(a.ValidatorType))
 						.Cast<IEnumerable<IValidationRule>>()
 						.SelectMany(x => x)
