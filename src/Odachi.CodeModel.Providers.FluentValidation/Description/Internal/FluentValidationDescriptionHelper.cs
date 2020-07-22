@@ -18,7 +18,6 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 		private static Type? GetValidatorTypeForType(Type type)
 		{
 			// todo: is this the best way to find matching validators?
-
 			if (_scannedValidators.TryGetValue(type, out var validatorType))
 			{
 				return validatorType;
@@ -99,6 +98,10 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 		public static bool IsRequired(Type type, MemberInfo member)
 		{
 			var validatorType = GetValidatorTypeForType(type);
+			if (validatorType == null)
+			{
+				return false;
+			}
 
 			var validator = (IValidator)Activator.CreateInstance(validatorType);
 
@@ -112,6 +115,10 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 		public static (int min, int max) Length(Type type, MemberInfo member)
 		{
 			var validatorType = GetValidatorTypeForType(type);
+			if (validatorType == null)
+			{
+				return (-1, -1);
+			}
 
 			var validator = (IValidator)Activator.CreateInstance(validatorType);
 
