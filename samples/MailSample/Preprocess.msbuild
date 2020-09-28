@@ -3,15 +3,15 @@
 
 	<PropertyGroup>
 		<RazorTemplatingAssemblyFile Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)../../src/Odachi.RazorTemplating.MSBuild/bin/$(Configuration)/netstandard2.0/Odachi.RazorTemplating.MSBuild.dll</RazorTemplatingAssemblyFile>
-		<RazorTemplatingAssemblyFile Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)../../src/Odachi.RazorTemplating.MSBuild/bin/$(Configuration)/net462/Odachi.RazorTemplating.MSBuild.dll</RazorTemplatingAssemblyFile>
+		<RazorTemplatingAssemblyFile Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)../../src/Odachi.RazorTemplating.MSBuild/bin/$(Configuration)/net472/Odachi.RazorTemplating.MSBuild.dll</RazorTemplatingAssemblyFile>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Content Include="$(MSBuildThisFileDirectory)**/*.cshtml" />
 	</ItemGroup>
-	
+
 	<Import Project="../../src/Odachi.RazorTemplating.MSBuild/build/Odachi.RazorTemplating.MSBuild.targets" />
-	
+
 	<Target Name="CoreCompile" BeforeTargets="Build"></Target>
 	<Target Name="Build"></Target>
 

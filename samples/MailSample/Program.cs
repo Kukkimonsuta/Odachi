@@ -13,7 +13,7 @@ namespace MailSample
 			var renderer = new MailTemplateRenderer();
 
 			var message = await renderer.RenderAsync(new HelloMessage());
-			
+
 			Console.WriteLine(message.ToString());
 
 			Console.ReadKey();

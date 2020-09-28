@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup Condition="'$(RazorTemplatingAssemblyFile)' == ''">
 		<RazorTemplatingAssemblyFile Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)..\tools\netstandard2.0\Odachi.RazorTemplating.MSBuild.dll</RazorTemplatingAssemblyFile>
-		<RazorTemplatingAssemblyFile Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)..\tools\net462\Odachi.RazorTemplating.MSBuild.dll</RazorTemplatingAssemblyFile>
+		<RazorTemplatingAssemblyFile Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)..\tools\net472\Odachi.RazorTemplating.MSBuild.dll</RazorTemplatingAssemblyFile>
 	</PropertyGroup>
 
 	<UsingTask AssemblyFile="$(RazorTemplatingAssemblyFile)" TaskName="Odachi.RazorTemplating.MSBuild.TransformTemplatesTask" />

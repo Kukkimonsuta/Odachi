@@ -1,38 +1,34 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Odachi.AspNetCore.Authentication.Basic;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http.Authentication;
 
 namespace BasicAuthenticationSample
 {
-	public class Startup
-	{
+    public class Startup
+    {
 		public const string BasicScheme = "Basic";
 		public const string CustomBasicScheme = "CustomBasic";
 
-		public Startup(IHostingEnvironment hostingEnvironment)
+		public Startup( IConfiguration configuration)
 		{
-			Configuration = new ConfigurationBuilder()
-				.SetBasePath(hostingEnvironment.ContentRootPath)
-				.AddJsonFile("config.json")
-				.Build();
+			_configuration = configuration;
 		}
 
-		public IConfigurationRoot Configuration { get; set; }
+		private readonly IConfiguration _configuration;
 
 		public void ConfigureServices(IServiceCollection services)
-		{
-			services.Configure<BasicOptions>(BasicScheme, Configuration.GetSection("BasicAuthentication"));
+        {
+			services.Configure<BasicOptions>(BasicScheme, _configuration.GetSection("BasicAuthentication"));
 
 			services.AddAuthentication()
 				.AddBasic(BasicScheme, _ => { })
@@ -103,15 +99,12 @@ namespace BasicAuthenticationSample
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-		{
-			loggerFactory.AddConsole();
-
-			app.UseStatusCodePages();
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
 			app.UseAuthentication();
 
@@ -124,6 +117,6 @@ namespace BasicAuthenticationSample
 					<a href=""/custom-authentication-logic"">Custom authentication logic</a>
 				");
 			});
-		}
-	}
+        }
+    }
 }

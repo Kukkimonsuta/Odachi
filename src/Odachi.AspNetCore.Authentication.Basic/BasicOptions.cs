@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Builder;
 namespace Odachi.AspNetCore.Authentication.Basic
 {
 	/// <summary>
-	/// Contains the options used by the <see cref="BasicMiddleware"/>.
+	/// Contains the options used by the <see cref="BasicHandler"/>.
 	/// </summary>
 	public class BasicOptions : AuthenticationSchemeOptions
 	{

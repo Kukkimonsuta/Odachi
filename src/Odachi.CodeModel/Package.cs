@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 namespace Odachi.CodeModel
 {
 	/// <summary>
-	/// Represents a folder.
+	/// Represents a SDK.
 	/// </summary>
-	public class Package
+	public class Package : Fragment
 	{
 		/// <summary>
-		/// Package name.
+		/// Objects.
 		/// </summary>
-		public string Name { get; set; }
+		public IList<ObjectFragment> Objects { get; } = new List<ObjectFragment>();
 
 		/// <summary>
-		/// Package modules.
+		/// Enums.
 		/// </summary>
-		public IList<Module> Modules { get; } = new List<Module>();
+		public IList<EnumFragment> Enums { get; } = new List<EnumFragment>();
 
 		/// <summary>
-		/// Hints.
+		/// Services.
 		/// </summary>
-		public IDictionary<string, string> Hints { get; } = new Dictionary<string, string>();
+		public IList<ServiceFragment> Services { get; } = new List<ServiceFragment>();
 	}
 }

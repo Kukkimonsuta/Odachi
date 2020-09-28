@@ -8,25 +8,22 @@ using Odachi.CodeModel.Builders.Abstraction;
 
 namespace Odachi.CodeModel.Builders
 {
-	public class MethodBuilder : BuilderBase<MethodBuilder, MethodFragment>
+	public class MethodBuilder : FragmentBuilderBase<MethodBuilder, MethodFragment>
 	{
-		public MethodBuilder(PackageContext context, string name, ITypeReference returnType, object source)
+		public MethodBuilder(PackageContext context, string name, Type returnType, object source)
 			: base(context, name)
 		{
-			if (returnType == null)
-				throw new ArgumentNullException(nameof(returnType));
-
-			ReturnType = returnType;
+			ReturnType = new TypeReferenceBuilder(context, returnType ?? throw new ArgumentNullException(nameof(returnType)), source);
 			Source = source;
 
 			Context.MethodDescriptors.Describe(this);
 		}
 
 		public IList<ParameterBuilder> Parameters { get; } = new List<ParameterBuilder>();
-		public ITypeReference ReturnType { get; }
+		public TypeReferenceBuilder ReturnType { get; }
 		public object Source { get; }
 
-		public MethodBuilder Parameter(string name, ITypeReference type, object source, Action<ParameterBuilder> configure = null)
+		public MethodBuilder Parameter(string name, Type type, object source, Action<ParameterBuilder> configure = null)
 		{
 			var parameterBuilder = new ParameterBuilder(Context, name, type, source);
 
@@ -42,7 +39,7 @@ namespace Odachi.CodeModel.Builders
 			var result = new MethodFragment()
 			{
 				Name = Name,
-				ReturnType = ReturnType.Resolve(Context.TypeMapper)
+				ReturnType = ReturnType.Build(),
 			};
 
 			foreach (var parameter in Parameters)

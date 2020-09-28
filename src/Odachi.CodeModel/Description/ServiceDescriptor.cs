@@ -10,7 +10,7 @@ namespace Odachi.CodeModel.Description
 	public interface IServiceDescriptor
 	{
 		/// <summary>
-		/// Describe class. Called after builder creation for every class in package.
+		/// Describe service. Called after builder creation for every service in package.
 		/// </summary>
 		void Describe(ServiceBuilder builder);
 	}

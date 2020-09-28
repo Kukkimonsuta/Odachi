@@ -17,41 +17,47 @@ namespace Odachi.CodeModel.Builders
 			GlobalDescriptor = new DefaultGlobalDescriptor();
 			ObjectDescriptors = new List<IObjectDescriptor>() { new DefaultObjectDescriptor() };
 			ServiceDescriptors = new List<IServiceDescriptor>() { new DefaultServiceDescriptor() };
+			ConstantDescriptors = new List<IConstantDescriptor>() { new DefaultConstantDescriptor() };
 			FieldDescriptors = new List<IFieldDescriptor>() { new DefaultFieldDescriptor() };
 			MethodDescriptors = new List<IMethodDescriptor>() { new DefaultMethodDescriptor() };
 			ParameterDescriptors = new List<IParameterDescriptor>() { new DefaultParameterDescriptor() };
 			EnumDescriptors = new List<IEnumDescriptor>() { new DefaultEnumDescriptor() };
 			EnumItemDescriptors = new List<IEnumItemDescriptor>() { new DefaultEnumItemDescriptor() };
+			TypeReferenceDescriptors = new List<ITypeReferenceDescriptor>() { new DefaultTypeReferenceDescriptor() };
 			TypeMapper = new TypeMapper();
 			ModulePath = ".";
 		}
-		public PackageContext(PackageContext copyFromContext, string newModulePath)
+		public PackageContext(PackageContext parentContext, string newModulePath)
 		{
-			if (copyFromContext == null)
-				throw new ArgumentNullException(nameof(copyFromContext));
+			if (parentContext == null)
+				throw new ArgumentNullException(nameof(parentContext));
 			if (string.IsNullOrEmpty(newModulePath))
 				throw new ArgumentNullException(nameof(newModulePath));
 
-			GlobalDescriptor = copyFromContext.GlobalDescriptor;
-			ObjectDescriptors = copyFromContext.ObjectDescriptors;
-			ServiceDescriptors = copyFromContext.ServiceDescriptors;
-			FieldDescriptors = copyFromContext.FieldDescriptors;
-			MethodDescriptors = copyFromContext.MethodDescriptors;
-			ParameterDescriptors = copyFromContext.ParameterDescriptors;
-			EnumDescriptors = copyFromContext.EnumDescriptors;
-			EnumItemDescriptors = copyFromContext.EnumItemDescriptors;
-			TypeMapper = copyFromContext.TypeMapper;
+			GlobalDescriptor = parentContext.GlobalDescriptor;
+			ObjectDescriptors = parentContext.ObjectDescriptors;
+			ServiceDescriptors = parentContext.ServiceDescriptors;
+			ConstantDescriptors = parentContext.ConstantDescriptors;
+			FieldDescriptors = parentContext.FieldDescriptors;
+			MethodDescriptors = parentContext.MethodDescriptors;
+			ParameterDescriptors = parentContext.ParameterDescriptors;
+			EnumDescriptors = parentContext.EnumDescriptors;
+			EnumItemDescriptors = parentContext.EnumItemDescriptors;
+			TypeReferenceDescriptors = parentContext.TypeReferenceDescriptors;
+			TypeMapper = parentContext.TypeMapper;
 			ModulePath = newModulePath;
 		}
 
 		public IGlobalDescriptor GlobalDescriptor { get; }
 		public IList<IObjectDescriptor> ObjectDescriptors { get; }
 		public IList<IServiceDescriptor> ServiceDescriptors { get; }
+		public IList<IConstantDescriptor> ConstantDescriptors { get; }
 		public IList<IFieldDescriptor> FieldDescriptors { get; }
 		public IList<IMethodDescriptor> MethodDescriptors { get; }
 		public IList<IParameterDescriptor> ParameterDescriptors { get; }
 		public IList<IEnumDescriptor> EnumDescriptors { get; }
 		public IList<IEnumItemDescriptor> EnumItemDescriptors { get; }
+		public IList<ITypeReferenceDescriptor> TypeReferenceDescriptors { get; }
 		public TypeMapper TypeMapper { get; }
 		public string ModulePath { get; }
 
@@ -61,23 +67,29 @@ namespace Odachi.CodeModel.Builders
 		}
 	}
 
-	public class PackageBuilder : BuilderBase<PackageBuilder, Package>
+	public class PackageBuilder : FragmentBuilderBase<PackageBuilder, Package>
 	{
 		private PackageBuilder(PackageBuilder parent, PackageContext context)
-			: base(context, parent?.Name)
+			: base(context, parent.Name)
 		{
 			if (parent == null)
 				throw new ArgumentNullException(nameof(parent));
 
-			Modules = parent.Modules;
+			Enums = parent.Enums;
+			Objects = parent.Objects;
+			Services = parent.Services;
 		}
 		public PackageBuilder(string name)
 			: base(new PackageContext(), name)
 		{
-			Modules = new List<ModuleBuilder>();
+			Enums = new List<EnumBuilder>();
+			Objects = new List<ObjectBuilder>();
+			Services = new List<ServiceBuilder>();
 		}
 
-		public IList<ModuleBuilder> Modules { get; }
+		public IList<EnumBuilder> Enums { get; set; }
+		public IList<ObjectBuilder> Objects { get; set; }
+		public IList<ServiceBuilder> Services { get; set; }
 
 		public PackageBuilder Folder(string name, Action<PackageBuilder> configure)
 		{
@@ -88,13 +100,55 @@ namespace Odachi.CodeModel.Builders
 			return this;
 		}
 
-		public PackageBuilder Module(string name, Action<ModuleBuilder> configure)
+		public PackageBuilder Enum(string name, Action<EnumBuilder> configure)
 		{
-			var moduleBuilder = new ModuleBuilder(Context, Context.MapPath(name));
+			return Enum(name, null, configure);
+		}
+		public PackageBuilder Enum(string name, Type type, Action<EnumBuilder> configure)
+		{
+			var enumBuilder = new EnumBuilder(Context, name, source: type);
 
-			configure(moduleBuilder);
+			configure(enumBuilder);
 
-			Modules.Add(moduleBuilder);
+			Enums.Add(enumBuilder);
+
+			return this;
+		}
+
+		public PackageBuilder Object(string name, Action<ObjectBuilder> configure)
+		{
+			return Object(name, null, null, configure);
+		}
+		public PackageBuilder Object(string name, Type type, Action<ObjectBuilder> configure)
+		{
+			return Object(name, null, type, configure);
+		}
+		public PackageBuilder Object(string name, IReadOnlyList<string> genericArguments, Action<ObjectBuilder> configure)
+		{
+			return Object(name, genericArguments, null, configure);
+		}
+		public PackageBuilder Object(string name, IReadOnlyList<string> genericArguments, Type type, Action<ObjectBuilder> configure)
+		{
+			var objectBuilder = new ObjectBuilder(Context, name, genericArguments, source: type);
+
+			configure(objectBuilder);
+
+			Objects.Add(objectBuilder);
+
+			return this;
+		}
+
+		public PackageBuilder Service(string name, Action<ServiceBuilder> configure)
+		{
+			return Service(name, null, configure);
+		}
+		public PackageBuilder Service(string name, Type type, Action<ServiceBuilder> configure)
+		{
+			var serviceBuilder = new ServiceBuilder(Context, name, source: type);
+
+			configure(serviceBuilder);
+
+			Services.Add(serviceBuilder);
 
 			return this;
 		}
@@ -165,12 +219,29 @@ namespace Odachi.CodeModel.Builders
 				Name = Name,
 			};
 
-			// assume that autoregister adds new modules to the end of collection
-			for (var i = 0; i < Modules.Count; i++)
+			int enumIndex = 0;
+			int objectIndex = 0;
+			int serviceIndex = 0;
+			while (enumIndex < Enums.Count || objectIndex < Objects.Count || serviceIndex < Services.Count)
 			{
-				var module = Modules[i];
+				for (; enumIndex < Enums.Count; enumIndex++)
+				{
+					var @enum = Enums[enumIndex];
 
-				result.Modules.Add(module.Build());
+					result.Enums.Add(@enum.Build());
+				}
+				for (; objectIndex < Objects.Count; objectIndex++)
+				{
+					var @object = Objects[objectIndex];
+
+					result.Objects.Add(@object.Build());
+				}
+				for (; serviceIndex < Services.Count; serviceIndex++)
+				{
+					var service = Services[serviceIndex];
+
+					result.Services.Add(service.Build());
+				}
 			}
 
 			foreach (var hint in Hints)
@@ -228,9 +299,7 @@ namespace Odachi.CodeModel.Builders
 
 			return builder
 				.MapFragment(enumType, moduleName, fragmentName)
-				.Module(moduleName, module => module
-					.Enum(fragmentName, enumType, configure)
-				);
+				.Enum(fragmentName, enumType, configure);
 		}
 
 		/// <summary>
@@ -295,13 +364,11 @@ namespace Odachi.CodeModel.Builders
 
 			var fragmentName = builder.Context.GlobalDescriptor.GetFragmentName(builder.Context, objectType);
 			var moduleName = builder.Context.GlobalDescriptor.GetModuleName(builder.Context, fragmentName);
-			var genericArguments = objectTypeInfo.ContainsGenericParameters? objectTypeInfo.GenericTypeParameters.Select(p => p.Name).ToArray() : null;
+			var genericArguments = objectTypeInfo.ContainsGenericParameters ? objectTypeInfo.GenericTypeParameters.Select(p => p.Name).ToArray() : null;
 
 			return builder
 				.MapFragment(objectType, moduleName, fragmentName)
-				.Module(moduleName, module => module
-					.Object(fragmentName, genericArguments, objectType, configure)
-				);
+				.Object(fragmentName, genericArguments, objectType, configure);
 		}
 
 		/// <summary>
@@ -326,23 +393,37 @@ namespace Odachi.CodeModel.Builders
 
 			return builder.Module_Object(objectType, objectBuilder =>
 			{
-				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 				foreach (var member in members)
 				{
 					if (member is FieldInfo field)
 					{
-						objectBuilder.Field(field.Name, ClrTypeReference.Create(field.FieldType), (objectType, field));
+						if (field.IsLiteral && !field.IsInitOnly)
+						{
+							var value = field.GetRawConstantValue();
+
+							objectBuilder.Constant(field.Name, field.FieldType, value, (objectType, field), constantBuilder =>
+							{
+								constantBuilder.Type.IsNullable = value == null;
+							});
+						}
+						else if (!field.IsStatic)
+						{
+							objectBuilder.Field(field.Name, field.FieldType, (objectType, field));
+						}
 					}
 					else if (member is PropertyInfo property)
 					{
-						objectBuilder.Field(property.Name, ClrTypeReference.Create(property.PropertyType), (objectType, property));
+						if (!(property.GetMethod?.IsStatic ?? false) && !(property.SetMethod?.IsStatic ?? false))
+						{
+							objectBuilder.Field(property.Name, property.PropertyType, (objectType, property));
+						}
 					}
 				}
 
 				configure?.Invoke(objectBuilder);
 			});
 		}
-
 
 		/// <summary>
 		/// Shortcut for creating a module with single service fragment from specified .NET type.
@@ -373,9 +454,7 @@ namespace Odachi.CodeModel.Builders
 
 			return builder
 				.MapFragment(objectType, moduleName, fragmentName)
-				.Module(moduleName, module => module
-					.Service(fragmentName, objectType, configure)
-				);
+				.Service(fragmentName, objectType, configure);
 		}
 
 		/// <summary>
@@ -400,16 +479,37 @@ namespace Odachi.CodeModel.Builders
 
 			return builder.Module_Service(objectType, serviceBuilder =>
 			{
-				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+				var members = objectType.GetMembers(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 				foreach (var member in members)
 				{
 					// ignore GetType, GetHashCode, Equals, ToString
 					if (member.DeclaringType == typeof(object))
 						continue;
 
-					if (member is MethodInfo method)
+					if (member is FieldInfo field)
 					{
-						serviceBuilder.Method(method.Name, ClrTypeReference.Create(method.ReturnType), (objectType, method));
+						if (field.IsLiteral && !field.IsInitOnly)
+						{
+							var value = field.GetRawConstantValue();
+
+							serviceBuilder.Constant(field.Name, field.FieldType, value, (objectType, field), constantBuilder =>
+							{
+								constantBuilder.Type.IsNullable = value == null;
+							});
+						}
+					}
+					else if (member is MethodInfo method)
+					{
+						if (!method.IsStatic)
+						{
+							serviceBuilder.Method(method.Name, method.ReturnType, (objectType, method), methodBuilder =>
+							{
+								foreach (var parameter in method.GetParameters())
+								{
+									methodBuilder.Parameter(parameter.Name, parameter.ParameterType, parameter);
+								}
+							});
+						}
 					}
 				}
 

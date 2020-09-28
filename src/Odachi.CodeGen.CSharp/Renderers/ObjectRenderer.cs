@@ -26,8 +26,17 @@ namespace Odachi.CodeGen.CSharp.Renderers
 
 			var genericSuffix = string.Join(", ", objectFragment.GenericArguments.Select(a => a.Name));
 
-			using (writer.WriteIndentedBlock(prefix: $"public class {objectFragment.Name}{(genericSuffix.Length > 0 ? $"<{genericSuffix}>" : "")} "))
+			using (writer.WriteIndentedBlock(prefix: $"public class {CS.Type(objectFragment.Name)}{(genericSuffix.Length > 0 ? $"<{genericSuffix}>" : "")} "))
 			{
+				if (objectFragment.Constants.Any())
+				{
+					foreach (var constant in objectFragment.Constants)
+					{
+						writer.WriteIndentedLine($"public const {context.Resolve(constant.Type)} {CS.Field(constant.Name)} = {CS.Constant(constant.Value)};");
+					}
+					writer.WriteSeparatingLine();
+				}
+
 				foreach (var field in objectFragment.Fields)
 				{
 					writer.WriteIndentedLine($"public {context.Resolve(field.Type)} {CS.Field(field.Name)} {{ get; set; }}");

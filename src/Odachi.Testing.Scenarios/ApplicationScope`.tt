@@ -1,0 +1,76 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Security.Principal;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Odachi.Testing.Scenarios
+{
+<#
+	var minTypeCount = 1;
+	var maxTypeCount = 9;
+
+	for (var i = minTypeCount - 1; i < maxTypeCount; i++)
+	{
+		var typeNames = Enumerable.Range(1, i + 1).Select(n => "T" + n).ToArray();
+
+#>
+	public sealed class ApplicationScope<<#= string.Join(", ", typeNames) #>> : ApplicationScope
+	{
+		internal ApplicationScope(ApplicationInstance application, IServiceScope scope, IPrincipal? principal = null)
+			: base(application, scope, principal: principal)
+		{
+<#
+		for (var oi = 0; oi < typeNames.Length; oi++) {
+#>
+			Service<#= oi + 1 #> = scope.ServiceProvider.GetRequiredService<T<#= oi + 1 #>>();
+<#
+		}
+#>
+		}
+
+<#
+		for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+		public <#= typeNames[ti] #> Service<#= ti + 1 #> { get; }
+<#
+		}
+#>
+
+		public void Deconstruct(<#= string.Join(", ", typeNames.Select((tn, tni) => "out " + tn + " service" + (tni + 1))) #>)
+		{
+<#
+			for (var ti = 0; ti < typeNames.Length; ti++) {
+#>
+			service<#= ti + 1 #> = Service<#= ti + 1 #>;
+<#
+			}
+#>
+		}
+	}<#= i != maxTypeCount - 1 ? Environment.NewLine : "" #>
+<# } #>
+
+	public static class ApplicationScopeExtensions
+	{
+<#
+	for (var i = minTypeCount - 1; i < maxTypeCount; i++)
+	{
+		var typeNames = Enumerable.Range(1, i + 1).Select(n => "T" + n).ToArray();
+
+#>
+		public static async Task<ApplicationScope<<#= string.Join(", ", typeNames) #>>> CreateScopeAsync<<#= string.Join(", ", typeNames) #>>(this ApplicationInstance application, IPrincipal? principal = null)
+		{
+			var scope = await application.CreateScopeInternalAsync();
+
+			return new ApplicationScope<<#= string.Join(", ", typeNames) #>>(application, scope, principal: principal);
+		}
+<#
+	}
+#>
+	}
+}

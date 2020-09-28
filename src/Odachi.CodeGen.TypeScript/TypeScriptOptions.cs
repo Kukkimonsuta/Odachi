@@ -6,5 +6,10 @@ namespace Odachi.CodeGen.TypeScript
 		/// Render `export default` if instructed by renderer. Default `true`.
 		/// </summary>
 		public bool AllowDefaultExports { get; set; } = true;
+
+		/// <summary>
+		/// Render `di.ts`.
+		/// </summary>
+		public bool RenderDi { get; set; } = false;
 	}
 }

@@ -11,8 +11,21 @@ using Odachi.CodeGen.Rendering;
 
 namespace Odachi.CodeGen.TypeScript.Renderers
 {
+	public class ServiceRendererOptions
+	{
+		public string RpcClientModule { get; set; } = "@odachi/rpc-client";
+		public string RpcClientImport { get; set; } = "RpcClient";
+	}
+
 	public class ServiceRenderer : IFragmentRenderer<TypeScriptModuleContext>
 	{
+		public ServiceRenderer(ServiceRendererOptions options = null)
+		{
+			Options = options ?? new ServiceRendererOptions();
+		}
+
+		public ServiceRendererOptions Options { get; }
+
 		public bool Render(TypeScriptModuleContext context, Fragment fragment, IndentedTextWriter writer)
 		{
 			if (!(fragment is ServiceFragment serviceFragment))
@@ -24,18 +37,25 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 				writer.WriteSeparatingLine();
 			}
 
-			context.Import("inversify", "injectable");
-			writer.WriteIndentedLine("@injectable()");
-			using (writer.WriteIndentedBlock(prefix: $"class {serviceFragment.Name} "))
+			using (writer.WriteIndentedBlock(prefix: $"class {TS.Type(serviceFragment.Name)} "))
 			{
-				context.Import("@stackino/uno", "net");
-				using (writer.WriteIndentedBlock(prefix: "constructor(client: net.JsonRpcClient) "))
+				if (serviceFragment.Constants.Any())
+				{
+					foreach (var constant in serviceFragment.Constants)
+					{
+						writer.WriteIndentedLine($"static readonly {TS.Field(constant.Name)}: {context.Resolve(constant.Type)} = {TS.Constant(constant.Value)};");
+					}
+					writer.WriteSeparatingLine();
+				}
+
+				context.Import(Options.RpcClientModule, Options.RpcClientImport);
+				using (writer.WriteIndentedBlock(prefix: $"constructor(client: {Options.RpcClientImport}) "))
 				{
 					writer.WriteIndentedLine("this.client = client;");
 				}
 				writer.WriteSeparatingLine();
 
-				writer.WriteIndentedLine("private client: net.JsonRpcClient;");
+				writer.WriteIndentedLine($"private client: {Options.RpcClientImport};");
 				writer.WriteSeparatingLine();
 
 				foreach (var method in serviceFragment.Methods)
@@ -43,7 +63,7 @@ namespace Odachi.CodeGen.TypeScript.Renderers
 					var rpcMethodName = method.Hints["jsonrpc-name"] ?? method.Name;
 
 					var parameters = method.Parameters
-						.Select(p => $"{p.Name}: {context.Resolve(p.Type)}")
+						.Select(p => $"{TS.Parameter(p.Name)}: {context.Resolve(p.Type)}")
 						.ToList();
 
 					using (writer.WriteIndentedBlock(prefix: $"async {TS.Method(method.Name)}Async({string.Join(", ", parameters)}): Promise<{context.Resolve(method.ReturnType)}> "))

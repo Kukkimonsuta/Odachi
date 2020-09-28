@@ -10,26 +10,22 @@ using Odachi.CodeGen.IO;
 using Odachi.CodeModel;
 using Odachi.Extensions.Formatting;
 using Odachi.CodeGen.Internal;
+using Odachi.CodeGen.TypeScript.TypeHandlers;
 
 namespace Odachi.CodeGen.TypeScript
 {
 	public class TypeScriptCodeGenerator : CodeGenerator<TypeScriptOptions, TypeScriptPackageContext, TypeScriptModuleContext>
 	{
-		public TypeScriptCodeGenerator()
-		{
-			Renderers.Add(new EnumRenderer());
-			Renderers.Add(new ObjectRenderer());
-			Renderers.Add(new ServiceRenderer());
-		}
+		public IList<ITypeHandler> TypeHandlers { get; } = new List<ITypeHandler>() { new DefaultTypeHandler() };
 
 		protected override TypeScriptPackageContext CreatePackageContext(Package package, TypeScriptOptions options)
 		{
 			return new TypeScriptPackageContext(package, options);
 		}
 
-		protected override TypeScriptModuleContext CreateModuleContext(TypeScriptPackageContext packageContext, Module module, TypeScriptOptions options)
+		protected override TypeScriptModuleContext CreateModuleContext(TypeScriptPackageContext packageContext, string moduleName)
 		{
-			return new TypeScriptModuleContext(packageContext.Package, module, options);
+			return new TypeScriptModuleContext(packageContext, moduleName, TypeHandlers.ToArray() /* todo: nocopy */);
 		}
 
 		public void RenderIndex(IEnumerable<(string module, string alias)> modules, string path)
@@ -56,8 +52,11 @@ namespace Odachi.CodeGen.TypeScript
 
 		public void RenderIndexes(TypeScriptPackageContext packageContext)
 		{
-			var moduleNames = packageContext.Package.Modules
-				.Select(m => TS.ModuleName(m.Name))
+			var moduleNames = Array.Empty<TypeFragment>()
+				.Concat(packageContext.Package.Enums)
+				.Concat(packageContext.Package.Objects)
+				.Concat(packageContext.Package.Services)
+				.Select(m => TS.ModuleName(m.ModuleName))
 				.ToArray();
 
 			var folders = moduleNames
@@ -80,7 +79,7 @@ namespace Odachi.CodeGen.TypeScript
 						.Select(m => (PathTools.GetRelativePath(indexName, m), (string)null))
 				);
 
-				RenderIndex(exportedModules, Path.Combine(packageContext.Path, indexName));
+				RenderIndex(exportedModules, Path.Combine(packageContext.Options.Path, indexName));
 			}
 		}
 
@@ -88,7 +87,7 @@ namespace Odachi.CodeGen.TypeScript
 		{
 			Console.WriteLine($"Generating DI module");
 
-			var context = new TypeScriptModuleContext(packageContext.Package, new Module() { Name = "./di.tsx" }, packageContext.Options);
+			var context = CreateModuleContext(packageContext, "di");
 			context.Import("inversify", "interfaces");
 			context.Import("inversify", "ContainerModule");
 
@@ -97,20 +96,11 @@ namespace Odachi.CodeGen.TypeScript
 			{
 				using (writer.WriteIndentedBlock(prefix: "const sdkModule = new ContainerModule((bind: interfaces.Bind) => ", suffix: ");"))
 				{
-					foreach (var module in packageContext.Package.Modules)
+					foreach (var serviceFragment in packageContext.Package.Services)
 					{
-						var serviceFragments = module.Fragments.OfType<ServiceFragment>()
-							.ToArray();
+						context.Import(TS.ModuleName(serviceFragment.ModuleName), serviceFragment.Name);
 
-						if (serviceFragments.Length <= 0)
-							continue;
-
-						foreach (var rpcServiceFragment in serviceFragments)
-						{
-							context.Import(TS.ModuleName(module.Name), rpcServiceFragment.Name);
-
-							writer.WriteIndentedLine($"bind({rpcServiceFragment.Name}).to({rpcServiceFragment.Name}).inSingletonScope();");
-						}
+						writer.WriteIndentedLine($"bind({serviceFragment.Name}).to({serviceFragment.Name}).inSingletonScope();");
 					}
 				}
 			}
@@ -118,7 +108,7 @@ namespace Odachi.CodeGen.TypeScript
 
 			context.Export($"sdkModule", @default: true);
 
-			using (var stream = new FileStream(Path.Combine(packageContext.Path, context.Module.Name), FileMode.Create, FileAccess.Write, FileShare.Read))
+			using (var stream = new FileStream(Path.Combine(packageContext.Options.Path, context.FileName), FileMode.Create, FileAccess.Write, FileShare.Read))
 			using (var writer = new IndentedTextWriter(new StreamWriter(stream, new UTF8Encoding(false))))
 			{
 				context.RenderHeader(writer);
@@ -130,7 +120,10 @@ namespace Odachi.CodeGen.TypeScript
 		protected override void OnPackageFinish(TypeScriptPackageContext packageContext)
 		{
 			RenderIndexes(packageContext);
-			RenderDi(packageContext);
+			if (packageContext.Options.RenderDi)
+			{
+				RenderDi(packageContext);
+			}
 		}
 	}
 }

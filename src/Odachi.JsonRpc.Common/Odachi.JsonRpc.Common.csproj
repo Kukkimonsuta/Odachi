@@ -1,12 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\library.props" />
 
-	<PropertyGroup>
-		<Description>Common classes of `JsonRpc.Client` and `Odachi.AspNetCore.JsonRpc`.</Description>
-		<TargetFrameworks>netstandard2.0</TargetFrameworks>
-		<PackageTags>odachi</PackageTags>
-	</PropertyGroup>
+  <PropertyGroup>
+    <Description>Common classes of `JsonRpc.Client` and `Odachi.AspNetCore.JsonRpc`.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>odachi</PackageTags>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Odachi.Abstractions\Odachi.Abstractions.csproj" />
@@ -16,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>

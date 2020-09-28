@@ -76,12 +76,14 @@ Write-Host
 Pack(".\src\Odachi.Abstractions")
 Pack(".\src\Odachi.Annotations")
 Pack(".\src\Odachi.AspNetCore.Authentication.Basic")
+Pack(".\src\Odachi.AspNetCore.Authentication.ApiKey")
 Pack(".\src\Odachi.AspNetCore.JsonRpc")
 Pack(".\src\Odachi.AspNetCore.Mvc")
-Pack(".\src\Odachi.AspNetCore.MvcPages")
 Pack(".\src\Odachi.CodeGen")
 Pack(".\src\Odachi.CodeGen.CSharp")
 Pack(".\src\Odachi.CodeGen.TypeScript")
+Pack(".\src\Odachi.CodeGen.TypeScript.StackinoUno")
+Pack(".\src\Odachi.CodeGen.TypeScript.StackinoDue")
 Pack(".\src\Odachi.CodeModel")
 Pack(".\src\Odachi.CodeModel.Providers.FluentValidation")
 Pack(".\src\Odachi.CodeModel.Providers.JsonRpc")
@@ -102,6 +104,11 @@ Pack(".\src\Odachi.RazorTemplating.MSBuild")
 Pack(".\src\Odachi.Security")
 Pack(".\src\Odachi.Storage.Azure")
 Pack(".\src\Odachi.Storage.FileSystem")
+Pack(".\src\Odachi.Testing.Scenarios")
+Pack(".\src\Odachi.Testing.Scenarios.Data")
+Pack(".\src\Odachi.Testing.Scenarios.Data.MySql")
+Pack(".\src\Odachi.Testing.Scenarios.Data.Oracle")
+Pack(".\src\Odachi.Testing.Scenarios.Xunit")
 Pack(".\src\Odachi.Validation")
 
 Write-Host
@@ -117,7 +124,10 @@ Write-Host "Build & run test.."
 Write-Host
 Test(".\test\Odachi.CodeGen.Tests");
 Test(".\test\Odachi.CodeGen.TypeScript.Tests");
+Test(".\test\Odachi.CodeGen.TypeScript.StackinoUno.Tests");
+Test(".\test\Odachi.CodeGen.TypeScript.StackinoDue.Tests");
 Test(".\test\Odachi.CodeModel.Tests");
+Test(".\test\Odachi.CodeModel.Providers.FluentValidation.Tests");
 Test(".\test\Odachi.Extensions.Formatting.Tests");
 Test(".\test\Odachi.Extensions.Primitives.Tests");
 Test(".\test\Odachi.Extensions.Reflection.Tests");

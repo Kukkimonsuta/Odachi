@@ -1,4 +1,4 @@
-﻿using Odachi.CodeModel.Description;
+using Odachi.CodeModel.Description;
 using Odachi.CodeModel.Mapping;
 using System;
 using System.Collections.Generic;
@@ -8,21 +8,18 @@ using Odachi.CodeModel.Builders.Abstraction;
 
 namespace Odachi.CodeModel.Builders
 {
-	public class FieldBuilder : BuilderBase<FieldBuilder, FieldFragment>
+	public class FieldBuilder : FragmentBuilderBase<FieldBuilder, FieldFragment>
 	{
-		public FieldBuilder(PackageContext context, string name, ITypeReference type, object source)
+		public FieldBuilder(PackageContext context, string name, Type type, object source)
 			: base(context, name)
 		{
-			if (type == null)
-				throw new ArgumentNullException(nameof(type));
-
-			Type = type;
+			Type = new TypeReferenceBuilder(context, type ?? throw new ArgumentNullException(nameof(type)), source);
 			Source = source;
 
 			Context.FieldDescriptors.Describe(this);
 		}
 
-		public ITypeReference Type { get; }
+		public TypeReferenceBuilder Type { get; }
 		public object Source { get; }
 
 		public override FieldFragment Build()
@@ -30,7 +27,7 @@ namespace Odachi.CodeModel.Builders
 			var result = new FieldFragment()
 			{
 				Name = Name,
-				Type = Type.Resolve(Context.TypeMapper),
+				Type = Type.Build(),
 			};
 
 			foreach (var hint in Hints)

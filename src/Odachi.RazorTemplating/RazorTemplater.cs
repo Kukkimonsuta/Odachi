@@ -50,17 +50,29 @@ namespace Odachi.RazorTemplating
 			RootNamespace = rootNamespace ?? Path.GetFileName(ProjectDirectory);
 			Encoding = encoding ?? new UTF8Encoding(false);
 
-			engine = RazorEngine.Create(config =>
-			{
-				InheritsDirective.Register(config);
+			engine = RazorProjectEngine.Create(
+				RazorConfiguration.Default,
+				RazorProjectFileSystem.Create(ProjectDirectory),
+				config =>
+				{
+					//InheritsDirective.Register(config);
 
-				config.Features.Add(new ChangeNamespacePass(ProjectDirectory, RootNamespace));
-			});
-			templateEngine = new RazorTemplateEngine(engine, RazorProject.Create(ProjectDirectory));
+					config.Features.Add(new ChangeNamespacePass(ProjectDirectory, RootNamespace));
+
+					// this is horrible hack that will bite me in the bum
+					var targetExtension = config.Features.OfType<IRazorTargetExtensionFeature>().FirstOrDefault();
+					if (targetExtension != null)
+					{
+						foreach (var metadataExtension in targetExtension.TargetExtensions.Where(x => x.GetType().FullName == "Microsoft.AspNetCore.Razor.Language.Extensions.MetadataAttributeTargetExtension").ToArray())
+						{
+							targetExtension.TargetExtensions.Remove(metadataExtension);
+						}
+					}
+				}
+			);
 		}
 
-		private RazorEngine engine;
-		private RazorTemplateEngine templateEngine;
+		private RazorProjectEngine engine;
 
 		public string ProjectDirectory { get; }
 		public string RootNamespace { get; }
@@ -75,14 +87,17 @@ namespace Odachi.RazorTemplating
 			using (var stream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
 			using (var reader = new StreamReader(stream))
 			{
-				var codeDocument = templateEngine.CreateCodeDocument(inputFileName);
-				var result = templateEngine.GenerateCode(codeDocument);
+				var relativeInputFileName = $"{Path.DirectorySeparatorChar}{PathTools.GetRelativePath($"{ProjectDirectory}{Path.DirectorySeparatorChar}", inputFileName)}";
+				var item = engine.FileSystem.GetItem(relativeInputFileName, "mvc");
+
+				var codeDocument = engine.Process(item);
+				var result = codeDocument.GetCSharpDocument();
 				// normalize new lines (is there better way to do this?)
 				var code = result.GeneratedCode.Replace("\r\n", "\n");
-				
+
 				if (File.Exists(outputFileName))
 				{
-					using (var md5 = MD5.Create())
+					using (var md5 = MD5.Create()) /*DevSkim: ignore DS126858*/
 					using (var inputStream = File.OpenRead(outputFileName))
 					{
 						var codeHash = md5.ComputeHash(inputStream);

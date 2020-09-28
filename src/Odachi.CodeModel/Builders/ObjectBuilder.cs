@@ -8,7 +8,7 @@ using Odachi.CodeModel.Builders.Abstraction;
 
 namespace Odachi.CodeModel.Builders
 {
-	public class ObjectBuilder : BuilderBase<ObjectBuilder, ObjectFragment>, ITypeFragmentBuilder
+	public class ObjectBuilder : TypeFragmentBuilderBase<ObjectBuilder, ObjectFragment>
 	{
 		public ObjectBuilder(PackageContext context, string name, IReadOnlyList<string> genericArguments, object source)
 			: base(context, name)
@@ -20,14 +20,30 @@ namespace Odachi.CodeModel.Builders
 		}
 
 		public IReadOnlyList<string> GenericArguments { get; }
+		public IList<ConstantBuilder> Constants { get; } = new List<ConstantBuilder>();
 		public IList<FieldBuilder> Fields { get; } = new List<FieldBuilder>();
 		public object Source { get; }
 
-		public ObjectBuilder Field(string name, ITypeReference type, Action<FieldBuilder> configure = null)
+		public ObjectBuilder Constant(string name, Type type, object value, Action<ConstantBuilder> configure = null)
+		{
+			return Constant(name, type, null, configure: configure);
+		}
+		public ObjectBuilder Constant(string name, Type type, object value, object source, Action<ConstantBuilder> configure = null)
+		{
+			var constantBuilder = new ConstantBuilder(Context, name, type, value, source);
+
+			configure?.Invoke(constantBuilder);
+
+			Constants.Add(constantBuilder);
+
+			return this;
+		}
+
+		public ObjectBuilder Field(string name, Type type, Action<FieldBuilder> configure = null)
 		{
 			return Field(name, type, null, configure: configure);
 		}
-		public ObjectBuilder Field(string name, ITypeReference type, object source, Action<FieldBuilder> configure = null)
+		public ObjectBuilder Field(string name, Type type, object source, Action<FieldBuilder> configure = null)
 		{
 			var fieldBuilder = new FieldBuilder(Context, name, type, source);
 
@@ -43,8 +59,14 @@ namespace Odachi.CodeModel.Builders
 			var result = new ObjectFragment()
 			{
 				Name = Name,
+				ModuleName = ModuleName,
 				GenericArguments = GenericArguments.Select(a => new GenericArgumentDefinition(a)).ToArray(),
 			};
+
+			foreach (var constant in Constants)
+			{
+				result.Constants.Add(constant.Build());
+			}
 
 			foreach (var field in Fields)
 			{
@@ -58,14 +80,5 @@ namespace Odachi.CodeModel.Builders
 
 			return result;
 		}
-
-		#region ITypeFragmentBuilder
-
-		TypeFragment ITypeFragmentBuilder.Build()
-		{
-			return Build();
-		}
-
-		#endregion
 	}
 }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 namespace Odachi.AspNetCore.Authentication.Basic
 {
     /// <summary>
-    /// Specifies callback methods which the <see cref="BasicMiddleware"></see> invokes to enable developer control over the authentication process.
+    /// Specifies callback methods which the <see cref="BasicHandler"></see> invokes to enable developer control over the authentication process.
     /// </summary>
     public interface IBasicEvents
     {

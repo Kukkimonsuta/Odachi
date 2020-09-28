@@ -85,22 +85,5 @@ namespace Odachi.JsonRpc.Server.Internal
 			Assert.Equal(10, result.Total);
 			Assert.False(result.Overflow);
 		}
-
-		[Fact]
-		public void Can_deserialize_entity_reference_from_named_params()
-		{
-			var request = new JsonRpcRequest("1", "TestMethod", new JObject(
-				new JProperty("ref", new JObject(
-					new JProperty("id", 12345)
-				))
-			), GetSerializer());
-
-#pragma warning disable CS0618 // Type or member is obsolete
-			var result = (IEntityReference)request.GetParameter("ref", typeof(IEntityReference), null);
-#pragma warning restore CS0618 // Type or member is obsolete
-
-			Assert.NotNull(result);
-			Assert.Equal(12345, result.Id);
-		}
 	}
 }

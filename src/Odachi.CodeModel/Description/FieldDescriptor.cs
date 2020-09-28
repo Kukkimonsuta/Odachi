@@ -1,10 +1,11 @@
-﻿using Odachi.CodeModel.Description.Internal;
+using Odachi.CodeModel.Description.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Odachi.CodeModel.Builders;
+using Odachi.Extensions.Reflection;
 
 namespace Odachi.CodeModel.Description
 {
@@ -39,11 +40,6 @@ namespace Odachi.CodeModel.Description
 			{
 				builder.Hint("display-name", displayName);
 			}
-
-			if (ClassDescriptionHelper.IsRequired(fieldInfo))
-			{
-				builder.Type.IsNullable = false;
-			}
 		}
 
 		protected virtual void DescribePropertyInfo(FieldBuilder builder, Type type, PropertyInfo propertyInfo)
@@ -55,11 +51,6 @@ namespace Odachi.CodeModel.Description
 			if (displayName != null)
 			{
 				builder.Hint("display-name", displayName);
-			}
-
-			if (ClassDescriptionHelper.IsRequired(propertyInfo))
-			{
-				builder.Type.IsNullable = false;
 			}
 		}
 

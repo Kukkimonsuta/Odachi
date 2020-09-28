@@ -32,7 +32,7 @@ namespace Odachi.RazorTemplating.MSBuild
 			ProjectDirectory = Path.GetFullPath(ProjectDirectory);
 			if (ProjectDirectory[ProjectDirectory.Length - 1] != Path.DirectorySeparatorChar)
 				ProjectDirectory += Path.DirectorySeparatorChar;
-			
+
 			// create templater
 			BuildEngine.LogMessageEvent(new BuildMessageEventArgs($"Processing project \"{ProjectDirectory}\"", string.Empty, "Odachi.RazorTemplating.MSBuild.TransformTemplatesTask", MessageImportance.Normal));
 			var templater = new RazorTemplater(ProjectDirectory);

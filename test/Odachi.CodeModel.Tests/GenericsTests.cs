@@ -10,6 +10,18 @@ using Xunit;
 
 namespace Odachi.CodeModel.Tests
 {
+	public class BasicObject
+	{
+		public string Foo { get; set; }
+	}
+
+	public class ComplexObject
+	{
+		public string Foo { get; set; }
+
+		public BasicObject Basic { get; set; }
+	}
+
 	public class GenericObject<T>
 	{
 		public T Value { get; set; }
@@ -60,6 +72,17 @@ namespace Odachi.CodeModel.Tests
 		public decimal Decimal { get; set; }
 	}
 
+	public class ObjectWithSelfReference
+	{
+		public ObjectWithSelfReference Self { get; set; }
+	}
+
+	public class ObjectWithPaging
+	{
+		public PagingOptions Options { get; set; }
+		public Page<string> Strings { get; set; }
+	}
+
 	public class GenericsTests
 	{
 		[Fact]
@@ -70,35 +93,28 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Collection(package.Modules,
-				module =>
+			Assert.Collection(package.Objects,
+				fragment =>
 				{
-					Assert.Equal($".\\{nameof(GenericObject<object>)}", module.Name);
-
-					Assert.Collection(module.Fragments,
-						fragment =>
+					Assert.NotNull(fragment);
+					Assert.Equal($".\\{nameof(GenericObject<object>)}", fragment.ModuleName);
+					Assert.Equal(nameof(GenericObject<object>), fragment.Name);
+					Assert.Collection(((ObjectFragment)fragment).GenericArguments,
+						parameter =>
 						{
-							Assert.NotNull(fragment);
-							Assert.Equal("object", fragment.Kind);
-							Assert.Equal(nameof(GenericObject<object>), fragment.Name);
-							Assert.Collection(((ObjectFragment)fragment).GenericArguments,
-								parameter =>
-								{
-									Assert.Equal("T", parameter.Name);
-								}
-							);
-							Assert.Collection(((ObjectFragment)fragment).Fields,
-								field =>
-								{
-									Assert.Equal(nameof(GenericObject<object>.Value), field.Name);
-									Assert.Equal(TypeKind.GenericParameter, field.Type.Kind);
-								},
-								field =>
-								{
-									Assert.Equal(nameof(GenericObject<object>.Test), field.Name);
-									Assert.Equal(TypeKind.Primitive, field.Type.Kind);
-								}
-							);
+							Assert.Equal("T", parameter.Name);
+						}
+					);
+					Assert.Collection(((ObjectFragment)fragment).Fields,
+						field =>
+						{
+							Assert.Equal(nameof(GenericObject<object>.Value), field.Name);
+							Assert.Equal(TypeKind.GenericParameter, field.Type.Kind);
+						},
+						field =>
+						{
+							Assert.Equal(nameof(GenericObject<object>.Test), field.Name);
+							Assert.Equal(TypeKind.Primitive, field.Type.Kind);
 						}
 					);
 				}
@@ -106,7 +122,7 @@ namespace Odachi.CodeModel.Tests
 		}
 
 		[Fact]
-		public void Can_describe_object_with_registered_generic_object()
+		public void Can_describe_object_with_generic_property()
 		{
 			var package = new PackageBuilder("Test")
 				.Module_Object_Default(typeof(GenericObject<>))
@@ -114,72 +130,60 @@ namespace Odachi.CodeModel.Tests
 				.Build();
 
 			Assert.NotNull(package);
-			Assert.Collection(package.Modules,
-				module =>
+			Assert.Collection(package.Objects,
+				fragment =>
 				{
-					Assert.Equal($".\\{nameof(GenericObject<object>)}", module.Name);
-					Assert.Collection(module.Fragments,
-						fragment =>
+					Assert.NotNull(fragment);
+					Assert.Equal($".\\{nameof(GenericObject<object>)}", fragment.ModuleName);
+					Assert.Equal(nameof(GenericObject<object>), fragment.Name);
+					Assert.Collection(fragment.GenericArguments,
+						parameter =>
 						{
-							Assert.NotNull(fragment);
-							Assert.Equal("object", fragment.Kind);
-							Assert.Equal(nameof(GenericObject<object>), fragment.Name);
-							Assert.Collection(((ObjectFragment)fragment).GenericArguments,
-								parameter =>
-								{
-									Assert.Equal("T", parameter.Name);
-								}
-							);
-							Assert.Collection(((ObjectFragment)fragment).Fields,
-								field =>
-								{
-									Assert.Equal(nameof(GenericObject<object>.Value), field.Name);
-									Assert.Equal(TypeKind.GenericParameter, field.Type.Kind);
-								},
-								field =>
-								{
-									Assert.Equal(nameof(GenericObject<object>.Test), field.Name);
-									Assert.Equal(TypeKind.Primitive, field.Type.Kind);
-								}
-							);
+							Assert.Equal("T", parameter.Name);
+						}
+					);
+					Assert.Collection(fragment.Fields,
+						field =>
+						{
+							Assert.Equal(nameof(GenericObject<object>.Value), field.Name);
+							Assert.Equal(TypeKind.GenericParameter, field.Type.Kind);
+						},
+						field =>
+						{
+							Assert.Equal(nameof(GenericObject<object>.Test), field.Name);
+							Assert.Equal(TypeKind.Primitive, field.Type.Kind);
 						}
 					);
 				},
-				module =>
+				fragment =>
 				{
-					Assert.Equal($".\\{nameof(ObjectWithGenericObject)}", module.Name);
-					Assert.Collection(module.Fragments,
-						fragment =>
+					Assert.NotNull(fragment);
+					Assert.Equal($".\\{nameof(ObjectWithGenericObject)}", fragment.ModuleName);
+					Assert.Equal(nameof(ObjectWithGenericObject), fragment.Name);
+					Assert.Collection(fragment.Fields,
+						field =>
 						{
-							Assert.NotNull(fragment);
-							Assert.Equal("object", fragment.Kind);
-							Assert.Equal(nameof(ObjectWithGenericObject), fragment.Name);
-							Assert.Collection(((ObjectFragment)fragment).Fields,
-								field =>
+							Assert.Equal(nameof(ObjectWithGenericObject.Strings), field.Name);
+							Assert.Equal(TypeKind.Class, field.Type.Kind);
+							Assert.Equal($".\\{nameof(GenericObject<object>)}", field.Type.Module);
+							Assert.Equal(nameof(GenericObject<object>), field.Type.Name);
+							Assert.Collection(field.Type.GenericArguments,
+								argument =>
 								{
-									Assert.Equal(nameof(ObjectWithGenericObject.Strings), field.Name);
-									Assert.Equal(TypeKind.Class, field.Type.Kind);
-									Assert.Equal($".\\{nameof(GenericObject<object>)}", field.Type.Module);
-									Assert.Equal(nameof(GenericObject<object>), field.Type.Name);
-									Assert.Collection(field.Type.GenericArguments,
-										argument =>
-										{
-											Assert.Equal(BuiltinTypeDefinition.String.Name, argument.Name);
-										}
-									);
-								},
-								field =>
+									Assert.Equal(BuiltinTypeDefinition.String.Name, argument.Name);
+								}
+							);
+						},
+						field =>
+						{
+							Assert.Equal(nameof(ObjectWithGenericObject.Ints), field.Name);
+							Assert.Equal(TypeKind.Class, field.Type.Kind);
+							Assert.Equal($".\\{nameof(GenericObject<object>)}", field.Type.Module);
+							Assert.Equal(nameof(GenericObject<object>), field.Type.Name);
+							Assert.Collection(field.Type.GenericArguments,
+								argument =>
 								{
-									Assert.Equal(nameof(ObjectWithGenericObject.Ints), field.Name);
-									Assert.Equal(TypeKind.Class, field.Type.Kind);
-									Assert.Equal($".\\{nameof(GenericObject<object>)}", field.Type.Module);
-									Assert.Equal(nameof(GenericObject<object>), field.Type.Name);
-									Assert.Collection(field.Type.GenericArguments,
-										argument =>
-										{
-											Assert.Equal(BuiltinTypeDefinition.Integer.Name, argument.Name);
-										}
-									);
+									Assert.Equal(BuiltinTypeDefinition.Integer.Name, argument.Name);
 								}
 							);
 						}

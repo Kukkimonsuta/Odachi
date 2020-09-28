@@ -214,9 +214,7 @@ namespace Odachi.CodeGen.IO
 
 		public override Task FlushAsync() => Writer.FlushAsync();
 
-#if !NETSTANDARD15
 		public override void Close() => Writer.Close();
-#endif
 
 		protected override void Dispose(bool disposing)
 		{

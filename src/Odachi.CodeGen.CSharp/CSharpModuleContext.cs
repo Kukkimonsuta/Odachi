@@ -8,23 +8,16 @@ using Odachi.CodeModel;
 
 namespace Odachi.CodeGen.CSharp
 {
-	public class CSharpModuleContext : ModuleContext
+	public class CSharpModuleContext : ModuleContext<CSharpOptions>
 	{
-		public CSharpModuleContext(Package package, Module module, string packageNamespace)
+		public CSharpModuleContext(CSharpPackageContext packageContext, string moduleName)
 		{
-			if (package == null)
-				throw new ArgumentNullException(nameof(package));
-			if (module == null)
-				throw new ArgumentNullException(nameof(module));
-			if (packageNamespace == null)
-				throw new ArgumentNullException(nameof(packageNamespace));
+			PackageContext = packageContext ?? throw new ArgumentNullException(nameof(packageContext));
+			ModuleName = moduleName ?? throw new ArgumentNullException(nameof(moduleName));
+			FileName = CS.ModuleFileName(ModuleName);
 
-			Package = package;
-			Module = module;
-			FileName = CS.ModuleFileName(module.Name);
-
-			PackageNamespace = packageNamespace;
-			ModuleNamespace = CS.ModuleNamespace(packageNamespace, module.Name);
+			PackageNamespace = packageContext.Options.Namespace ?? throw new ArgumentNullException(nameof(packageContext.Options));
+			ModuleNamespace = CS.ModuleNamespace(PackageNamespace, ModuleName);
 		}
 
 		public string PackageNamespace { get; }
@@ -78,7 +71,7 @@ namespace Odachi.CodeGen.CSharp
 
 		public void Import(TypeReference type)
 		{
-			if (type.Module != null)
+			if (type.Module != null && type.Module != ModuleName)
 			{
 				var @namespace = CS.ModuleNamespace(PackageNamespace, type.Module);
 
@@ -179,6 +172,14 @@ namespace Odachi.CodeGen.CSharp
 
 						return $"IBlob";
 
+					case "guid":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						Import("System");
+
+						return "Guid";
+
 					case "PagingOptions":
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
@@ -195,13 +196,13 @@ namespace Odachi.CodeGen.CSharp
 
 						return $"Page<{Resolve(type.GenericArguments[0])}>";
 
-					case "Tuple":
+					case "tuple":
 						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
 						return $"({string.Join(", ", type.GenericArguments.Select(t => Resolve(t)))}){(includeNullability && type.IsNullable ? "?" : "")}";
 
-					case "OneOf":
+					case "oneof":
 						if (type.GenericArguments?.Length < 2 || type.GenericArguments?.Length > 9)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 

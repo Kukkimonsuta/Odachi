@@ -1,24 +1,24 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\library.props" />
 
-	<PropertyGroup>
-		<Description>Code description library.</Description>
-		<TargetFrameworks>net461;netstandard1.5</TargetFrameworks>
-		<PackageTags>odachi</PackageTags>
-	</PropertyGroup>
+  <PropertyGroup>
+    <Description>Code description library.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>odachi</PackageTags>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="../Odachi.Abstractions/Odachi.Abstractions.csproj" />
     <ProjectReference Include="../Odachi.Extensions.Formatting/Odachi.Extensions.Formatting.csproj" />
     <ProjectReference Include="../Odachi.Extensions.Collections/Odachi.Extensions.Collections.csproj" />
     <ProjectReference Include="../Odachi.Extensions.Primitives/Odachi.Extensions.Primitives.csproj" />
+    <ProjectReference Include="../Odachi.Extensions.Reflection/Odachi.Extensions.Reflection.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
   </ItemGroup>
 
 </Project>

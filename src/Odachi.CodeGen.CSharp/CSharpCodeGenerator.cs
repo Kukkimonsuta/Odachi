@@ -9,21 +9,14 @@ namespace Odachi.CodeGen.CSharp
 {
 	public class CSharpCodeGenerator : CodeGenerator<CSharpOptions, CSharpPackageContext, CSharpModuleContext>
 	{
-		public CSharpCodeGenerator()
-		{
-			Renderers.Add(new EnumRenderer());
-			Renderers.Add(new ObjectRenderer());
-			Renderers.Add(new ServiceRenderer());
-		}
-
-		protected override CSharpModuleContext CreateModuleContext(CSharpPackageContext packageContext, Module module, CSharpOptions options)
-		{
-			return new CSharpModuleContext(packageContext.Package, module, options.Namespace);
-		}
-
 		protected override CSharpPackageContext CreatePackageContext(Package package, CSharpOptions options)
 		{
-			return new CSharpPackageContext(package, options.Path);
+			return new CSharpPackageContext(package, options);
+		}
+
+		protected override CSharpModuleContext CreateModuleContext(CSharpPackageContext packageContext, string moduleName)
+		{
+			return new CSharpModuleContext(packageContext, moduleName);
 		}
 
 		protected override IndentedTextWriter CreateWriter(TextWriter writer)

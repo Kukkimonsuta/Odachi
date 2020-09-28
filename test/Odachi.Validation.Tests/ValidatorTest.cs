@@ -20,7 +20,7 @@ namespace Odachi.Validation
 
 			return $"bar_{foo}";
 		}
-		
+
 		[Fact]
 		public void Validation_success_result()
 		{
@@ -42,22 +42,39 @@ namespace Odachi.Validation
 				validation =>
 				{
 					Assert.NotNull(validation);
-					Assert.Equal("Required field", validation.GetError("foo"));
-					Assert.Null(validation.GetError("nonexistant-field"));
+					Assert.Equal("Required field", validation.GetErrorText("foo"));
+					Assert.Null(validation.GetErrorText("nonexistant-field"));
 				}
 			);
 		}
 
 		[Fact]
-		public void Validation_or_value_is_serializable()
+		public void Validation_or_value_is_serializable_value()
 		{
 			var expected = new OneOf<string, ValidationState>("test");
 
 			var serialized = JsonConvert.SerializeObject(expected);
 			var deserialized = JsonConvert.DeserializeObject<OneOf<string, ValidationState>>(serialized);
-			
+
 			Assert.True(deserialized.Is1);
 			Assert.Equal(expected.As1, deserialized.As1);
+		}
+
+		[Fact]
+		public void Validation_or_value_is_serializable_validation()
+		{
+			var expected = new OneOf<string, ValidationState>(
+				new Validator()
+					.Error("SomeField", "Required field")
+					.State
+			);
+
+			var serialized = JsonConvert.SerializeObject(expected);
+			var deserialized = JsonConvert.DeserializeObject<OneOf<string, ValidationState>>(serialized);
+
+			Assert.True(deserialized.Is2);
+			Assert.Equal(expected.As2.Count, deserialized.As2.Count);
+			Assert.Equal(expected.As2.GetErrorText("SomeField"), deserialized.As2.GetErrorText("SomeField"));
 		}
 	}
 }

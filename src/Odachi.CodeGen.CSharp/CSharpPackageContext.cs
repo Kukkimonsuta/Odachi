@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using Odachi.CodeModel;
 
 namespace Odachi.CodeGen.CSharp
 {
-	public class CSharpPackageContext : PackageContext
+	public class CSharpPackageContext : PackageContext<CSharpOptions>
 	{
-		public CSharpPackageContext(Package package, string path)
+		public CSharpPackageContext(Package package, CSharpOptions options)
 		{
 			Package = package ?? throw new ArgumentNullException(nameof(package));
-			Path = path;
+			Options = options;
 		}
 	}
 }

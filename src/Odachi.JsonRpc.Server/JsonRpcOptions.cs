@@ -29,10 +29,6 @@ namespace Odachi.JsonRpc.Server
 			};
 			JsonSerializerSettings.Converters.Add(new PageConverter());
 			JsonSerializerSettings.Converters.Add(new BlobConverter());
-#pragma warning disable CS0618 // Type or member is obsolete
-			JsonSerializerSettings.Converters.Add(new EntityReferenceConverter());
-			JsonSerializerSettings.Converters.Add(new StreamReferenceConverter());
-#pragma warning restore CS0618 // Type or member is obsolete
 
 			Methods.AddReflected<ServerModule>();
 		}

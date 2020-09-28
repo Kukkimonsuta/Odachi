@@ -13,6 +13,23 @@ using Odachi.JsonRpc.Server.Model;
 
 namespace Odachi.JsonRpc.Server.Internal
 {
+	public class ReflectedJsonRpcParameter : JsonRpcParameter
+	{
+		public ReflectedJsonRpcParameter(ParameterInfo parameter)
+			: base(
+				parameter.Name,
+				parameter.ParameterType,
+				parameter.ParameterType == typeof(JsonRpcServer) ? JsonRpcParameterSource.RpcServices : JsonRpcParameterSource.Request,
+				parameter.IsOptional,
+				parameter.HasDefaultValue ? parameter.DefaultValue : (parameter.ParameterType.GetTypeInfo().IsValueType ? Activator.CreateInstance(parameter.ParameterType) : null)
+			)
+		{
+			Parameter = parameter;
+		}
+
+		public ParameterInfo Parameter { get; }
+	}
+
 	public class ReflectedJsonRpcMethod : JsonRpcMethod
 	{
 		public ReflectedJsonRpcMethod(string moduleName, string methodName, Type type, MethodInfo method)
@@ -22,13 +39,7 @@ namespace Odachi.JsonRpc.Server.Internal
 			Method = method ?? throw new ArgumentNullException(nameof(method));
 
 			_parameters = Method.GetParameters()
-				.Select(p => new JsonRpcParameter(
-					p.Name,
-					p.ParameterType,
-					p.ParameterType == typeof(JsonRpcServer) ? JsonRpcParameterSource.RpcServices : JsonRpcParameterSource.Request,
-					p.IsOptional,
-					p.HasDefaultValue ? p.DefaultValue : (p.ParameterType.GetTypeInfo().IsValueType ? Activator.CreateInstance(p.ParameterType) : null)
-				))
+				.Select(p => new ReflectedJsonRpcParameter(p))
 				.ToArray();
 
 			if (Method.ReturnType.IsAwaitable())

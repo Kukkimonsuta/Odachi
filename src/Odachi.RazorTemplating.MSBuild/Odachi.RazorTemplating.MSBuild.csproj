@@ -1,10 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\library.props" />
 
   <PropertyGroup>
     <Description>MSBuild task to transform razor templates to c#.</Description>
-    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
     <PackageOutputPath Condition="$(PackageOutputPath) == ''">$(BaseOutputPath)</PackageOutputPath>
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -21,9 +22,9 @@
 
   <Target Name="_IncludeBuildOutputAsTool" BeforeTargets="_GetPackageFiles">
     <ItemGroup>
-      <None Include="$(OutputPath)net462\**">
+      <None Include="$(OutputPath)net472\**">
         <Pack>true</Pack>
-        <PackagePath>tools\net462</PackagePath>
+        <PackagePath>tools\net472</PackagePath>
       </None>
       <None Include="$(OutputPath)netstandard2.0\**">
         <Pack>true</Pack>
@@ -42,8 +43,12 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.6.85" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.6.85" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.6.0" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.6.0" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="../Odachi.RazorTemplating/Odachi.RazorTemplating.csproj" />
   </ItemGroup>
 

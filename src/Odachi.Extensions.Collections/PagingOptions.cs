@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,14 +11,33 @@ namespace Odachi.Extensions.Collections
 	/// </summary>
 	public class PagingOptions
 	{
-		public const int DefaultPageSize = 10;
-		public const int DefaultMaximumCount = 20;
+		public static int DefaultNumber = 0;
+		public static int DefaultSize = 10;
+		public static bool DefaultAcquireTotal = true;
+		public static int DefaultOffset = 0;
+		public static int? DefaultMaximumCount = null;
 
 		public PagingOptions()
-			: this(0, DefaultPageSize)
+			: this(DefaultNumber)
 		{
 		}
-		public PagingOptions(int number, int size = DefaultPageSize, bool acquireTotal = true, int offset = 0, int? maximumCount = DefaultMaximumCount)
+		public PagingOptions(int number)
+			: this(number, DefaultSize, DefaultAcquireTotal, DefaultOffset, DefaultMaximumCount)
+		{
+		}
+		public PagingOptions(int number, int size)
+			: this(number, size, acquireTotal: DefaultAcquireTotal, offset: DefaultOffset, DefaultMaximumCount)
+		{
+		}
+		public PagingOptions(int number, int size, bool acquireTotal)
+			: this(number, size, acquireTotal: acquireTotal, offset: DefaultOffset, DefaultMaximumCount)
+		{
+		}
+		public PagingOptions(int number, int size, bool acquireTotal, int offset)
+			: this(number, size, acquireTotal: acquireTotal, offset: offset, DefaultMaximumCount)
+		{
+		}
+		public PagingOptions(int number, int size, bool acquireTotal, int offset, int? maximumCount)
 		{
 			Number = number;
 			Size = size;
@@ -41,7 +60,7 @@ namespace Odachi.Extensions.Collections
 			set
 			{
 				if (value < 0)
-					throw new ArgumentOutOfRangeException(nameof(value), "Page must be more or equal to zero");
+					throw new ArgumentOutOfRangeException(nameof(value), "Number must be more or equal to zero");
 
 				_page = value;
 			}
@@ -56,7 +75,7 @@ namespace Odachi.Extensions.Collections
 			set
 			{
 				if (value <= 0)
-					throw new ArgumentOutOfRangeException(nameof(value), "PageSize must be more than zero");
+					throw new ArgumentOutOfRangeException(nameof(value), "Size must be more than zero");
 
 				_pageSize = value;
 			}
@@ -83,7 +102,7 @@ namespace Odachi.Extensions.Collections
 		}
 
 		/// <summary>
-		/// Maximum expected number of pages.
+		/// Maximum expected number of pages. Note that this option can break EF queries.
 		/// </summary>
 		public int? MaximumCount
 		{
@@ -91,7 +110,7 @@ namespace Odachi.Extensions.Collections
 			set
 			{
 				if (value != null && value <= 0)
-					throw new ArgumentOutOfRangeException("value", "MaxPageCount must be greater than zero or null");
+					throw new ArgumentOutOfRangeException(nameof(value), "MaximumCount must be greater than zero or null");
 
 				_maximumCount = value;
 			}
