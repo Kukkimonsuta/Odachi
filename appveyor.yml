@@ -7,7 +7,7 @@ branches:
   only:
     - master
     - preview
-    - stable
+    - release
 
 clone_depth: 1
 
