@@ -24,7 +24,9 @@ test: off
 
 artifacts:
   - path: 'build/*.nupkg'
+    type: NuGetPackage
   - path: 'build/*.snupkg'
+    type: NuGetPackage
 
 deploy:
   - provider: Environment
