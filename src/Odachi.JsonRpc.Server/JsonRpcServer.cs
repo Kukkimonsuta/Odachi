@@ -83,13 +83,13 @@ namespace Odachi.JsonRpc.Server
 							_logger.LogWarning(JsonRpcLogEvents.GenericError, jsonRpcException, "Rpc request {Method} failed after {ElapsedMilliseconds}ms", request.Method, elapsed.TotalMilliseconds);
 						}
 
-						context.SetResponse(jsonRpcException.JsonRpcCode, jsonRpcException.JsonRpcMessage, data: jsonRpcException.JsonRpcData);
+						context.SetResponse(jsonRpcException.JsonRpcCode, jsonRpcException.JsonRpcMessage, errorData: jsonRpcException.JsonRpcData);
 						return context.Response;
 					}
 
 					_logger.LogError(JsonRpcLogEvents.InternalError, ex, "Rpc request {Method} crashed after {ElapsedMilliseconds}ms", request.Method, elapsed.TotalMilliseconds);
 
-					context.SetResponse(JsonRpcError.INTERNAL_ERROR, data: ex.Unwrap().ToDiagnosticString());
+					context.SetResponse(JsonRpcError.INTERNAL_ERROR, errorData: ex.Unwrap().ToDiagnosticString());
 					return context.Response;
 				}
 

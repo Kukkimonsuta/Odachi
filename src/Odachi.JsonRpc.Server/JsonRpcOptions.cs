@@ -33,7 +33,14 @@ namespace Odachi.JsonRpc.Server
 			Methods.AddReflected<ServerModule>();
 		}
 
+		/// <summary>
+		/// Include "jsonrpc: 2.0" constant in responses.
+		/// </summary>
 		public bool UseJsonRpcConstant { get; set; } = false;
+		/// <summary>
+		/// Include error data in error responses.
+		/// </summary>
+		public bool AllowErrorData { get; set; } = true;
 
 		public JsonSerializerSettings JsonSerializerSettings { get; set; }
 

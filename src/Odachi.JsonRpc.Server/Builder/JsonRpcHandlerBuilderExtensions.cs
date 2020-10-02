@@ -38,7 +38,7 @@ namespace Odachi.JsonRpc.Server.Builder
 						// However - this get's the job done and I can't think of any better alternative without
 						// introducing ton of boilerplate code.
 
-						context.SetResponse(JsonRpcError.UNAUTHORIZED, $"{JsonRpcError.GetMessage(JsonRpcError.UNAUTHORIZED)} - {securityException.Message}");
+						context.SetResponse(JsonRpcError.UNAUTHORIZED, errorData: securityException.ToDiagnosticString());
 					}
 					else
 					{

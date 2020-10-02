@@ -77,7 +77,7 @@ function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 
-// source: Odachi.CodeModel.Tests.BasicObject, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.BasicObject
 
 class BasicObject {
 	@observable.ref
@@ -123,7 +123,7 @@ function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 
-// source: Odachi.CodeModel.Tests.ComplexObject, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ComplexObject
 
 class ComplexObject {
 	@observable.ref
@@ -178,7 +178,7 @@ import { observable } from 'mobx';
 function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ComplexObject, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ComplexObject
 
 class ComplexObject {
 	@observable.ref
@@ -225,7 +225,7 @@ export { ComplexObject };
 function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_boolean = { create: (source: any): boolean => typeof source === 'boolean' ? source : _$$_fail(`Contract violation: expected boolean, got \'${typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.GenericObject`1, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.GenericObject`1
 
 class GenericObject<T> {
 	@observable.ref
@@ -281,7 +281,7 @@ const _$$_factory_string = { create: (source: any): string => typeof source === 
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ObjectWithGenericObject, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithGenericObject
 
 class ObjectWithGenericObject {
 	@observable.ref
@@ -335,7 +335,7 @@ const _$$_factory_string = { create: (source: any): string => typeof source === 
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObject, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObject
 
 class ObjectWithArrayOfGenericObject {
 	@observable.shallow
@@ -392,7 +392,7 @@ function _$$_factory_Page_opt<T>(T_factory: { create: (source: any) => T }) { re
 const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 
-// source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObjectWithPages, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObjectWithPages
 
 class ObjectWithArrayOfGenericObjectWithPages {
 	@observable.shallow
@@ -442,7 +442,7 @@ const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
 const _$$_factory_datetime = { create: (source: any): DateTime => typeof source === 'string' ? DateTime.fromISO(source) : _$$_fail(`Contract violation: expected datetime string, got \'${typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ObjectWithTuple, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithTuple
 
 class ObjectWithTuple {
 	@observable.ref
@@ -492,7 +492,7 @@ const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
 const _$$_factory_datetime = { create: (source: any): DateTime => typeof source === 'string' ? DateTime.fromISO(source) : _$$_fail(`Contract violation: expected datetime string, got \'${typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ObjectWithOneOf, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithOneOf
 
 class ObjectWithOneOf {
 	@observable.ref
@@ -534,7 +534,7 @@ export { ObjectWithOneOf };
 function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ObjectWithPrimitives, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithPrimitives
 
 class ObjectWithPrimitives {
 	@observable.ref
@@ -605,7 +605,7 @@ export { ObjectWithPrimitives };
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 
-// source: Odachi.CodeModel.Tests.ObjectWithSelfReference, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithSelfReference
 
 class ObjectWithSelfReference {
 	@observable.ref
@@ -642,7 +642,7 @@ export { ObjectWithSelfReference };
 
 			var result = RenderModule(package, $".\\{nameof(ConstantsClass)}");
 
-			Assert.Equal(@"// source: Odachi.CodeModel.Tests.ConstantsClass, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+			Assert.Equal(@"// source: Odachi.CodeModel.Tests.ConstantsClass
 
 class ConstantsClass {
 	static readonly testString: string = 'fiftyfive';
@@ -663,7 +663,7 @@ export { ConstantsClass };
 
 			var result = RenderModule(package, $".\\{nameof(ConstantsClass)}");
 
-			Assert.Equal(@"// source: Odachi.CodeModel.Tests.ConstantsClass, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+			Assert.Equal(@"// source: Odachi.CodeModel.Tests.ConstantsClass
 
 class ConstantsClass {
 	static readonly testString: string = 'fiftyfive';
@@ -690,7 +690,7 @@ import { RpcClientTag } from '@stackino/due-plugin-odachirpcclient';
 function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_boolean = { create: (source: any): boolean => typeof source === 'boolean' ? source : _$$_fail(`Contract violation: expected boolean, got \'${typeof(source)}\'`) };
 
-// source: Odachi.CodeModel.Tests.ServiceClass, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ServiceClass
 
 const ServiceClassTag = new Tag<ServiceClass>('Test ServiceClass');
 
@@ -717,7 +717,7 @@ export { ServiceClassTag, ServiceClass };
 
 			var result = RenderModule(package, $".\\{nameof(StandardEnum)}");
 
-			Assert.Equal(@"// source: Odachi.CodeModel.Tests.StandardEnum, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+			Assert.Equal(@"// source: Odachi.CodeModel.Tests.StandardEnum
 
 enum StandardEnum {
 	foo = 1,
@@ -777,7 +777,7 @@ export { StandardEnum };
 
 			var result = RenderModule(package, $".\\{nameof(FlagsEnum)}");
 
-			Assert.Equal(@"// source: Odachi.CodeModel.Tests.FlagsEnum, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+			Assert.Equal(@"// source: Odachi.CodeModel.Tests.FlagsEnum
 
 enum FlagsEnum {
 	foo = 1,
@@ -868,7 +868,7 @@ function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_ValidationState = { create: (source: any): ValidationState => typeof Array.isArray(source) ? new ValidationState(source) : _$$_fail(`Contract violation: expected validation state, got \\'${typeof(source)}\\'`) };
 const _$$_factory_ValidationState_opt = _$$_opt(_$$_factory_ValidationState);
 
-// source: Odachi.CodeModel.Tests.ObjectWithValidationState, Odachi.CodeModel.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null
+// source: Odachi.CodeModel.Tests.ObjectWithValidationState
 
 class ObjectWithValidationState {
 	@observable.ref

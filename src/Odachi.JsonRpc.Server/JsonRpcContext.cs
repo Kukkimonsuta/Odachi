@@ -36,7 +36,7 @@ namespace Odachi.JsonRpc.Server
 
 			Response = new JsonRpcResponse(Request.Id, result);
 		}
-		public void SetResponse(int errorCode, object data = null, bool handled = true)
+		public void SetResponse(int errorCode, object errorData = null, bool handled = true)
 		{
 			if (handled)
 			{
@@ -46,9 +46,9 @@ namespace Odachi.JsonRpc.Server
 			if (Request.IsNotification)
 				return;
 
-			Response = new JsonRpcResponse(Request.Id, errorCode, errorData: data);
+			Response = new JsonRpcResponse(Request.Id, errorCode, errorData: errorData);
 		}
-		public void SetResponse(int errorCode, string errorMessage, object data = null, bool handled = true)
+		public void SetResponse(int errorCode, string errorMessage, object errorData = null, bool handled = true)
 		{
 			if (handled)
 			{
@@ -58,7 +58,7 @@ namespace Odachi.JsonRpc.Server
 			if (Request.IsNotification)
 				return;
 
-			Response = new JsonRpcResponse(Request.Id, errorCode, errorMessage, errorData: data);
+			Response = new JsonRpcResponse(Request.Id, errorCode, errorMessage, errorData: errorData);
 		}
 	}
 }
