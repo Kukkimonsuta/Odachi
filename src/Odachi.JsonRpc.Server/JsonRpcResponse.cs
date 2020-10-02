@@ -10,10 +10,7 @@ namespace Odachi.JsonRpc.Server
 	{
 		public JsonRpcResponse(object id, object result)
 		{
-			if (id == null)
-				throw new ArgumentNullException(nameof(id));
-
-			Id = id;
+			Id = id ?? throw new ArgumentNullException(nameof(id));
 			Result = result;
 		}
 		public JsonRpcResponse(object id, int errorCode, object errorData = null)
