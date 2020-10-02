@@ -33,7 +33,8 @@ namespace Odachi.CodeModel.Description
 		protected virtual void DescribeType(ParameterBuilder builder, ParameterInfo parameterInfo)
 		{
 			builder.Hint("net-kind", "parameter");
-			builder.Hint("net-type", parameterInfo.ParameterType.AssemblyQualifiedName);
+			builder.Hint("net-assembly", parameterInfo.ParameterType.Assembly.FullName);
+			builder.Hint("net-type", parameterInfo.ParameterType.FullName);
 		}
 
 		/// <inheritdoc />

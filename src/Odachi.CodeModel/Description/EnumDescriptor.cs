@@ -34,7 +34,8 @@ namespace Odachi.CodeModel.Description
 			{
 				builder.Hint("enum-flags", "true");
 			}
-			builder.Hint("source-type", type.AssemblyQualifiedName);
+			builder.Hint("source-assembly", type.Assembly.FullName);
+			builder.Hint("source-type", type.FullName);
 		}
 
 		/// <inheritdoc />
