@@ -1,4 +1,4 @@
-﻿using Odachi.Extensions.Reflection.Internal;
+using Odachi.Extensions.Reflection.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace Odachi.Extensions.Reflection
 {
 	public static class AwaitableExtensions
 	{
-		private static Dictionary<Type, AwaiterEntry> _awaiterCache = new Dictionary<Type, AwaiterEntry>();
-		private static Dictionary<Type, AwaitableEntry> _awaitableCache = new Dictionary<Type, AwaitableEntry>();
+		private static Dictionary<Type, AwaiterEntry?> _awaiterCache = new Dictionary<Type, AwaiterEntry?>();
+		private static Dictionary<Type, AwaitableEntry?> _awaitableCache = new Dictionary<Type, AwaitableEntry?>();
 
-		private static AwaiterEntry GetAwaiterEntry(Type type)
+		private static AwaiterEntry? GetAwaiterEntry(Type type)
 		{
 			if (_awaiterCache.TryGetValue(type, out var result))
 			{
@@ -85,7 +85,7 @@ namespace Odachi.Extensions.Reflection
 			}
 		}
 
-		private static AwaitableEntry GetAwaitableEntry(Type type)
+		private static AwaitableEntry? GetAwaitableEntry(Type type)
 		{
 			if (_awaitableCache.TryGetValue(type, out var result))
 			{
@@ -195,10 +195,12 @@ namespace Odachi.Extensions.Reflection
 
 		private class AwaiterEntry
 		{
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 			public MethodInfo OnCompletedMethod { get; set; }
-			public MethodInfo UnsafeOnCompletedMethod { get; set; }
+			public MethodInfo? UnsafeOnCompletedMethod { get; set; }
 			public MethodInfo IsCompletedMethod { get; set; }
 			public MethodInfo GetResultMethod { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 		}
 
 		#endregion
@@ -207,7 +209,9 @@ namespace Odachi.Extensions.Reflection
 
 		private class AwaitableEntry
 		{
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 			public MethodInfo GetAwaiterMethod { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 		}
 
 		#endregion

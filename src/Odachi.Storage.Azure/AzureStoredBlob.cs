@@ -1,24 +1,24 @@
-using Microsoft.WindowsAzure.Storage.Blob;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Odachi.Abstractions;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Odachi.Storage.Azure
 {
 	public class AzureStoredBlob : AzureBlob, IStoredBlob
 	{
-		public AzureStoredBlob(AzureBlobStorage storage, ICloudBlob blob)
+		public AzureStoredBlob(AzureBlobStorage storage, BlobClient blob, BlobProperties properties)
 			: base(blob)
 		{
 			Storage = storage ?? throw new ArgumentNullException(nameof(storage));
+			Properties = properties ?? throw new ArgumentNullException(nameof(properties));
 		}
 
-		public long Length => Blob.Properties.Length;
+		public long Length => Properties.ContentLength;
 
 		public IBlobStorage Storage { get; }
+
+		public BlobProperties Properties { get; set; }
 
 		public string Path => Blob.Name;
 	}

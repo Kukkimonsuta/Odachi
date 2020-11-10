@@ -6,6 +6,7 @@
 	<PropertyGroup>
 		<Description>Annotations used across Odachi framework.</Description>
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 

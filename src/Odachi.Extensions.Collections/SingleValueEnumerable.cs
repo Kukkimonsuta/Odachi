@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,13 +48,13 @@ namespace Odachi.Extensions.Collections
 				get
 				{
 					if (_index != 0)
-						return default(T);
+						throw new IndexOutOfRangeException();
 
 					return _enumerable._value;
 				}
 			}
 
-			object IEnumerator.Current => Current;
+			object? IEnumerator.Current => Current;
 
 			public SingleValueEnumerable<T> Enumerable
 			{

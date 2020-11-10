@@ -14,6 +14,11 @@ Abstractions used across Odachi framework.<br />
 Annotations used across Odachi framework.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
+## Odachi.AspNetCore.Authentication.ApiKey 
+
+ASP.NET Core middleware for apikey authentication.<br />
+✔️ Used in production, breaking changes will follow semver.
+
 ## Odachi.AspNetCore.Authentication.Basic 
 
 ASP.NET Core middleware for basic authentication.<br />
