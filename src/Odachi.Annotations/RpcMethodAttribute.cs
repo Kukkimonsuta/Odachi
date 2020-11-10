@@ -11,13 +11,13 @@ namespace Odachi.Annotations
 		public RpcMethodAttribute()
 		{
 		}
-		public RpcMethodAttribute(string moduleName, string methodName)
+		public RpcMethodAttribute(string? moduleName, string? methodName)
 		{
 			ModuleName = moduleName;
 			MethodName = methodName;
 		}
 
-		public string ModuleName { get; set; }
-		public string MethodName { get; set; }
+		public string? ModuleName { get; set; }
+		public string? MethodName { get; set; }
 	}
 }

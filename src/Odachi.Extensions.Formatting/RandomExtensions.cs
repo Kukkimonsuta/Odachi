@@ -1,14 +1,9 @@
-#if !NETSTANDARD10
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Odachi.Extensions.Formatting
 {
-    public static class RandomExtensions
+	public static class RandomExtensions
     {
 		public const string NumericCharacters = "0123456789";
 		public const string LowerCaseCharacters = "abcdefghijklmnopqrstuvwxyz";
@@ -71,4 +66,3 @@ namespace Odachi.Extensions.Formatting
 		}
 	}
 }
-#endif

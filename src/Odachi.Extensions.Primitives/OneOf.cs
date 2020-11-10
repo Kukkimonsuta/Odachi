@@ -32,17 +32,17 @@ namespace Odachi.Extensions.Primitives
 		[DataMember(Order = 0)]
 		public readonly int Index;
 		[DataMember(EmitDefaultValue = false, Order = 1)]
-		public readonly T1 Option1;
+		public readonly T1? Option1;
 		[DataMember(EmitDefaultValue = false, Order = 2)]
-		public readonly T2 Option2;
+		public readonly T2? Option2;
 
 		public bool IsEmpty => Index == 0;
 
 		public bool Is1 => Index == 1;
-		public T1 As1 => Index == 1 ? Option1 : throw new InvalidOperationException("OneOf<T1, T2> doesn't contain T1");
+		public T1 As1 => Index == 1 ? Option1! : throw new InvalidOperationException("OneOf<T1, T2> doesn't contain T1");
 
 		public bool Is2 => Index == 2;
-		public T2 As2 => Index == 2 ? Option2 : throw new InvalidOperationException("OneOf<T1, T2> doesn't contain T2");
+		public T2 As2 => Index == 2 ? Option2! : throw new InvalidOperationException("OneOf<T1, T2> doesn't contain T2");
 
 		public object Value
 		{
@@ -53,16 +53,16 @@ namespace Odachi.Extensions.Primitives
 					case 0:
 						throw new InvalidOperationException("OneOf<T1, T2> is empty");
 					case 1:
-						return Option1;
+						return Option1!;
 					case 2:
-						return Option2;
+						return Option2!;
 					default:
 						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2> with Index {Index}'");
 				}
 			}
 		}
 
-		public void Match(Action<T1> when1, Action<T2> when2, Action whenEmpty = null)
+		public void Match(Action<T1> when1, Action<T2> when2, Action? whenEmpty = null)
 		{
 			switch (Index)
 			{
@@ -72,25 +72,25 @@ namespace Odachi.Extensions.Primitives
 					whenEmpty();
 					return;
 				case 1:
-					when1(Option1);
+					when1(Option1!);
 					return;
 				case 2:
-					when2(Option2);
+					when2(Option2!);
 					return;
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2> with Index {Index}'");
 			}
 		}
-		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<TResult> whenEmpty = null)
+		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<TResult>? whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2> is empty");
 				case 1:
-					return when1(Option1);
+					return when1(Option1!);
 				case 2:
-					return when2(Option2);
+					return when2(Option2!);
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2> with Index {Index}'");
 			}
@@ -208,22 +208,22 @@ namespace Odachi.Extensions.Primitives
 		[DataMember(Order = 0)]
 		public readonly int Index;
 		[DataMember(EmitDefaultValue = false, Order = 1)]
-		public readonly T1 Option1;
+		public readonly T1? Option1;
 		[DataMember(EmitDefaultValue = false, Order = 2)]
-		public readonly T2 Option2;
+		public readonly T2? Option2;
 		[DataMember(EmitDefaultValue = false, Order = 3)]
-		public readonly T3 Option3;
+		public readonly T3? Option3;
 
 		public bool IsEmpty => Index == 0;
 
 		public bool Is1 => Index == 1;
-		public T1 As1 => Index == 1 ? Option1 : throw new InvalidOperationException("OneOf<T1, T2, T3> doesn't contain T1");
+		public T1 As1 => Index == 1 ? Option1! : throw new InvalidOperationException("OneOf<T1, T2, T3> doesn't contain T1");
 
 		public bool Is2 => Index == 2;
-		public T2 As2 => Index == 2 ? Option2 : throw new InvalidOperationException("OneOf<T1, T2, T3> doesn't contain T2");
+		public T2 As2 => Index == 2 ? Option2! : throw new InvalidOperationException("OneOf<T1, T2, T3> doesn't contain T2");
 
 		public bool Is3 => Index == 3;
-		public T3 As3 => Index == 3 ? Option3 : throw new InvalidOperationException("OneOf<T1, T2, T3> doesn't contain T3");
+		public T3 As3 => Index == 3 ? Option3! : throw new InvalidOperationException("OneOf<T1, T2, T3> doesn't contain T3");
 
 		public object Value
 		{
@@ -234,18 +234,18 @@ namespace Odachi.Extensions.Primitives
 					case 0:
 						throw new InvalidOperationException("OneOf<T1, T2, T3> is empty");
 					case 1:
-						return Option1;
+						return Option1!;
 					case 2:
-						return Option2;
+						return Option2!;
 					case 3:
-						return Option3;
+						return Option3!;
 					default:
 						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3> with Index {Index}'");
 				}
 			}
 		}
 
-		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action whenEmpty = null)
+		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action? whenEmpty = null)
 		{
 			switch (Index)
 			{
@@ -255,30 +255,30 @@ namespace Odachi.Extensions.Primitives
 					whenEmpty();
 					return;
 				case 1:
-					when1(Option1);
+					when1(Option1!);
 					return;
 				case 2:
-					when2(Option2);
+					when2(Option2!);
 					return;
 				case 3:
-					when3(Option3);
+					when3(Option3!);
 					return;
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3> with Index {Index}'");
 			}
 		}
-		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<TResult> whenEmpty = null)
+		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<TResult>? whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3> is empty");
 				case 1:
-					return when1(Option1);
+					return when1(Option1!);
 				case 2:
-					return when2(Option2);
+					return when2(Option2!);
 				case 3:
-					return when3(Option3);
+					return when3(Option3!);
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3> with Index {Index}'");
 			}
@@ -421,27 +421,27 @@ namespace Odachi.Extensions.Primitives
 		[DataMember(Order = 0)]
 		public readonly int Index;
 		[DataMember(EmitDefaultValue = false, Order = 1)]
-		public readonly T1 Option1;
+		public readonly T1? Option1;
 		[DataMember(EmitDefaultValue = false, Order = 2)]
-		public readonly T2 Option2;
+		public readonly T2? Option2;
 		[DataMember(EmitDefaultValue = false, Order = 3)]
-		public readonly T3 Option3;
+		public readonly T3? Option3;
 		[DataMember(EmitDefaultValue = false, Order = 4)]
-		public readonly T4 Option4;
+		public readonly T4? Option4;
 
 		public bool IsEmpty => Index == 0;
 
 		public bool Is1 => Index == 1;
-		public T1 As1 => Index == 1 ? Option1 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4> doesn't contain T1");
+		public T1 As1 => Index == 1 ? Option1! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4> doesn't contain T1");
 
 		public bool Is2 => Index == 2;
-		public T2 As2 => Index == 2 ? Option2 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4> doesn't contain T2");
+		public T2 As2 => Index == 2 ? Option2! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4> doesn't contain T2");
 
 		public bool Is3 => Index == 3;
-		public T3 As3 => Index == 3 ? Option3 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4> doesn't contain T3");
+		public T3 As3 => Index == 3 ? Option3! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4> doesn't contain T3");
 
 		public bool Is4 => Index == 4;
-		public T4 As4 => Index == 4 ? Option4 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4> doesn't contain T4");
+		public T4 As4 => Index == 4 ? Option4! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4> doesn't contain T4");
 
 		public object Value
 		{
@@ -452,20 +452,20 @@ namespace Odachi.Extensions.Primitives
 					case 0:
 						throw new InvalidOperationException("OneOf<T1, T2, T3, T4> is empty");
 					case 1:
-						return Option1;
+						return Option1!;
 					case 2:
-						return Option2;
+						return Option2!;
 					case 3:
-						return Option3;
+						return Option3!;
 					case 4:
-						return Option4;
+						return Option4!;
 					default:
 						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4> with Index {Index}'");
 				}
 			}
 		}
 
-		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action whenEmpty = null)
+		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action? whenEmpty = null)
 		{
 			switch (Index)
 			{
@@ -475,35 +475,35 @@ namespace Odachi.Extensions.Primitives
 					whenEmpty();
 					return;
 				case 1:
-					when1(Option1);
+					when1(Option1!);
 					return;
 				case 2:
-					when2(Option2);
+					when2(Option2!);
 					return;
 				case 3:
-					when3(Option3);
+					when3(Option3!);
 					return;
 				case 4:
-					when4(Option4);
+					when4(Option4!);
 					return;
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4> with Index {Index}'");
 			}
 		}
-		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<TResult> whenEmpty = null)
+		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<TResult>? whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4> is empty");
 				case 1:
-					return when1(Option1);
+					return when1(Option1!);
 				case 2:
-					return when2(Option2);
+					return when2(Option2!);
 				case 3:
-					return when3(Option3);
+					return when3(Option3!);
 				case 4:
-					return when4(Option4);
+					return when4(Option4!);
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4> with Index {Index}'");
 			}
@@ -673,32 +673,32 @@ namespace Odachi.Extensions.Primitives
 		[DataMember(Order = 0)]
 		public readonly int Index;
 		[DataMember(EmitDefaultValue = false, Order = 1)]
-		public readonly T1 Option1;
+		public readonly T1? Option1;
 		[DataMember(EmitDefaultValue = false, Order = 2)]
-		public readonly T2 Option2;
+		public readonly T2? Option2;
 		[DataMember(EmitDefaultValue = false, Order = 3)]
-		public readonly T3 Option3;
+		public readonly T3? Option3;
 		[DataMember(EmitDefaultValue = false, Order = 4)]
-		public readonly T4 Option4;
+		public readonly T4? Option4;
 		[DataMember(EmitDefaultValue = false, Order = 5)]
-		public readonly T5 Option5;
+		public readonly T5? Option5;
 
 		public bool IsEmpty => Index == 0;
 
 		public bool Is1 => Index == 1;
-		public T1 As1 => Index == 1 ? Option1 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> doesn't contain T1");
+		public T1 As1 => Index == 1 ? Option1! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> doesn't contain T1");
 
 		public bool Is2 => Index == 2;
-		public T2 As2 => Index == 2 ? Option2 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> doesn't contain T2");
+		public T2 As2 => Index == 2 ? Option2! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> doesn't contain T2");
 
 		public bool Is3 => Index == 3;
-		public T3 As3 => Index == 3 ? Option3 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> doesn't contain T3");
+		public T3 As3 => Index == 3 ? Option3! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> doesn't contain T3");
 
 		public bool Is4 => Index == 4;
-		public T4 As4 => Index == 4 ? Option4 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> doesn't contain T4");
+		public T4 As4 => Index == 4 ? Option4! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> doesn't contain T4");
 
 		public bool Is5 => Index == 5;
-		public T5 As5 => Index == 5 ? Option5 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> doesn't contain T5");
+		public T5 As5 => Index == 5 ? Option5! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> doesn't contain T5");
 
 		public object Value
 		{
@@ -709,22 +709,22 @@ namespace Odachi.Extensions.Primitives
 					case 0:
 						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> is empty");
 					case 1:
-						return Option1;
+						return Option1!;
 					case 2:
-						return Option2;
+						return Option2!;
 					case 3:
-						return Option3;
+						return Option3!;
 					case 4:
-						return Option4;
+						return Option4!;
 					case 5:
-						return Option5;
+						return Option5!;
 					default:
 						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5> with Index {Index}'");
 				}
 			}
 		}
 
-		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action whenEmpty = null)
+		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action? whenEmpty = null)
 		{
 			switch (Index)
 			{
@@ -734,40 +734,40 @@ namespace Odachi.Extensions.Primitives
 					whenEmpty();
 					return;
 				case 1:
-					when1(Option1);
+					when1(Option1!);
 					return;
 				case 2:
-					when2(Option2);
+					when2(Option2!);
 					return;
 				case 3:
-					when3(Option3);
+					when3(Option3!);
 					return;
 				case 4:
-					when4(Option4);
+					when4(Option4!);
 					return;
 				case 5:
-					when5(Option5);
+					when5(Option5!);
 					return;
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5> with Index {Index}'");
 			}
 		}
-		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<T5, TResult> when5, Func<TResult> whenEmpty = null)
+		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<T5, TResult> when5, Func<TResult>? whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5> is empty");
 				case 1:
-					return when1(Option1);
+					return when1(Option1!);
 				case 2:
-					return when2(Option2);
+					return when2(Option2!);
 				case 3:
-					return when3(Option3);
+					return when3(Option3!);
 				case 4:
-					return when4(Option4);
+					return when4(Option4!);
 				case 5:
-					return when5(Option5);
+					return when5(Option5!);
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5> with Index {Index}'");
 			}
@@ -966,37 +966,37 @@ namespace Odachi.Extensions.Primitives
 		[DataMember(Order = 0)]
 		public readonly int Index;
 		[DataMember(EmitDefaultValue = false, Order = 1)]
-		public readonly T1 Option1;
+		public readonly T1? Option1;
 		[DataMember(EmitDefaultValue = false, Order = 2)]
-		public readonly T2 Option2;
+		public readonly T2? Option2;
 		[DataMember(EmitDefaultValue = false, Order = 3)]
-		public readonly T3 Option3;
+		public readonly T3? Option3;
 		[DataMember(EmitDefaultValue = false, Order = 4)]
-		public readonly T4 Option4;
+		public readonly T4? Option4;
 		[DataMember(EmitDefaultValue = false, Order = 5)]
-		public readonly T5 Option5;
+		public readonly T5? Option5;
 		[DataMember(EmitDefaultValue = false, Order = 6)]
-		public readonly T6 Option6;
+		public readonly T6? Option6;
 
 		public bool IsEmpty => Index == 0;
 
 		public bool Is1 => Index == 1;
-		public T1 As1 => Index == 1 ? Option1 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T1");
+		public T1 As1 => Index == 1 ? Option1! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T1");
 
 		public bool Is2 => Index == 2;
-		public T2 As2 => Index == 2 ? Option2 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T2");
+		public T2 As2 => Index == 2 ? Option2! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T2");
 
 		public bool Is3 => Index == 3;
-		public T3 As3 => Index == 3 ? Option3 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T3");
+		public T3 As3 => Index == 3 ? Option3! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T3");
 
 		public bool Is4 => Index == 4;
-		public T4 As4 => Index == 4 ? Option4 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T4");
+		public T4 As4 => Index == 4 ? Option4! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T4");
 
 		public bool Is5 => Index == 5;
-		public T5 As5 => Index == 5 ? Option5 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T5");
+		public T5 As5 => Index == 5 ? Option5! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T5");
 
 		public bool Is6 => Index == 6;
-		public T6 As6 => Index == 6 ? Option6 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T6");
+		public T6 As6 => Index == 6 ? Option6! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> doesn't contain T6");
 
 		public object Value
 		{
@@ -1007,24 +1007,24 @@ namespace Odachi.Extensions.Primitives
 					case 0:
 						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> is empty");
 					case 1:
-						return Option1;
+						return Option1!;
 					case 2:
-						return Option2;
+						return Option2!;
 					case 3:
-						return Option3;
+						return Option3!;
 					case 4:
-						return Option4;
+						return Option4!;
 					case 5:
-						return Option5;
+						return Option5!;
 					case 6:
-						return Option6;
+						return Option6!;
 					default:
 						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6> with Index {Index}'");
 				}
 			}
 		}
 
-		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action whenEmpty = null)
+		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action? whenEmpty = null)
 		{
 			switch (Index)
 			{
@@ -1034,45 +1034,45 @@ namespace Odachi.Extensions.Primitives
 					whenEmpty();
 					return;
 				case 1:
-					when1(Option1);
+					when1(Option1!);
 					return;
 				case 2:
-					when2(Option2);
+					when2(Option2!);
 					return;
 				case 3:
-					when3(Option3);
+					when3(Option3!);
 					return;
 				case 4:
-					when4(Option4);
+					when4(Option4!);
 					return;
 				case 5:
-					when5(Option5);
+					when5(Option5!);
 					return;
 				case 6:
-					when6(Option6);
+					when6(Option6!);
 					return;
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6> with Index {Index}'");
 			}
 		}
-		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<T5, TResult> when5, Func<T6, TResult> when6, Func<TResult> whenEmpty = null)
+		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<T5, TResult> when5, Func<T6, TResult> when6, Func<TResult>? whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6> is empty");
 				case 1:
-					return when1(Option1);
+					return when1(Option1!);
 				case 2:
-					return when2(Option2);
+					return when2(Option2!);
 				case 3:
-					return when3(Option3);
+					return when3(Option3!);
 				case 4:
-					return when4(Option4);
+					return when4(Option4!);
 				case 5:
-					return when5(Option5);
+					return when5(Option5!);
 				case 6:
-					return when6(Option6);
+					return when6(Option6!);
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6> with Index {Index}'");
 			}
@@ -1302,42 +1302,42 @@ namespace Odachi.Extensions.Primitives
 		[DataMember(Order = 0)]
 		public readonly int Index;
 		[DataMember(EmitDefaultValue = false, Order = 1)]
-		public readonly T1 Option1;
+		public readonly T1? Option1;
 		[DataMember(EmitDefaultValue = false, Order = 2)]
-		public readonly T2 Option2;
+		public readonly T2? Option2;
 		[DataMember(EmitDefaultValue = false, Order = 3)]
-		public readonly T3 Option3;
+		public readonly T3? Option3;
 		[DataMember(EmitDefaultValue = false, Order = 4)]
-		public readonly T4 Option4;
+		public readonly T4? Option4;
 		[DataMember(EmitDefaultValue = false, Order = 5)]
-		public readonly T5 Option5;
+		public readonly T5? Option5;
 		[DataMember(EmitDefaultValue = false, Order = 6)]
-		public readonly T6 Option6;
+		public readonly T6? Option6;
 		[DataMember(EmitDefaultValue = false, Order = 7)]
-		public readonly T7 Option7;
+		public readonly T7? Option7;
 
 		public bool IsEmpty => Index == 0;
 
 		public bool Is1 => Index == 1;
-		public T1 As1 => Index == 1 ? Option1 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T1");
+		public T1 As1 => Index == 1 ? Option1! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T1");
 
 		public bool Is2 => Index == 2;
-		public T2 As2 => Index == 2 ? Option2 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T2");
+		public T2 As2 => Index == 2 ? Option2! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T2");
 
 		public bool Is3 => Index == 3;
-		public T3 As3 => Index == 3 ? Option3 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T3");
+		public T3 As3 => Index == 3 ? Option3! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T3");
 
 		public bool Is4 => Index == 4;
-		public T4 As4 => Index == 4 ? Option4 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T4");
+		public T4 As4 => Index == 4 ? Option4! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T4");
 
 		public bool Is5 => Index == 5;
-		public T5 As5 => Index == 5 ? Option5 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T5");
+		public T5 As5 => Index == 5 ? Option5! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T5");
 
 		public bool Is6 => Index == 6;
-		public T6 As6 => Index == 6 ? Option6 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T6");
+		public T6 As6 => Index == 6 ? Option6! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T6");
 
 		public bool Is7 => Index == 7;
-		public T7 As7 => Index == 7 ? Option7 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T7");
+		public T7 As7 => Index == 7 ? Option7! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> doesn't contain T7");
 
 		public object Value
 		{
@@ -1348,26 +1348,26 @@ namespace Odachi.Extensions.Primitives
 					case 0:
 						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> is empty");
 					case 1:
-						return Option1;
+						return Option1!;
 					case 2:
-						return Option2;
+						return Option2!;
 					case 3:
-						return Option3;
+						return Option3!;
 					case 4:
-						return Option4;
+						return Option4!;
 					case 5:
-						return Option5;
+						return Option5!;
 					case 6:
-						return Option6;
+						return Option6!;
 					case 7:
-						return Option7;
+						return Option7!;
 					default:
 						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7> with Index {Index}'");
 				}
 			}
 		}
 
-		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action<T7> when7, Action whenEmpty = null)
+		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action<T7> when7, Action? whenEmpty = null)
 		{
 			switch (Index)
 			{
@@ -1377,50 +1377,50 @@ namespace Odachi.Extensions.Primitives
 					whenEmpty();
 					return;
 				case 1:
-					when1(Option1);
+					when1(Option1!);
 					return;
 				case 2:
-					when2(Option2);
+					when2(Option2!);
 					return;
 				case 3:
-					when3(Option3);
+					when3(Option3!);
 					return;
 				case 4:
-					when4(Option4);
+					when4(Option4!);
 					return;
 				case 5:
-					when5(Option5);
+					when5(Option5!);
 					return;
 				case 6:
-					when6(Option6);
+					when6(Option6!);
 					return;
 				case 7:
-					when7(Option7);
+					when7(Option7!);
 					return;
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7> with Index {Index}'");
 			}
 		}
-		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<T5, TResult> when5, Func<T6, TResult> when6, Func<T7, TResult> when7, Func<TResult> whenEmpty = null)
+		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<T5, TResult> when5, Func<T6, TResult> when6, Func<T7, TResult> when7, Func<TResult>? whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7> is empty");
 				case 1:
-					return when1(Option1);
+					return when1(Option1!);
 				case 2:
-					return when2(Option2);
+					return when2(Option2!);
 				case 3:
-					return when3(Option3);
+					return when3(Option3!);
 				case 4:
-					return when4(Option4);
+					return when4(Option4!);
 				case 5:
-					return when5(Option5);
+					return when5(Option5!);
 				case 6:
-					return when6(Option6);
+					return when6(Option6!);
 				case 7:
-					return when7(Option7);
+					return when7(Option7!);
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7> with Index {Index}'");
 			}
@@ -1683,47 +1683,47 @@ namespace Odachi.Extensions.Primitives
 		[DataMember(Order = 0)]
 		public readonly int Index;
 		[DataMember(EmitDefaultValue = false, Order = 1)]
-		public readonly T1 Option1;
+		public readonly T1? Option1;
 		[DataMember(EmitDefaultValue = false, Order = 2)]
-		public readonly T2 Option2;
+		public readonly T2? Option2;
 		[DataMember(EmitDefaultValue = false, Order = 3)]
-		public readonly T3 Option3;
+		public readonly T3? Option3;
 		[DataMember(EmitDefaultValue = false, Order = 4)]
-		public readonly T4 Option4;
+		public readonly T4? Option4;
 		[DataMember(EmitDefaultValue = false, Order = 5)]
-		public readonly T5 Option5;
+		public readonly T5? Option5;
 		[DataMember(EmitDefaultValue = false, Order = 6)]
-		public readonly T6 Option6;
+		public readonly T6? Option6;
 		[DataMember(EmitDefaultValue = false, Order = 7)]
-		public readonly T7 Option7;
+		public readonly T7? Option7;
 		[DataMember(EmitDefaultValue = false, Order = 8)]
-		public readonly T8 Option8;
+		public readonly T8? Option8;
 
 		public bool IsEmpty => Index == 0;
 
 		public bool Is1 => Index == 1;
-		public T1 As1 => Index == 1 ? Option1 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T1");
+		public T1 As1 => Index == 1 ? Option1! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T1");
 
 		public bool Is2 => Index == 2;
-		public T2 As2 => Index == 2 ? Option2 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T2");
+		public T2 As2 => Index == 2 ? Option2! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T2");
 
 		public bool Is3 => Index == 3;
-		public T3 As3 => Index == 3 ? Option3 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T3");
+		public T3 As3 => Index == 3 ? Option3! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T3");
 
 		public bool Is4 => Index == 4;
-		public T4 As4 => Index == 4 ? Option4 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T4");
+		public T4 As4 => Index == 4 ? Option4! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T4");
 
 		public bool Is5 => Index == 5;
-		public T5 As5 => Index == 5 ? Option5 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T5");
+		public T5 As5 => Index == 5 ? Option5! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T5");
 
 		public bool Is6 => Index == 6;
-		public T6 As6 => Index == 6 ? Option6 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T6");
+		public T6 As6 => Index == 6 ? Option6! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T6");
 
 		public bool Is7 => Index == 7;
-		public T7 As7 => Index == 7 ? Option7 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T7");
+		public T7 As7 => Index == 7 ? Option7! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T7");
 
 		public bool Is8 => Index == 8;
-		public T8 As8 => Index == 8 ? Option8 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T8");
+		public T8 As8 => Index == 8 ? Option8! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> doesn't contain T8");
 
 		public object Value
 		{
@@ -1734,28 +1734,28 @@ namespace Odachi.Extensions.Primitives
 					case 0:
 						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> is empty");
 					case 1:
-						return Option1;
+						return Option1!;
 					case 2:
-						return Option2;
+						return Option2!;
 					case 3:
-						return Option3;
+						return Option3!;
 					case 4:
-						return Option4;
+						return Option4!;
 					case 5:
-						return Option5;
+						return Option5!;
 					case 6:
-						return Option6;
+						return Option6!;
 					case 7:
-						return Option7;
+						return Option7!;
 					case 8:
-						return Option8;
+						return Option8!;
 					default:
 						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7, T8> with Index {Index}'");
 				}
 			}
 		}
 
-		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action<T7> when7, Action<T8> when8, Action whenEmpty = null)
+		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action<T7> when7, Action<T8> when8, Action? whenEmpty = null)
 		{
 			switch (Index)
 			{
@@ -1765,55 +1765,55 @@ namespace Odachi.Extensions.Primitives
 					whenEmpty();
 					return;
 				case 1:
-					when1(Option1);
+					when1(Option1!);
 					return;
 				case 2:
-					when2(Option2);
+					when2(Option2!);
 					return;
 				case 3:
-					when3(Option3);
+					when3(Option3!);
 					return;
 				case 4:
-					when4(Option4);
+					when4(Option4!);
 					return;
 				case 5:
-					when5(Option5);
+					when5(Option5!);
 					return;
 				case 6:
-					when6(Option6);
+					when6(Option6!);
 					return;
 				case 7:
-					when7(Option7);
+					when7(Option7!);
 					return;
 				case 8:
-					when8(Option8);
+					when8(Option8!);
 					return;
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7, T8> with Index {Index}'");
 			}
 		}
-		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<T5, TResult> when5, Func<T6, TResult> when6, Func<T7, TResult> when7, Func<T8, TResult> when8, Func<TResult> whenEmpty = null)
+		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<T5, TResult> when5, Func<T6, TResult> when6, Func<T7, TResult> when7, Func<T8, TResult> when8, Func<TResult>? whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8> is empty");
 				case 1:
-					return when1(Option1);
+					return when1(Option1!);
 				case 2:
-					return when2(Option2);
+					return when2(Option2!);
 				case 3:
-					return when3(Option3);
+					return when3(Option3!);
 				case 4:
-					return when4(Option4);
+					return when4(Option4!);
 				case 5:
-					return when5(Option5);
+					return when5(Option5!);
 				case 6:
-					return when6(Option6);
+					return when6(Option6!);
 				case 7:
-					return when7(Option7);
+					return when7(Option7!);
 				case 8:
-					return when8(Option8);
+					return when8(Option8!);
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7, T8> with Index {Index}'");
 			}
@@ -2111,52 +2111,52 @@ namespace Odachi.Extensions.Primitives
 		[DataMember(Order = 0)]
 		public readonly int Index;
 		[DataMember(EmitDefaultValue = false, Order = 1)]
-		public readonly T1 Option1;
+		public readonly T1? Option1;
 		[DataMember(EmitDefaultValue = false, Order = 2)]
-		public readonly T2 Option2;
+		public readonly T2? Option2;
 		[DataMember(EmitDefaultValue = false, Order = 3)]
-		public readonly T3 Option3;
+		public readonly T3? Option3;
 		[DataMember(EmitDefaultValue = false, Order = 4)]
-		public readonly T4 Option4;
+		public readonly T4? Option4;
 		[DataMember(EmitDefaultValue = false, Order = 5)]
-		public readonly T5 Option5;
+		public readonly T5? Option5;
 		[DataMember(EmitDefaultValue = false, Order = 6)]
-		public readonly T6 Option6;
+		public readonly T6? Option6;
 		[DataMember(EmitDefaultValue = false, Order = 7)]
-		public readonly T7 Option7;
+		public readonly T7? Option7;
 		[DataMember(EmitDefaultValue = false, Order = 8)]
-		public readonly T8 Option8;
+		public readonly T8? Option8;
 		[DataMember(EmitDefaultValue = false, Order = 9)]
-		public readonly T9 Option9;
+		public readonly T9? Option9;
 
 		public bool IsEmpty => Index == 0;
 
 		public bool Is1 => Index == 1;
-		public T1 As1 => Index == 1 ? Option1 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T1");
+		public T1 As1 => Index == 1 ? Option1! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T1");
 
 		public bool Is2 => Index == 2;
-		public T2 As2 => Index == 2 ? Option2 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T2");
+		public T2 As2 => Index == 2 ? Option2! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T2");
 
 		public bool Is3 => Index == 3;
-		public T3 As3 => Index == 3 ? Option3 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T3");
+		public T3 As3 => Index == 3 ? Option3! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T3");
 
 		public bool Is4 => Index == 4;
-		public T4 As4 => Index == 4 ? Option4 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T4");
+		public T4 As4 => Index == 4 ? Option4! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T4");
 
 		public bool Is5 => Index == 5;
-		public T5 As5 => Index == 5 ? Option5 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T5");
+		public T5 As5 => Index == 5 ? Option5! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T5");
 
 		public bool Is6 => Index == 6;
-		public T6 As6 => Index == 6 ? Option6 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T6");
+		public T6 As6 => Index == 6 ? Option6! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T6");
 
 		public bool Is7 => Index == 7;
-		public T7 As7 => Index == 7 ? Option7 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T7");
+		public T7 As7 => Index == 7 ? Option7! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T7");
 
 		public bool Is8 => Index == 8;
-		public T8 As8 => Index == 8 ? Option8 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T8");
+		public T8 As8 => Index == 8 ? Option8! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T8");
 
 		public bool Is9 => Index == 9;
-		public T9 As9 => Index == 9 ? Option9 : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T9");
+		public T9 As9 => Index == 9 ? Option9! : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> doesn't contain T9");
 
 		public object Value
 		{
@@ -2167,30 +2167,30 @@ namespace Odachi.Extensions.Primitives
 					case 0:
 						throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> is empty");
 					case 1:
-						return Option1;
+						return Option1!;
 					case 2:
-						return Option2;
+						return Option2!;
 					case 3:
-						return Option3;
+						return Option3!;
 					case 4:
-						return Option4;
+						return Option4!;
 					case 5:
-						return Option5;
+						return Option5!;
 					case 6:
-						return Option6;
+						return Option6!;
 					case 7:
-						return Option7;
+						return Option7!;
 					case 8:
-						return Option8;
+						return Option8!;
 					case 9:
-						return Option9;
+						return Option9!;
 					default:
 						throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> with Index {Index}'");
 				}
 			}
 		}
 
-		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action<T7> when7, Action<T8> when8, Action<T9> when9, Action whenEmpty = null)
+		public void Match(Action<T1> when1, Action<T2> when2, Action<T3> when3, Action<T4> when4, Action<T5> when5, Action<T6> when6, Action<T7> when7, Action<T8> when8, Action<T9> when9, Action? whenEmpty = null)
 		{
 			switch (Index)
 			{
@@ -2200,60 +2200,60 @@ namespace Odachi.Extensions.Primitives
 					whenEmpty();
 					return;
 				case 1:
-					when1(Option1);
+					when1(Option1!);
 					return;
 				case 2:
-					when2(Option2);
+					when2(Option2!);
 					return;
 				case 3:
-					when3(Option3);
+					when3(Option3!);
 					return;
 				case 4:
-					when4(Option4);
+					when4(Option4!);
 					return;
 				case 5:
-					when5(Option5);
+					when5(Option5!);
 					return;
 				case 6:
-					when6(Option6);
+					when6(Option6!);
 					return;
 				case 7:
-					when7(Option7);
+					when7(Option7!);
 					return;
 				case 8:
-					when8(Option8);
+					when8(Option8!);
 					return;
 				case 9:
-					when9(Option9);
+					when9(Option9!);
 					return;
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> with Index {Index}'");
 			}
 		}
-		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<T5, TResult> when5, Func<T6, TResult> when6, Func<T7, TResult> when7, Func<T8, TResult> when8, Func<T9, TResult> when9, Func<TResult> whenEmpty = null)
+		public TResult Match<TResult>(Func<T1, TResult> when1, Func<T2, TResult> when2, Func<T3, TResult> when3, Func<T4, TResult> when4, Func<T5, TResult> when5, Func<T6, TResult> when6, Func<T7, TResult> when7, Func<T8, TResult> when8, Func<T9, TResult> when9, Func<TResult>? whenEmpty = null)
 		{
 			switch (Index)
 			{
 				case 0:
 					return whenEmpty != null ? whenEmpty() : throw new InvalidOperationException("OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> is empty");
 				case 1:
-					return when1(Option1);
+					return when1(Option1!);
 				case 2:
-					return when2(Option2);
+					return when2(Option2!);
 				case 3:
-					return when3(Option3);
+					return when3(Option3!);
 				case 4:
-					return when4(Option4);
+					return when4(Option4!);
 				case 5:
-					return when5(Option5);
+					return when5(Option5!);
 				case 6:
-					return when6(Option6);
+					return when6(Option6!);
 				case 7:
-					return when7(Option7);
+					return when7(Option7!);
 				case 8:
-					return when8(Option8);
+					return when8(Option8!);
 				case 9:
-					return when9(Option9);
+					return when9(Option9!);
 				default:
 					throw new InvalidOperationException($"Undefined behavior for OneOf<T1, T2, T3, T4, T5, T6, T7, T8, T9> with Index {Index}'");
 			}

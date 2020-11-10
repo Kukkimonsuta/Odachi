@@ -7,6 +7,7 @@
     <Description>Formatting extensions. Includes word splitting and casing changes.</Description>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
+    <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 

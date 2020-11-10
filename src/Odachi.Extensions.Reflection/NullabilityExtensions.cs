@@ -68,12 +68,12 @@ namespace Odachi.Extensions.Reflection
 			return type.IsValueType && Nullable.GetUnderlyingType(type) == null;
 		}
 
-		private static Type GetGenericArgumentByOrdinal(Type type, int n)
+		private static Type? GetGenericArgumentByOrdinal(Type type, int n)
 		{
 			var r = n;
 			return GetGenericArgumentByOrdinal(type, ref r);
 		}
-		private static Type GetGenericArgumentByOrdinal(Type type, ref int remaining)
+		private static Type? GetGenericArgumentByOrdinal(Type type, ref int remaining)
 		{
 			// treat arrays as having single generic argument
 			if (type.IsArray)

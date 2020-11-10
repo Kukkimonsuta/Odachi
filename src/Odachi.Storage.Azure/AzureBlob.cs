@@ -1,21 +1,19 @@
-using Microsoft.WindowsAzure.Storage.Blob;
+using Azure.Storage.Blobs;
 using Odachi.Abstractions;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Odachi.Storage.Azure
 {
 	public class AzureBlob : IBlob
 	{
-		public AzureBlob(ICloudBlob blob)
+		public AzureBlob(BlobClient blob)
 		{
 			Blob = blob ?? throw new ArgumentNullException(nameof(blob));
 		}
 
-		public ICloudBlob Blob { get; }
+		public BlobClient Blob { get; }
 
 		public string Name => Blob.Name;
 
@@ -23,12 +21,12 @@ namespace Odachi.Storage.Azure
 
 		public Stream OpenRead()
 		{
-			return OpenReadAsync().GetAwaiter().GetResult();
+			return Blob.OpenRead();
 		}
 
 		public Task<Stream> OpenReadAsync()
 		{
-			return Blob.OpenReadAsync(null, null, null);
+			return Blob.OpenReadAsync();
 		}
 	}
 }

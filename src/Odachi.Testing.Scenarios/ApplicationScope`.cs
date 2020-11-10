@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Odachi.Testing.Scenarios
 {
 	public sealed class ApplicationScope<T1> : ApplicationScope
+		where T1 : notnull
 	{
 		internal ApplicationScope(ApplicationInstance application, IServiceScope scope, IPrincipal? principal = null)
 			: base(application, scope, principal: principal)
@@ -22,6 +23,8 @@ namespace Odachi.Testing.Scenarios
 	}
 
 	public sealed class ApplicationScope<T1, T2> : ApplicationScope
+		where T1 : notnull
+		where T2 : notnull
 	{
 		internal ApplicationScope(ApplicationInstance application, IServiceScope scope, IPrincipal? principal = null)
 			: base(application, scope, principal: principal)
@@ -41,6 +44,9 @@ namespace Odachi.Testing.Scenarios
 	}
 
 	public sealed class ApplicationScope<T1, T2, T3> : ApplicationScope
+		where T1 : notnull
+		where T2 : notnull
+		where T3 : notnull
 	{
 		internal ApplicationScope(ApplicationInstance application, IServiceScope scope, IPrincipal? principal = null)
 			: base(application, scope, principal: principal)
@@ -63,6 +69,10 @@ namespace Odachi.Testing.Scenarios
 	}
 
 	public sealed class ApplicationScope<T1, T2, T3, T4> : ApplicationScope
+		where T1 : notnull
+		where T2 : notnull
+		where T3 : notnull
+		where T4 : notnull
 	{
 		internal ApplicationScope(ApplicationInstance application, IServiceScope scope, IPrincipal? principal = null)
 			: base(application, scope, principal: principal)
@@ -88,6 +98,11 @@ namespace Odachi.Testing.Scenarios
 	}
 
 	public sealed class ApplicationScope<T1, T2, T3, T4, T5> : ApplicationScope
+		where T1 : notnull
+		where T2 : notnull
+		where T3 : notnull
+		where T4 : notnull
+		where T5 : notnull
 	{
 		internal ApplicationScope(ApplicationInstance application, IServiceScope scope, IPrincipal? principal = null)
 			: base(application, scope, principal: principal)
@@ -116,6 +131,12 @@ namespace Odachi.Testing.Scenarios
 	}
 
 	public sealed class ApplicationScope<T1, T2, T3, T4, T5, T6> : ApplicationScope
+		where T1 : notnull
+		where T2 : notnull
+		where T3 : notnull
+		where T4 : notnull
+		where T5 : notnull
+		where T6 : notnull
 	{
 		internal ApplicationScope(ApplicationInstance application, IServiceScope scope, IPrincipal? principal = null)
 			: base(application, scope, principal: principal)
@@ -147,6 +168,13 @@ namespace Odachi.Testing.Scenarios
 	}
 
 	public sealed class ApplicationScope<T1, T2, T3, T4, T5, T6, T7> : ApplicationScope
+		where T1 : notnull
+		where T2 : notnull
+		where T3 : notnull
+		where T4 : notnull
+		where T5 : notnull
+		where T6 : notnull
+		where T7 : notnull
 	{
 		internal ApplicationScope(ApplicationInstance application, IServiceScope scope, IPrincipal? principal = null)
 			: base(application, scope, principal: principal)
@@ -181,6 +209,14 @@ namespace Odachi.Testing.Scenarios
 	}
 
 	public sealed class ApplicationScope<T1, T2, T3, T4, T5, T6, T7, T8> : ApplicationScope
+		where T1 : notnull
+		where T2 : notnull
+		where T3 : notnull
+		where T4 : notnull
+		where T5 : notnull
+		where T6 : notnull
+		where T7 : notnull
+		where T8 : notnull
 	{
 		internal ApplicationScope(ApplicationInstance application, IServiceScope scope, IPrincipal? principal = null)
 			: base(application, scope, principal: principal)
@@ -218,6 +254,15 @@ namespace Odachi.Testing.Scenarios
 	}
 
 	public sealed class ApplicationScope<T1, T2, T3, T4, T5, T6, T7, T8, T9> : ApplicationScope
+		where T1 : notnull
+		where T2 : notnull
+		where T3 : notnull
+		where T4 : notnull
+		where T5 : notnull
+		where T6 : notnull
+		where T7 : notnull
+		where T8 : notnull
+		where T9 : notnull
 	{
 		internal ApplicationScope(ApplicationInstance application, IServiceScope scope, IPrincipal? principal = null)
 			: base(application, scope, principal: principal)
@@ -260,54 +305,99 @@ namespace Odachi.Testing.Scenarios
 	public static class ApplicationScopeExtensions
 	{
 		public static async Task<ApplicationScope<T1>> CreateScopeAsync<T1>(this ApplicationInstance application, IPrincipal? principal = null)
+			where T1 : notnull
 		{
 			var scope = await application.CreateScopeInternalAsync();
 
 			return new ApplicationScope<T1>(application, scope, principal: principal);
 		}
 		public static async Task<ApplicationScope<T1, T2>> CreateScopeAsync<T1, T2>(this ApplicationInstance application, IPrincipal? principal = null)
+			where T1 : notnull
+			where T2 : notnull
 		{
 			var scope = await application.CreateScopeInternalAsync();
 
 			return new ApplicationScope<T1, T2>(application, scope, principal: principal);
 		}
 		public static async Task<ApplicationScope<T1, T2, T3>> CreateScopeAsync<T1, T2, T3>(this ApplicationInstance application, IPrincipal? principal = null)
+			where T1 : notnull
+			where T2 : notnull
+			where T3 : notnull
 		{
 			var scope = await application.CreateScopeInternalAsync();
 
 			return new ApplicationScope<T1, T2, T3>(application, scope, principal: principal);
 		}
 		public static async Task<ApplicationScope<T1, T2, T3, T4>> CreateScopeAsync<T1, T2, T3, T4>(this ApplicationInstance application, IPrincipal? principal = null)
+			where T1 : notnull
+			where T2 : notnull
+			where T3 : notnull
+			where T4 : notnull
 		{
 			var scope = await application.CreateScopeInternalAsync();
 
 			return new ApplicationScope<T1, T2, T3, T4>(application, scope, principal: principal);
 		}
 		public static async Task<ApplicationScope<T1, T2, T3, T4, T5>> CreateScopeAsync<T1, T2, T3, T4, T5>(this ApplicationInstance application, IPrincipal? principal = null)
+			where T1 : notnull
+			where T2 : notnull
+			where T3 : notnull
+			where T4 : notnull
+			where T5 : notnull
 		{
 			var scope = await application.CreateScopeInternalAsync();
 
 			return new ApplicationScope<T1, T2, T3, T4, T5>(application, scope, principal: principal);
 		}
 		public static async Task<ApplicationScope<T1, T2, T3, T4, T5, T6>> CreateScopeAsync<T1, T2, T3, T4, T5, T6>(this ApplicationInstance application, IPrincipal? principal = null)
+			where T1 : notnull
+			where T2 : notnull
+			where T3 : notnull
+			where T4 : notnull
+			where T5 : notnull
+			where T6 : notnull
 		{
 			var scope = await application.CreateScopeInternalAsync();
 
 			return new ApplicationScope<T1, T2, T3, T4, T5, T6>(application, scope, principal: principal);
 		}
 		public static async Task<ApplicationScope<T1, T2, T3, T4, T5, T6, T7>> CreateScopeAsync<T1, T2, T3, T4, T5, T6, T7>(this ApplicationInstance application, IPrincipal? principal = null)
+			where T1 : notnull
+			where T2 : notnull
+			where T3 : notnull
+			where T4 : notnull
+			where T5 : notnull
+			where T6 : notnull
+			where T7 : notnull
 		{
 			var scope = await application.CreateScopeInternalAsync();
 
 			return new ApplicationScope<T1, T2, T3, T4, T5, T6, T7>(application, scope, principal: principal);
 		}
 		public static async Task<ApplicationScope<T1, T2, T3, T4, T5, T6, T7, T8>> CreateScopeAsync<T1, T2, T3, T4, T5, T6, T7, T8>(this ApplicationInstance application, IPrincipal? principal = null)
+			where T1 : notnull
+			where T2 : notnull
+			where T3 : notnull
+			where T4 : notnull
+			where T5 : notnull
+			where T6 : notnull
+			where T7 : notnull
+			where T8 : notnull
 		{
 			var scope = await application.CreateScopeInternalAsync();
 
 			return new ApplicationScope<T1, T2, T3, T4, T5, T6, T7, T8>(application, scope, principal: principal);
 		}
 		public static async Task<ApplicationScope<T1, T2, T3, T4, T5, T6, T7, T8, T9>> CreateScopeAsync<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this ApplicationInstance application, IPrincipal? principal = null)
+			where T1 : notnull
+			where T2 : notnull
+			where T3 : notnull
+			where T4 : notnull
+			where T5 : notnull
+			where T6 : notnull
+			where T7 : notnull
+			where T8 : notnull
+			where T9 : notnull
 		{
 			var scope = await application.CreateScopeInternalAsync();
 
