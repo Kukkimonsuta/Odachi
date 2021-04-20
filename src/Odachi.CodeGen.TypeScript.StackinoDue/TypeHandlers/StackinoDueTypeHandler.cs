@@ -137,7 +137,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.TypeHandlers
 						throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
 					context.Import("luxon", "DateTime");
-					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? DateTime.fromISO(source) : {privatePrefix}fail(`Contract violation: expected datetime string, got \\'${{typeof(source)}}\\'`)");
+					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? DateTime.fromISO(source, {{ setZone: true }}) : {privatePrefix}fail(`Contract violation: expected datetime string, got \\'${{typeof(source)}}\\'`)");
 
 				case "ValidationState":
 					if (type.GenericArguments?.Length > 0)

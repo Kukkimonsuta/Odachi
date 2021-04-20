@@ -440,7 +440,7 @@ function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (sourc
 const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
-const _$$_factory_datetime = { create: (source: any): DateTime => typeof source === 'string' ? DateTime.fromISO(source) : _$$_fail(`Contract violation: expected datetime string, got \'${typeof(source)}\'`) };
+const _$$_factory_datetime = { create: (source: any): DateTime => typeof source === 'string' ? DateTime.fromISO(source, { setZone: true }) : _$$_fail(`Contract violation: expected datetime string, got \'${typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ObjectWithTuple
 
@@ -490,7 +490,7 @@ function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (sourc
 const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
 const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
-const _$$_factory_datetime = { create: (source: any): DateTime => typeof source === 'string' ? DateTime.fromISO(source) : _$$_fail(`Contract violation: expected datetime string, got \'${typeof(source)}\'`) };
+const _$$_factory_datetime = { create: (source: any): DateTime => typeof source === 'string' ? DateTime.fromISO(source, { setZone: true }) : _$$_fail(`Contract violation: expected datetime string, got \'${typeof(source)}\'`) };
 
 // source: Odachi.CodeModel.Tests.ObjectWithOneOf
 
