@@ -83,6 +83,12 @@ namespace Odachi.AspNetCore.JsonRpc
 		{
 			try
 			{
+				if (_options.ForceHttpPost && !HttpMethods.IsPost(httpContext.Request.Method))
+				{
+					httpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+					return;
+				}
+
 				JsonRpcRequest request;
 				try
 				{

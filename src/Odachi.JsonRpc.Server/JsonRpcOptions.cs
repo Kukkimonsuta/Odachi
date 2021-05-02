@@ -41,6 +41,10 @@ namespace Odachi.JsonRpc.Server
 		/// Include error data in error responses.
 		/// </summary>
 		public bool AllowErrorData { get; set; } = true;
+		/// <summary>
+		/// Allow only http post.
+		/// </summary>
+		public bool ForceHttpPost { get; set; } = true;
 
 		public JsonSerializerSettings JsonSerializerSettings { get; set; }
 
