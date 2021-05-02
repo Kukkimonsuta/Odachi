@@ -46,7 +46,7 @@ namespace Odachi.JsonRpc.Server
 			if (_params.Type != JTokenType.Array)
 				throw new InvalidOperationException("Params are not indexed");
 
-			var paramsArray = ((JArray)_params);
+			var paramsArray = (JArray)_params;
 
 			if (paramsArray.Count <= index)
 				return @default;
