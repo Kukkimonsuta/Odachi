@@ -70,7 +70,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Tests
 
 			var result = RenderModule(package, $".\\{nameof(BasicObject)}");
 
-			Assert.Equal(@"import { observable } from 'mobx';
+			Assert.Equal(@"import { makeObservable, observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
@@ -80,7 +80,12 @@ const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 // source: Odachi.CodeModel.Tests.BasicObject
 
 class BasicObject {
-	@observable.ref
+	constructor() {
+		makeObservable(this, {
+			foo: observable.ref,
+		});
+	}
+
 	foo: string | null = null;
 
 	static create(source: any): BasicObject {
@@ -116,7 +121,7 @@ export { BasicObject };
 			var result = RenderModule(package, $".\\{nameof(ComplexObject)}");
 
 			Assert.Equal(@"import { BasicObject } from './basic-object';
-import { observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
@@ -126,10 +131,14 @@ const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 // source: Odachi.CodeModel.Tests.ComplexObject
 
 class ComplexObject {
-	@observable.ref
-	foo: string | null = null;
+	constructor() {
+		makeObservable(this, {
+			foo: observable.ref,
+			basic: observable.ref,
+		});
+	}
 
-	@observable.ref
+	foo: string | null = null;
 	basic: BasicObject | null = null;
 
 	static create(source: any): ComplexObject {
@@ -173,7 +182,7 @@ export { ComplexObject };
 			var result = RenderModule(package, $".\\{nameof(ComplexObject)}");
 
 			Assert.Equal(@"import { BasicObject } from './basic-object';
-import { observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 
 function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_string = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got \'${typeof(source)}\'`) };
@@ -181,10 +190,14 @@ const _$$_factory_string = { create: (source: any): string => typeof source === 
 // source: Odachi.CodeModel.Tests.ComplexObject
 
 class ComplexObject {
-	@observable.ref
-	foo: string = '';
+	constructor() {
+		makeObservable(this, {
+			foo: observable.ref,
+			basic: observable.ref,
+		});
+	}
 
-	@observable.ref
+	foo: string = '';
 	basic: BasicObject = new BasicObject();
 
 	static create(source: any): ComplexObject {
@@ -220,7 +233,7 @@ export { ComplexObject };
 
 			var result = RenderModule(package, $".\\{nameof(GenericObject<object>)}");
 
-			Assert.Equal(@"import { observable } from 'mobx';
+			Assert.Equal(@"import { makeObservable, observable } from 'mobx';
 
 function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_boolean = { create: (source: any): boolean => typeof source === 'boolean' ? source : _$$_fail(`Contract violation: expected boolean, got \'${typeof(source)}\'`) };
@@ -228,10 +241,14 @@ const _$$_factory_boolean = { create: (source: any): boolean => typeof source ==
 // source: Odachi.CodeModel.Tests.GenericObject`1
 
 class GenericObject<T> {
-	@observable.ref
-	value: T | null = null;
+	constructor() {
+		makeObservable(this, {
+			value: observable.ref,
+			test: observable.ref,
+		});
+	}
 
-	@observable.ref
+	value: T | null = null;
 	test: boolean = false;
 
 	static create<T>(T_factory: { create(source: any): T }): { create: (source: any) => GenericObject<T> } {
@@ -273,7 +290,7 @@ export { GenericObject };
 			var result = RenderModule(package, $".\\{nameof(ObjectWithGenericObject)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
-import { observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
@@ -284,10 +301,14 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 // source: Odachi.CodeModel.Tests.ObjectWithGenericObject
 
 class ObjectWithGenericObject {
-	@observable.ref
-	strings: GenericObject<string | null> | null = null;
+	constructor() {
+		makeObservable(this, {
+			strings: observable.ref,
+			ints: observable.ref,
+		});
+	}
 
-	@observable.ref
+	strings: GenericObject<string | null> | null = null;
 	ints: GenericObject<number> | null = null;
 
 	static create(source: any): ObjectWithGenericObject {
@@ -325,7 +346,7 @@ export { ObjectWithGenericObject };
 			var result = RenderModule(package, $".\\{nameof(ObjectWithArrayOfGenericObject)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
-import { observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
@@ -338,10 +359,14 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 // source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObject
 
 class ObjectWithArrayOfGenericObject {
-	@observable.shallow
-	strings: Array<GenericObject<string | null> | null> | null = null;
+	constructor() {
+		makeObservable(this, {
+			strings: observable.shallow,
+			ints: observable.shallow,
+		});
+	}
 
-	@observable.shallow
+	strings: Array<GenericObject<string | null> | null> | null = null;
 	ints: Array<GenericObject<number> | null> | null = null;
 
 	static create(source: any): ObjectWithArrayOfGenericObject {
@@ -380,7 +405,7 @@ export { ObjectWithArrayOfGenericObject };
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 import { Page } from '@odachi/collections';
-import { observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
@@ -395,7 +420,12 @@ const _$$_factory_string_opt = _$$_opt(_$$_factory_string);
 // source: Odachi.CodeModel.Tests.ObjectWithArrayOfGenericObjectWithPages
 
 class ObjectWithArrayOfGenericObjectWithPages {
-	@observable.shallow
+	constructor() {
+		makeObservable(this, {
+			strings: observable.shallow,
+		});
+	}
+
 	strings: Array<GenericObject<Page<string | null> | null> | null> | null = null;
 
 	static create(source: any): ObjectWithArrayOfGenericObjectWithPages {
@@ -432,7 +462,7 @@ export { ObjectWithArrayOfGenericObjectWithPages };
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 import { DateTime } from 'luxon';
-import { observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 
 function _$$_fail(message: string): never { throw new Error(message); }
 function _$$_factory_tuple3<T1, T2, T3>(T1_factory: { create: (source: any) => T1 }, T2_factory: { create: (source: any) => T2 }, T3_factory: { create: (source: any) => T3 }) { return { create: (source: any): [T1, T2, T3] => [T1_factory.create(source.item1), T2_factory.create(source.item2), T3_factory.create(source.item3)] }; }
@@ -445,7 +475,12 @@ const _$$_factory_datetime = { create: (source: any): DateTime => typeof source 
 // source: Odachi.CodeModel.Tests.ObjectWithTuple
 
 class ObjectWithTuple {
-	@observable.ref
+	constructor() {
+		makeObservable(this, {
+			foo: observable.ref,
+		});
+	}
+
 	foo: [string | null, number, GenericObject<DateTime> | null] = [null, 0, null];
 
 	static create(source: any): ObjectWithTuple {
@@ -482,7 +517,7 @@ export { ObjectWithTuple };
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 import { DateTime } from 'luxon';
-import { observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 
 function _$$_fail(message: string): never { throw new Error(message); }
 function _$$_factory_oneof3<T1, T2, T3>(T1_factory: { create: (source: any) => T1 }, T2_factory: { create: (source: any) => T2 }, T3_factory: { create: (source: any) => T3 }) { return { create: (source: any): T1 | T2 | T3 => { switch (source.index) { case 1: return T1_factory.create(source.option1); case 2: return T2_factory.create(source.option2); case 3: return T3_factory.create(source.option3); default: return _$$_fail(`Contract violation: cannot handle OneOf index ${source.index}`); } } }; }
@@ -495,7 +530,12 @@ const _$$_factory_datetime = { create: (source: any): DateTime => typeof source 
 // source: Odachi.CodeModel.Tests.ObjectWithOneOf
 
 class ObjectWithOneOf {
-	@observable.ref
+	constructor() {
+		makeObservable(this, {
+			foo: observable.ref,
+		});
+	}
+
 	foo: string | number | GenericObject<DateTime> | null = null;
 
 	static create(source: any): ObjectWithOneOf {
@@ -529,7 +569,7 @@ export { ObjectWithOneOf };
 
 			var result = RenderModule(package, $".\\{nameof(ObjectWithPrimitives)}");
 
-			Assert.Equal(@"import { observable } from 'mobx';
+			Assert.Equal(@"import { makeObservable, observable } from 'mobx';
 
 function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got \'${typeof(source)}\'`) };
@@ -537,25 +577,24 @@ const _$$_factory_number = { create: (source: any): number => typeof source === 
 // source: Odachi.CodeModel.Tests.ObjectWithPrimitives
 
 class ObjectWithPrimitives {
-	@observable.ref
+	constructor() {
+		makeObservable(this, {
+			byte: observable.ref,
+			short: observable.ref,
+			integer: observable.ref,
+			long: observable.ref,
+			float: observable.ref,
+			double: observable.ref,
+			decimal: observable.ref,
+		});
+	}
+
 	byte: number = 0;
-
-	@observable.ref
 	short: number = 0;
-
-	@observable.ref
 	integer: number = 0;
-
-	@observable.ref
 	long: number = 0;
-
-	@observable.ref
 	float: number = 0;
-
-	@observable.ref
 	double: number = 0;
-
-	@observable.ref
 	decimal: number = 0;
 
 	static create(source: any): ObjectWithPrimitives {
@@ -601,14 +640,19 @@ export { ObjectWithPrimitives };
 
 			var result = RenderModule(package, $".\\{nameof(ObjectWithSelfReference)}");
 
-			Assert.Equal(@"import { observable } from 'mobx';
+			Assert.Equal(@"import { makeObservable, observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 
 // source: Odachi.CodeModel.Tests.ObjectWithSelfReference
 
 class ObjectWithSelfReference {
-	@observable.ref
+	constructor() {
+		makeObservable(this, {
+			self: observable.ref,
+		});
+	}
+
 	self: ObjectWithSelfReference | null = null;
 
 	static create(source: any): ObjectWithSelfReference {
@@ -861,7 +905,7 @@ export { FlagsEnum };
 			var result = RenderModule(package, $".\\{nameof(ObjectWithValidationState)}");
 
 			Assert.Equal(@"import { ValidationState } from '@odachi/validation';
-import { observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 
 function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 function _$$_fail(message: string): never { throw new Error(message); }
@@ -871,7 +915,12 @@ const _$$_factory_ValidationState_opt = _$$_opt(_$$_factory_ValidationState);
 // source: Odachi.CodeModel.Tests.ObjectWithValidationState
 
 class ObjectWithValidationState {
-	@observable.ref
+	constructor() {
+		makeObservable(this, {
+			foo: observable.ref,
+		});
+	}
+
 	foo: ValidationState | null = null;
 
 	static create(source: any): ObjectWithValidationState {

@@ -35,7 +35,7 @@ namespace Odachi.CodeGen.TypeScript
 
 			if (_imports.Count > 0)
 			{
-				foreach (var group in _imports.OrderBy(i => i.Key))
+				foreach (var group in _imports.OrderBy(i => i.Key, StringComparer.OrdinalIgnoreCase))
 				{
 					var name = group.Key;
 
@@ -51,7 +51,7 @@ namespace Odachi.CodeGen.TypeScript
 					}
 					if (group.Value.named.Count > 0)
 					{
-						writer.WriteLine($"import {{ {string.Join(", ", group.Value.named.OrderBy(n => char.IsLower(n[0]) ? 0 : 1).ThenBy(n => n))} }} from '{name}';");
+						writer.WriteLine($"import {{ {string.Join(", ", group.Value.named.OrderBy(n => char.IsLower(n[0]) ? 0 : 1).ThenBy(n => n, StringComparer.Ordinal))} }} from '{name}';");
 					}
 				}
 
