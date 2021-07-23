@@ -39,23 +39,37 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Renderers
 
 				if (objectFragment.Fields.Count > 0)
 				{
+					context.Import("mobx", "makeObservable");
+					context.Import("mobx", "observable");
+
+					using (writer.WriteIndentedBlock(prefix: "constructor() "))
+					{
+						using (writer.WriteIndentedBlock(prefix: "makeObservable(this, ", suffix: ");"))
+						{
+							foreach (var field in objectFragment.Fields)
+							{
+								context.Import("mobx", "observable");
+
+								// this seem to be sometimes wrong? todo: investigate
+								//if (field.Type.Kind == TypeKind.Array)
+								if (field.Type.Module == null && field.Type.Name == "array")
+								{
+									writer.WriteIndentedLine($"{TS.Field(field.Name)}: observable.shallow,");
+								}
+								else
+								{
+									writer.WriteIndentedLine($"{TS.Field(field.Name)}: observable.ref,");
+								}
+							}
+						}
+					}
+
 					foreach (var field in objectFragment.Fields)
 					{
-						context.Import("mobx", "observable");
-
-						// this seem to be sometimes wrong? todo: investigate
-						//if (field.Type.Kind == TypeKind.Array)
-						if (field.Type.Module == null && field.Type.Name == "array")
-						{
-							writer.WriteIndentedLine("@observable.shallow");
-						}
-						else
-						{
-							writer.WriteIndentedLine("@observable.ref");
-						}
 						writer.WriteIndentedLine($"{TS.Field(field.Name)}: {context.Resolve(field.Type)} = {context.ResolveDefaultValue(field.Type)};");
-						writer.WriteSeparatingLine();
 					}
+
+					writer.WriteSeparatingLine();
 
 					if (objectFragment.GenericArguments.Any())
 					{
