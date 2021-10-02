@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28407.52
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{41DA389D-8FD3-4CC0-B012-5825FE714E87}"
 EndProject
@@ -144,6 +144,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Testing.Scenarios.Data.SqlServer", "src\Odachi.Testing.Scenarios.Data.SqlServer\Odachi.Testing.Scenarios.Data.SqlServer.csproj", "{C8FE228D-E15B-4034-ACD6-ABEA3D510DB7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.AspNetCore.Authentication.ApiKey", "src\Odachi.AspNetCore.Authentication.ApiKey\Odachi.AspNetCore.Authentication.ApiKey.csproj", "{9B85CACC-C569-473A-A9AD-5FAE7D052FC2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Testing.Scenarios.Data.PostgreSQL", "src\Odachi.Testing.Scenarios.Data.PostgreSQL\Odachi.Testing.Scenarios.Data.PostgreSQL.csproj", "{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -839,6 +841,18 @@ Global
 		{9B85CACC-C569-473A-A9AD-5FAE7D052FC2}.Release|x64.Build.0 = Release|Any CPU
 		{9B85CACC-C569-473A-A9AD-5FAE7D052FC2}.Release|x86.ActiveCfg = Release|Any CPU
 		{9B85CACC-C569-473A-A9AD-5FAE7D052FC2}.Release|x86.Build.0 = Release|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Debug|x64.Build.0 = Debug|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Debug|x86.Build.0 = Debug|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Release|x64.ActiveCfg = Release|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Release|x64.Build.0 = Release|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Release|x86.ActiveCfg = Release|Any CPU
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -901,6 +915,7 @@ Global
 		{77416FFA-584F-40C1-9C0E-30C41847E2FD} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{C8FE228D-E15B-4034-ACD6-ABEA3D510DB7} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{9B85CACC-C569-473A-A9AD-5FAE7D052FC2} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
+		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2776D3BA-E65C-40FB-A3E4-A454391888CA}

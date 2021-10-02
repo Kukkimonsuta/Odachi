@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\library.props" />
+
+  <PropertyGroup>
+    <Description>SqlServer support for scenario testing.</Description>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <PackageTags>odachi</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.90" />
+    <PackageReference Include="Npgsql" Version="5.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Odachi.Testing.Scenarios.Data\Odachi.Testing.Scenarios.Data.csproj" />
+    <ProjectReference Include="..\Odachi.Testing.Scenarios\Odachi.Testing.Scenarios.csproj" />
+  </ItemGroup>
+
+</Project>
