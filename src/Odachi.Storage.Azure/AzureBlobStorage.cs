@@ -1,5 +1,5 @@
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Specialized;
 using Odachi.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -10,146 +10,212 @@ namespace Odachi.Storage.Azure
 {
 	public class AzureBlobStorage : IBlobStorage
 	{
-		public AzureBlobStorage(CloudBlobClient client, string containerName)
+		public AzureBlobStorage(BlobServiceClient client, string containerName)
 		{
 			_client = client;
 			ContainerName = containerName;
 		}
 
-		private CloudBlobClient _client;
-		private CloudBlobContainer _container;
+		private BlobServiceClient _client;
+		private BlobContainerClient? ____containerClient;
 
 		public string ContainerName { get; }
 
 		public bool PreferAsync => true;
 
-		private Task EnsureContainerExists()
+		private BlobContainerClient GetContainerClient()
 		{
-			if (_container != null)
-				return Task.CompletedTask;
+			if (____containerClient != null)
+			{
+				return ____containerClient;
+			}
 
-			_container = _client.GetContainerReference(ContainerName);
+			____containerClient = _client.GetBlobContainerClient(ContainerName);
 
-			return _container.CreateIfNotExistsAsync();
+			____containerClient.CreateIfNotExists();
+
+			return ____containerClient;
+		}
+		private async Task<BlobContainerClient> GetContainerClientAsync()
+		{
+			if (____containerClient != null)
+			{
+				return ____containerClient;
+			}
+
+			____containerClient = _client.GetBlobContainerClient(ContainerName);
+			
+			await ____containerClient.CreateIfNotExistsAsync();
+
+			return ____containerClient;
 		}
 
 		public void Store(string relativePath, IBlob blob, BlobStoreOptions options = BlobStoreOptions.None)
 		{
-			StoreAsync(relativePath, blob, options: options).GetAwaiter().GetResult();
+			var containerClient = GetContainerClient();
+
+			var blobClient = containerClient.GetBlobClient(relativePath);
+
+			if (options != BlobStoreOptions.Overwrite && blobClient.Exists())
+			{
+				throw new IOException("Blob already exists");
+			}
+
+			using (var inputStream = blob.OpenRead())
+			{
+				blobClient.Upload(inputStream);
+			}
 		}
 		public async Task StoreAsync(string relativePath, IBlob blob, BlobStoreOptions options = BlobStoreOptions.None)
 		{
-			await EnsureContainerExists();
+			var containerClient = await GetContainerClientAsync();
 
-			if (options != BlobStoreOptions.Overwrite && await _container.GetBlobReference(relativePath).ExistsAsync())
+			var blobClient = containerClient.GetBlobClient(relativePath);
+
+			if (options != BlobStoreOptions.Overwrite && await blobClient.ExistsAsync())
 			{
 				throw new IOException("Blob already exists");
 			}
 
 			using (var inputStream = await blob.OpenReadAsync())
 			{
-				var remoteBlob = await _container.GetBlobReferenceFromServerAsync(relativePath);
-
-				await remoteBlob.UploadFromStreamAsync(inputStream);
+				await blobClient.UploadAsync(inputStream);
 			}
 		}
 
 		public void Store(string relativePath, Action<Stream> write, BlobStoreOptions options = BlobStoreOptions.None)
 		{
-			StoreAsync(relativePath, (s) =>
-			{
-				write(s);
+			var containerClient = GetContainerClient();
 
-				return Task.CompletedTask;
-			}, options: options).GetAwaiter().GetResult();
-		}
-		public async Task StoreAsync(string relativePath, Func<Stream, Task> write, BlobStoreOptions options = BlobStoreOptions.None)
-		{
-			await EnsureContainerExists();
+			var blobClient = containerClient.GetBlobClient(relativePath);
 
-			if (options != BlobStoreOptions.Overwrite && await _container.GetBlobReference(relativePath).ExistsAsync())
+			if (options != BlobStoreOptions.Overwrite && containerClient.Exists())
 			{
 				throw new IOException("Blob already exists");
 			}
 
-			var remoteBlob = await _container.GetBlobReferenceFromServerAsync(relativePath);
+			// OpenWriteAsync is no longer available
+			using var bufferStream = new MemoryStream();
+			write(bufferStream);
+			bufferStream.Seek(0, SeekOrigin.Begin);
 
-			using (var outputStream = await ((CloudBlockBlob)remoteBlob).OpenWriteAsync())
+			blobClient.Upload(bufferStream);
+		}
+		public async Task StoreAsync(string relativePath, Func<Stream, Task> write, BlobStoreOptions options = BlobStoreOptions.None)
+		{
+			var containerClient = await GetContainerClientAsync();
+
+			var blobClient = containerClient.GetBlobClient(relativePath);
+
+			if (options != BlobStoreOptions.Overwrite && await containerClient.ExistsAsync())
 			{
-				await write(outputStream);
+				throw new IOException("Blob already exists");
 			}
+
+			// OpenWriteAsync is no longer available
+			using var bufferStream = new MemoryStream();
+			await write(bufferStream);
+			bufferStream.Seek(0, SeekOrigin.Begin);
+
+			await blobClient.UploadAsync(bufferStream);
 		}
 
 		public IStoredBlob Retrieve(string relativePath)
 		{
-			return RetrieveAsync(relativePath).GetAwaiter().GetResult();
-		}
-		public async Task<IStoredBlob> RetrieveAsync(string relativePath)
-		{
-			await EnsureContainerExists();
+			var containerClient = GetContainerClient();
 
-			if (!await _container.GetBlobReference(relativePath).ExistsAsync())
+			var blobClient = containerClient.GetBlobClient(relativePath);
+
+			if (!blobClient.Exists())
 			{
 				throw new FileNotFoundException();
 			}
 
-			var remoteBlob = await _container.GetBlobReferenceFromServerAsync(relativePath);
+			var properties = blobClient.GetProperties();
 
-			await remoteBlob.FetchAttributesAsync();
+			return new AzureStoredBlob(this, blobClient, properties.Value);
+		}
+		public async Task<IStoredBlob> RetrieveAsync(string relativePath)
+		{
+			var containerClient = await GetContainerClientAsync();
 
-			return new AzureStoredBlob(this, remoteBlob);
+			var blobClient = containerClient.GetBlobClient(relativePath);
+
+			if (!await blobClient.ExistsAsync())
+			{
+				throw new FileNotFoundException();
+			}
+
+			var properties = await blobClient.GetPropertiesAsync();
+
+			return new AzureStoredBlob(this, blobClient, properties);
 		}
 
 		public bool Exists(string relativePath)
 		{
-			return ExistsAsync(relativePath).GetAwaiter().GetResult();
+			var containerClient = GetContainerClient();
+
+			var blobClient = containerClient.GetBlobClient(relativePath);
+
+			return blobClient.Exists();
 		}
 		public async Task<bool> ExistsAsync(string relativePath)
 		{
-			await EnsureContainerExists();
+			var containerClient = await GetContainerClientAsync();
 
-			return await _container.GetBlobReference(relativePath).ExistsAsync();
+			var blobClient = containerClient.GetBlobClient(relativePath);
+			
+			return await blobClient.ExistsAsync();
 		}
 
 		public IEnumerable<string> List(string pattern = "**/*")
 		{
-			return ListAsync(pattern: pattern).GetAwaiter().GetResult();
-		}
-		public async Task<IEnumerable<string>> ListAsync(string pattern = "**/*")
-		{
-			await EnsureContainerExists();
+			var containerClient = GetContainerClient();
 
 			if (pattern != "**/*")
 				throw new NotSupportedException("Globs are not yet supported");
 
 			var results = new List<string>();
 
-			var token = default(BlobContinuationToken);
-			do
+			foreach (var blob in containerClient.GetBlobs())
 			{
-				var list = await _container.ListBlobsSegmentedAsync(token);
-
-				foreach (var item in list.Results)
-				{
-					results.Add(item.Uri.ToString());
-				}
-
-				token = list.ContinuationToken;
+				results.Add(blob.Name);
 			}
-			while (token != null);
+
+			return results;
+		}
+		public async Task<IEnumerable<string>> ListAsync(string pattern = "**/*")
+		{
+			var containerClient = await GetContainerClientAsync();
+
+			if (pattern != "**/*")
+				throw new NotSupportedException("Globs are not yet supported");
+
+			var results = new List<string>();
+
+			await foreach (var blob in containerClient.GetBlobsAsync())
+			{
+				results.Add(blob.Name);
+			}
 
 			return results;
 		}
 
 		public void Delete(string relativePath)
 		{
-			DeleteAsync(relativePath).GetAwaiter().GetResult();
+			var containerClient = GetContainerClient();
+
+			var blobClient = containerClient.GetBlobClient(relativePath);
+
+			blobClient.DeleteIfExists();
 		}
 		public async Task DeleteAsync(string relativePath)
 		{
-			await EnsureContainerExists();
+			var containerClient = await GetContainerClientAsync();
 
-			await _container.GetBlobReference(relativePath).DeleteIfExistsAsync();
+			var blobClient = containerClient.GetBlobClient(relativePath);
+
+			await blobClient.DeleteIfExistsAsync();
 		}
 	}
 }

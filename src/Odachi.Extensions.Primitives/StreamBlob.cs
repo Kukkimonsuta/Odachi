@@ -26,9 +26,9 @@ namespace Odachi.Extensions.Primitives
 			_stream = stream ?? throw new ArgumentNullException(nameof(stream));
 		}
 
-		private Stream _stream;
-		private Func<Stream> _openRead;
-		private Func<Task<Stream>> _openReadAsync;
+		private Stream? _stream;
+		private Func<Stream>? _openRead;
+		private Func<Task<Stream>>? _openReadAsync;
 
 		public string Name { get; }
 

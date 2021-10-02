@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +9,7 @@ namespace Odachi.Extensions.Reflection.Internal
 {
 	public struct Awaitable
 	{
-		public Awaitable(object value)
+		public Awaitable(object? value)
 		{
 			Value = value;
 			Target = null;
@@ -27,10 +27,10 @@ namespace Odachi.Extensions.Reflection.Internal
 			_getAwaiterMethod = getAwaiterMethod;
 		}
 
-		private MethodInfo _getAwaiterMethod;
+		private MethodInfo? _getAwaiterMethod;
 
-		public object Target { get; }
-		public object Value { get; }
+		public object? Target { get; }
+		public object? Value { get; }
 
 		public Awaiter GetAwaiter()
 		{
@@ -39,7 +39,7 @@ namespace Odachi.Extensions.Reflection.Internal
 				return new Awaiter(Value);
 			}
 
-			var result = _getAwaiterMethod.Invoke(Target, null);
+			var result = _getAwaiterMethod!.Invoke(Target, null);
 			if (result == null)
 			{
 				return default(Awaiter);
@@ -52,7 +52,7 @@ namespace Odachi.Extensions.Reflection.Internal
 
 		public static readonly Awaitable Completed = FromValue(null);
 
-		public static Awaitable FromValue(object value)
+		public static Awaitable FromValue(object? value)
 		{
 			return new Awaitable(value);
 		}

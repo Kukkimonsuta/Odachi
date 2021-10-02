@@ -48,16 +48,22 @@ namespace Odachi.AspNetCore.JsonRpc
 			}
 
 			// ensure that respose has either result or error property
-			if (jObject.Property("result") == null && jObject.Property("error") == null)
+			var errorProperty = jObject.Property("error");
+			if (jObject.Property("result") == null && errorProperty == null)
 			{
 				jObject.Add("result", null);
+			}
+
+			// remove error data if disallowed
+			if (!_options.AllowErrorData && errorProperty?.Value is JObject errorObject)
+			{
+				errorObject.Property("data", StringComparison.OrdinalIgnoreCase)?.Remove();
 			}
 
 			httpContext.Response.StatusCode = 200;
 			httpContext.Response.ContentType = "application/json";
 
 			// todo: move to System.Text.Json
-
 			await using (var tempStream = new MemoryStream())
 			{
 				await using (var tempStreamWriter = new StreamWriter(tempStream, leaveOpen: true))
@@ -77,6 +83,12 @@ namespace Odachi.AspNetCore.JsonRpc
 		{
 			try
 			{
+				if (_options.ForceHttpPost && !HttpMethods.IsPost(httpContext.Request.Method))
+				{
+					httpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+					return;
+				}
+
 				JsonRpcRequest request;
 				try
 				{
@@ -88,7 +100,7 @@ namespace Odachi.AspNetCore.JsonRpc
 
 					if (!httpContext.Response.HasStarted && !httpContext.RequestAborted.IsCancellationRequested)
 					{
-						await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.PARSE_ERROR, errorData: ex.ToString()));
+						await SendResponse(httpContext, new JsonRpcResponse(null, JsonRpcError.PARSE_ERROR, errorData: ex.ToDiagnosticString()));
 					}
 					return;
 				}

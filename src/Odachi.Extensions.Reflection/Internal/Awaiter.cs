@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,7 +10,7 @@ namespace Odachi.Extensions.Reflection.Internal
 {
 	public struct Awaiter : INotifyCompletion
 	{
-		public Awaiter(object value)
+		public Awaiter(object? value)
 		{
 			Value = value;
 			Target = null;
@@ -19,7 +19,7 @@ namespace Odachi.Extensions.Reflection.Internal
 			_isCompletedMethod = null;
 			_getResultMethod = null;
 		}
-		public Awaiter(object target, MethodInfo onCompletedMethod, MethodInfo unsafeOnCompletedMethod, MethodInfo isCompletedMethod, MethodInfo getResultMethod)
+		public Awaiter(object? target, MethodInfo onCompletedMethod, MethodInfo? unsafeOnCompletedMethod, MethodInfo isCompletedMethod, MethodInfo getResultMethod)
 		{
 			if (target == null)
 				throw new ArgumentNullException(nameof(target));
@@ -38,13 +38,13 @@ namespace Odachi.Extensions.Reflection.Internal
 			_getResultMethod = getResultMethod;
 		}
 
-		private MethodInfo _onCompletedMethod;
-		private MethodInfo _unsafeOnCompletedMethod;
-		private MethodInfo _isCompletedMethod;
-		private MethodInfo _getResultMethod;
+		private MethodInfo? _onCompletedMethod;
+		private MethodInfo? _unsafeOnCompletedMethod;
+		private MethodInfo? _isCompletedMethod;
+		private MethodInfo? _getResultMethod;
 
-		public object Target { get; }
-		public object Value { get; }
+		public object? Target { get; }
+		public object? Value { get; }
 
 		public void OnCompleted(Action continuation)
 		{
@@ -54,7 +54,7 @@ namespace Odachi.Extensions.Reflection.Internal
 				return;
 			}
 
-			_onCompletedMethod.Invoke(Target, new[] { continuation });
+			_onCompletedMethod!.Invoke(Target, new[] { continuation });
 		}
 
 		public void UnsafeOnCompleted(Action continuation)
@@ -73,7 +73,7 @@ namespace Odachi.Extensions.Reflection.Internal
 			}
 			else
 			{
-				_onCompletedMethod.Invoke(Target, new[] { continuation });
+				_onCompletedMethod!.Invoke(Target, new[] { continuation });
 			}
 		}
 
@@ -86,7 +86,7 @@ namespace Odachi.Extensions.Reflection.Internal
 					return true;
 				}
 
-				return (bool)_isCompletedMethod.Invoke(Target, null);
+				return (bool)_isCompletedMethod!.Invoke(Target, null);
 			}
 		}
 
@@ -94,10 +94,10 @@ namespace Odachi.Extensions.Reflection.Internal
 		{
 			if (Target == null)
 			{
-				return Value;
+				return Value!;
 			}
 
-			return _getResultMethod.Invoke(Target, null);
+			return _getResultMethod!.Invoke(Target, null);
 		}
 	}
 }

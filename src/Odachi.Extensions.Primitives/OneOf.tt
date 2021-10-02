@@ -60,7 +60,7 @@ namespace Odachi.Extensions.Primitives
 		for (var ti = 0; ti < typeNames.Length; ti++) {
 #>
 		[DataMember(EmitDefaultValue = false, Order = <#= ti + 1 #>)]
-		public readonly <#= typeNames[ti] #> Option<#= ti + 1 #>;
+		public readonly <#= typeNames[ti] #>? Option<#= ti + 1 #>;
 <#
 		}
 #>
@@ -71,7 +71,7 @@ namespace Odachi.Extensions.Primitives
 		for (var ti = 0; ti < typeNames.Length; ti++) {
 #>
 		public bool Is<#= ti + 1 #> => Index == <#= ti + 1 #>;
-		public <#= typeNames[ti] #> As<#= ti + 1 #> => Index == <#= ti + 1 #> ? Option<#= ti + 1 #> : throw new InvalidOperationException("OneOf<<#= string.Join(", ", typeNames) #>> doesn't contain T<#= ti + 1 #>");<#= ti != i ? Environment.NewLine : "" #>
+		public <#= typeNames[ti] #> As<#= ti + 1 #> => Index == <#= ti + 1 #> ? Option<#= ti + 1 #>! : throw new InvalidOperationException("OneOf<<#= string.Join(", ", typeNames) #>> doesn't contain T<#= ti + 1 #>");<#= ti != i ? Environment.NewLine : "" #>
 <#
 		}
 #>
@@ -88,7 +88,7 @@ namespace Odachi.Extensions.Primitives
 		for (var ti = 0; ti < typeNames.Length; ti++) {
 #>
 					case <#= ti + 1 #>:
-						return Option<#= ti + 1 #>;
+						return Option<#= ti + 1 #>!;
 <#
 		}
 #>
@@ -98,7 +98,7 @@ namespace Odachi.Extensions.Primitives
 			}
 		}
 
-		public void Match(<#= string.Join(", ", typeNames.Select((tn, tni) => "Action<" + tn + "> when" + (tni + 1))) #>, Action whenEmpty = null)
+		public void Match(<#= string.Join(", ", typeNames.Select((tn, tni) => "Action<" + tn + "> when" + (tni + 1))) #>, Action? whenEmpty = null)
 		{
 			switch (Index)
 			{
@@ -111,7 +111,7 @@ namespace Odachi.Extensions.Primitives
 		for (var ti = 0; ti < typeNames.Length; ti++) {
 #>
 				case <#= ti + 1 #>:
-					when<#= ti + 1 #>(Option<#= ti + 1 #>);
+					when<#= ti + 1 #>(Option<#= ti + 1 #>!);
 					return;
 <#
 		}
@@ -120,7 +120,7 @@ namespace Odachi.Extensions.Primitives
 					throw new InvalidOperationException($"Undefined behavior for OneOf<<#= string.Join(", ", typeNames) #>> with Index {Index}'");
 			}
 		}
-		public TResult Match<TResult>(<#= string.Join(", ", typeNames.Select((tn, tni) => "Func<" + tn + ", TResult> when" + (tni + 1))) #>, Func<TResult> whenEmpty = null)
+		public TResult Match<TResult>(<#= string.Join(", ", typeNames.Select((tn, tni) => "Func<" + tn + ", TResult> when" + (tni + 1))) #>, Func<TResult>? whenEmpty = null)
 		{
 			switch (Index)
 			{
@@ -130,7 +130,7 @@ namespace Odachi.Extensions.Primitives
 		for (var ti = 0; ti < typeNames.Length; ti++) {
 #>
 				case <#= ti + 1 #>:
-					return when<#= ti + 1 #>(Option<#= ti + 1 #>);
+					return when<#= ti + 1 #>(Option<#= ti + 1 #>!);
 <#
 		}
 #>

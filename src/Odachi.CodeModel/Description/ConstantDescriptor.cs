@@ -33,7 +33,8 @@ namespace Odachi.CodeModel.Description
 		protected virtual void DescribeConstantInfo(ConstantBuilder builder, Type type, FieldInfo fieldInfo)
 		{
 			builder.Hint("net-kind", "constant");
-			builder.Hint("net-type", fieldInfo.FieldType.AssemblyQualifiedName);
+			builder.Hint("net-assembly", fieldInfo.FieldType.Assembly.FullName);
+			builder.Hint("net-type", fieldInfo.FieldType.FullName);
 
 			if (fieldInfo.IsNonNullable())
 			{

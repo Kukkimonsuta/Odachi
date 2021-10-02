@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using System.Threading.Tasks;
 using System.Net.Http;
@@ -7,12 +9,13 @@ using Odachi.Abstractions;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using Odachi.Extensions.Formatting;
 
 namespace Odachi.JsonRpc.Client.Http
 {
 	public class JsonRpcHttpClient : JsonRpcClient
 	{
-		public JsonRpcHttpClient(string endpoint, ILogger<JsonRpcHttpClient> logger = null)
+		public JsonRpcHttpClient(string endpoint, ILogger<JsonRpcHttpClient>? logger = null)
 			: base(logger: logger)
 		{
 			if (endpoint == null)
@@ -25,9 +28,12 @@ namespace Odachi.JsonRpc.Client.Http
 		}
 
 		private readonly HttpClient _httpClient;
-		private readonly ILogger _logger;
+		private readonly ILogger? _logger;
 
 		public string Endpoint { get; }
+
+		public string? QueryRequestIdKey { get; set; } = "i";
+		public string? QueryRequestMethodKey { get; set; } = "m";
 
 		public HttpRequestHeaders DefaultRequestHeaders
 		{
@@ -89,7 +95,17 @@ namespace Odachi.JsonRpc.Client.Http
 
 			var requestContent = CreateRequestContent(request);
 
-			using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, Endpoint))
+			var uri = new UriBuilder(Endpoint);
+			if (!string.IsNullOrEmpty(QueryRequestIdKey) && request.Id != null)
+			{
+				uri.AppendQuery(QueryRequestIdKey!, value: request.Id.ToString());
+			}
+			if (!string.IsNullOrEmpty(QueryRequestMethodKey))
+			{ 
+				uri.AppendQuery(QueryRequestMethodKey!, value: request.Method);
+			}
+
+			using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, uri.ToString()))
 			{
 				httpRequest.Content = requestContent;
 

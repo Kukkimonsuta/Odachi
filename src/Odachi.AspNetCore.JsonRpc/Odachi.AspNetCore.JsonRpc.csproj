@@ -5,7 +5,7 @@
   
   <PropertyGroup>
 		<Description>ASP.NET Core jsonrpc middleware.</Description>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <TargetFramework>net5.0</TargetFramework>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 

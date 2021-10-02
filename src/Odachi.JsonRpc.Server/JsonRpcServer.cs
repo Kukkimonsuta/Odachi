@@ -46,7 +46,7 @@ namespace Odachi.JsonRpc.Server
 				["JsonRpcRequestMethod"] = request.Method,
 			}))
 			{
-				_logger.LogInformation(JsonRpcLogEvents.RequestStarting, "Rpc request {Method} starting", request.Method);
+				_logger.LogInformation(JsonRpcLogEvents.RequestStarting, "Rpc request {RpcRequestId}:{RpcRequestMethod} starting", request.Id, request.Method);
 				var startTimestamp = Stopwatch.GetTimestamp();
 
 				var context = new JsonRpcContext(this, request, appServices);
@@ -65,7 +65,7 @@ namespace Odachi.JsonRpc.Server
 					}
 
 					var elapsed = new TimeSpan((long)(TimestampToTicks * (Stopwatch.GetTimestamp() - startTimestamp)));
-					_logger.LogInformation(JsonRpcLogEvents.RequestFinished, "Rpc request {Method} finished in {ElapsedMilliseconds}ms", request.Method, elapsed.TotalMilliseconds);
+					_logger.LogInformation(JsonRpcLogEvents.RequestFinished, "Rpc request {RpcRequestId}:{RpcRequestMethod} finished in {ElapsedMilliseconds}ms", request.Id, request.Method, elapsed.TotalMilliseconds);
 				}
 				catch (Exception ex)
 				{
@@ -76,20 +76,20 @@ namespace Odachi.JsonRpc.Server
 					{
 						if (jsonRpcException.JsonRpcCode == JsonRpcError.INTERNAL_ERROR)
 						{
-							_logger.LogError(JsonRpcLogEvents.InternalError, jsonRpcException, "Rpc request {Method} failed after {ElapsedMilliseconds}ms", request.Method, elapsed.TotalMilliseconds);
+							_logger.LogError(JsonRpcLogEvents.InternalError, jsonRpcException, "Rpc request {RpcRequestId}:{RpcRequestMethod} failed after {ElapsedMilliseconds}ms", request.Id, request.Method, elapsed.TotalMilliseconds);
 						}
 						else
 						{
-							_logger.LogWarning(JsonRpcLogEvents.GenericError, jsonRpcException, "Rpc request {Method} failed after {ElapsedMilliseconds}ms", request.Method, elapsed.TotalMilliseconds);
+							_logger.LogWarning(JsonRpcLogEvents.GenericError, jsonRpcException, "Rpc request {RpcRequestId}:{RpcRequestMethod} failed after {ElapsedMilliseconds}ms", request.Id, request.Method, elapsed.TotalMilliseconds);
 						}
 
-						context.SetResponse(jsonRpcException.JsonRpcCode, jsonRpcException.JsonRpcMessage, data: jsonRpcException.JsonRpcData);
+						context.SetResponse(jsonRpcException.JsonRpcCode, jsonRpcException.JsonRpcMessage, errorData: jsonRpcException.JsonRpcData);
 						return context.Response;
 					}
 
-					_logger.LogError(JsonRpcLogEvents.InternalError, ex, "Rpc request {Method} crashed after {ElapsedMilliseconds}ms", request.Method, elapsed.TotalMilliseconds);
+					_logger.LogError(JsonRpcLogEvents.InternalError, ex, "Rpc request {RpcRequestId}:{RpcRequestMethod} crashed after {ElapsedMilliseconds}ms", request.Id, request.Method, elapsed.TotalMilliseconds);
 
-					context.SetResponse(JsonRpcError.INTERNAL_ERROR, data: ex.Unwrap().ToDiagnosticString());
+					context.SetResponse(JsonRpcError.INTERNAL_ERROR, errorData: ex.Unwrap().ToDiagnosticString());
 					return context.Response;
 				}
 

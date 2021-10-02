@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -55,7 +55,7 @@ namespace Odachi.Data
 			Descending = descending;
 		}
 
-		private SortOptions<TEntity> _parent;
+		private SortOptions<TEntity>? _parent;
 		private Expression<Func<TEntity, TKey>> _expression;
 		private bool Descending { get; set; }
 

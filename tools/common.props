@@ -1,7 +1,7 @@
 <Project>
 
 	<PropertyGroup>
-		<VersionPrefix>3.1.0</VersionPrefix>
+		<VersionPrefix>5.0.0</VersionPrefix>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -9,7 +9,7 @@
 		<Authors>Lukáš Novotný</Authors>
 		<RepositoryUrl>https://github.com/Kukkimonsuta/Odachi</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<LangVersion>8.0</LangVersion>
+		<LangVersion>9.0</LangVersion>
 		<Deterministic>true</Deterministic>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>

@@ -33,7 +33,8 @@ namespace Odachi.CodeModel.Description
 		protected virtual void DescribeFieldInfo(FieldBuilder builder, Type type, FieldInfo fieldInfo)
 		{
 			builder.Hint("net-kind", "field");
-			builder.Hint("net-type", fieldInfo.FieldType.AssemblyQualifiedName);
+			builder.Hint("net-assembly", fieldInfo.FieldType.Assembly.FullName);
+			builder.Hint("net-type", fieldInfo.FieldType.FullName);
 
 			var displayName = ClassDescriptionHelper.GetDisplayName(fieldInfo);
 			if (displayName != null)
@@ -45,7 +46,8 @@ namespace Odachi.CodeModel.Description
 		protected virtual void DescribePropertyInfo(FieldBuilder builder, Type type, PropertyInfo propertyInfo)
 		{
 			builder.Hint("net-kind", "property");
-			builder.Hint("net-type", propertyInfo.PropertyType.AssemblyQualifiedName);
+			builder.Hint("net-assembly", propertyInfo.PropertyType.Assembly.FullName);
+			builder.Hint("net-type", propertyInfo.PropertyType.FullName);
 
 			var displayName = ClassDescriptionHelper.GetDisplayName(propertyInfo);
 			if (displayName != null)

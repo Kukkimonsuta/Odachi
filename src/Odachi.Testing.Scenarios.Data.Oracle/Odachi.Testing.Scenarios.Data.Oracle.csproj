@@ -11,8 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.35" />
-    <PackageReference Include="Devart.Data.Oracle" Version="9.12.1054" />
+    <PackageReference Include="Dapper" Version="2.0.90" />
+    <PackageReference Include="Devart.Data.Oracle" Version="9.14.1234" />
   </ItemGroup>
 
   <ItemGroup>

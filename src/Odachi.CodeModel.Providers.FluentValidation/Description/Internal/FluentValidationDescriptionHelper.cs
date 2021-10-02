@@ -53,9 +53,9 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 			var propertyRules = descriptor.GetRulesForMember(propertyName);
 			if (propertyRules != null)
 			{
-				foreach (var propertyRule in propertyRules.OfType<PropertyRule>())
+				foreach (var propertyRule in propertyRules)
 				{
-					foreach (var validator in propertyRule.Validators)
+					foreach (var validator in propertyRule.Components.Select(c => c.Validator))
 					{
 						if (predicate(validator))
 						{
@@ -68,13 +68,13 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 			var rules = descriptor.GetRulesForMember(null);
 			if (rules != null)
 			{
-				foreach (var includeRule in rules)
+				foreach (var includeRule in rules.Where(r => typeof(IIncludeRule).IsAssignableFrom(r.GetType())))
 				{
-					var includedPropertyRules = includeRule.Validators.OfType<IChildValidatorAdaptor>()
+					var includedPropertyRules = includeRule.Components.Select(c => c.Validator).OfType<IChildValidatorAdaptor>()
 						.Select(a => Activator.CreateInstance(a.ValidatorType))
 						.Cast<IEnumerable<IValidationRule>>()
 						.SelectMany(x => x)
-						.OfType<PropertyRule>();
+						.ToArray();
 
 					foreach (var includedPropertyRule in includedPropertyRules)
 					{
@@ -83,7 +83,7 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 							continue;
 						}
 
-						foreach (var validator in includedPropertyRule.Validators)
+						foreach (var validator in includedPropertyRule.Components.Select(c => c.Validator))
 						{
 							if (predicate(validator))
 							{
@@ -109,7 +109,9 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 			if (descriptor == null)
 				return false;
 
-			return GetPropertyValidators(descriptor, member.Name, v => v.GetType() == typeof(NotEmptyValidator) || v.GetType() == typeof(NotNullValidator)).Any();
+			return GetPropertyValidators(descriptor, member.Name, v =>
+				typeof(INotEmptyValidator).IsAssignableFrom(v.GetType()) || typeof(INotNullValidator).IsAssignableFrom(v.GetType())
+			).Any();
 		}
 
 		public static (int min, int max) Length(Type type, MemberInfo member)
@@ -127,12 +129,12 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 				return (-1, -1);
 
 			var relevantValidators = GetPropertyValidators(descriptor, member.Name, v =>
-				typeof(LengthValidator).IsAssignableFrom(v.GetType())
+				typeof(ILengthValidator).IsAssignableFrom(v.GetType())
 			);
 
 			var min = -1;
 			var max = -1;
-			foreach (var lengthValidator in relevantValidators.Cast<LengthValidator>())
+			foreach (var lengthValidator in relevantValidators.Cast<ILengthValidator>())
 			{
 				min = lengthValidator.Min;
 				max = lengthValidator.Max;
