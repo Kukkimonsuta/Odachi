@@ -108,6 +108,8 @@ Pack(".\src\Odachi.Testing.Scenarios")
 Pack(".\src\Odachi.Testing.Scenarios.Data")
 Pack(".\src\Odachi.Testing.Scenarios.Data.MySql")
 Pack(".\src\Odachi.Testing.Scenarios.Data.Oracle")
+Pack(".\src\Odachi.Testing.Scenarios.Data.PostgreSQL")
+Pack(".\src\Odachi.Testing.Scenarios.Data.SqlServer")
 Pack(".\src\Odachi.Testing.Scenarios.Xunit")
 Pack(".\src\Odachi.Validation")
 
