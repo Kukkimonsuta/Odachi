@@ -39,7 +39,7 @@ namespace Odachi.Testing.Scenarios.Data.PostgreSQL
 			{
 				await connection.OpenAsync();
 
-				var varDatabase = $"[{_connectionString.Database}]";
+				var varDatabase = $"\"{_connectionString.Database}\"";
 
 				await connection.ExecuteAsync($"DROP DATABASE {varDatabase}");
 
