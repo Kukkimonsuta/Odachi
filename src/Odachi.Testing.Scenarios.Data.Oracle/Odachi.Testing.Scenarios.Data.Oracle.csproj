@@ -11,13 +11,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.90" />
-    <PackageReference Include="Devart.Data.Oracle" Version="9.14.1234" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Devart.Data.Oracle" Version="9.14.1382" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Odachi.Testing.Scenarios.Data\Odachi.Testing.Scenarios.Data.csproj" />
     <ProjectReference Include="..\Odachi.Testing.Scenarios\Odachi.Testing.Scenarios.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

@@ -1,24 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\common.props" />
   <Import Project="..\..\tools\library.props" />
-  
-  <PropertyGroup>
-		<Description>ASP.NET Core jsonrpc middleware.</Description>
-    <TargetFramework>net5.0</TargetFramework>
-		<PackageTags>odachi</PackageTags>
-	</PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Odachi.Annotations\Odachi.Annotations.csproj" />
+  <PropertyGroup>
+    <Description>ASP.NET Core jsonrpc middleware.</Description>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageTags>odachi</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Odachi.Annotations\Odachi.Annotations.csproj" />
     <ProjectReference Include="..\Odachi.Extensions.Reflection\Odachi.Extensions.Reflection.csproj" />
     <ProjectReference Include="..\Odachi.Extensions.Formatting\Odachi.Extensions.Formatting.csproj" />
     <ProjectReference Include="..\Odachi.JsonRpc.Common\Odachi.JsonRpc.Common.csproj" />
     <ProjectReference Include="..\Odachi.JsonRpc.Server\Odachi.JsonRpc.Server.csproj" />
-	</ItemGroup>
+  </ItemGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

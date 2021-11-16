@@ -1,16 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\common.props" />
   <Import Project="..\..\tools\library.props" />
-  
+
   <PropertyGroup>
-		<Description>ASP.NET MVC extensions and helpers.</Description>
-    <TargetFramework>net5.0</TargetFramework>
-		<PackageTags>odachi</PackageTags>
-	</PropertyGroup>
+    <Description>ASP.NET MVC extensions and helpers.</Description>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageTags>odachi</PackageTags>
+  </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

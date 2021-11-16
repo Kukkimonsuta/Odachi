@@ -94,6 +94,11 @@ Primitives extensions. Includes entity reference, file reference.<br />
 Reflection extensions. Includes awaitable detection and execution helpers.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
+## Odachi.Gettext
+
+Gettext file parsing library.<br />
+❓ Unused. May change outside of semver.
+
 ## Odachi.JsonRpc.Client
 
 JsonRpc client base.<br />
@@ -112,26 +117,6 @@ Common classes of `JsonRpc.Client` and `Odachi.AspNetCore.JsonRpc`.<br />
 ## Odachi.JsonRpc.Server
 
 JsonRpc server base.<br />
-🚧 In development. Happy with the current state. May change outside of semver.
-
-## Odachi.Gettext
-
-Gettext file parsing library.<br />
-❓ Unused. May change outside of semver.
-
-## Odachi.Mail
-
-E-mail template based on `Razor`.<br />
-🚧 In development. Happy with the current state. May change outside of semver.
-
-## Odachi.RazorTemplating
-
-Helpers to translate razor templates to c#.<br />
-🚧 In development. Happy with the current state. May change outside of semver.
-
-## Odachi.RazorTemplating.MSBuild
-
-MSBuild task to transform razor templates to c#.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
 ## Odachi.Security
