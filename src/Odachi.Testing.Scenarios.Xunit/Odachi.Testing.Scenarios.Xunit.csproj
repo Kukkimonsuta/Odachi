@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Odachi.Testing.Scenarios\Odachi.Testing.Scenarios.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+  </ItemGroup>
+
 </Project>

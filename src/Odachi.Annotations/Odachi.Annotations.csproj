@@ -1,13 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\..\tools\common.props" />
+  <Import Project="..\..\tools\common.props" />
   <Import Project="..\..\tools\library.props" />
-  
-	<PropertyGroup>
-		<Description>Annotations used across Odachi framework.</Description>
-		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+
+  <PropertyGroup>
+    <Description>Annotations used across Odachi framework.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Nullable>enable</Nullable>
-		<PackageTags>odachi</PackageTags>
-	</PropertyGroup>
+    <PackageTags>odachi</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+  </ItemGroup>
 
 </Project>

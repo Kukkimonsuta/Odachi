@@ -16,7 +16,6 @@ namespace Odachi.Testing.Scenarios.Data
 
 		private string _connectionString;
 
-
 		public override string GetDebuggerDisplay(ApplicationScope scope)
 		{
 			return $"database:{_connectionString}";

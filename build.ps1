@@ -98,9 +98,6 @@ Pack(".\src\Odachi.JsonRpc.Client")
 Pack(".\src\Odachi.JsonRpc.Client.Http")
 Pack(".\src\Odachi.JsonRpc.Common")
 Pack(".\src\Odachi.JsonRpc.Server")
-Pack(".\src\Odachi.Mail")
-Pack(".\src\Odachi.RazorTemplating")
-Pack(".\src\Odachi.RazorTemplating.MSBuild")
 Pack(".\src\Odachi.Security")
 Pack(".\src\Odachi.Storage.Azure")
 Pack(".\src\Odachi.Storage.FileSystem")
@@ -117,7 +114,6 @@ Write-Host
 Write-Host "Build samples.."
 Write-Host
 Build(".\samples\BasicAuthenticationSample");
-Build(".\samples\MailSample");
 Build(".\samples\JsonRpcSample");
 Build(".\samples\JsonRpcClientSample");
 
@@ -135,7 +131,6 @@ Test(".\test\Odachi.Extensions.Primitives.Tests");
 Test(".\test\Odachi.Extensions.Reflection.Tests");
 Test(".\test\Odachi.Gettext.Tests");
 Test(".\test\Odachi.JsonRpc.Server.Tests");
-Test(".\test\Odachi.RazorTemplating.Tests");
 Test(".\test\Odachi.Security.Tests");
 Test(".\test\Odachi.Storage.FileSystem.Tests");
 Test(".\test\Odachi.Validation.Tests");

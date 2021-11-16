@@ -11,11 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.8.3" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Odachi.Abstractions\Odachi.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>
