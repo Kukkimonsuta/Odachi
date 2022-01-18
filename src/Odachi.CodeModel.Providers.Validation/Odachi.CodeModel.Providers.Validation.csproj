@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <Description>Code description providers for `Odachi.Validation`.</Description>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 
