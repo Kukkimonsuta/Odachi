@@ -27,6 +27,8 @@ namespace Odachi.JsonRpc.Server
 				NullValueHandling = NullValueHandling.Ignore,
 				TypeNameHandling = TypeNameHandling.None,
 			};
+			JsonSerializerSettings.Converters.Add(new DateOnlyConverter());
+			JsonSerializerSettings.Converters.Add(new TimeOnlyConverter());
 			JsonSerializerSettings.Converters.Add(new PageConverter());
 			JsonSerializerSettings.Converters.Add(new BlobConverter());
 

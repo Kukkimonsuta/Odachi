@@ -40,6 +40,8 @@ namespace Odachi.JsonRpc.Client
 			{
 				NamingStrategy = new MultiWordCamelCaseNamingStrategy(true, false)
 			};
+			Serializer.Converters.Add(new DateOnlyConverter());
+			Serializer.Converters.Add(new TimeOnlyConverter());
 			Serializer.Converters.Add(new PageConverter());
 			Serializer.Converters.Add(new BlobConverter());
 
