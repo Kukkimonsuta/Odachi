@@ -1,19 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Threading;
-using System.IO;
 using Newtonsoft.Json.Serialization;
-using Odachi.JsonRpc.Common.Internal;
-using Odachi.JsonRpc.Common.Converters;
-using System.Diagnostics;
-using Microsoft.Extensions.Logging;
 using Odachi.Abstractions;
+using Odachi.JsonRpc.Common.Converters;
+using Odachi.JsonRpc.Common.Internal;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 #pragma warning disable CS0618
 
@@ -41,7 +36,9 @@ namespace Odachi.JsonRpc.Client
 				NamingStrategy = new MultiWordCamelCaseNamingStrategy(true, false)
 			};
 			Serializer.Converters.Add(new DateOnlyConverter());
+			Serializer.Converters.Add(new NullableDateOnlyConverter());
 			Serializer.Converters.Add(new TimeOnlyConverter());
+			Serializer.Converters.Add(new NullableTimeOnlyConverter());
 			Serializer.Converters.Add(new PageConverter());
 			Serializer.Converters.Add(new BlobConverter());
 
