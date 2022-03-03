@@ -38,6 +38,7 @@ namespace Odachi.CodeModel.Mapping
 			Register(typeof(DateOnly), BuiltinTypeDefinition.Date);
 			Register(typeof(TimeOnly), BuiltinTypeDefinition.Time);
 			Register(typeof(DateTime), BuiltinTypeDefinition.DateTime);
+			Register(typeof(TimeSpan), BuiltinTypeDefinition.Duration);
 			Register(typeof(IEnumerable<>), BuiltinTypeDefinition.Array);
 			Register(typeof(IBlob), BuiltinTypeDefinition.File);
 			Register(typeof(Guid), BuiltinTypeDefinition.Guid);

@@ -24,6 +24,8 @@ namespace Odachi.JsonRpc.Server
 			JsonSerializerSettings.Converters.Add(new NullableDateOnlyConverter());
 			JsonSerializerSettings.Converters.Add(new TimeOnlyConverter());
 			JsonSerializerSettings.Converters.Add(new NullableTimeOnlyConverter());
+			JsonSerializerSettings.Converters.Add(new TimeSpanConverter());
+			JsonSerializerSettings.Converters.Add(new NullableTimeSpanConverter());
 			JsonSerializerSettings.Converters.Add(new PageConverter());
 			JsonSerializerSettings.Converters.Add(new BlobConverter());
 

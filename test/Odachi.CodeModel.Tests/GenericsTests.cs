@@ -61,6 +61,7 @@ namespace Odachi.CodeModel.Tests
 		public DateOnly Date { get; set; }
 		public TimeOnly Time { get; set; }
 		public DateTime DateTime { get; set; }
+		public TimeSpan TimeSpan { get; set; }
 	}
 
 	public class ObjectWithValidationState

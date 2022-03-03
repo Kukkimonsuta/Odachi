@@ -87,6 +87,18 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return $"Date{nullableSuffix}";
 
+					case "duration":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return $"Temporal.Duration{nullableSuffix}";
+						}
+
+						return null;
+
 					case "array":
 						if (type.GenericArguments?.Length != 1)
 							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
@@ -218,6 +230,14 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 						}
 
 						return "new Date(NaN)";
+
+					case "duration":
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return "new Temporal.Duration()";
+						}
+						return null;
 
 					case "array":
 						if (type.GenericArguments?.Length != 1)
@@ -439,6 +459,22 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? new Date(source) : {privatePrefix}fail(`Contract violation: expected datetime string, got '${{typeof(source)}}'`)",
 							Array.Empty<string>()
 						);
+
+					case "duration":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return MakeFactory(
+								type.Name,
+								$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? Temporal.Duration.from(source) : {privatePrefix}fail(`Contract violation: expected duration string, got '${{typeof(source)}}'`)",
+								Array.Empty<string>()
+							);
+						}
+
+						return null;
 
 					case "array":
 						{
