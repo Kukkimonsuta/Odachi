@@ -2,14 +2,12 @@ using Odachi.CodeGen.TypeScript.StackinoDue.Renderers;
 using Odachi.CodeGen.TypeScript.StackinoDue.TypeHandlers;
 using Odachi.CodeModel;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Odachi.CodeGen.TypeScript.StackinoDue
 {
 	public static class PackageExtensions
 	{
-		public static void Render_TypeScript_StackinoDue(this Package package, TypeScriptOptions options)
+		public static void Render_TypeScript_StackinoDue(this Package package, StackinoDueOptions options)
 		{
 			if (package == null)
 				throw new ArgumentNullException(nameof(package));
@@ -21,7 +19,14 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue
 			generator.TypeHandlers.Insert(0, new StackinoDueTypeHandler());
 
 			generator.FragmentRenderers.Add(new EnumRenderer());
-			generator.FragmentRenderers.Add(new ObjectRenderer());
+			if (options.UseLegacyMobx5)
+			{
+				generator.FragmentRenderers.Add(new Mobx5ObjectRenderer());
+			}
+			else
+			{
+				generator.FragmentRenderers.Add(new ObjectRenderer());
+			}
 			generator.FragmentRenderers.Add(new ServiceRenderer());
 
 			generator.Generate(package, options);
