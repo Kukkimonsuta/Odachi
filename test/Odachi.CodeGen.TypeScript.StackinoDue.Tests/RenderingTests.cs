@@ -582,7 +582,7 @@ import { makeObservable, observable } from 'mobx';
 function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_date = { create: (source: any): Temporal.PlainDate => typeof source === 'string' ? Temporal.PlainDate.from(source) : _$$_fail(`Contract violation: expected date string, got '${typeof(source)}'`) };
 const _$$_factory_time = { create: (source: any): Temporal.PlainTime => typeof source === 'string' ? Temporal.PlainTime.from(source) : _$$_fail(`Contract violation: expected time string, got '${typeof(source)}'`) };
-const _$$_factory_datetime = { create: (source: any): Temporal.PlainDateTime => typeof source === 'string' ? Temporal.PlainDateTime.from(source) : _$$_fail(`Contract violation: expected datetime string, got '${typeof(source)}'`) };
+const _$$_factory_datetime = { create: (source: any): Temporal.Instant => typeof source === 'string' ? Temporal.Instant.from(source) : _$$_fail(`Contract violation: expected datetime string, got '${typeof(source)}'`) };
 const _$$_factory_duration = { create: (source: any): Temporal.Duration => typeof source === 'string' ? Temporal.Duration.from(source) : _$$_fail(`Contract violation: expected duration string, got '${typeof(source)}'`) };
 
 // source: Odachi.CodeModel.Tests.ObjectWithNet6DateTimes
@@ -599,7 +599,7 @@ class ObjectWithNet6DateTimes {
 
 	date: Temporal.PlainDate = new Temporal.PlainDate(1900, 1, 1);
 	time: Temporal.PlainTime = new Temporal.PlainTime();
-	dateTime: Temporal.PlainDateTime = new Temporal.PlainDateTime(1900, 1, 1);
+	dateTime: Temporal.Instant = Temporal.Instant.from('1900-01-01T00:00:00Z');
 	timeSpan: Temporal.Duration = new Temporal.Duration();
 
 	static create(source: any): ObjectWithNet6DateTimes {
