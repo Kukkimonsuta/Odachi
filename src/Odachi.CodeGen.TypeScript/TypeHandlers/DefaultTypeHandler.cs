@@ -82,7 +82,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 						if (context.PackageContext.Options.UseTemporal)
 						{
 							context.Import("@js-temporal/polyfill", "Temporal");
-							return $"Temporal.PlainDateTime{nullableSuffix}";
+							return $"Temporal.Instant{nullableSuffix}";
 						}
 
 						return $"Date{nullableSuffix}";
@@ -226,7 +226,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 						if (context.PackageContext.Options.UseTemporal)
 						{
 							context.Import("@js-temporal/polyfill", "Temporal");
-							return "new Temporal.PlainDateTime(1900, 1, 1)";
+							return "Temporal.Instant.from('1900-01-01T00:00:00Z')";
 						}
 
 						return "new Date(NaN)";
@@ -449,7 +449,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 							context.Import("@js-temporal/polyfill", "Temporal");
 							return MakeFactory(
 								type.Name,
-								$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? Temporal.PlainDateTime.from(source) : {privatePrefix}fail(`Contract violation: expected datetime string, got '${{typeof(source)}}'`)",
+								$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? Temporal.Instant.from(source) : {privatePrefix}fail(`Contract violation: expected datetime string, got '${{typeof(source)}}'`)",
 								Array.Empty<string>()
 							);
 						}
