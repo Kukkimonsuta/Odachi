@@ -51,11 +51,53 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return $"number{nullableSuffix}";
 
+					case "date":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return $"Temporal.PlainDate{nullableSuffix}";
+						}
+
+						return null;
+
+					case "time":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return $"Temporal.PlainTime{nullableSuffix}";
+						}
+
+						return null;
+
 					case "datetime":
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
 
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return $"Temporal.Instant{nullableSuffix}";
+						}
+
 						return $"Date{nullableSuffix}";
+
+					case "duration":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return $"Temporal.Duration{nullableSuffix}";
+						}
+
+						return null;
 
 					case "array":
 						if (type.GenericArguments?.Length != 1)
@@ -161,11 +203,41 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return "0";
 
+					case "date":
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return "new Temporal.PlainDate(1900, 1, 1)";
+						}
+						return null;
+
+					case "time":
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return "new Temporal.PlainTime()";
+						}
+						return null;
+
 					case "datetime":
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
 
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return "Temporal.Instant.from('1900-01-01T00:00:00Z')";
+						}
+
 						return "new Date(NaN)";
+
+					case "duration":
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return "new Temporal.Duration()";
+						}
+						return null;
 
 					case "array":
 						if (type.GenericArguments?.Length != 1)
@@ -305,7 +377,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return MakeFactory(
 							type.Name,
-							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'boolean' ? source : {privatePrefix}fail(`Contract violation: expected boolean, got \\'${{typeof(source)}}\\'`)",
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'boolean' ? source : {privatePrefix}fail(`Contract violation: expected boolean, got '${{typeof(source)}}'`)",
 							Array.Empty<string>()
 						);
 
@@ -316,7 +388,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return MakeFactory(
 							type.Name,
-							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? source : {privatePrefix}fail(`Contract violation: expected string, got \\'${{typeof(source)}}\\'`)",
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? source : {privatePrefix}fail(`Contract violation: expected string, got '${{typeof(source)}}'`)",
 							Array.Empty<string>()
 						);
 
@@ -332,19 +404,77 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 						return MakeFactory(
 							"number",
-							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'number' ? source : {privatePrefix}fail(`Contract violation: expected number, got \\'${{typeof(source)}}\\'`)",
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'number' ? source : {privatePrefix}fail(`Contract violation: expected number, got '${{typeof(source)}}'`)",
 							Array.Empty<string>()
 						);
+
+					case "date":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return MakeFactory(
+								type.Name,
+								$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? Temporal.PlainDate.from(source) : {privatePrefix}fail(`Contract violation: expected date string, got '${{typeof(source)}}'`)",
+								Array.Empty<string>()
+							);
+						}
+
+						return null;
+
+					case "time":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return MakeFactory(
+								type.Name,
+								$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? Temporal.PlainTime.from(source) : {privatePrefix}fail(`Contract violation: expected time string, got '${{typeof(source)}}'`)",
+								Array.Empty<string>()
+							);
+						}
+
+						return null;
 
 					case "datetime":
 						if (type.GenericArguments?.Length > 0)
 							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return MakeFactory(
+								type.Name,
+								$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? Temporal.Instant.from(source) : {privatePrefix}fail(`Contract violation: expected datetime string, got '${{typeof(source)}}'`)",
+								Array.Empty<string>()
+							);
+						}
+
 						return MakeFactory(
 							type.Name,
-							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? new Date(source) : {privatePrefix}fail(`Contract violation: expected datetime string, got \\'${{typeof(source)}}\\'`)",
+							$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? new Date(source) : {privatePrefix}fail(`Contract violation: expected datetime string, got '${{typeof(source)}}'`)",
 							Array.Empty<string>()
 						);
+
+					case "duration":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
+
+						if (context.PackageContext.Options.UseTemporal)
+						{
+							context.Import("@js-temporal/polyfill", "Temporal");
+							return MakeFactory(
+								type.Name,
+								$"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? Temporal.Duration.from(source) : {privatePrefix}fail(`Contract violation: expected duration string, got '${{typeof(source)}}'`)",
+								Array.Empty<string>()
+							);
+						}
+
+						return null;
 
 					case "array":
 						{
@@ -353,7 +483,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 							var arrayFactory = MakeFactory(
 								type.Name,
-								$@"(source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : {privatePrefix}fail(`Contract violation: expected array, got \\'${{typeof(source)}}\\'`)",
+								$@"(source: any): Array<T> => Array.isArray(source) ? source.map((item: any) => T_factory.create(item)) : {privatePrefix}fail(`Contract violation: expected array, got '${{typeof(source)}}'`)",
 								new[] { "T" }
 							);
 
@@ -369,7 +499,7 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 
 							var pageFactory = MakeFactory(
 								type.Name,
-								$@"(source: any): Page<T> => new Page(Array.isArray(source.data) ? source.data.map((item: any) => T_factory.create(item)) : {privatePrefix}fail(`Contract violation: expected array, got \\'${{typeof(source)}}\\'`), {numberFactory}.create(source.number), {numberFactory}.create(source.count), {numberFactory}.create(source.size))",
+								$@"(source: any): Page<T> => new Page(Array.isArray(source.data) ? source.data.map((item: any) => T_factory.create(item)) : {privatePrefix}fail(`Contract violation: expected array, got '${{typeof(source)}}'`), {numberFactory}.create(source.number), {numberFactory}.create(source.count), {numberFactory}.create(source.size), typeof source.total === 'number' ? {numberFactory}.create(source.total) : undefined)",
 								new[] { "T" }
 							);
 

@@ -56,6 +56,14 @@ namespace Odachi.CodeModel.Tests
 		public OneOf<string, int, GenericObject<DateTime>> Foo { get; set; }
 	}
 
+	public class ObjectWithNet6DateTimes
+	{
+		public DateOnly Date { get; set; }
+		public TimeOnly Time { get; set; }
+		public DateTime DateTime { get; set; }
+		public TimeSpan TimeSpan { get; set; }
+	}
+
 	public class ObjectWithValidationState
 	{
 		public ValidationState Foo { get; set; }

@@ -31,7 +31,10 @@ namespace Odachi.CodeModel.Mapping
 		public static readonly BuiltinTypeDefinition Double = new BuiltinTypeDefinition("double");
 		public static readonly BuiltinTypeDefinition Decimal = new BuiltinTypeDefinition("decimal");
 		public static readonly BuiltinTypeDefinition String = new BuiltinTypeDefinition("string");
+		public static readonly BuiltinTypeDefinition Date = new BuiltinTypeDefinition("date");
+		public static readonly BuiltinTypeDefinition Time = new BuiltinTypeDefinition("time");
 		public static readonly BuiltinTypeDefinition DateTime = new BuiltinTypeDefinition("datetime");
+		public static readonly BuiltinTypeDefinition Duration = new BuiltinTypeDefinition("duration");
 		public static readonly BuiltinTypeDefinition Array = new BuiltinTypeDefinition("array", new GenericArgumentDefinition("T"));
 		public static readonly BuiltinTypeDefinition File = new BuiltinTypeDefinition("file");
 		public static readonly BuiltinTypeDefinition Guid = new BuiltinTypeDefinition("guid");
