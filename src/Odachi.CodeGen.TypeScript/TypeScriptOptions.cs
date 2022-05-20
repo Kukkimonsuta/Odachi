@@ -11,5 +11,10 @@ namespace Odachi.CodeGen.TypeScript
 		/// Render `di.ts`.
 		/// </summary>
 		public bool RenderDi { get; set; } = false;
+
+		/// <summary>
+		/// Allow temporal using @js-temporal/polyfill
+		/// </summary>
+		public bool UseTemporal { get; set; } = false;
 	}
 }

@@ -2,15 +2,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Odachi.JsonRpc.Common.Converters;
 using Odachi.JsonRpc.Common.Internal;
-using Odachi.JsonRpc.Server.Internal;
 using Odachi.JsonRpc.Server.Model;
 using Odachi.JsonRpc.Server.Modules;
-using Odachi.JsonRpc.Server.Builder;
-using System;
-using System.Diagnostics;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Odachi.JsonRpc.Common;
 
 namespace Odachi.JsonRpc.Server
 {
@@ -27,6 +20,12 @@ namespace Odachi.JsonRpc.Server
 				NullValueHandling = NullValueHandling.Ignore,
 				TypeNameHandling = TypeNameHandling.None,
 			};
+			JsonSerializerSettings.Converters.Add(new DateOnlyConverter());
+			JsonSerializerSettings.Converters.Add(new NullableDateOnlyConverter());
+			JsonSerializerSettings.Converters.Add(new TimeOnlyConverter());
+			JsonSerializerSettings.Converters.Add(new NullableTimeOnlyConverter());
+			JsonSerializerSettings.Converters.Add(new TimeSpanConverter());
+			JsonSerializerSettings.Converters.Add(new NullableTimeSpanConverter());
 			JsonSerializerSettings.Converters.Add(new PageConverter());
 			JsonSerializerSettings.Converters.Add(new BlobConverter());
 

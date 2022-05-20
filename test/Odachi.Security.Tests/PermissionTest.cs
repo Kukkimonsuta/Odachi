@@ -28,6 +28,9 @@ namespace Odachi.Security
 			Assert.False(permission.Matches($"pre{value}", ""));
 			Assert.False(permission.Matches($"{value}post", ""));
 			Assert.False(permission.Matches($"pre{value}post", ""));
+
+			// can read variables
+			Assert.Equal(Array.Empty<string>(), permission.ReadVariables(value));
 		}
 
 		[Theory]
@@ -55,6 +58,15 @@ namespace Odachi.Security
 			Assert.False(permission.Matches($"pre{value}", arg0, ""));
 			Assert.False(permission.Matches($"{value}post", arg0, ""));
 			Assert.False(permission.Matches($"pre{value}post", arg0, ""));
+
+			// doesn't match anything with different arg
+			Assert.False(permission.Matches(value, Guid.NewGuid()));
+			Assert.False(permission.Matches($"pre{value}", Guid.NewGuid()));
+			Assert.False(permission.Matches($"{value}post", Guid.NewGuid()));
+			Assert.False(permission.Matches($"pre{value}post", Guid.NewGuid()));
+
+			// can read variables
+			Assert.Equal(new[] { arg0.ToString() }, permission.ReadVariables(value));
 		}
 
 		[Theory]
@@ -88,6 +100,15 @@ namespace Odachi.Security
 			Assert.False(permission.Matches($"pre{value}", arg0, arg1, ""));
 			Assert.False(permission.Matches($"{value}post", arg0, arg1, ""));
 			Assert.False(permission.Matches($"pre{value}post", arg0, arg1, ""));
+
+			// doesn't match anything with different args
+			Assert.False(permission.Matches(value, Guid.NewGuid(), Guid.NewGuid()));
+			Assert.False(permission.Matches($"pre{value}", Guid.NewGuid(), Guid.NewGuid()));
+			Assert.False(permission.Matches($"{value}post", Guid.NewGuid(), Guid.NewGuid()));
+			Assert.False(permission.Matches($"pre{value}post", Guid.NewGuid(), Guid.NewGuid()));
+
+			// can read variables
+			Assert.Equal(new[] { arg0.ToString(), arg1.ToString() }, permission.ReadVariables(value));
 		}
 
 		public static IEnumerable<object[]> Matches_array_variables_data
@@ -96,12 +117,13 @@ namespace Odachi.Security
 			{
 				return new[]
 				{
+					new object[] { "{0}:testing-scope:with-variables", new object[] { "1" } },
 					new object[] { "testing-scope:with-variables({0})", new object[] { "1" } },
-					new object[] { "testing-scope:with-variables({0})", new object[] { PermissionArgument.Any } },
+					new object[] { "testing-scope:with-variables({0})", new object[] { ClaimVariable.Any } },
 					new object[] { "testing-scope:with-variables({0})-({1})", new object[] { "1", "2" } },
-					new object[] { "testing-scope:with-variables({0})-({1})", new object[] { "1", PermissionArgument.Any } },
+					new object[] { "testing-scope:with-variables({0})-({1})", new object[] { "1", ClaimVariable.Any } },
 					new object[] { "testing-scope:stuff({0}, {1})-{2}:insanity({3})-({4})", new object[] { "1", "2", "3", "4", "5" } },
-					new object[] { "testing-scope:stuff({0}, {1})-{2}:insanity({3})-({4})", new object[] { "1", "2", "3", PermissionArgument.Any, "5" } }
+					new object[] { "testing-scope:stuff({0}, {1})-{2}:insanity({3})-({4})", new object[] { "1", "2", "3", ClaimVariable.Any, "5" } }
 				};
 			}
 		}
@@ -131,6 +153,19 @@ namespace Odachi.Security
 			Assert.False(permission.Matches($"pre{value}", moreArgs));
 			Assert.False(permission.Matches($"{value}post", moreArgs));
 			Assert.False(permission.Matches($"pre{value}post", moreArgs));
+
+			// doesn't match different args
+			if (!args.All(a => a == ClaimVariable.Any))
+			{
+				var differentArgs = args.Select(x => Guid.NewGuid()).ToArray();
+				Assert.False(permission.Matches(value, differentArgs));
+				Assert.False(permission.Matches($"pre{value}", differentArgs));
+				Assert.False(permission.Matches($"{value}post", differentArgs));
+				Assert.False(permission.Matches($"pre{value}post", differentArgs));
+			}
+
+			// can read variables
+			Assert.Equal(args.Select(a => a.ToString()), permission.ReadVariables(value));
 		}
 	}
 }

@@ -25,6 +25,11 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.TypeHandlers
 					if (type.GenericArguments?.Length > 0)
 						throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
 
+					if (context.PackageContext.Options.UseTemporal)
+					{
+						return null;
+					}
+
 					context.Import("luxon", "DateTime");
 					return $"DateTime{nullableSuffix}";
 
@@ -54,6 +59,11 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.TypeHandlers
 				case "datetime":
 					if (type.GenericArguments?.Length > 0)
 						throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+					if (context.PackageContext.Options.UseTemporal)
+					{
+						return null;
+					}
 
 					context.Import("luxon", "DateTime");
 					return $"DateTime.invalid('default value')";
@@ -136,8 +146,13 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.TypeHandlers
 					if (type.GenericArguments?.Length > 0)
 						throw new NotSupportedException($"Builtin type '{type.Name}' has invalid number of generic arguments");
 
+					if (context.PackageContext.Options.UseTemporal)
+					{
+						return null;
+					}
+
 					context.Import("luxon", "DateTime");
-					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? DateTime.fromISO(source, {{ setZone: true }}) : {privatePrefix}fail(`Contract violation: expected datetime string, got \\'${{typeof(source)}}\\'`)");
+					return MakeFactory(type.Name, $"(source: any): {context.Resolve(type, includeNullability: false)} => typeof source === 'string' ? DateTime.fromISO(source, {{ setZone: true }}) : {privatePrefix}fail(`Contract violation: expected datetime string, got '${{typeof(source)}}'`)");
 
 				case "ValidationState":
 					if (type.GenericArguments?.Length > 0)
@@ -145,7 +160,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.TypeHandlers
 
 					context.Import("@odachi/validation", "ValidationState");
 
-					return MakeFactory(type.Name, $@"(source: any): {context.Resolve(type, includeNullability: false)} => typeof Array.isArray(source) ? new ValidationState(source) : {privatePrefix}fail(`Contract violation: expected validation state, got \\'${{typeof(source)}}\\'`)");
+					return MakeFactory(type.Name, $@"(source: any): {context.Resolve(type, includeNullability: false)} => typeof Array.isArray(source) ? new ValidationState(source) : {privatePrefix}fail(`Contract violation: expected validation state, got '${{typeof(source)}}'`)");
 
 				default:
 					return null;

@@ -1,4 +1,4 @@
-﻿using System.Security;
+using System.Security;
 using System.Security.Claims;
 using System.Security.Principal;
 
@@ -95,7 +95,7 @@ namespace Odachi.Security
 		public static void DemandPermission(this ClaimsPrincipal principal, Permission permission)
         {
             if (!HasPermission(principal, permission))
-                throw new SecurityException("Principal '" + principal.Identity.Name + "' doesn't have permission '" + permission.Name + "'");
+                throw new SecurityException("Principal '" + principal.Identity.Name + "' doesn't have permission '" + permission.Template + "'");
         }
 		/// <summary>
 		/// Throws exception when principal has not been granted a permission.
@@ -106,7 +106,7 @@ namespace Odachi.Security
 		public static void DemandPermission(this ClaimsPrincipal principal, Permission permission, object arg0)
 		{
 			if (!HasPermission(principal, permission, arg0))
-				throw new SecurityException("Principal '" + principal.Identity.Name + "' doesn't have permission '" + permission.Name + "'+1");
+				throw new SecurityException("Principal '" + principal.Identity.Name + "' doesn't have permission '" + permission.Template + "'+1");
 		}
 		/// <summary>
 		/// Throws exception when principal has not been granted a permission.
@@ -118,7 +118,7 @@ namespace Odachi.Security
 		public static void DemandPermission(this ClaimsPrincipal principal, Permission permission, object arg0, object arg1)
 		{
 			if (!HasPermission(principal, permission, arg0, arg1))
-				throw new SecurityException("Principal '" + principal.Identity.Name + "' doesn't have permission '" + permission.Name + "'+2");
+				throw new SecurityException("Principal '" + principal.Identity.Name + "' doesn't have permission '" + permission.Template + "'+2");
 		}
 		/// <summary>
 		/// Throws exception when principal has not been granted a permission.
@@ -129,7 +129,7 @@ namespace Odachi.Security
 		public static void DemandPermission(this ClaimsPrincipal principal, Permission permission, params object[] args)
 		{
 			if (!HasPermission(principal, permission, args))
-				throw new SecurityException("Principal '" + principal.Identity.Name + "' doesn't have permission '" + permission.Name + "'+" + args.Length);
+				throw new SecurityException("Principal '" + principal.Identity.Name + "' doesn't have permission '" + permission.Template + "'+" + args.Length);
 		}
 
 		/// <summary>
