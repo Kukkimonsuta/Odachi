@@ -24,6 +24,8 @@ namespace Odachi.CodeGen.CSharp.Renderers
 
 			if (enumFragment.Hints.TryGetValue("enum-flags", out var enumFlags) && string.Equals(enumFlags, "true", StringComparison.OrdinalIgnoreCase))
 			{
+				context.Import("System");
+
 				writer.WriteIndentedLine($"[Flags]");
 			}
 			using (writer.WriteIndentedBlock(prefix: $"public enum {CS.Type(fragment.Name)} "))

@@ -104,7 +104,7 @@ namespace Odachi.CodeGen.CSharp
 		/// </summary>
 		public string Resolve(TypeReference type)
 		{
-			var includeNullability = type.Kind != TypeKind.Interface && type.Kind != TypeKind.Class;
+			var includeNullability = PackageContext.Options.EnableNullableReferenceTypes || (type.Kind != TypeKind.Interface && type.Kind != TypeKind.Class);
 
 			if (type.Kind == TypeKind.GenericParameter)
 			{
@@ -158,11 +158,35 @@ namespace Odachi.CodeGen.CSharp
 
 						return $"DateTime{(includeNullability && type.IsNullable ? "?" : "")}";
 
+					case "date":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						Import("System");
+
+						return $"DateOnly{(includeNullability && type.IsNullable ? "?" : "")}";
+
+					case "time":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						Import("System");
+
+						return $"TimeOnly{(includeNullability && type.IsNullable ? "?" : "")}";
+
+					case "duration":
+						if (type.GenericArguments?.Length > 0)
+							throw new NotSupportedException($"Builtin type '{type.Name}' is not generic");
+
+						Import("System");
+
+						return $"TimeSpan{(includeNullability && type.IsNullable ? "?" : "")}";
+
 					case "array":
 						if (type.GenericArguments?.Length != 1)
 							throw new NotSupportedException($"Builtin type '{type.Name}' requires exactly one generic argument");
 
-						return $"{Resolve(type.GenericArguments[0])}[]";
+						return $"{Resolve(type.GenericArguments[0])}[]{(includeNullability && type.IsNullable ? "?" : "")}";
 
 					case "file":
 						if (type.GenericArguments?.Length > 0)
@@ -170,7 +194,7 @@ namespace Odachi.CodeGen.CSharp
 
 						Import("Odachi.Abstractions");
 
-						return $"IBlob";
+						return $"IBlob{(includeNullability && type.IsNullable ? "?" : "")}";
 
 					case "guid":
 						if (type.GenericArguments?.Length > 0)
@@ -178,7 +202,7 @@ namespace Odachi.CodeGen.CSharp
 
 						Import("System");
 
-						return "Guid";
+						return $"Guid{(includeNullability && type.IsNullable ? "?" : "")}";
 
 					case "PagingOptions":
 						if (type.GenericArguments?.Length > 0)
@@ -186,7 +210,7 @@ namespace Odachi.CodeGen.CSharp
 
 						Import("Odachi.Extensions.Collections");
 
-						return $"PagingOptions";
+						return $"PagingOptions{(includeNullability && type.IsNullable ? "?" : "")}";
 
 					case "Page":
 						if (type.GenericArguments?.Length != 1)
@@ -194,7 +218,7 @@ namespace Odachi.CodeGen.CSharp
 
 						Import("Odachi.Extensions.Collections");
 
-						return $"Page<{Resolve(type.GenericArguments[0])}>";
+						return $"Page<{Resolve(type.GenericArguments[0])}>{(includeNullability && type.IsNullable ? "?" : "")}";
 
 					case "tuple":
 						if (type.GenericArguments?.Length < 1 || type.GenericArguments?.Length > 8)
@@ -216,7 +240,7 @@ namespace Odachi.CodeGen.CSharp
 
 						Import("Odachi.Validation");
 
-						return $"ValidationState";
+						return $"ValidationState{(includeNullability && type.IsNullable ? "?" : "")}";
 
 					case "ValidationLevel":
 						if (type.GenericArguments?.Length > 0)
@@ -232,7 +256,7 @@ namespace Odachi.CodeGen.CSharp
 
 						Import("Odachi.Validation");
 
-						return $"ValidationMessage";
+						return $"ValidationMessage{(includeNullability && type.IsNullable ? "?" : "")}";
 
 					default:
 						throw new NotSupportedException($"Undefined behavior for builtin '{type.Name}'");
