@@ -3,19 +3,24 @@
 using System;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.IO;
 using System.Net.Http.Headers;
 using Odachi.Abstractions;
 using Microsoft.Extensions.Logging;
-using System.Text;
-using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using Odachi.Extensions.Formatting;
 
 namespace Odachi.JsonRpc.Client.Http
 {
 	public class JsonRpcHttpClient : JsonRpcClient
 	{
+		// TODO: remove on next major
+		// preserve legacy behavior
+		[ActivatorUtilitiesConstructor]
 		public JsonRpcHttpClient(string endpoint, ILogger<JsonRpcHttpClient>? logger = null)
+			: this(endpoint, new HttpClient(), logger: logger)
+		{
+		}
+		public JsonRpcHttpClient(string endpoint, HttpClient httpClient, ILogger<JsonRpcHttpClient>? logger = null)
 			: base(logger: logger)
 		{
 			if (endpoint == null)
@@ -23,7 +28,7 @@ namespace Odachi.JsonRpc.Client.Http
 
 			Endpoint = endpoint;
 
-			_httpClient = new HttpClient();
+			_httpClient = httpClient;
 			_logger = logger;
 		}
 
@@ -55,7 +60,7 @@ namespace Odachi.JsonRpc.Client.Http
 
 				if (_logger != null && _logger.IsEnabled(LogLevel.Debug))
 				{
-					_logger.LogDebug($"Sending request: {requestString}");
+					_logger.LogDebug("Sending request: {RequestString}", requestString);
 				}
 
 				content.Add(new StringContent(requestString), "json-request");
@@ -71,7 +76,7 @@ namespace Odachi.JsonRpc.Client.Http
 
 		private async Task<JsonRpcResponse> CreateJsonRpcResponseAsync(HttpContent content)
 		{
-			switch (content.Headers.ContentType.MediaType)
+			switch (content.Headers.ContentType?.MediaType)
 			{
 				case "multipart/form-data":
 					throw new NotSupportedException();
@@ -81,7 +86,7 @@ namespace Odachi.JsonRpc.Client.Http
 
 					if (_logger != null && _logger.IsEnabled(LogLevel.Debug))
 					{
-						_logger.LogDebug($"Received response: {responseString}");
+						_logger.LogDebug("Received response: {ResponseString}", responseString);
 					}
 
 					return DeserializeResponse(responseString);
@@ -101,7 +106,7 @@ namespace Odachi.JsonRpc.Client.Http
 				uri.AppendQuery(QueryRequestIdKey!, value: request.Id.ToString());
 			}
 			if (!string.IsNullOrEmpty(QueryRequestMethodKey))
-			{ 
+			{
 				uri.AppendQuery(QueryRequestMethodKey!, value: request.Method);
 			}
 
