@@ -103,15 +103,19 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 				return false;
 			}
 
-			var validator = (IValidator)Activator.CreateInstance(validatorType);
+			var validator = (IValidator?)Activator.CreateInstance(validatorType);
+			if (validator == null)
+			{
+				return false;
+			}
 
 			var descriptor = validator.CreateDescriptor();
 			if (descriptor == null)
+			{
 				return false;
+			}
 
-			return GetPropertyValidators(descriptor, member.Name, v =>
-				typeof(INotEmptyValidator).IsAssignableFrom(v.GetType()) || typeof(INotNullValidator).IsAssignableFrom(v.GetType())
-			).Any();
+			return GetPropertyValidators(descriptor, member.Name, v => v is INotEmptyValidator or INotNullValidator).Any();
 		}
 
 		public static (int min, int max) Length(Type type, MemberInfo member)
@@ -122,15 +126,19 @@ namespace Odachi.CodeModel.Providers.FluentValidation.Description.Internal
 				return (-1, -1);
 			}
 
-			var validator = (IValidator)Activator.CreateInstance(validatorType);
+			var validator = (IValidator?)Activator.CreateInstance(validatorType);
+			if (validator == null)
+			{
+				return (-1, -1);
+			}
 
 			var descriptor = validator.CreateDescriptor();
 			if (descriptor == null)
+			{
 				return (-1, -1);
+			}
 
-			var relevantValidators = GetPropertyValidators(descriptor, member.Name, v =>
-				typeof(ILengthValidator).IsAssignableFrom(v.GetType())
-			);
+			var relevantValidators = GetPropertyValidators(descriptor, member.Name, v => v is ILengthValidator);
 
 			var min = -1;
 			var max = -1;

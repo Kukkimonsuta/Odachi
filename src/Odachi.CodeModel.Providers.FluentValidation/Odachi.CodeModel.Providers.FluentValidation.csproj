@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <Description>Code description providers for `FluentValidation`.</Description>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 
@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="10.3.6" />
+    <PackageReference Include="FluentValidation" Version="11.1.0" />
   </ItemGroup>
 
   <ItemGroup>
