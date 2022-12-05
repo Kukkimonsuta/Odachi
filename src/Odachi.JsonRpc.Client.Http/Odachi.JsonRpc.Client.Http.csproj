@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <Description>JsonRpc client using `HttpClient` as backend.</Description>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 
@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
 </Project>
