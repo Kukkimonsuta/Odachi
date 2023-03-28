@@ -44,7 +44,7 @@ namespace Odachi.Storage.Azure
 			}
 
 			____containerClient = _client.GetBlobContainerClient(ContainerName);
-			
+
 			await ____containerClient.CreateIfNotExistsAsync();
 
 			return ____containerClient;
@@ -164,7 +164,7 @@ namespace Odachi.Storage.Azure
 			var containerClient = await GetContainerClientAsync();
 
 			var blobClient = containerClient.GetBlobClient(relativePath);
-			
+
 			return await blobClient.ExistsAsync();
 		}
 

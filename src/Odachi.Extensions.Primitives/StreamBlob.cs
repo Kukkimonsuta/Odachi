@@ -10,6 +10,10 @@ namespace Odachi.Extensions.Primitives
 {
 	public class StreamBlob : IBlob, IDisposable
 	{
+		private Stream? _stream;
+		private Func<Stream>? _openRead;
+		private Func<Task<Stream>>? _openReadAsync;
+
 		public StreamBlob(string name, Func<Stream> openReadStream)
 		{
 			Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -25,10 +29,6 @@ namespace Odachi.Extensions.Primitives
 			Name = name ?? throw new ArgumentNullException(nameof(name));
 			_stream = stream ?? throw new ArgumentNullException(nameof(stream));
 		}
-
-		private Stream? _stream;
-		private Func<Stream>? _openRead;
-		private Func<Task<Stream>>? _openReadAsync;
 
 		public string Name { get; }
 
@@ -74,6 +74,20 @@ namespace Odachi.Extensions.Primitives
 				_stream = null;
 				return Task.FromResult(result);
 			}
+		}
+
+		public void WriteTo(Stream destination)
+		{
+			using var stream = OpenRead();
+
+			stream.CopyTo(destination);
+		}
+
+		public async Task WriteToAsync(Stream destination)
+		{
+			using var stream = await OpenReadAsync();
+
+			await stream.CopyToAsync(destination);
 		}
 
 		#region IDisposable
