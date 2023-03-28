@@ -28,5 +28,19 @@ namespace Odachi.Storage.Azure
 		{
 			return Blob.OpenReadAsync();
 		}
+
+		public void WriteTo(Stream destination)
+		{
+			using var stream = OpenRead();
+
+			stream.CopyTo(destination);
+		}
+
+		public async Task WriteToAsync(Stream destination)
+		{
+			using var stream = await OpenReadAsync();
+
+			await stream.CopyToAsync(destination);
+		}
 	}
 }

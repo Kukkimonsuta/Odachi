@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Odachi.Abstractions
+namespace Odachi.Abstractions;
+
+public interface IRpcClient
 {
-    public interface IRpcClient
-    {
-		Task CallAsync(string service, string method, object @params);
-		Task<TResult> CallAsync<TResult>(string service, string method, object @params);
-	}
+	Task CallAsync(string service, string method, object @params);
+	Task<TResult> CallAsync<TResult>(string service, string method, object @params);
 }
