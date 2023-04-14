@@ -60,7 +60,8 @@ namespace Odachi.Extensions.Primitives.Tests
 			var serialized = JsonConvert.SerializeObject(expected);
 			var actual = JsonConvert.DeserializeObject<OneOf<string, int>>(serialized);
 
-			Assert.Equal("{\"Index\":1,\"Option1\":\"test\"}", serialized);
+			// hotfix for removal of default values of selected option; in future should be replaced with custom serializer
+			Assert.Equal("{\"Index\":1,\"Option1\":\"test\",\"Option2\":0}", serialized);
 			Assert.False(expected.IsEmpty);
 			Assert.Equal(expected.Index, actual.Index);
 			Assert.Equal(expected.Option1, actual.Option1);
