@@ -31,9 +31,9 @@ namespace Odachi.Extensions.Primitives
 
 		[DataMember(Order = 0)]
 		public readonly int Index;
-		[DataMember(EmitDefaultValue = false, Order = 1)]
+		[DataMember(EmitDefaultValue = true, Order = 1)]
 		public readonly T1? Option1;
-		[DataMember(EmitDefaultValue = false, Order = 2)]
+		[DataMember(EmitDefaultValue = true, Order = 2)]
 		public readonly T2? Option2;
 
 		public bool IsEmpty => Index == 0;
@@ -207,11 +207,11 @@ namespace Odachi.Extensions.Primitives
 
 		[DataMember(Order = 0)]
 		public readonly int Index;
-		[DataMember(EmitDefaultValue = false, Order = 1)]
+		[DataMember(EmitDefaultValue = true, Order = 1)]
 		public readonly T1? Option1;
-		[DataMember(EmitDefaultValue = false, Order = 2)]
+		[DataMember(EmitDefaultValue = true, Order = 2)]
 		public readonly T2? Option2;
-		[DataMember(EmitDefaultValue = false, Order = 3)]
+		[DataMember(EmitDefaultValue = true, Order = 3)]
 		public readonly T3? Option3;
 
 		public bool IsEmpty => Index == 0;
@@ -420,13 +420,13 @@ namespace Odachi.Extensions.Primitives
 
 		[DataMember(Order = 0)]
 		public readonly int Index;
-		[DataMember(EmitDefaultValue = false, Order = 1)]
+		[DataMember(EmitDefaultValue = true, Order = 1)]
 		public readonly T1? Option1;
-		[DataMember(EmitDefaultValue = false, Order = 2)]
+		[DataMember(EmitDefaultValue = true, Order = 2)]
 		public readonly T2? Option2;
-		[DataMember(EmitDefaultValue = false, Order = 3)]
+		[DataMember(EmitDefaultValue = true, Order = 3)]
 		public readonly T3? Option3;
-		[DataMember(EmitDefaultValue = false, Order = 4)]
+		[DataMember(EmitDefaultValue = true, Order = 4)]
 		public readonly T4? Option4;
 
 		public bool IsEmpty => Index == 0;
@@ -672,15 +672,15 @@ namespace Odachi.Extensions.Primitives
 
 		[DataMember(Order = 0)]
 		public readonly int Index;
-		[DataMember(EmitDefaultValue = false, Order = 1)]
+		[DataMember(EmitDefaultValue = true, Order = 1)]
 		public readonly T1? Option1;
-		[DataMember(EmitDefaultValue = false, Order = 2)]
+		[DataMember(EmitDefaultValue = true, Order = 2)]
 		public readonly T2? Option2;
-		[DataMember(EmitDefaultValue = false, Order = 3)]
+		[DataMember(EmitDefaultValue = true, Order = 3)]
 		public readonly T3? Option3;
-		[DataMember(EmitDefaultValue = false, Order = 4)]
+		[DataMember(EmitDefaultValue = true, Order = 4)]
 		public readonly T4? Option4;
-		[DataMember(EmitDefaultValue = false, Order = 5)]
+		[DataMember(EmitDefaultValue = true, Order = 5)]
 		public readonly T5? Option5;
 
 		public bool IsEmpty => Index == 0;
@@ -965,17 +965,17 @@ namespace Odachi.Extensions.Primitives
 
 		[DataMember(Order = 0)]
 		public readonly int Index;
-		[DataMember(EmitDefaultValue = false, Order = 1)]
+		[DataMember(EmitDefaultValue = true, Order = 1)]
 		public readonly T1? Option1;
-		[DataMember(EmitDefaultValue = false, Order = 2)]
+		[DataMember(EmitDefaultValue = true, Order = 2)]
 		public readonly T2? Option2;
-		[DataMember(EmitDefaultValue = false, Order = 3)]
+		[DataMember(EmitDefaultValue = true, Order = 3)]
 		public readonly T3? Option3;
-		[DataMember(EmitDefaultValue = false, Order = 4)]
+		[DataMember(EmitDefaultValue = true, Order = 4)]
 		public readonly T4? Option4;
-		[DataMember(EmitDefaultValue = false, Order = 5)]
+		[DataMember(EmitDefaultValue = true, Order = 5)]
 		public readonly T5? Option5;
-		[DataMember(EmitDefaultValue = false, Order = 6)]
+		[DataMember(EmitDefaultValue = true, Order = 6)]
 		public readonly T6? Option6;
 
 		public bool IsEmpty => Index == 0;
@@ -1301,19 +1301,19 @@ namespace Odachi.Extensions.Primitives
 
 		[DataMember(Order = 0)]
 		public readonly int Index;
-		[DataMember(EmitDefaultValue = false, Order = 1)]
+		[DataMember(EmitDefaultValue = true, Order = 1)]
 		public readonly T1? Option1;
-		[DataMember(EmitDefaultValue = false, Order = 2)]
+		[DataMember(EmitDefaultValue = true, Order = 2)]
 		public readonly T2? Option2;
-		[DataMember(EmitDefaultValue = false, Order = 3)]
+		[DataMember(EmitDefaultValue = true, Order = 3)]
 		public readonly T3? Option3;
-		[DataMember(EmitDefaultValue = false, Order = 4)]
+		[DataMember(EmitDefaultValue = true, Order = 4)]
 		public readonly T4? Option4;
-		[DataMember(EmitDefaultValue = false, Order = 5)]
+		[DataMember(EmitDefaultValue = true, Order = 5)]
 		public readonly T5? Option5;
-		[DataMember(EmitDefaultValue = false, Order = 6)]
+		[DataMember(EmitDefaultValue = true, Order = 6)]
 		public readonly T6? Option6;
-		[DataMember(EmitDefaultValue = false, Order = 7)]
+		[DataMember(EmitDefaultValue = true, Order = 7)]
 		public readonly T7? Option7;
 
 		public bool IsEmpty => Index == 0;
@@ -1682,21 +1682,21 @@ namespace Odachi.Extensions.Primitives
 
 		[DataMember(Order = 0)]
 		public readonly int Index;
-		[DataMember(EmitDefaultValue = false, Order = 1)]
+		[DataMember(EmitDefaultValue = true, Order = 1)]
 		public readonly T1? Option1;
-		[DataMember(EmitDefaultValue = false, Order = 2)]
+		[DataMember(EmitDefaultValue = true, Order = 2)]
 		public readonly T2? Option2;
-		[DataMember(EmitDefaultValue = false, Order = 3)]
+		[DataMember(EmitDefaultValue = true, Order = 3)]
 		public readonly T3? Option3;
-		[DataMember(EmitDefaultValue = false, Order = 4)]
+		[DataMember(EmitDefaultValue = true, Order = 4)]
 		public readonly T4? Option4;
-		[DataMember(EmitDefaultValue = false, Order = 5)]
+		[DataMember(EmitDefaultValue = true, Order = 5)]
 		public readonly T5? Option5;
-		[DataMember(EmitDefaultValue = false, Order = 6)]
+		[DataMember(EmitDefaultValue = true, Order = 6)]
 		public readonly T6? Option6;
-		[DataMember(EmitDefaultValue = false, Order = 7)]
+		[DataMember(EmitDefaultValue = true, Order = 7)]
 		public readonly T7? Option7;
-		[DataMember(EmitDefaultValue = false, Order = 8)]
+		[DataMember(EmitDefaultValue = true, Order = 8)]
 		public readonly T8? Option8;
 
 		public bool IsEmpty => Index == 0;
@@ -2110,23 +2110,23 @@ namespace Odachi.Extensions.Primitives
 
 		[DataMember(Order = 0)]
 		public readonly int Index;
-		[DataMember(EmitDefaultValue = false, Order = 1)]
+		[DataMember(EmitDefaultValue = true, Order = 1)]
 		public readonly T1? Option1;
-		[DataMember(EmitDefaultValue = false, Order = 2)]
+		[DataMember(EmitDefaultValue = true, Order = 2)]
 		public readonly T2? Option2;
-		[DataMember(EmitDefaultValue = false, Order = 3)]
+		[DataMember(EmitDefaultValue = true, Order = 3)]
 		public readonly T3? Option3;
-		[DataMember(EmitDefaultValue = false, Order = 4)]
+		[DataMember(EmitDefaultValue = true, Order = 4)]
 		public readonly T4? Option4;
-		[DataMember(EmitDefaultValue = false, Order = 5)]
+		[DataMember(EmitDefaultValue = true, Order = 5)]
 		public readonly T5? Option5;
-		[DataMember(EmitDefaultValue = false, Order = 6)]
+		[DataMember(EmitDefaultValue = true, Order = 6)]
 		public readonly T6? Option6;
-		[DataMember(EmitDefaultValue = false, Order = 7)]
+		[DataMember(EmitDefaultValue = true, Order = 7)]
 		public readonly T7? Option7;
-		[DataMember(EmitDefaultValue = false, Order = 8)]
+		[DataMember(EmitDefaultValue = true, Order = 8)]
 		public readonly T8? Option8;
-		[DataMember(EmitDefaultValue = false, Order = 9)]
+		[DataMember(EmitDefaultValue = true, Order = 9)]
 		public readonly T9? Option9;
 
 		public bool IsEmpty => Index == 0;

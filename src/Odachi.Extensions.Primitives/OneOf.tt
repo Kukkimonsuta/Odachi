@@ -59,7 +59,7 @@ namespace Odachi.Extensions.Primitives
 <#
 		for (var ti = 0; ti < typeNames.Length; ti++) {
 #>
-		[DataMember(EmitDefaultValue = false, Order = <#= ti + 1 #>)]
+		[DataMember(EmitDefaultValue = true, Order = <#= ti + 1 #>)]
 		public readonly <#= typeNames[ti] #>? Option<#= ti + 1 #>;
 <#
 		}
