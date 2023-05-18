@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Odachi.CodeModel.Builders;
 using Odachi.CodeModel.Description;
 using Odachi.Extensions.Reflection;
@@ -10,7 +11,16 @@ namespace Odachi.CodeModel.Providers.JsonRpc.Description
 	{
 		protected virtual void DescribeJsonRpcMethod(TypeReferenceBuilder builder, ReflectedJsonRpcMethod reflectedJsonRpcMethod)
 		{
-			if (builder.SourceIndex == 0)
+			var index = builder.SourceIndex;
+
+			// when method returns Task, the generic index is off by one because codemodel otherwise ignores it
+			var returnType = reflectedJsonRpcMethod.Method.ReturnType;
+			if (returnType.IsGenericType && (returnType.GetGenericTypeDefinition() == typeof(Task<>) || returnType.GetGenericTypeDefinition() == typeof(ValueTask<>)))
+			{
+				index += 1;
+			}
+
+			if (index == 0)
 			{
 				if (reflectedJsonRpcMethod.Method.ReturnParameter?.IsNonNullable() == true)
 				{
@@ -19,7 +29,9 @@ namespace Odachi.CodeModel.Providers.JsonRpc.Description
 			}
 			else
 			{
-				if (reflectedJsonRpcMethod.Method.ReturnParameter?.IsGenericArgumentNonNullable(builder.SourceIndex - 1) == true)
+				index -= 1;
+
+				if (reflectedJsonRpcMethod.Method.ReturnParameter?.IsGenericArgumentNonNullable(index) == true)
 				{
 					builder.IsNullable = false;
 				}
