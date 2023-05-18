@@ -78,7 +78,7 @@ namespace Odachi.Extensions.Reflection
 			// treat arrays as having single generic argument
 			if (type.IsArray)
 			{
-				 var current = type.GetElementType();
+				var current = type.GetElementType();
 				if (remaining == 0)
 				{
 					return current;
@@ -91,6 +91,11 @@ namespace Odachi.Extensions.Reflection
 				{
 					return current;
 				}
+			}
+			// skip value nullables
+			else if (Nullable.GetUnderlyingType(type) is {} nullableUnderlyingType)
+			{
+				return GetGenericArgumentByOrdinal(nullableUnderlyingType, ref remaining);
 			}
 			else
 			{
