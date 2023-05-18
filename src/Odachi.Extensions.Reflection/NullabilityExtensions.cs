@@ -92,7 +92,7 @@ namespace Odachi.Extensions.Reflection
 					return current;
 				}
 			}
-			// skip value nullables
+			// TODO: verify it is correct that the index should be skipped here
 			else if (Nullable.GetUnderlyingType(type) is {} nullableUnderlyingType)
 			{
 				return GetGenericArgumentByOrdinal(nullableUnderlyingType, ref remaining);

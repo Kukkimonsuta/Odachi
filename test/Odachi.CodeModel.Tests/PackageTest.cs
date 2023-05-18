@@ -371,6 +371,134 @@ namespace Odachi.CodeModel.Tests
 		}
 
 		[Fact]
+		public void Can_describe_array_decimal_nrton()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<DecimalArrayNrtOn>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Objects,
+				fragment =>
+				{
+					Assert.Collection(fragment.Fields,
+						field =>
+						{
+							Assert.Equal(nameof(DecimalArrayNrtOn.Arr), field.Name);
+							Assert.Equal(TypeKind.Array, field.Type.Kind);
+							Assert.Equal("array", field.Type.Name);
+							Assert.False(field.Type.IsNullable);
+
+							Assert.Collection(field.Type.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("decimal", arg.Name);
+									Assert.False(arg.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_array_decimal_nullable_nrton()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<NullableDecimalArrayNrtOn>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Objects,
+				fragment =>
+				{
+					Assert.Collection(fragment.Fields,
+						field =>
+						{
+							Assert.Equal(nameof(NullableDecimalArrayNrtOn.Arr), field.Name);
+							Assert.Equal(TypeKind.Array, field.Type.Kind);
+							Assert.Equal("array", field.Type.Name);
+							Assert.False(field.Type.IsNullable);
+
+							Assert.Collection(field.Type.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("decimal", arg.Name);
+									Assert.True(arg.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_array_decimal_nrtoff()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<DecimalArrayNrtOff>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Objects,
+				fragment =>
+				{
+					Assert.Collection(fragment.Fields,
+						field =>
+						{
+							Assert.Equal(nameof(DecimalArrayNrtOff.Arr), field.Name);
+							Assert.Equal(TypeKind.Array, field.Type.Kind);
+							Assert.Equal("array", field.Type.Name);
+							Assert.True(field.Type.IsNullable);
+
+							Assert.Collection(field.Type.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("decimal", arg.Name);
+									Assert.False(arg.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_array_decimal_nullable_nrtoff()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<NullableDecimalArrayNrtOff>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Objects,
+				fragment =>
+				{
+					Assert.Collection(fragment.Fields,
+						field =>
+						{
+							Assert.Equal(nameof(NullableDecimalArrayNrtOff.Arr), field.Name);
+							Assert.Equal(TypeKind.Array, field.Type.Kind);
+							Assert.Equal("array", field.Type.Name);
+							Assert.True(field.Type.IsNullable);
+
+							Assert.Collection(field.Type.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("decimal", arg.Name);
+									Assert.True(arg.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
 		public void Can_describe_enum()
 		{
 			var package = new PackageBuilder("Test")
