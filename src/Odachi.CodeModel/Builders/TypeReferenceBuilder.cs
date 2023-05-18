@@ -60,7 +60,7 @@ namespace Odachi.CodeModel.Builders
 						throw new InvalidOperationException($"Cannot resolve reference '{underlyingType.FullName}'");
 					}
 
-					var builder = new TypeReferenceBuilder(Context, resolvedGenericArgumentType, Source, currentSourceIndex);
+					var builder = new TypeReferenceBuilder(Context, resolvedTypeGenericArguments[i], Source, currentSourceIndex);
 					var argumentTypeReference = builder.Build();
 
 					genericArguments[i] = argumentTypeReference;
