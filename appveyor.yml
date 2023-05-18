@@ -11,8 +11,9 @@ branches:
   only:
     - master
     - preview
+    - previews/6.0.2
     - release
-    - /releases\//
+    - releases/6.0.2
 
 clone_depth: 1
 
@@ -50,3 +51,11 @@ deploy:
     name: NuGet
     on:
       branch: release
+  - provider: Environment
+    name: NuGet
+    on:
+        branch: previews/6.0.2
+  - provider: Environment
+    name: NuGet
+    on:
+        branch: releases/6.0.2
