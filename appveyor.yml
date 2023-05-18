@@ -12,6 +12,7 @@ branches:
     - master
     - preview
     - release
+    - /releases\//
 
 clone_depth: 1
 
