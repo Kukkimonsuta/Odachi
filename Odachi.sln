@@ -133,6 +133,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.AspNetCore.Authentic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Testing.Scenarios.Data.PostgreSQL", "src\Odachi.Testing.Scenarios.Data.PostgreSQL\Odachi.Testing.Scenarios.Data.PostgreSQL.csproj", "{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.CodeModel.Providers.JsonRpc.Tests", "test\Odachi.CodeModel.Providers.JsonRpc.Tests\Odachi.CodeModel.Providers.JsonRpc.Tests.csproj", "{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -779,6 +781,18 @@ Global
 		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Release|x64.Build.0 = Release|Any CPU
 		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Release|x86.ActiveCfg = Release|Any CPU
 		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD}.Release|x86.Build.0 = Release|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Debug|x64.Build.0 = Debug|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Debug|x86.Build.0 = Debug|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Release|x64.ActiveCfg = Release|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Release|x64.Build.0 = Release|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Release|x86.ActiveCfg = Release|Any CPU
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -837,6 +851,7 @@ Global
 		{C8FE228D-E15B-4034-ACD6-ABEA3D510DB7} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{9B85CACC-C569-473A-A9AD-5FAE7D052FC2} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{FCD8A4EC-3BC2-4AE9-A83C-0713B9C068BD} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
+		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB} = {6914849E-07C0-4D13-8259-A141523454DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2776D3BA-E65C-40FB-A3E4-A454391888CA}

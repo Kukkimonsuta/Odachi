@@ -114,7 +114,7 @@ namespace Odachi.Extensions.Reflection
 					var result = GetGenericArgumentByOrdinal(current, ref remaining);
 					if (result != null && remaining == 0)
 					{
-						return current;
+						return result;
 					}
 				}
 			}
