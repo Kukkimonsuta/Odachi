@@ -494,6 +494,7 @@ namespace Odachi.CodeModel.Tests
 		{
 			var package = new PackageBuilder("Test")
 				.Module_Service_Default<NullableMethodParameters>()
+				.Module_Service_Default<NullableOneOfMethodReturnType>()
 				.Build();
 
 			Assert.NotNull(package);
@@ -540,6 +541,131 @@ namespace Odachi.CodeModel.Tests
 											Assert.False(arg.IsNullable);
 										}
 									);
+								}
+							);
+						}
+					);
+				},
+				fragment =>
+				{
+					Assert.Collection(fragment.Methods,
+						method =>
+						{
+							Assert.Equal(nameof(NullableOneOfMethodReturnType.Nullable), method.Name);
+
+							Assert.True(method.ReturnType.IsNullable);
+							Assert.Equal("oneof", method.ReturnType.Name);
+							Assert.Collection(method.ReturnType.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("string", arg.Name);
+									Assert.False(arg.IsNullable);
+								},
+								arg =>
+								{
+									Assert.Equal("integer", arg.Name);
+									Assert.False(arg.IsNullable);
+								}
+							);
+						},
+						method =>
+						{
+							Assert.Equal(nameof(NullableOneOfMethodReturnType.NonNullable), method.Name);
+
+							Assert.False(method.ReturnType.IsNullable);
+							Assert.Equal("oneof", method.ReturnType.Name);
+							Assert.Collection(method.ReturnType.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("string", arg.Name);
+									Assert.False(arg.IsNullable);
+								},
+								arg =>
+								{
+									Assert.Equal("integer", arg.Name);
+									Assert.False(arg.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_nonrt_service()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Service_Default<NoNrtMethodParameters>()
+				.Module_Service_Default<NoNrtOneOfMethodReturnType>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Services,
+				fragment =>
+				{
+					Assert.Collection(fragment.Methods,
+						method =>
+						{
+							Assert.Equal(nameof(NoNrtMethodParameters.Method), method.Name);
+
+							Assert.Collection(method.Parameters,
+								arg =>
+								{
+									Assert.Equal("param", arg.Name);
+
+									Assert.True(arg.Type.IsNullable);
+									Assert.Equal("array", arg.Type.Name);
+									Assert.Collection(arg.Type.GenericArguments,
+										arg =>
+										{
+											Assert.Equal("string", arg.Name);
+											Assert.True(arg.IsNullable);
+										}
+									);
+								}
+							);
+						}
+					);
+				},
+				fragment =>
+				{
+					Assert.Collection(fragment.Methods,
+						method =>
+						{
+							Assert.Equal(nameof(NoNrtOneOfMethodReturnType.Nullable), method.Name);
+
+							Assert.True(method.ReturnType.IsNullable);
+							Assert.Equal("oneof", method.ReturnType.Name);
+							Assert.Collection(method.ReturnType.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("string", arg.Name);
+									Assert.True(arg.IsNullable);
+								},
+								arg =>
+								{
+									Assert.Equal("integer", arg.Name);
+									Assert.False(arg.IsNullable);
+								}
+							);
+						},
+						method =>
+						{
+							Assert.Equal(nameof(NoNrtOneOfMethodReturnType.NonNullable), method.Name);
+
+							Assert.False(method.ReturnType.IsNullable);
+							Assert.Equal("oneof", method.ReturnType.Name);
+							Assert.Collection(method.ReturnType.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("string", arg.Name);
+									Assert.True(arg.IsNullable);
+								},
+								arg =>
+								{
+									Assert.Equal("integer", arg.Name);
+									Assert.False(arg.IsNullable);
 								}
 							);
 						}

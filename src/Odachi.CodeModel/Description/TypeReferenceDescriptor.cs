@@ -66,6 +66,24 @@ namespace Odachi.CodeModel.Description
 			}
 		}
 
+		protected virtual void DescribeFromMethodReturnType(TypeReferenceBuilder builder, MethodInfo methodInfo)
+		{
+			if (builder.SourceIndex == 0)
+			{
+				if (methodInfo.ReturnParameter?.IsNonNullable() == true)
+				{
+					builder.IsNullable = false;
+				}
+			}
+			else
+			{
+				if (methodInfo.ReturnParameter?.IsGenericArgumentNonNullable(builder.SourceIndex - 1) == true)
+				{
+					builder.IsNullable = false;
+				}
+			}
+		}
+
 		/// <inheritdoc />
 		public virtual void Describe(TypeReferenceBuilder builder)
 		{
@@ -79,6 +97,10 @@ namespace Odachi.CodeModel.Description
 					DescribeFromFieldInfo(builder, fieldSource.Item2);
 					break;
 
+				case ValueTuple<Type, MethodInfo> methodSource:
+					DescribeFromMethodReturnType(builder, methodSource.Item2);
+					break;
+
 				case PropertyInfo propertyInfo:
 					DescribeFromPropertyInfo(builder, propertyInfo);
 					break;
@@ -88,20 +110,7 @@ namespace Odachi.CodeModel.Description
 					break;
 
 				case MethodInfo methodInfo:
-					if (builder.SourceIndex == 0)
-					{
-						if (methodInfo.ReturnParameter?.IsNonNullable() == true)
-						{
-							builder.IsNullable = false;
-						}
-					}
-					else
-					{
-						if (methodInfo.ReturnParameter?.IsGenericArgumentNonNullable(builder.SourceIndex - 1) == true)
-						{
-							builder.IsNullable = false;
-						}
-					}
+					DescribeFromMethodReturnType(builder, methodInfo);
 					break;
 
 				case ParameterInfo parameterInfo:
@@ -119,6 +128,9 @@ namespace Odachi.CodeModel.Description
 							builder.IsNullable = false;
 						}
 					}
+					break;
+
+				default:
 					break;
 			}
 		}
