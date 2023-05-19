@@ -34,7 +34,6 @@ function Pack($path)
 function Test($path)
 {
     Exec { pushd $path }
-    Exec { dotnet restore }
     Exec { dotnet test --configuration Release }
     Exec { popd }
 }
@@ -68,6 +67,12 @@ Write-Host
 Write-Host "Display dotnet info.."
 Write-Host
 Exec { dotnet --info }
+
+Write-Host
+Write-Host "Restore packages.."
+Write-Host
+
+Exec { dotnet restore }
 
 Write-Host
 Write-Host "Build & pack libraries.."
