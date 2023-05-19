@@ -72,8 +72,6 @@ namespace Odachi.Extensions.Reflection
 		{
 			var r = n;
 
-			// TODO: Tuple: the representation of the underlying constructed type
-
 			// Reference type: the nullability (0, 1, or 2), followed by the representation of the type arguments in order including containing types
 			// Generic value type: 0, followed by the representation of the type arguments in order including containing types
 			// Array: the nullability (0, 1, or 2), followed by the representation of the element type

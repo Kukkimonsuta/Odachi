@@ -274,5 +274,189 @@ namespace Odachi.Extensions.Reflection.Tests
 				nullableProperty.IsGenericArgumentNonNullable(6);
 			});
 		}
+
+		[Fact]
+		public void Tuple_type_model()
+		{
+			// (string, string?, int, int?, object, object?)
+			var valueNonNullableProperty = typeof(TupleTypeModel).GetProperty(nameof(TupleTypeModel.ValueNonNullable))!;
+			{
+				// OneOf<>
+				Assert.True(valueNonNullableProperty.IsNonNullable());
+				Assert.True(valueNonNullableProperty.IsNonNullableValueType());
+				Assert.False(valueNonNullableProperty.IsNonNullableReferenceType());
+
+				// string
+				Assert.True(valueNonNullableProperty.IsGenericArgumentNonNullable(0));
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullableValueType(0));
+				Assert.True(valueNonNullableProperty.IsGenericArgumentNonNullableReferenceType(0));
+
+				// string?
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullable(1));
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullableValueType(1));
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullableReferenceType(1));
+
+				// int
+				Assert.True(valueNonNullableProperty.IsGenericArgumentNonNullable(2));
+				Assert.True(valueNonNullableProperty.IsGenericArgumentNonNullableValueType(2));
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullableReferenceType(2));
+
+				// int?
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullable(3));
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullableValueType(3));
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullableReferenceType(3));
+
+				// object
+				Assert.True(valueNonNullableProperty.IsGenericArgumentNonNullable(4));
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullableValueType(4));
+				Assert.True(valueNonNullableProperty.IsGenericArgumentNonNullableReferenceType(4));
+
+				// object?
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullable(5));
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullableValueType(5));
+				Assert.False(valueNonNullableProperty.IsGenericArgumentNonNullableReferenceType(5));
+
+				// error
+				Assert.Throws<ArgumentOutOfRangeException>(() =>
+				{
+					valueNonNullableProperty.IsGenericArgumentNonNullable(6);
+				});
+			}
+
+			// (string, string?, int, int?, object, object?)
+			var valueNullableProperty = typeof(TupleTypeModel).GetProperty(nameof(TupleTypeModel.ValueNullable))!;
+			{
+				// OneOf<>
+				Assert.False(valueNullableProperty.IsNonNullable());
+				Assert.False(valueNullableProperty.IsNonNullableValueType());
+				Assert.False(valueNullableProperty.IsNonNullableReferenceType());
+
+				// string
+				Assert.True(valueNullableProperty.IsGenericArgumentNonNullable(0));
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullableValueType(0));
+				Assert.True(valueNullableProperty.IsGenericArgumentNonNullableReferenceType(0));
+
+				// string?
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullable(1));
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullableValueType(1));
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullableReferenceType(1));
+
+				// int
+				Assert.True(valueNullableProperty.IsGenericArgumentNonNullable(2));
+				Assert.True(valueNullableProperty.IsGenericArgumentNonNullableValueType(2));
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullableReferenceType(2));
+
+				// int?
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullable(3));
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullableValueType(3));
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullableReferenceType(3));
+
+				// object
+				Assert.True(valueNullableProperty.IsGenericArgumentNonNullable(4));
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullableValueType(4));
+				Assert.True(valueNullableProperty.IsGenericArgumentNonNullableReferenceType(4));
+
+				// object?
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullable(5));
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullableValueType(5));
+				Assert.False(valueNullableProperty.IsGenericArgumentNonNullableReferenceType(5));
+
+				// error
+				Assert.Throws<ArgumentOutOfRangeException>(() =>
+				{
+					valueNullableProperty.IsGenericArgumentNonNullable(6);
+				});
+			}
+
+			// Tuple<string, string?, int, int?, object, object?>
+			var refNonNullableProperty = typeof(TupleTypeModel).GetProperty(nameof(TupleTypeModel.RefNonNullable))!;
+			{
+				// OneOf<>
+				Assert.True(refNonNullableProperty.IsNonNullable());
+				Assert.False(refNonNullableProperty.IsNonNullableValueType());
+				Assert.True(refNonNullableProperty.IsNonNullableReferenceType());
+
+				// string
+				Assert.True(refNonNullableProperty.IsGenericArgumentNonNullable(0));
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullableValueType(0));
+				Assert.True(refNonNullableProperty.IsGenericArgumentNonNullableReferenceType(0));
+
+				// string?
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullable(1));
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullableValueType(1));
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullableReferenceType(1));
+
+				// int
+				Assert.True(refNonNullableProperty.IsGenericArgumentNonNullable(2));
+				Assert.True(refNonNullableProperty.IsGenericArgumentNonNullableValueType(2));
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullableReferenceType(2));
+
+				// int?
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullable(3));
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullableValueType(3));
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullableReferenceType(3));
+
+				// object
+				Assert.True(refNonNullableProperty.IsGenericArgumentNonNullable(4));
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullableValueType(4));
+				Assert.True(refNonNullableProperty.IsGenericArgumentNonNullableReferenceType(4));
+
+				// object?
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullable(5));
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullableValueType(5));
+				Assert.False(refNonNullableProperty.IsGenericArgumentNonNullableReferenceType(5));
+
+				// error
+				Assert.Throws<ArgumentOutOfRangeException>(() =>
+				{
+					refNonNullableProperty.IsGenericArgumentNonNullable(6);
+				});
+			}
+
+			// Tuple<string, string?, int, int?, object, object?>?
+			var refNullableProperty = typeof(TupleTypeModel).GetProperty(nameof(TupleTypeModel.RefNullable))!;
+			{
+				// OneOf<>
+				Assert.False(refNullableProperty.IsNonNullable());
+				Assert.False(refNullableProperty.IsNonNullableValueType());
+				Assert.False(refNullableProperty.IsNonNullableReferenceType());
+
+				// string
+				Assert.True(refNullableProperty.IsGenericArgumentNonNullable(0));
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullableValueType(0));
+				Assert.True(refNullableProperty.IsGenericArgumentNonNullableReferenceType(0));
+
+				// string?
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullable(1));
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullableValueType(1));
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullableReferenceType(1));
+
+				// int
+				Assert.True(refNullableProperty.IsGenericArgumentNonNullable(2));
+				Assert.True(refNullableProperty.IsGenericArgumentNonNullableValueType(2));
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullableReferenceType(2));
+
+				// int?
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullable(3));
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullableValueType(3));
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullableReferenceType(3));
+
+				// object
+				Assert.True(refNullableProperty.IsGenericArgumentNonNullable(4));
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullableValueType(4));
+				Assert.True(refNullableProperty.IsGenericArgumentNonNullableReferenceType(4));
+
+				// object?
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullable(5));
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullableValueType(5));
+				Assert.False(refNullableProperty.IsGenericArgumentNonNullableReferenceType(5));
+
+				// error
+				Assert.Throws<ArgumentOutOfRangeException>(() =>
+				{
+					refNullableProperty.IsGenericArgumentNonNullable(6);
+				});
+			}
+		}
 	}
 }
