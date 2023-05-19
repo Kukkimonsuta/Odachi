@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <Description>Primitives extensions. Includes entity reference, file reference.</Description>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>

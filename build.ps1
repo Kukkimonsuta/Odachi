@@ -126,6 +126,7 @@ Test(".\test\Odachi.CodeGen.TypeScript.StackinoUno.Tests");
 Test(".\test\Odachi.CodeGen.TypeScript.StackinoDue.Tests");
 Test(".\test\Odachi.CodeModel.Tests");
 Test(".\test\Odachi.CodeModel.Providers.FluentValidation.Tests");
+Test(".\test\Odachi.CodeModel.Providers.JsonRpc.Tests");
 Test(".\test\Odachi.Extensions.Formatting.Tests");
 Test(".\test\Odachi.Extensions.Primitives.Tests");
 Test(".\test\Odachi.Extensions.Reflection.Tests");

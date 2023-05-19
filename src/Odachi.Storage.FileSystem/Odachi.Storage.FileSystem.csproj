@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <Description>Storage implementation for file system.</Description>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
