@@ -68,17 +68,39 @@ namespace Odachi.Extensions.Reflection
 			return type.IsValueType && Nullable.GetUnderlyingType(type) == null;
 		}
 
-		private static Type? GetGenericArgumentByOrdinal(Type type, int n)
+		private static Type? GetGenericArgumentByOrdinal(Type type, int n, out int nullableFlagIndex)
 		{
 			var r = n;
-			return GetGenericArgumentByOrdinal(type, ref r);
+
+			// Reference type: the nullability (0, 1, or 2), followed by the representation of the type arguments in order including containing types
+			// Generic value type: 0, followed by the representation of the type arguments in order including containing types
+			// Array: the nullability (0, 1, or 2), followed by the representation of the element type
+			nullableFlagIndex = 0;
+
+			return GetGenericArgumentByOrdinal(type, ref r, ref nullableFlagIndex);
 		}
-		private static Type? GetGenericArgumentByOrdinal(Type type, ref int remaining)
+		private static Type? GetGenericArgumentByOrdinal(Type type, ref int remaining, ref int nullableFlagIndex)
 		{
+			static void IncrementNullableFlagIndexFor(Type type, ref int nullableFlagIndex)
+			{
+				if (type is { IsValueType: true, IsGenericType: false })
+				{
+					return;
+				}
+				if (Nullable.GetUnderlyingType(type) != null)
+				{
+					return;
+				}
+
+				nullableFlagIndex += 1;
+			}
+
 			// treat arrays as having single generic argument
 			if (type.IsArray)
 			{
-				var current = type.GetElementType();
+				var current = type.GetElementType() ?? throw new InvalidOperationException("Failed to determine array element type");
+				IncrementNullableFlagIndexFor(current, ref nullableFlagIndex);
+
 				if (remaining == 0)
 				{
 					return current;
@@ -86,39 +108,36 @@ namespace Odachi.Extensions.Reflection
 
 				remaining -= 1;
 
-				var result = GetGenericArgumentByOrdinal(current, ref remaining);
-				if (result != null && remaining == 0)
+				return GetGenericArgumentByOrdinal(current, ref remaining, ref nullableFlagIndex);
+			}
+
+			// skip value nullable wrapper
+			if (Nullable.GetUnderlyingType(type) is {} nullableUnderlyingType)
+			{
+				return GetGenericArgumentByOrdinal(nullableUnderlyingType, ref remaining, ref nullableFlagIndex);
+			}
+
+			var genericArguments = type.GetGenericArguments();
+			for (var i = 0; i < genericArguments.Length; i++)
+			{
+				var current = genericArguments[i];
+				IncrementNullableFlagIndexFor(current, ref nullableFlagIndex);
+
+				if (remaining == 0)
 				{
 					return current;
 				}
-			}
-			// TODO: verify it is correct that the index should be skipped here
-			else if (Nullable.GetUnderlyingType(type) is {} nullableUnderlyingType)
-			{
-				return GetGenericArgumentByOrdinal(nullableUnderlyingType, ref remaining);
-			}
-			else
-			{
-				var genericArguments = type.GetGenericArguments();
 
-				for (var i = 0; i < genericArguments.Length; i++)
+				remaining -= 1;
+
+				var result = GetGenericArgumentByOrdinal(current, ref remaining, ref nullableFlagIndex);
+				if (result != null && remaining == 0)
 				{
-					var current = genericArguments[i];
-					if (remaining == 0)
-					{
-						return current;
-					}
-
-					remaining -= 1;
-
-					var result = GetGenericArgumentByOrdinal(current, ref remaining);
-					if (result != null && remaining == 0)
-					{
-						return result;
-					}
+					return result;
 				}
 			}
 
+			// not found
 			return null;
 		}
 
@@ -207,7 +226,7 @@ namespace Odachi.Extensions.Reflection
 			if (index < 0)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
-			var argument = GetGenericArgumentByOrdinal(fieldInfo.FieldType, index);
+			var argument = GetGenericArgumentByOrdinal(fieldInfo.FieldType, index, out var _);
 			if (argument == null)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
@@ -221,7 +240,7 @@ namespace Odachi.Extensions.Reflection
 			if (index < 0)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
-			var argument = GetGenericArgumentByOrdinal(fieldInfo.FieldType, index);
+			var argument = GetGenericArgumentByOrdinal(fieldInfo.FieldType, index, out _);
 			if (argument == null)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
@@ -235,13 +254,17 @@ namespace Odachi.Extensions.Reflection
 			if (index < 0)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
-			if (fieldInfo.IsGenericArgumentValueType(index))
+			var argument = GetGenericArgumentByOrdinal(fieldInfo.FieldType, index, out var nullableFlagIndex);
+			if (argument == null)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			if (argument.IsValueType)
 			{
 				return false;
 			}
 
 			// check member
-			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(fieldInfo), 1 + index);
+			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(fieldInfo), nullableFlagIndex);
 			if (flag != null)
 			{
 				return flag == 1;
@@ -341,7 +364,7 @@ namespace Odachi.Extensions.Reflection
 			if (index < 0)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
-			var argument = GetGenericArgumentByOrdinal(propertyInfo.PropertyType, index);
+			var argument = GetGenericArgumentByOrdinal(propertyInfo.PropertyType, index, out _);
 			if (argument == null)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
@@ -355,7 +378,7 @@ namespace Odachi.Extensions.Reflection
 			if (index < 0)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
-			var argument = GetGenericArgumentByOrdinal(propertyInfo.PropertyType, index);
+			var argument = GetGenericArgumentByOrdinal(propertyInfo.PropertyType, index, out _);
 			if (argument == null)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
@@ -369,13 +392,17 @@ namespace Odachi.Extensions.Reflection
 			if (index < 0)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
-			if (propertyInfo.IsGenericArgumentValueType(index))
+			var argument = GetGenericArgumentByOrdinal(propertyInfo.PropertyType, index, out var nullableFlagIndex);
+			if (argument == null)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			if (argument.IsValueType)
 			{
 				return false;
 			}
 
 			// check member
-			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(propertyInfo), 1 + index);
+			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(propertyInfo), nullableFlagIndex);
 			if (flag != null)
 			{
 				return flag == 1;
@@ -463,7 +490,7 @@ namespace Odachi.Extensions.Reflection
 			if (index < 0)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
-			var argument = GetGenericArgumentByOrdinal(parameterInfo.ParameterType, index);
+			var argument = GetGenericArgumentByOrdinal(parameterInfo.ParameterType, index, out _);
 			if (argument == null)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
@@ -477,7 +504,7 @@ namespace Odachi.Extensions.Reflection
 			if (index < 0)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
-			var argument = GetGenericArgumentByOrdinal(parameterInfo.ParameterType, index);
+			var argument = GetGenericArgumentByOrdinal(parameterInfo.ParameterType, index, out _);
 			if (argument == null)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
@@ -491,13 +518,17 @@ namespace Odachi.Extensions.Reflection
 			if (index < 0)
 				throw new ArgumentOutOfRangeException(nameof(index));
 
-			if (parameterInfo.IsGenericArgumentValueType(index))
+			var argument = GetGenericArgumentByOrdinal(parameterInfo.ParameterType, index, out var nullableFlagIndex);
+			if (argument == null)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			if (argument.IsValueType)
 			{
 				return false;
 			}
 
 			// check member
-			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(parameterInfo), 1 + index);
+			var flag = GetNullableAttributeFlag(Attribute.GetCustomAttributes(parameterInfo), nullableFlagIndex);
 			if (flag != null)
 			{
 				return flag == 1;

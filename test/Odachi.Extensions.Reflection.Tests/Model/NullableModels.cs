@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Odachi.Extensions.Primitives;
 
 #nullable enable
 
@@ -66,5 +67,26 @@ namespace Odachi.Extensions.Reflection.Tests.Model
 	{
 		public void Nullable(string?[] param) { }
 		public void NonNullable(string[] param) { }
+	}
+
+	public class NullableValueArray
+	{
+		public decimal?[] Nullable { get; set; } = Array.Empty<decimal?>();
+		public decimal[] NonNullable { get; set; } = Array.Empty<decimal>();
+	}
+
+	public class ComplexGenericTypeModel
+	{
+		public OneOf<string, string?, int, int?, object, object?> NonNullable { get; set; }
+		public OneOf<string, string?, int, int?, object, object?>? Nullable { get; set; }
+	}
+
+	public class TupleTypeModel
+	{
+		public (string, string?, int, int?, object, object?) ValueNonNullable { get; set; }
+		public (string, string?, int, int?, object, object?)? ValueNullable { get; set; }
+
+		public Tuple<string, string?, int, int?, object, object?> RefNonNullable { get; set; } = null!;
+		public Tuple<string, string?, int, int?, object, object?>? RefNullable { get; set; }
 	}
 }
