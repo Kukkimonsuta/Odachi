@@ -371,6 +371,134 @@ namespace Odachi.CodeModel.Tests
 		}
 
 		[Fact]
+		public void Can_describe_array_decimal_nrton()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<DecimalArrayNrtOn>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Objects,
+				fragment =>
+				{
+					Assert.Collection(fragment.Fields,
+						field =>
+						{
+							Assert.Equal(nameof(DecimalArrayNrtOn.Arr), field.Name);
+							Assert.Equal(TypeKind.Array, field.Type.Kind);
+							Assert.Equal("array", field.Type.Name);
+							Assert.False(field.Type.IsNullable);
+
+							Assert.Collection(field.Type.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("decimal", arg.Name);
+									Assert.False(arg.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_array_decimal_nullable_nrton()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<NullableDecimalArrayNrtOn>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Objects,
+				fragment =>
+				{
+					Assert.Collection(fragment.Fields,
+						field =>
+						{
+							Assert.Equal(nameof(NullableDecimalArrayNrtOn.Arr), field.Name);
+							Assert.Equal(TypeKind.Array, field.Type.Kind);
+							Assert.Equal("array", field.Type.Name);
+							Assert.False(field.Type.IsNullable);
+
+							Assert.Collection(field.Type.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("decimal", arg.Name);
+									Assert.True(arg.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_array_decimal_nrtoff()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<DecimalArrayNrtOff>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Objects,
+				fragment =>
+				{
+					Assert.Collection(fragment.Fields,
+						field =>
+						{
+							Assert.Equal(nameof(DecimalArrayNrtOff.Arr), field.Name);
+							Assert.Equal(TypeKind.Array, field.Type.Kind);
+							Assert.Equal("array", field.Type.Name);
+							Assert.True(field.Type.IsNullable);
+
+							Assert.Collection(field.Type.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("decimal", arg.Name);
+									Assert.False(arg.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_array_decimal_nullable_nrtoff()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Object_Default<NullableDecimalArrayNrtOff>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Objects,
+				fragment =>
+				{
+					Assert.Collection(fragment.Fields,
+						field =>
+						{
+							Assert.Equal(nameof(NullableDecimalArrayNrtOff.Arr), field.Name);
+							Assert.Equal(TypeKind.Array, field.Type.Kind);
+							Assert.Equal("array", field.Type.Name);
+							Assert.True(field.Type.IsNullable);
+
+							Assert.Collection(field.Type.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("decimal", arg.Name);
+									Assert.True(arg.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
 		public void Can_describe_enum()
 		{
 			var package = new PackageBuilder("Test")
@@ -494,6 +622,7 @@ namespace Odachi.CodeModel.Tests
 		{
 			var package = new PackageBuilder("Test")
 				.Module_Service_Default<NullableMethodParameters>()
+				.Module_Service_Default<NullableOneOfMethodReturnType>()
 				.Build();
 
 			Assert.NotNull(package);
@@ -540,6 +669,131 @@ namespace Odachi.CodeModel.Tests
 											Assert.False(arg.IsNullable);
 										}
 									);
+								}
+							);
+						}
+					);
+				},
+				fragment =>
+				{
+					Assert.Collection(fragment.Methods,
+						method =>
+						{
+							Assert.Equal(nameof(NullableOneOfMethodReturnType.Nullable), method.Name);
+
+							Assert.True(method.ReturnType.IsNullable);
+							Assert.Equal("oneof", method.ReturnType.Name);
+							Assert.Collection(method.ReturnType.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("string", arg.Name);
+									Assert.False(arg.IsNullable);
+								},
+								arg =>
+								{
+									Assert.Equal("integer", arg.Name);
+									Assert.False(arg.IsNullable);
+								}
+							);
+						},
+						method =>
+						{
+							Assert.Equal(nameof(NullableOneOfMethodReturnType.NonNullable), method.Name);
+
+							Assert.False(method.ReturnType.IsNullable);
+							Assert.Equal("oneof", method.ReturnType.Name);
+							Assert.Collection(method.ReturnType.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("string", arg.Name);
+									Assert.False(arg.IsNullable);
+								},
+								arg =>
+								{
+									Assert.Equal("integer", arg.Name);
+									Assert.False(arg.IsNullable);
+								}
+							);
+						}
+					);
+				}
+			);
+		}
+
+		[Fact]
+		public void Can_describe_nonrt_service()
+		{
+			var package = new PackageBuilder("Test")
+				.Module_Service_Default<NoNrtMethodParameters>()
+				.Module_Service_Default<NoNrtOneOfMethodReturnType>()
+				.Build();
+
+			Assert.NotNull(package);
+			Assert.Collection(package.Services,
+				fragment =>
+				{
+					Assert.Collection(fragment.Methods,
+						method =>
+						{
+							Assert.Equal(nameof(NoNrtMethodParameters.Method), method.Name);
+
+							Assert.Collection(method.Parameters,
+								arg =>
+								{
+									Assert.Equal("param", arg.Name);
+
+									Assert.True(arg.Type.IsNullable);
+									Assert.Equal("array", arg.Type.Name);
+									Assert.Collection(arg.Type.GenericArguments,
+										arg =>
+										{
+											Assert.Equal("string", arg.Name);
+											Assert.True(arg.IsNullable);
+										}
+									);
+								}
+							);
+						}
+					);
+				},
+				fragment =>
+				{
+					Assert.Collection(fragment.Methods,
+						method =>
+						{
+							Assert.Equal(nameof(NoNrtOneOfMethodReturnType.Nullable), method.Name);
+
+							Assert.True(method.ReturnType.IsNullable);
+							Assert.Equal("oneof", method.ReturnType.Name);
+							Assert.Collection(method.ReturnType.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("string", arg.Name);
+									Assert.True(arg.IsNullable);
+								},
+								arg =>
+								{
+									Assert.Equal("integer", arg.Name);
+									Assert.False(arg.IsNullable);
+								}
+							);
+						},
+						method =>
+						{
+							Assert.Equal(nameof(NoNrtOneOfMethodReturnType.NonNullable), method.Name);
+
+							Assert.False(method.ReturnType.IsNullable);
+							Assert.Equal("oneof", method.ReturnType.Name);
+							Assert.Collection(method.ReturnType.GenericArguments,
+								arg =>
+								{
+									Assert.Equal("string", arg.Name);
+									Assert.True(arg.IsNullable);
+								},
+								arg =>
+								{
+									Assert.Equal("integer", arg.Name);
+									Assert.False(arg.IsNullable);
 								}
 							);
 						}

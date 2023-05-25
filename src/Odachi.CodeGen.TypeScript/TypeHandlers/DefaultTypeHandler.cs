@@ -281,7 +281,8 @@ namespace Odachi.CodeGen.TypeScript.TypeHandlers
 			{
 				if (type.Kind == TypeKind.Enum)
 				{
-					return "0";
+					context.Import(type);
+					return $"0 as {type.Name}";
 				}
 
 				// handle modules

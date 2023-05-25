@@ -3,23 +3,24 @@
   <Import Project="..\..\tools\common.props" />
 
   <PropertyGroup>
-    <Description>Odachi.Extensions.Reflection tests</Description>
+    <Description>Odachi.CodeModel.Providers.JsonRpc tests</Description>
     <TargetFramework>net7.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Odachi.Extensions.Primitives\Odachi.Extensions.Primitives.csproj" />
-    <ProjectReference Include="..\..\src\Odachi.Extensions.Reflection\Odachi.Extensions.Reflection.csproj" />
+    <ProjectReference Include="..\..\src\Odachi.CodeModel.Providers.JsonRpc\Odachi.CodeModel.Providers.JsonRpc.csproj" />
+    <ProjectReference Include="..\..\src\Odachi.CodeModel\Odachi.CodeModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
