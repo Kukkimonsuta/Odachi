@@ -77,13 +77,13 @@ Exec { dotnet restore }
 Write-Host
 Write-Host "Build & pack libraries.."
 Write-Host
-
 Pack(".\src\Odachi.Abstractions")
 Pack(".\src\Odachi.Annotations")
 Pack(".\src\Odachi.AspNetCore.Authentication.Basic")
 Pack(".\src\Odachi.AspNetCore.Authentication.ApiKey")
 Pack(".\src\Odachi.AspNetCore.JsonRpc")
 Pack(".\src\Odachi.AspNetCore.Mvc")
+Pack(".\src\Odachi.Build.OptionsFileGenerator")
 Pack(".\src\Odachi.CodeGen")
 Pack(".\src\Odachi.CodeGen.CSharp")
 Pack(".\src\Odachi.CodeGen.TypeScript")
@@ -125,6 +125,7 @@ Build(".\samples\JsonRpcClientSample");
 Write-Host
 Write-Host "Build & run test.."
 Write-Host
+Test(".\test\Odachi.Build.OptionsFileGenerator.Tests");
 Test(".\test\Odachi.CodeGen.Tests");
 Test(".\test\Odachi.CodeGen.TypeScript.Tests");
 Test(".\test\Odachi.CodeGen.TypeScript.StackinoUno.Tests");

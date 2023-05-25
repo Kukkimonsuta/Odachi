@@ -4,22 +4,22 @@ Set of miscellaneous extensions for .NET Core. Please note that while we will tr
 
 Nightly nuget feed: https://ci.appveyor.com/nuget/odachi
 
-## Odachi.Abstraction 
+## Odachi.Abstraction
 
 Abstractions used across Odachi framework.<br />
 ✔️ Used in production, breaking changes will follow semver.
 
-## Odachi.Annotations 
+## Odachi.Annotations
 
 Annotations used across Odachi framework.<br />
 🚧 In development. Happy with the current state. May change outside of semver.
 
-## Odachi.AspNetCore.Authentication.ApiKey 
+## Odachi.AspNetCore.Authentication.ApiKey
 
 ASP.NET Core middleware for apikey authentication.<br />
 ✔️ Used in production, breaking changes will follow semver.
 
-## Odachi.AspNetCore.Authentication.Basic 
+## Odachi.AspNetCore.Authentication.Basic
 
 ASP.NET Core middleware for basic authentication.<br />
 ✔️ Used in production, breaking changes will follow semver.
@@ -33,6 +33,11 @@ ASP.NET Core jsonrpc middleware.<br />
 
 ASP.NET MVC extensions and helpers.<br />
 ❓ Internal use. May change outside of semver.
+
+## Odachi.Build.OptionsFileGenerator
+
+Code-first options file template generator.<br />
+🚧 In development.
 
 ## Odachi.CodeGen
 
