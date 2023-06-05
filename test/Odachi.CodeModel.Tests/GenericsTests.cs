@@ -105,7 +105,7 @@ namespace Odachi.CodeModel.Tests
 				fragment =>
 				{
 					Assert.NotNull(fragment);
-					Assert.Equal($".\\{nameof(GenericObject<object>)}", fragment.ModuleName);
+					Assert.Equal($"./{nameof(GenericObject<object>)}", fragment.ModuleName);
 					Assert.Equal(nameof(GenericObject<object>), fragment.Name);
 					Assert.Collection(((ObjectFragment)fragment).GenericArguments,
 						parameter =>
@@ -142,7 +142,7 @@ namespace Odachi.CodeModel.Tests
 				fragment =>
 				{
 					Assert.NotNull(fragment);
-					Assert.Equal($".\\{nameof(GenericObject<object>)}", fragment.ModuleName);
+					Assert.Equal($"./{nameof(GenericObject<object>)}", fragment.ModuleName);
 					Assert.Equal(nameof(GenericObject<object>), fragment.Name);
 					Assert.Collection(fragment.GenericArguments,
 						parameter =>
@@ -166,14 +166,14 @@ namespace Odachi.CodeModel.Tests
 				fragment =>
 				{
 					Assert.NotNull(fragment);
-					Assert.Equal($".\\{nameof(ObjectWithGenericObject)}", fragment.ModuleName);
+					Assert.Equal($"./{nameof(ObjectWithGenericObject)}", fragment.ModuleName);
 					Assert.Equal(nameof(ObjectWithGenericObject), fragment.Name);
 					Assert.Collection(fragment.Fields,
 						field =>
 						{
 							Assert.Equal(nameof(ObjectWithGenericObject.Strings), field.Name);
 							Assert.Equal(TypeKind.Class, field.Type.Kind);
-							Assert.Equal($".\\{nameof(GenericObject<object>)}", field.Type.Module);
+							Assert.Equal($"./{nameof(GenericObject<object>)}", field.Type.Module);
 							Assert.Equal(nameof(GenericObject<object>), field.Type.Name);
 							Assert.Collection(field.Type.GenericArguments,
 								argument =>
@@ -186,7 +186,7 @@ namespace Odachi.CodeModel.Tests
 						{
 							Assert.Equal(nameof(ObjectWithGenericObject.Ints), field.Name);
 							Assert.Equal(TypeKind.Class, field.Type.Kind);
-							Assert.Equal($".\\{nameof(GenericObject<object>)}", field.Type.Module);
+							Assert.Equal($"./{nameof(GenericObject<object>)}", field.Type.Module);
 							Assert.Equal(nameof(GenericObject<object>), field.Type.Name);
 							Assert.Collection(field.Type.GenericArguments,
 								argument =>

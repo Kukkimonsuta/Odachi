@@ -72,7 +72,7 @@ namespace Odachi.CodeGen.TypeScript.StackinoDue.Tests
 				.Module_Object_Default(typeof(BasicObject))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(BasicObject)}");
+			var result = RenderModule(package, $"./{nameof(BasicObject)}");
 
 			Assert.Equal(@"import { makeObservable, observable } from 'mobx';
 
@@ -122,7 +122,7 @@ export { BasicObject };
 				.Module_Object_Default(typeof(ComplexObject))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ComplexObject)}");
+			var result = RenderModule(package, $"./{nameof(ComplexObject)}");
 
 			Assert.Equal(@"import { BasicObject } from './basic-object';
 import { makeObservable, observable } from 'mobx';
@@ -183,7 +183,7 @@ export { ComplexObject };
 				})
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ComplexObject)}");
+			var result = RenderModule(package, $"./{nameof(ComplexObject)}");
 
 			Assert.Equal(@"import { BasicObject } from './basic-object';
 import { makeObservable, observable } from 'mobx';
@@ -235,7 +235,7 @@ export { ComplexObject };
 				.Module_Object_Default(typeof(GenericObject<>))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(GenericObject<object>)}");
+			var result = RenderModule(package, $"./{nameof(GenericObject<object>)}");
 
 			Assert.Equal(@"import { makeObservable, observable } from 'mobx';
 
@@ -291,7 +291,7 @@ export { GenericObject };
 				.Module_Object_Default<ObjectWithGenericObject>()
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithGenericObject)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithGenericObject)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 import { makeObservable, observable } from 'mobx';
@@ -347,7 +347,7 @@ export { ObjectWithGenericObject };
 				.Module_Object_Default<ObjectWithArrayOfGenericObject>()
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithArrayOfGenericObject)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithArrayOfGenericObject)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 import { makeObservable, observable } from 'mobx';
@@ -405,7 +405,7 @@ export { ObjectWithArrayOfGenericObject };
 				.Module_Object_Default<ObjectWithArrayOfGenericObjectWithPages>()
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithArrayOfGenericObjectWithPages)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithArrayOfGenericObjectWithPages)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 import { Page } from '@odachi/collections';
@@ -462,7 +462,7 @@ export { ObjectWithArrayOfGenericObjectWithPages };
 				.Module_Object_Default<ObjectWithTuple>()
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithTuple)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithTuple)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 import { DateTime } from 'luxon';
@@ -517,7 +517,7 @@ export { ObjectWithTuple };
 				.Module_Object_Default<ObjectWithOneOf>()
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithOneOf)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithOneOf)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 import { DateTime } from 'luxon';
@@ -571,7 +571,7 @@ export { ObjectWithOneOf };
 				.Module_Object_Default<ObjectWithNet6DateTimes>()
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithNet6DateTimes)}", options =>
+			var result = RenderModule(package, $"./{nameof(ObjectWithNet6DateTimes)}", options =>
 			{
 				options.UseTemporal = true;
 			});
@@ -637,7 +637,7 @@ export { ObjectWithNet6DateTimes };
 				.Module_Object_Default(typeof(ObjectWithPrimitives))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithPrimitives)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithPrimitives)}");
 
 			Assert.Equal(@"import { makeObservable, observable } from 'mobx';
 
@@ -708,7 +708,7 @@ export { ObjectWithPrimitives };
 				.Module_Object_Default(typeof(ObjectWithSelfReference))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithSelfReference)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithSelfReference)}");
 
 			Assert.Equal(@"import { makeObservable, observable } from 'mobx';
 
@@ -754,7 +754,7 @@ export { ObjectWithSelfReference };
 				.Module_Object_Default(typeof(ConstantsClass))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ConstantsClass)}");
+			var result = RenderModule(package, $"./{nameof(ConstantsClass)}");
 
 			Assert.Equal(@"// source: Odachi.CodeModel.Tests.ConstantsClass
 
@@ -775,7 +775,7 @@ export { ConstantsClass };
 				.Module_Service_Default(typeof(ConstantsClass))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ConstantsClass)}");
+			var result = RenderModule(package, $"./{nameof(ConstantsClass)}");
 
 			Assert.Equal(@"// source: Odachi.CodeModel.Tests.ConstantsClass
 
@@ -796,7 +796,7 @@ export { ConstantsClass };
 				.Module_Service_Default(typeof(ServiceClass))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ServiceClass)}");
+			var result = RenderModule(package, $"./{nameof(ServiceClass)}");
 
 			Assert.Equal(@"import { Injectable, Tag } from '@stackino/due';
 import { RpcClientTag } from '@stackino/due-plugin-odachirpcclient';
@@ -829,7 +829,7 @@ export { ServiceClassTag, ServiceClass };
 				.Module_Enum_Default(typeof(StandardEnum))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(StandardEnum)}");
+			var result = RenderModule(package, $"./{nameof(StandardEnum)}");
 
 			Assert.Equal(@"// source: Odachi.CodeModel.Tests.StandardEnum
 
@@ -889,7 +889,7 @@ export { StandardEnum };
 				.Module_Enum_Default(typeof(FlagsEnum))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(FlagsEnum)}");
+			var result = RenderModule(package, $"./{nameof(FlagsEnum)}");
 
 			Assert.Equal(@"// source: Odachi.CodeModel.Tests.FlagsEnum
 
@@ -972,7 +972,7 @@ export { FlagsEnum };
 				.Module_Object_Default<ObjectWithValidationState>()
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithValidationState)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithValidationState)}");
 
 			Assert.Equal(@"import { ValidationState } from '@odachi/validation';
 import { makeObservable, observable } from 'mobx';

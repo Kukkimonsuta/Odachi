@@ -63,7 +63,7 @@ namespace Odachi.CodeModel.Builders
 
 		public string MapPath(string path)
 		{
-			return Path.Combine(ModulePath, path);
+			return Path.Combine(ModulePath, path).Replace("\\", "/");
 		}
 	}
 

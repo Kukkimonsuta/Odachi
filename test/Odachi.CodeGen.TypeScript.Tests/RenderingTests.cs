@@ -66,7 +66,7 @@ namespace Odachi.CodeGen.TypeScript.Tests
 				.Module_Object_Default(typeof(GenericObject<>))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(GenericObject<object>)}");
+			var result = RenderModule(package, $"./{nameof(GenericObject<object>)}");
 
 			Assert.Equal(@"function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_boolean = { create: (source: any): boolean => typeof source === 'boolean' ? source : _$$_fail(`Contract violation: expected boolean, got '${typeof(source)}'`) };
@@ -103,7 +103,7 @@ export { GenericObject };
 				.Module_Object_Default<ObjectWithGenericObject>()
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithGenericObject)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithGenericObject)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 
@@ -141,7 +141,7 @@ export { ObjectWithGenericObject };
 				.Module_Object_Default<ObjectWithArrayOfGenericObject>()
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithArrayOfGenericObject)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithArrayOfGenericObject)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 
@@ -181,7 +181,7 @@ export { ObjectWithArrayOfGenericObject };
 				.Module_Object_Default<ObjectWithTuple>()
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithTuple)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithTuple)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 
@@ -218,7 +218,7 @@ export { ObjectWithTuple };
 				.Module_Object_Default<ObjectWithOneOf>()
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithOneOf)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithOneOf)}");
 
 			Assert.Equal(@"import { GenericObject } from './generic-object';
 
@@ -254,7 +254,7 @@ export { ObjectWithOneOf };
 				.Module_Object_Default(typeof(ObjectWithPrimitives))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithPrimitives)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithPrimitives)}");
 
 			Assert.Equal(@"function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_number = { create: (source: any): number => typeof source === 'number' ? source : _$$_fail(`Contract violation: expected number, got '${typeof(source)}'`) };
@@ -301,7 +301,7 @@ export { ObjectWithPrimitives };
 				.Module_Object_Default(typeof(ObjectWithSelfReference))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithSelfReference)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithSelfReference)}");
 
 			Assert.Equal(@"function _$$_opt<T>(T_factory: { create: (source: any) => T }): { create: (source: any) => T | null } { return { create: (source: any): T | null => source === undefined || source === null ? null : T_factory.create(source) }; }
 
@@ -329,7 +329,7 @@ export { ObjectWithSelfReference };
 				.Module_Object_Default(typeof(ObjectWithPaging))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ObjectWithPaging)}");
+			var result = RenderModule(package, $"./{nameof(ObjectWithPaging)}");
 
 			Assert.Equal(@"import { Page, PagingOptions } from '@odachi/collections';
 
@@ -372,7 +372,7 @@ export { ObjectWithPaging };
 				.Module_Object_Default(typeof(GuidClass))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(GuidClass)}");
+			var result = RenderModule(package, $"./{nameof(GuidClass)}");
 
 			Assert.Equal(@"function _$$_fail(message: string): never { throw new Error(message); }
 const _$$_factory_guid = { create: (source: any): string => typeof source === 'string' ? source : _$$_fail(`Contract violation: expected string, got '${typeof(source)}'`) };
@@ -401,7 +401,7 @@ export { GuidClass };
 				.Module_Object_Default(typeof(ConstantsClass))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ConstantsClass)}");
+			var result = RenderModule(package, $"./{nameof(ConstantsClass)}");
 
 			Assert.Equal(@"// source: Odachi.CodeModel.Tests.ConstantsClass
 
@@ -427,7 +427,7 @@ export { ConstantsClass };
 				.Module_Service_Default(typeof(ConstantsClass))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(ConstantsClass)}");
+			var result = RenderModule(package, $"./{nameof(ConstantsClass)}");
 
 			Assert.Equal(@"import { RpcClient } from '@odachi/rpc-client';
 
@@ -456,7 +456,7 @@ export { ConstantsClass };
 				.Module_Enum_Default(typeof(StandardEnum))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(StandardEnum)}");
+			var result = RenderModule(package, $"./{nameof(StandardEnum)}");
 
 			Assert.Equal(@"// source: Odachi.CodeModel.Tests.StandardEnum
 
@@ -516,7 +516,7 @@ export { StandardEnum };
 				.Module_Enum_Default(typeof(FlagsEnum))
 				.Build();
 
-			var result = RenderModule(package, $".\\{nameof(FlagsEnum)}");
+			var result = RenderModule(package, $"./{nameof(FlagsEnum)}");
 
 			Assert.Equal(@"// source: Odachi.CodeModel.Tests.FlagsEnum
 
