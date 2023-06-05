@@ -8,13 +8,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extras", "extras", "{0DA18258-DC3F-475D-B6CA-AB3BD6E2DD76}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		appveyor.yml = appveyor.yml
-		azure-pipelines.yml = azure-pipelines.yml
-		build.ps1 = build.ps1
 		global.json = global.json
 		LICENSE = LICENSE
 		NuGet.Config = NuGet.Config
 		README.md = README.md
+		version.json = version.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{066ADA6B-80D9-4679-BF94-2743B59B5C29}"
@@ -138,6 +136,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.Build.OptionsFileGenerator", "src\Odachi.Build.OptionsFileGenerator\Odachi.Build.OptionsFileGenerator.csproj", "{6A90D07F-9EE7-40A6-956A-B6778D326B43}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.Build.OptionsFileGenerator.Tests", "test\Odachi.Build.OptionsFileGenerator.Tests\Odachi.Build.OptionsFileGenerator.Tests.csproj", "{10D47171-A139-4659-80FD-A2A611C0AEFE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{CE3ED033-4B6F-4E71-8CB8-FAF3EDAD15AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{DB844FA0-4D28-443E-BBEB-162AFE091B2E}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\publish.yml = .github\workflows\publish.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -882,6 +888,8 @@ Global
 		{5F203A14-6BF3-45D7-96AB-DD32B3C944EB} = {6914849E-07C0-4D13-8259-A141523454DA}
 		{6A90D07F-9EE7-40A6-956A-B6778D326B43} = {41DA389D-8FD3-4CC0-B012-5825FE714E87}
 		{10D47171-A139-4659-80FD-A2A611C0AEFE} = {6914849E-07C0-4D13-8259-A141523454DA}
+		{CE3ED033-4B6F-4E71-8CB8-FAF3EDAD15AA} = {0DA18258-DC3F-475D-B6CA-AB3BD6E2DD76}
+		{DB844FA0-4D28-443E-BBEB-162AFE091B2E} = {CE3ED033-4B6F-4E71-8CB8-FAF3EDAD15AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2776D3BA-E65C-40FB-A3E4-A454391888CA}

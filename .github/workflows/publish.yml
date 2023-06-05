@@ -1,18 +1,12 @@
-name: Build
+name: Publish
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches: [ "release/v*" ]
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
       with:
@@ -28,3 +22,9 @@ jobs:
       run: dotnet build --no-restore --configuration Release -p:ContinuousIntegrationBuild=true
     - name: Test
       run: dotnet test --no-build --configuration Release -p:ContinuousIntegrationBuild=true --verbosity normal
+    - name: Pack
+      run: dotnet pack --no-build --configuration Release -p:ContinuousIntegrationBuild=true --output publish
+    - name: Push
+      run: dotnet nuget push ./publish/*.nupkg --api-key $NUGET_AUTH_TOKEN --source https://api.nuget.org/v3/index.json
+      env:
+          NUGET_AUTH_TOKEN: ${{secrets.NUGET_AUTH_TOKEN}}
