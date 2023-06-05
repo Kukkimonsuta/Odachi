@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\tools\common.props" />
-  <Import Project="..\..\tools\library.props" />
-
   <PropertyGroup>
     <Description>Primitives extensions. Includes entity reference, file reference.</Description>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -31,10 +28,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>OneOf.tt</DependentUpon>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

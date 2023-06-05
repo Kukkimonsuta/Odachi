@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\..\tools\common.props" />
-  <Import Project="..\..\tools\library.props" />
-
   <PropertyGroup>
     <Description>ASP.NET Core middleware for api key authentication.</Description>
     <TargetFramework>net6.0</TargetFramework>
@@ -11,10 +8,6 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

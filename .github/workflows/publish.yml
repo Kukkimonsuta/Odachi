@@ -3,14 +3,16 @@ name: Publish
 on:
   push:
     branches: [ "release/v*" ]
+    tags: [ "v*" ]
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0 # required for nbgv
+    - uses: dotnet/nbgv@master
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:

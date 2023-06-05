@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\tools\common.props" />
-  <Import Project="..\..\tools\library.props" />
-
   <PropertyGroup>
     <Description>Common classes of `JsonRpc.Client` and `Odachi.AspNetCore.JsonRpc`.</Description>
     <TargetFramework>net6.0</TargetFramework>
@@ -18,10 +15,6 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

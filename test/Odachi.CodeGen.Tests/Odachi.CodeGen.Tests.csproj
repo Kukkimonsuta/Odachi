@@ -1,11 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\tools\common.props" />
-
   <PropertyGroup>
     <Description>Odachi.CodeGen tests</Description>
     <TargetFramework>net7.0</TargetFramework>
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

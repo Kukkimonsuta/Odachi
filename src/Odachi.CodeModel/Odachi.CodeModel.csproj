@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\tools\common.props" />
-  <Import Project="..\..\tools\library.props" />
-
   <PropertyGroup>
     <Description>Code description library.</Description>
     <TargetFramework>net6.0</TargetFramework>
@@ -19,10 +16,6 @@
 
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\tools\common.props" />
-  <Import Project="..\..\tools\library.props" />
-
   <PropertyGroup>
     <Description>Xunit support for scenario testing.</Description>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -19,10 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Odachi.Testing.Scenarios\Odachi.Testing.Scenarios.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

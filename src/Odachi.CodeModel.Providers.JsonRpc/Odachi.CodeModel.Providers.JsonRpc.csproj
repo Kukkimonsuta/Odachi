@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\tools\common.props" />
-  <Import Project="..\..\tools\library.props" />
-
   <PropertyGroup>
     <Description>Code description providers for `Odachi.AspNetCore.JsonRpc`.</Description>
     <TargetFramework>net6.0</TargetFramework>
@@ -12,10 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="../Odachi.CodeModel/Odachi.CodeModel.csproj" />
     <ProjectReference Include="../Odachi.JsonRpc.Server/Odachi.JsonRpc.Server.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

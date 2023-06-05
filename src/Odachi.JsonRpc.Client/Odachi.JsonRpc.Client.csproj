@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\tools\common.props" />
-  <Import Project="..\..\tools\library.props" />
-
   <PropertyGroup>
     <Description>JsonRpc client base.</Description>
     <TargetFramework>net6.0</TargetFramework>
@@ -16,10 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Odachi.JsonRpc.Common\Odachi.JsonRpc.Common.csproj" />
     <ProjectReference Include="..\Odachi.Abstractions\Odachi.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

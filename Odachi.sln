@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{41DA389D-8FD3-4CC0-B012-5825FE714E87}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extras", "extras", "{0DA18258-DC3F-475D-B6CA-AB3BD6E2DD76}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,11 +16,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extras", "extras", "{0DA182
 		NuGet.Config = NuGet.Config
 		README.md = README.md
 		version.json = version.json
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{066ADA6B-80D9-4679-BF94-2743B59B5C29}"
+	ProjectSection(SolutionItems) = preProject
+		samples\Directory.Build.props = samples\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6914849E-07C0-4D13-8259-A141523454DA}"
+	ProjectSection(SolutionItems) = preProject
+		test\Directory.Build.props = test\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.AspNetCore.Authentication.Basic", "src\Odachi.AspNetCore.Authentication.Basic\Odachi.AspNetCore.Authentication.Basic.csproj", "{10C8D582-BA75-4C45-9379-9EC77A28AA2F}"
 EndProject
@@ -44,12 +54,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.CodeGen.CSharp", "src\Odachi.CodeGen.CSharp\Odachi.CodeGen.CSharp.csproj", "{34328805-1015-45EA-B461-FE9B9E99C97C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.CodeGen.TypeScript", "src\Odachi.CodeGen.TypeScript\Odachi.CodeGen.TypeScript.csproj", "{8748721A-D4CA-418D-A40C-DBB85CD22564}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{FC7DD2D4-DB33-4428-86A5-84EA665084C5}"
-	ProjectSection(SolutionItems) = preProject
-		tools\common.props = tools\common.props
-		tools\library.props = tools\library.props
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odachi.Extensions.Reflection", "src\Odachi.Extensions.Reflection\Odachi.Extensions.Reflection.csproj", "{7EE40027-CA70-4ADE-9933-8B1E1DC4125B}"
 EndProject

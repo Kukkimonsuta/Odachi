@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\tools\common.props" />
-
   <PropertyGroup>
     <Description>Odachi.Build.OptionsFileGenerator tests</Description>
     <TargetFramework>net7.0</TargetFramework>
-    <IsPackable>false</IsPackable>
+
     <Nullable>enable</Nullable>
     <LangVersion>11.0</LangVersion>
   </PropertyGroup>

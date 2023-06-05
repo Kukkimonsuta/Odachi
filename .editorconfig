@@ -9,6 +9,9 @@ indent_size = 4
 charset = utf-8
 trim_trailing_whitespace = true
 
-[{package.json,*.*proj}]
+[{package.json,version.json,*.*proj}]
 indent_style = space
 indent_size = 2
+
+[version.json]
+insert_final_newline = false

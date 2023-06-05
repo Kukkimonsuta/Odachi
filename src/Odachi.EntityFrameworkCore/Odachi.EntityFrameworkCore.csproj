@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\tools\common.props" />
-  <Import Project="..\..\tools\library.props" />
-
   <PropertyGroup>
     <Description>Extensions for Entity Framework Core. Includes paging.</Description>
     <TargetFramework>net6.0</TargetFramework>
@@ -15,10 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Odachi.Extensions.Collections\Odachi.Extensions.Collections.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>
