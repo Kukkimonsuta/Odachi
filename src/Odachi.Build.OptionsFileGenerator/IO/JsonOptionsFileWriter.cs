@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using Odachi.Build.OptionsFileGenerator.Model;
 
 namespace Odachi.Build.OptionsFileGenerator.IO;
@@ -37,6 +39,10 @@ public class JsonOptionsFileWriter : OptionsFileWriter
                 Writer.Write("null");
                 break;
 
+            case bool boolValue:
+	            Writer.Write(boolValue ? "true" : "false");
+	            break;
+
             case sbyte:
             case byte:
             case short:
@@ -63,6 +69,44 @@ public class JsonOptionsFileWriter : OptionsFileWriter
             case string stringValue:
                 Writer.Write($@"""{stringValue}""");
                 break;
+
+            case object?[] array:
+	            Writer.Write("[");
+	            for (var i = 0; i < array.Length; i++)
+	            {
+					WriteValue(array.GetValue(i));
+
+					if (i < array.Length - 1)
+					{
+						Writer.Write(", ");
+					}
+	            }
+	            Writer.Write("]");
+	            break;
+
+            case TimeSpan timeSpan:
+	            var builder = new StringBuilder();
+	            if (timeSpan.Days > 0)
+	            {
+		            builder.Append("d\\.");
+	            }
+
+	            builder.Append("hh\\:mm\\:ss");
+
+	            var microseconds = (timeSpan.Ticks % TimeSpan.TicksPerMillisecond) / (TimeSpan.TicksPerMillisecond / 1000);
+
+	            if (timeSpan.Milliseconds > 0 || microseconds > 0)
+	            {
+		            builder.Append("\\.fff");
+	            }
+
+	            if (microseconds > 0)
+	            {
+		            builder.Append("fff");
+	            }
+
+	            Writer.Write($@"""{timeSpan.ToString(builder.ToString(), CultureInfo.InvariantCulture)}""");
+	            break;
 
             case EnumValue enumValue:
                 Writer.Write("\"");
