@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 using Odachi.Build.OptionsFileGenerator;
 using Odachi.Build.OptionsFileGenerator.Tests.Framework;
@@ -101,6 +102,107 @@ public class DefaultValueTests
 
             """
         );
+    }
+
+    [Fact]
+    public void Can_handle_timespan()
+    {
+	    var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
+		    (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
+		    """
+            using System;
+
+            [OptionsContainer(FileName = "appsettings.json")]
+            public class FooOptions
+            {
+                public TimeSpan TimeSpanZero { get; set; } = TimeSpan.Zero;
+                public TimeSpan TimeSpanCtor { get; set; } = new TimeSpan();
+                public TimeSpan TimeSpanCtorTicks { get; set; } = new TimeSpan(12345670);
+                public TimeSpan TimeSpanCtorHoursMinutesSeconds { get; set; } = new TimeSpan(2, 3, 4);
+                public TimeSpan TimeSpanCtorDaysHoursMinutesSeconds { get; set; } = new TimeSpan(1, 2, 3, 4);
+                public TimeSpan TimeSpanCtorDaysHoursMinutesSecondsMilliseconds { get; set; } = new TimeSpan(1, 2, 3, 4, 5);
+                public TimeSpan TimeSpanCtorDaysHoursMinutesSecondsMillisecondsMicroseconds { get; set; } = new TimeSpan(1, 2, 3, 4, 5, 6);
+            }
+            """
+	    );
+
+	    result.AssertDiagnostics();
+	    result.AssertAdditionalFile(
+		    "test://appsettings.json",
+		    """
+            {
+              "TimeSpanZero": "00:00:00",
+              "TimeSpanCtor": "00:00:00",
+              "TimeSpanCtorTicks": "00:00:01.234567",
+              "TimeSpanCtorHoursMinutesSeconds": "02:03:04",
+              "TimeSpanCtorDaysHoursMinutesSeconds": "1.02:03:04",
+              "TimeSpanCtorDaysHoursMinutesSecondsMilliseconds": "1.02:03:04.005",
+              "TimeSpanCtorDaysHoursMinutesSecondsMillisecondsMicroseconds": "1.02:03:04.005006",
+            }
+
+            """
+	    );
+    }
+
+    [Fact]
+    public void Can_handle_array_of_ints()
+    {
+	    var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
+		    (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
+		    """
+            [OptionsContainer(FileName = "appsettings.json")]
+            public class FooOptions
+            {
+                public int[] IntArray { get; set; } = new[]
+                {
+                    1,
+                    2,
+                    3,
+                };
+            }
+            """
+	    );
+
+	    result.AssertDiagnostics();
+	    result.AssertAdditionalFile(
+		    "test://appsettings.json",
+		    """
+            {
+              "IntArray": [1, 2, 3],
+            }
+
+            """
+	    );
+    }
+
+    [Fact]
+    public void Can_handle_array_of_strings()
+    {
+	    var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
+		    (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
+		    """
+            [OptionsContainer(FileName = "appsettings.json")]
+            public class FooOptions
+            {
+                public string[] StringArray { get; set; } = new[]
+                {
+                    "Test1",
+                    "Test2",
+                };
+            }
+            """
+	    );
+
+	    result.AssertDiagnostics();
+	    result.AssertAdditionalFile(
+		    "test://appsettings.json",
+		    """
+            {
+              "StringArray": ["Test1", "Test2"],
+            }
+
+            """
+	    );
     }
 
     [Fact]
