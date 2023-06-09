@@ -39,6 +39,10 @@ public class JsonOptionsFileWriter : OptionsFileWriter
                 Writer.Write("null");
                 break;
 
+            case bool boolValue:
+	            Writer.Write(boolValue ? "true" : "false");
+	            break;
+
             case sbyte:
             case byte:
             case short:

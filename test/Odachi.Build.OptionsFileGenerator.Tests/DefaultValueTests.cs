@@ -7,6 +7,32 @@ namespace Odachi.Build.OptionsFileGenerator.Tests;
 
 public class DefaultValueTests
 {
+	[Fact]
+	public void Can_handle_boolean()
+	{
+		var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
+			(tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
+			"""
+            [OptionsContainer(FileName = "appsettings.json")]
+            public class FooOptions
+            {
+                public bool Bool { get; set; } = true;
+            }
+            """
+		);
+
+		result.AssertDiagnostics();
+		result.AssertAdditionalFile(
+			"test://appsettings.json",
+			"""
+            {
+              "Bool": true,
+            }
+
+            """
+		);
+	}
+
     [Fact]
     public void Can_handle_integers()
     {
