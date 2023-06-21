@@ -7,31 +7,31 @@ namespace Odachi.Build.OptionsFileGenerator.Tests;
 
 public class DefaultValueTests
 {
-	[Fact]
-	public void Can_handle_boolean()
-	{
-		var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
-			(tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
-			"""
+    [Fact]
+    public void Can_handle_boolean()
+    {
+        var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
+            (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
+            """
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
                 public bool Bool { get; set; } = true;
             }
             """
-		);
+        );
 
-		result.AssertDiagnostics();
-		result.AssertAdditionalFile(
-			"test://appsettings.json",
-			"""
+        result.AssertDiagnostics();
+        result.AssertAdditionalFile(
+            "test://appsettings.json",
+            """
             {
               "Bool": true,
             }
 
             """
-		);
-	}
+        );
+    }
 
     [Fact]
     public void Can_handle_integers()
@@ -133,9 +133,9 @@ public class DefaultValueTests
     [Fact]
     public void Can_handle_timespan()
     {
-	    var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
-		    (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
-		    """
+        var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
+            (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
+            """
             using System;
 
             [OptionsContainer(FileName = "appsettings.json")]
@@ -150,12 +150,12 @@ public class DefaultValueTests
                 public TimeSpan TimeSpanCtorDaysHoursMinutesSecondsMillisecondsMicroseconds { get; set; } = new TimeSpan(1, 2, 3, 4, 5, 6);
             }
             """
-	    );
+        );
 
-	    result.AssertDiagnostics();
-	    result.AssertAdditionalFile(
-		    "test://appsettings.json",
-		    """
+        result.AssertDiagnostics();
+        result.AssertAdditionalFile(
+            "test://appsettings.json",
+            """
             {
               "TimeSpanZero": "00:00:00",
               "TimeSpanCtor": "00:00:00",
@@ -167,11 +167,42 @@ public class DefaultValueTests
             }
 
             """
-	    );
+        );
     }
 
     [Fact]
     public void Can_handle_array_of_ints()
+    {
+        var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
+            (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
+            """
+            [OptionsContainer(FileName = "appsettings.json")]
+            public class FooOptions
+            {
+                public int[] IntArray { get; set; } = new[]
+                {
+                    1,
+                    2,
+                    3,
+                };
+            }
+            """
+        );
+
+        result.AssertDiagnostics();
+        result.AssertAdditionalFile(
+            "test://appsettings.json",
+            """
+            {
+              "IntArray": [1, 2, 3],
+            }
+
+            """
+        );
+    }
+
+    [Fact]
+    public void Can_handle_array_of_ints_no_new()
     {
 	    var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
 		    (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
@@ -179,7 +210,7 @@ public class DefaultValueTests
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
-                public int[] IntArray { get; set; } = new[]
+                public int[] IntArray { get; set; } =
                 {
                     1,
                     2,
@@ -204,13 +235,43 @@ public class DefaultValueTests
     [Fact]
     public void Can_handle_array_of_strings()
     {
+        var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
+            (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
+            """
+            [OptionsContainer(FileName = "appsettings.json")]
+            public class FooOptions
+            {
+                public string[] StringArray { get; set; } = new[]
+                {
+                    "Test1",
+                    "Test2",
+                };
+            }
+            """
+        );
+
+        result.AssertDiagnostics();
+        result.AssertAdditionalFile(
+            "test://appsettings.json",
+            """
+            {
+              "StringArray": ["Test1", "Test2"],
+            }
+
+            """
+        );
+    }
+
+    [Fact]
+    public void Can_handle_array_of_strings_no_new()
+    {
 	    var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
 		    (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
 		    """
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
-                public string[] StringArray { get; set; } = new[]
+                public string[] StringArray { get; set; } =
                 {
                     "Test1",
                     "Test2",
