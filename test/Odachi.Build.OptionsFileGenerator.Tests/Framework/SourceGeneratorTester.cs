@@ -5,14 +5,27 @@ namespace Odachi.Build.OptionsFileGenerator.Tests.Framework;
 
 public abstract class SourceGeneratorTester
 {
+	public static SourceGeneratorTesterRunResult<TGenerator> Run<TGenerator>(
+		Func<SourceGeneratorTester<TGenerator>, SourceGeneratorTesterRun<TGenerator>, TGenerator> generatorFactory,
+		string input
+	)
+		where TGenerator : IIncrementalGenerator
+	{
+		var sourceGeneratorTester = new SourceGeneratorTester<TGenerator>(generatorFactory);
+		var sourceGeneratorTesterRun = sourceGeneratorTester.CreateRun(new[] { input });
+		var sourceGeneratorTesterRunResult = sourceGeneratorTesterRun.Execute();
+
+		return sourceGeneratorTesterRunResult;
+	}
+
     public static SourceGeneratorTesterRunResult<TGenerator> Run<TGenerator>(
         Func<SourceGeneratorTester<TGenerator>, SourceGeneratorTesterRun<TGenerator>, TGenerator> generatorFactory,
-        string input
+        string[] inputs
     )
-        where TGenerator : ISourceGenerator
+        where TGenerator : IIncrementalGenerator
     {
         var sourceGeneratorTester = new SourceGeneratorTester<TGenerator>(generatorFactory);
-        var sourceGeneratorTesterRun = sourceGeneratorTester.CreateRun(input);
+        var sourceGeneratorTesterRun = sourceGeneratorTester.CreateRun(inputs);
         var sourceGeneratorTesterRunResult = sourceGeneratorTesterRun.Execute();
 
         return sourceGeneratorTesterRunResult;
@@ -20,7 +33,7 @@ public abstract class SourceGeneratorTester
 }
 
 public class SourceGeneratorTester<TGenerator> : SourceGeneratorTester
-    where TGenerator : ISourceGenerator
+    where TGenerator : IIncrementalGenerator
 {
     public Func<SourceGeneratorTester<TGenerator>, SourceGeneratorTesterRun<TGenerator>, TGenerator> GeneratorFactory { get; }
 
@@ -29,8 +42,8 @@ public class SourceGeneratorTester<TGenerator> : SourceGeneratorTester
         GeneratorFactory = generatorFactory ?? throw new ArgumentNullException(nameof(generatorFactory));
     }
 
-    public SourceGeneratorTesterRun<TGenerator> CreateRun(string input)
+    public SourceGeneratorTesterRun<TGenerator> CreateRun(string[] inputs)
     {
-        return new SourceGeneratorTesterRun<TGenerator>(this, input);
+        return new SourceGeneratorTesterRun<TGenerator>(this, inputs);
     }
 }

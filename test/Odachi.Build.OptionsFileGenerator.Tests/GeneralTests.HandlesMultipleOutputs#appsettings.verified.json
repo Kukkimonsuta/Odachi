@@ -1,0 +1,4 @@
+﻿// Path: test://appsettings.json
+{
+  "Bool": true,
+}

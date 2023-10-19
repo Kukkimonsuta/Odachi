@@ -13,6 +13,8 @@ public class DefaultValueTests
 		var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
 			(tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
 			"""
+            using Odachi.Annotations;
+
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
@@ -39,6 +41,8 @@ public class DefaultValueTests
         var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
             (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
             """
+            using Odachi.Annotations;
+
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
@@ -80,6 +84,8 @@ public class DefaultValueTests
         var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
             (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
             """
+            using Odachi.Annotations;
+
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
@@ -110,6 +116,8 @@ public class DefaultValueTests
         var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
             (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
             """
+            using Odachi.Annotations;
+
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
@@ -137,6 +145,7 @@ public class DefaultValueTests
 		    (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
 		    """
             using System;
+            using Odachi.Annotations;
 
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
@@ -176,6 +185,8 @@ public class DefaultValueTests
 	    var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
 		    (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
 		    """
+            using Odachi.Annotations;
+
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
@@ -207,6 +218,8 @@ public class DefaultValueTests
 	    var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
 		    (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
 		    """
+            using Odachi.Annotations;
+
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
@@ -237,6 +250,8 @@ public class DefaultValueTests
         var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
             (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
             """
+            using Odachi.Annotations;
+
             public enum Bar
             {
                 Option1,
@@ -270,6 +285,8 @@ public class DefaultValueTests
         var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
             (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
             """
+            using Odachi.Annotations;
+
             [System.Flags]
             public enum Bar
             {
@@ -304,6 +321,8 @@ public class DefaultValueTests
         var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
             (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
             """
+            using Odachi.Annotations;
+
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
@@ -341,6 +360,8 @@ public class DefaultValueTests
         var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
             (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
             """
+            using Odachi.Annotations;
+
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
@@ -378,6 +399,8 @@ public class DefaultValueTests
         var result = SourceGeneratorTester.Run<OptionsFileSourceGenerator>(
             (tester, run) => new OptionsFileSourceGenerator(run.FileSystem.Create, "test://"),
             """
+            using Odachi.Annotations;
+
             [System.Flags]
             public enum Bar
             {

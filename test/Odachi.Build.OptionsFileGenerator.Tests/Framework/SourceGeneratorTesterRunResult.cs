@@ -6,8 +6,17 @@ using Xunit;
 
 namespace Odachi.Build.OptionsFileGenerator.Tests.Framework;
 
-public class SourceGeneratorTesterRunResult<TGenerator>
-    where TGenerator : ISourceGenerator
+public interface ISourceGeneratorTesterRunResult
+{
+	public ISourceGeneratorTesterRun Run { get; }
+
+	GeneratorDriver Driver { get; }
+	Compilation Compilation { get; }
+	ImmutableArray<Diagnostic> Diagnostics { get; }
+}
+
+public class SourceGeneratorTesterRunResult<TGenerator> : ISourceGeneratorTesterRunResult
+    where TGenerator : IIncrementalGenerator
 {
     public SourceGeneratorTesterRun<TGenerator> Run { get; }
 
@@ -31,7 +40,7 @@ public class SourceGeneratorTesterRunResult<TGenerator>
 
     public void AssertSourceFile(string path, string expectedValue)
     {
-        var generatorResult = Driver.GetRunResult().Results.Where(r => r.Generator == Run.Generator).Single();
+        var generatorResult = Driver.GetRunResult().Results.Single();
 
         var generatedSource = generatorResult.GeneratedSources.Where(s => s.HintName == path).FirstOrDefault();
         Assert.NotNull(generatedSource.SourceText);
@@ -43,4 +52,10 @@ public class SourceGeneratorTesterRunResult<TGenerator>
     {
         Assert.Equal(expectedValue, Run.FileSystem.Get(path));
     }
+
+    #region ISourceGeneratorTesterRun2
+
+    ISourceGeneratorTesterRun ISourceGeneratorTesterRunResult.Run => Run;
+
+    #endregion
 }

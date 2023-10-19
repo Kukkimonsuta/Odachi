@@ -91,7 +91,7 @@ public abstract class OptionsProperty
             // create property
             var propertyDeclarationSyntax = property.DeclaringSyntaxReferences.Select(x => x.GetSyntax()).OfType<PropertyDeclarationSyntax>().SingleOrDefault();
 
-            if (attributes.Any(a => a.AttributeClass?.MetadataName == "OptionsContainer"))
+            if (attributes.Any(a => a.IsOptionsBranchAttributeType()))
             {
                 var branchOptionsProperty = new BranchOptionsProperty()
                 {

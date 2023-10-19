@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Odachi.Build.OptionsFileGenerator.Model;
@@ -10,6 +11,8 @@ public class OptionsFile
     public string Name { get; set; } = null!;
     public OptionsFileFormat Format { get; set; } = OptionsFileFormat.Auto;
     public string? Key { get; set; }
+
+    public List<OptionsProperty> Properties { get; set; } = null!;
 
     #region Static members
 
