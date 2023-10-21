@@ -13,4 +13,22 @@ public static class Extensions
 			attribute.AttributeClass?.ContainingNamespace.ContainingNamespace.ContainingNamespace.IsGlobalNamespace == true &&
 			attribute.AttributeClass?.MetadataName == OptionsFileConstants.BranchAttributeName;
 	}
+
+	public static bool InheritsFromIEnumerable(this ITypeSymbol symbol)
+	{
+		if (symbol.SpecialType == SpecialType.System_Collections_IEnumerable)
+		{
+			return true;
+		}
+
+		foreach (var @interface in symbol.Interfaces)
+		{
+			if (InheritsFromIEnumerable(@interface))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
