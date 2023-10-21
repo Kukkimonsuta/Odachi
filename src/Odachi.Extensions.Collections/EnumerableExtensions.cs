@@ -8,6 +8,7 @@ public static class EnumerableExtensions
 	/// <summary>
 	/// Partitions into arrays of <paramref name="size" />
 	/// </summary>
+	[Obsolete("Use `System.Linq.Enumerable.Chunk`")]
 	public static IEnumerable<T[]> Partition<T>(this IEnumerable<T> enumerable, int size)
 	{
 		if (size <= 0)

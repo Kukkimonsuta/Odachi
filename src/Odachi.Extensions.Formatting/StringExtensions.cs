@@ -15,7 +15,7 @@ namespace Odachi.Extensions.Formatting
 
 	public static class StringExtensions
 	{
-		private static readonly string[] LineSeparators = new[] { "\r\n", "\n" };
+		private static readonly string[] LineSeparators = { "\r\n", "\n" };
 
 		/// <summary>
 		/// Returns `start` (inclusive) and `end` (exclusive) indexes of all parts delimited by separators in given string.

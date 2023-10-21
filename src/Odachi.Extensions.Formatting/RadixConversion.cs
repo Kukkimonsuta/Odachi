@@ -11,7 +11,7 @@ namespace Odachi.Extensions.Formatting
 				throw new ArgumentNullException(nameof(source));
 			if (characterSet == null)
 				throw new ArgumentNullException(nameof(characterSet));
-			if (characterSet.Length <= 0 || characterSet.Length > int.MaxValue)
+			if (characterSet.Length <= 0)
 				throw new ArgumentOutOfRangeException(nameof(characterSet));
 
 			var radix = characterSet.Length;
@@ -52,7 +52,7 @@ namespace Odachi.Extensions.Formatting
 				throw new ArgumentNullException(nameof(source));
 			if (characterSet == null)
 				throw new ArgumentNullException(nameof(characterSet));
-			if (characterSet.Length <= 0 || characterSet.Length > int.MaxValue)
+			if (characterSet.Length <= 0)
 				throw new ArgumentOutOfRangeException(nameof(characterSet));
 
 			var radix = characterSet.Length;
