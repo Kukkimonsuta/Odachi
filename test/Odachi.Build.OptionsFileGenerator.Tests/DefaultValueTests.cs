@@ -477,6 +477,13 @@ public class DefaultValueTests
 		            2,
 		            3,
 		        };
+
+		        public int[] IntArrayNoNew { get; set; } =
+		        {
+		            1,
+		            2,
+		            3,
+		        };
 		    }
 		    """
 	    );
@@ -487,6 +494,7 @@ public class DefaultValueTests
 		    """
 		    {
 		      "IntArray": [1, 2, 3],
+		      "IntArrayNoNew": [1, 2, 3],
 		    }
 
 		    """
@@ -509,6 +517,12 @@ public class DefaultValueTests
                     "Test1",
                     "Test2",
                 };
+
+                public string[] StringArrayNoNew { get; set; } = new[]
+                {
+                    "Test1",
+                    "Test2",
+                };
             }
             """
 	    );
@@ -519,6 +533,7 @@ public class DefaultValueTests
 		    """
             {
               "StringArray": ["Test1", "Test2"],
+              "StringArrayNoNew": ["Test1", "Test2"],
             }
 
             """

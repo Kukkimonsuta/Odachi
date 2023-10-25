@@ -372,7 +372,8 @@ public static class SyntaxExtensions
                 }
                 break;
 
-            case ImplicitArrayCreationExpressionSyntax { Initializer: { Expressions: {} arrayItems } }:
+            case ImplicitArrayCreationExpressionSyntax { Initializer: { Expressions: { } arrayItems } }:
+            {
 	            var items = new object?[arrayItems.Count];
 	            for (var i = 0; i < arrayItems.Count; i++)
 	            {
@@ -384,8 +385,27 @@ public static class SyntaxExtensions
 
 		            items[i] = arrayItemValue;
 	            }
+
 	            value = items;
 	            return true;
+            }
+
+            case InitializerExpressionSyntax { RawKind: (int)SyntaxKind.ArrayInitializerExpression } arrayInitializerExpression:
+            {
+	            var items = new object?[arrayInitializerExpression.Expressions.Count];
+	            for (var i = 0; i < arrayInitializerExpression.Expressions.Count; i++)
+	            {
+		            if (!arrayInitializerExpression.Expressions[i].TryGet_DefaultValue(out var arrayItemValue))
+		            {
+			            value = null;
+			            return false;
+		            }
+
+		            items[i] = arrayItemValue;
+	            }
+	            value = items;
+	            return true;
+            }
         }
 
         value = null;
