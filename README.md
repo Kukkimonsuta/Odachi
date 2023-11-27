@@ -35,7 +35,7 @@ ASP.NET MVC extensions and helpers.<br />
 ## Odachi.Build.OptionsFileGenerator
 
 Code-first options file template generator.<br />
-🚧 In development.
+🚧 In development. Not working properly. Will change outside of semver.
 
 ## Odachi.CodeGen
 
