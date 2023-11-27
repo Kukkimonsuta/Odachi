@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Common classes of `JsonRpc.Client` and `Odachi.AspNetCore.JsonRpc`.</Description>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 
@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

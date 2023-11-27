@@ -2,13 +2,17 @@
 
   <PropertyGroup>
     <Description>Code description providers for `Odachi.Validation`.</Description>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="../Odachi.CodeModel/Odachi.CodeModel.csproj" />
     <ProjectReference Include="../Odachi.Validation/Odachi.Validation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

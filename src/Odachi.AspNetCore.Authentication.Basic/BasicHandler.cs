@@ -16,8 +16,8 @@ namespace Odachi.AspNetCore.Authentication.Basic
 	{
 		public const string RequestHeaderPrefix = "Basic ";
 
-		public BasicHandler(IOptionsMonitor<BasicOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
-			: base(options, logger, encoder, clock)
+		public BasicHandler(IOptionsMonitor<BasicOptions> options, ILoggerFactory logger, UrlEncoder encoder)
+			: base(options, logger, encoder)
 		{
 		}
 

@@ -8,7 +8,6 @@ using System.Text.Encodings.Web;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace Odachi.AspNetCore.Authentication.ApiKey
 {
@@ -16,8 +15,8 @@ namespace Odachi.AspNetCore.Authentication.ApiKey
 	{
 		public const string RequestHeaderPrefix = "ApiKey ";
 
-		public ApiKeyHandler(IOptionsMonitor<ApiKeyOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
-			: base(options, logger, encoder, clock)
+		public ApiKeyHandler(IOptionsMonitor<ApiKeyOptions> options, ILoggerFactory logger, UrlEncoder encoder)
+			: base(options, logger, encoder)
 		{
 		}
 
@@ -52,7 +51,7 @@ namespace Odachi.AspNetCore.Authentication.ApiKey
 
 				// retrieve credentials from header
 				var apiKey = authorization.Substring(RequestHeaderPrefix.Length);
-				
+
 				// invoke sign in event
 				var signInContext = new ApiKeySignInContext(Context, Scheme, Options)
 				{
