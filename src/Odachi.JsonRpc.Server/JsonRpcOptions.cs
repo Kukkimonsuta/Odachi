@@ -44,6 +44,10 @@ namespace Odachi.JsonRpc.Server
 		/// Allow only http post.
 		/// </summary>
 		public bool ForceHttpPost { get; set; } = true;
+        /// <summary>
+        /// Allow setting http status based on RPC response.
+        /// </summary>
+        public bool AllowHttpErrorStatus { get; set; } = true;
 
 		public JsonSerializerSettings JsonSerializerSettings { get; set; }
 

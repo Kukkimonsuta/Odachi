@@ -60,7 +60,29 @@ namespace Odachi.AspNetCore.JsonRpc
 				errorObject.Property("data", StringComparison.OrdinalIgnoreCase)?.Remove();
 			}
 
-			httpContext.Response.StatusCode = 200;
+            // guess error code
+            var httpStatusCode = 200;
+
+            if (_options.AllowHttpErrorStatus)
+            {
+                var errorCodeValue = (errorProperty?.Value as JObject)?.Property("code")?.Value as JValue;
+                if (errorCodeValue?.Value is int errorCode)
+                {
+                    httpStatusCode = errorCode switch
+                    {
+                        JsonRpcError.PARSE_ERROR
+                            or JsonRpcError.INVALID_REQUEST
+                            or JsonRpcError.INVALID_PARAMS
+                            or JsonRpcError.METHOD_NOT_FOUND
+                            or JsonRpcError.NOTIFICATION_EXPECTED => 400,
+                        JsonRpcError.UNAUTHORIZED => 401,
+                        JsonRpcError.FORBIDDEN => 403,
+                        _ => 500
+                    };
+                }
+            }
+
+            httpContext.Response.StatusCode = httpStatusCode;
 			httpContext.Response.ContentType = "application/json";
 
 			// todo: move to System.Text.Json
