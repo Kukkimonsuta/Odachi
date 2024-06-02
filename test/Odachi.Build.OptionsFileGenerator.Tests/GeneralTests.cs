@@ -7,7 +7,6 @@ using VerifyXunit;
 
 namespace Odachi.Build.OptionsFileGenerator.Tests;
 
-[UsesVerify]
 public class GeneralTests
 {
 	[Fact]
