@@ -372,6 +372,24 @@ public static class SyntaxExtensions
                 }
                 break;
 
+            case ArrayCreationExpressionSyntax { Initializer: { Expressions: { } arrayItems } }:
+            {
+                var items = new object?[arrayItems.Count];
+                for (var i = 0; i < arrayItems.Count; i++)
+                {
+                    if (!arrayItems[i].TryGet_DefaultValue(out var arrayItemValue))
+                    {
+                        value = null;
+                        return false;
+                    }
+
+                    items[i] = arrayItemValue;
+                }
+
+                value = items;
+                return true;
+            }
+
             case ImplicitArrayCreationExpressionSyntax { Initializer: { Expressions: { } arrayItems } }:
             {
 	            var items = new object?[arrayItems.Count];
@@ -388,6 +406,37 @@ public static class SyntaxExtensions
 
 	            value = items;
 	            return true;
+            }
+
+            case CollectionExpressionSyntax { } collectionExpressionSyntax:
+            {
+                var items = new object?[collectionExpressionSyntax.Elements.Count];
+
+                for (var i = 0; i < collectionExpressionSyntax.Elements.Count; i++)
+                {
+                    var element = collectionExpressionSyntax.Elements[i];
+
+                    if (element is ExpressionElementSyntax expressionElementSyntax)
+                    {
+                        if (!expressionElementSyntax.Expression.TryGet_DefaultValue(out var elementValue))
+                        {
+                            // log warning?
+                            value = null;
+                            return false;
+                        }
+
+                        items[i] = elementValue;
+                    }
+                    else
+                    {
+                        // log warning?
+                        value = null;
+                        return false;
+                    }
+                }
+
+                value = items;
+                return true;
             }
 
             case InitializerExpressionSyntax { RawKind: (int)SyntaxKind.ArrayInitializerExpression } arrayInitializerExpression:

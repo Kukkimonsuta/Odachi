@@ -471,7 +471,14 @@ public class DefaultValueTests
 		    [OptionsContainer(FileName = "appsettings.json")]
 		    public class FooOptions
 		    {
-		        public int[] IntArray { get; set; } = new[]
+		        public int[] IntArray { get; set; } = new int[]
+		        {
+		            1,
+		            2,
+		            3,
+		        };
+
+		        public int[] IntArrayImplicit { get; set; } = new[]
 		        {
 		            1,
 		            2,
@@ -484,6 +491,13 @@ public class DefaultValueTests
 		            2,
 		            3,
 		        };
+
+		        public int[] IntArrayCollectionExpression { get; set; } =
+		        [
+		            1,
+		            2,
+		            3,
+		        ];
 		    }
 		    """
 	    );
@@ -494,7 +508,9 @@ public class DefaultValueTests
 		    """
 		    {
 		      "IntArray": [1, 2, 3],
+		      "IntArrayImplicit": [1, 2, 3],
 		      "IntArrayNoNew": [1, 2, 3],
+		      "IntArrayCollectionExpression": [1, 2, 3],
 		    }
 
 		    """
@@ -512,17 +528,29 @@ public class DefaultValueTests
             [OptionsContainer(FileName = "appsettings.json")]
             public class FooOptions
             {
-                public string[] StringArray { get; set; } = new[]
+                public string[] StringArray { get; set; } = new string[]
                 {
                     "Test1",
                     "Test2",
                 };
 
-                public string[] StringArrayNoNew { get; set; } = new[]
+                public string[] StringArrayImplicit { get; set; } = new[]
                 {
                     "Test1",
                     "Test2",
                 };
+
+                public string[] StringArrayNoNew { get; set; } =
+                {
+                    "Test1",
+                    "Test2",
+                };
+
+                public string[] StringArrayCollectionExpression { get; set; } =
+                [
+                    "Test1",
+                    "Test2",
+                ];
             }
             """
 	    );
@@ -533,7 +561,9 @@ public class DefaultValueTests
 		    """
             {
               "StringArray": ["Test1", "Test2"],
+              "StringArrayImplicit": ["Test1", "Test2"],
               "StringArrayNoNew": ["Test1", "Test2"],
+              "StringArrayCollectionExpression": ["Test1", "Test2"],
             }
 
             """
