@@ -15,19 +15,17 @@ public static class PagingExtensions
 	/// </summary>
 	public static async Task<Page<TEntity>> ToPageAsync<TEntity>(this IQueryable<TEntity> query, PagingOptions options, CancellationToken cancellationToken = default)
 	{
-		if (query == null)
-			throw new ArgumentNullException(nameof(query));
-		if (options == null)
-			throw new ArgumentNullException(nameof(options));
+        ArgumentNullException.ThrowIfNull(query);
+        ArgumentNullException.ThrowIfNull(options);
 
-		var result = query;
+        var result = query;
 
 		var skipCount = options.GetSkipCount();
 		if (skipCount > 0)
 			result = result.Skip(skipCount);
 
 		var takeCount = options.GetTakeCount();
-		var data = takeCount <= 0 ? Array.Empty<TEntity>() : await result.Take(takeCount).ToArrayAsync(cancellationToken: cancellationToken);
+		var data = takeCount <= 0 ? [] : await result.Take(takeCount).ToArrayAsync(cancellationToken: cancellationToken);
 
 		var total = -1;
 		var overflow = false;

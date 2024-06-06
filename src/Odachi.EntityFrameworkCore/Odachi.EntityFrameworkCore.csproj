@@ -3,11 +3,13 @@
   <PropertyGroup>
     <Description>Extensions for Entity Framework Core. Includes paging.</Description>
     <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.6" />
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
 
