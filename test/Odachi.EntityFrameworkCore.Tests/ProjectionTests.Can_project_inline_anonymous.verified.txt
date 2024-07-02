@@ -1,0 +1,4 @@
+﻿SELECT "a"."Id", "a"."Title", "u"."Id", "u"."Name"
+FROM "Articles" AS "a"
+INNER JOIN "Users" AS "u" ON "a"."AuthorId" = "u"."Id"
+WHERE "a"."Id" = 1

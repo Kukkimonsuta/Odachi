@@ -149,6 +149,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\publish.yml = .github\workflows\publish.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odachi.EntityFrameworkCore.Tests", "test\Odachi.EntityFrameworkCore.Tests\Odachi.EntityFrameworkCore.Tests.csproj", "{B86B9C2C-E50C-4427-81C7-1F949DB7B716}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -831,6 +833,18 @@ Global
 		{10D47171-A139-4659-80FD-A2A611C0AEFE}.Release|x64.Build.0 = Release|Any CPU
 		{10D47171-A139-4659-80FD-A2A611C0AEFE}.Release|x86.ActiveCfg = Release|Any CPU
 		{10D47171-A139-4659-80FD-A2A611C0AEFE}.Release|x86.Build.0 = Release|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Debug|x64.Build.0 = Debug|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Debug|x86.Build.0 = Debug|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Release|x64.ActiveCfg = Release|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Release|x64.Build.0 = Release|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Release|x86.ActiveCfg = Release|Any CPU
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -894,6 +908,7 @@ Global
 		{10D47171-A139-4659-80FD-A2A611C0AEFE} = {6914849E-07C0-4D13-8259-A141523454DA}
 		{CE3ED033-4B6F-4E71-8CB8-FAF3EDAD15AA} = {0DA18258-DC3F-475D-B6CA-AB3BD6E2DD76}
 		{DB844FA0-4D28-443E-BBEB-162AFE091B2E} = {CE3ED033-4B6F-4E71-8CB8-FAF3EDAD15AA}
+		{B86B9C2C-E50C-4427-81C7-1F949DB7B716} = {6914849E-07C0-4D13-8259-A141523454DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2776D3BA-E65C-40FB-A3E4-A454391888CA}
