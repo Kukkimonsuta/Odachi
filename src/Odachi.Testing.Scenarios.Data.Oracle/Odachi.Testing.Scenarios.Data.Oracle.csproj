@@ -2,15 +2,18 @@
 
   <PropertyGroup>
     <Description>Oracle support for scenario testing.</Description>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.35" />
-    <PackageReference Include="Devart.Data.Oracle" Version="10.3.20" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Devart.Data.Oracle" Version="10.4.235" />
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+    <PackageReference Update="Nerdbank.GitVersioning">
+      <Version>3.7.115</Version>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

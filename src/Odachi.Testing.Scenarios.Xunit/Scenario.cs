@@ -14,22 +14,35 @@ namespace Odachi.Testing.Scenarios.Xunit
 			var members = GetType().GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 
 			foreach (var member in members)
-			{
-				if (member is FieldInfo fieldInfo)
-				{
-					if (typeof(IAsyncInitializable).IsAssignableFrom(fieldInfo.FieldType))
-					{
-						await ((IAsyncInitializable)fieldInfo.GetValue(this)).InitializeAsync();
-					}
-				}
-				else if (member is PropertyInfo propertyInfo)
-				{
-					if (typeof(IAsyncInitializable).IsAssignableFrom(propertyInfo.PropertyType))
-					{
-						await ((IAsyncInitializable)propertyInfo.GetValue(this)).InitializeAsync();
-					}
-				}
-			}
+            {
+                switch (member)
+                {
+                    case FieldInfo fieldInfo:
+                    {
+                        if (typeof(IAsyncInitializable).IsAssignableFrom(fieldInfo.FieldType))
+                        {
+                            if (fieldInfo.GetValue(this) is IAsyncInitializable value)
+                            {
+                                await value.InitializeAsync();
+                            }
+                        }
+
+                        break;
+                    }
+                    case PropertyInfo propertyInfo:
+                    {
+                        if (typeof(IAsyncInitializable).IsAssignableFrom(propertyInfo.PropertyType))
+                        {
+                            if (propertyInfo.GetValue(this) is IAsyncInitializable value)
+                            {
+                                await value.InitializeAsync();
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
 		}
 
 		Task IAsyncLifetime.DisposeAsync()

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core middleware for api key authentication.</Description>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
 		<PackageTags>odachi</PackageTags>
 	</PropertyGroup>
 
@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+    <PackageReference Update="Nerdbank.GitVersioning">
+      <Version>3.7.115</Version>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
