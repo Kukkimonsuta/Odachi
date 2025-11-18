@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Data support for scenario testing.</Description>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
@@ -14,7 +14,7 @@
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageReference Update="Nerdbank.GitVersioning">
-      <Version>3.7.115</Version>
+      <Version>3.9.50</Version>
     </PackageReference>
   </ItemGroup>
 

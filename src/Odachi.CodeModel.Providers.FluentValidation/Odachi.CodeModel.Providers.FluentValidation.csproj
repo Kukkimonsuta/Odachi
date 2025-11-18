@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Code description providers for `FluentValidation`.</Description>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <PackageTags>odachi</PackageTags>
   </PropertyGroup>
 
@@ -11,10 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="FluentValidation" Version="12.1.0" />
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageReference Update="Nerdbank.GitVersioning">
-      <Version>3.7.115</Version>
+      <Version>3.9.50</Version>
     </PackageReference>
   </ItemGroup>
 
