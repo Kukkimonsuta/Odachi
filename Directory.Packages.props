@@ -1,0 +1,34 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup Label="Build">
+    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.9.50" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
+  </ItemGroup>
+  <ItemGroup Label="Libraries">
+    <PackageVersion Include="Azure.Storage.Blobs" Version="12.29.2" />
+    <PackageVersion Include="Dapper" Version="2.1.79" />
+    <PackageVersion Include="Devart.Data.Oracle" Version="11.2.192" />
+    <PackageVersion Include="FluentValidation" Version="12.1.1" />
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="7.0.2" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
+    <PackageVersion Include="MySqlConnector" Version="2.6.2" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageVersion Include="Npgsql" Version="10.0.3" />
+  </ItemGroup>
+  <ItemGroup Label="Testing">
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.0" />
+    <PackageVersion Include="Verify.SourceGenerators" Version="2.5.0" />
+    <PackageVersion Include="Verify.Xunit" Version="31.12.5" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.extensibility.core" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
+  </ItemGroup>
+</Project>

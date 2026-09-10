@@ -8,12 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.66" />
-    <PackageReference Include="Npgsql" Version="9.0.4" />
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-    <PackageReference Update="Nerdbank.GitVersioning">
-      <Version>3.9.50</Version>
-    </PackageReference>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Npgsql" />
   </ItemGroup>
 
   <ItemGroup>

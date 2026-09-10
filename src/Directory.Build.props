@@ -16,10 +16,6 @@
 		<PackageReadmeFile Condition="Exists('README.md')">README.md</PackageReadmeFile>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-	</ItemGroup>
-
 	<ItemGroup Condition="Exists('README.md')">
 		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>

@@ -9,10 +9,4 @@
     <ProjectReference Include="..\..\src\Odachi.JsonRpc.Client.Http\Odachi.JsonRpc.Client.Http.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Nerdbank.GitVersioning">
-      <Version>3.9.50</Version>
-    </PackageReference>
-  </ItemGroup>
-
 </Project>

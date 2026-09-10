@@ -9,10 +9,4 @@
     <ProjectReference Include="..\..\src\Odachi.AspNetCore.Authentication.Basic\Odachi.AspNetCore.Authentication.Basic.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Nerdbank.GitVersioning">
-      <Version>3.9.50</Version>
-    </PackageReference>
-  </ItemGroup>
-
 </Project>

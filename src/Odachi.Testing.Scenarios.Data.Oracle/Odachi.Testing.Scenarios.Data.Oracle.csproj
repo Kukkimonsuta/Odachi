@@ -8,12 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.66" />
-    <PackageReference Include="Devart.Data.Oracle" Version="10.4.290" />
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-    <PackageReference Update="Nerdbank.GitVersioning">
-      <Version>3.9.50</Version>
-    </PackageReference>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Devart.Data.Oracle" />
   </ItemGroup>
 
   <ItemGroup>

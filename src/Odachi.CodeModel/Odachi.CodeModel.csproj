@@ -15,11 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-    <PackageReference Update="Nerdbank.GitVersioning">
-      <Version>3.9.50</Version>
-    </PackageReference>
   </ItemGroup>
 
 </Project>
