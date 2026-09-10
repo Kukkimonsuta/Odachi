@@ -1,0 +1,93 @@
+<Solution>
+
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+
+  <Folder Name="/extras/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="global.json" />
+    <File Path="LICENSE" />
+    <File Path="NuGet.Config" />
+    <File Path="README.md" />
+    <File Path="version.json" />
+  </Folder>
+  <Folder Name="/extras/github/" />
+  <Folder Name="/extras/github/workflows/">
+    <File Path=".github/workflows/build.yml" />
+    <File Path=".github/workflows/publish.yml" />
+  </Folder>
+
+  <Folder Name="/samples/">
+    <File Path="samples/Directory.Build.props" />
+    <Project Path="samples/BasicAuthenticationSample/BasicAuthenticationSample.csproj" />
+    <Project Path="samples/JsonRpcClientSample/JsonRpcClientSample.csproj" />
+    <Project Path="samples/JsonRpcSample/JsonRpcSample.csproj" />
+  </Folder>
+
+  <Folder Name="/src/">
+    <File Path="src/Directory.Build.props" />
+    <Project Path="src/Odachi.Abstractions/Odachi.Abstractions.csproj" />
+    <Project Path="src/Odachi.Annotations/Odachi.Annotations.csproj" />
+    <Project Path="src/Odachi.AspNetCore.Authentication.ApiKey/Odachi.AspNetCore.Authentication.ApiKey.csproj" />
+    <Project Path="src/Odachi.AspNetCore.Authentication.Basic/Odachi.AspNetCore.Authentication.Basic.csproj" />
+    <Project Path="src/Odachi.AspNetCore.JsonRpc/Odachi.AspNetCore.JsonRpc.csproj" />
+    <Project Path="src/Odachi.AspNetCore.Mvc/Odachi.AspNetCore.Mvc.csproj" />
+    <Project Path="src/Odachi.Build.OptionsFileGenerator/Odachi.Build.OptionsFileGenerator.csproj" />
+    <Project Path="src/Odachi.CodeGen.CSharp/Odachi.CodeGen.CSharp.csproj" />
+    <Project Path="src/Odachi.CodeGen.TypeScript.StackinoDue/Odachi.CodeGen.TypeScript.StackinoDue.csproj" />
+    <Project Path="src/Odachi.CodeGen.TypeScript.StackinoUno/Odachi.CodeGen.TypeScript.StackinoUno.csproj" />
+    <Project Path="src/Odachi.CodeGen.TypeScript/Odachi.CodeGen.TypeScript.csproj" />
+    <Project Path="src/Odachi.CodeGen/Odachi.CodeGen.csproj" />
+    <Project Path="src/Odachi.CodeModel.Providers.FluentValidation/Odachi.CodeModel.Providers.FluentValidation.csproj" />
+    <Project Path="src/Odachi.CodeModel.Providers.JsonRpc/Odachi.CodeModel.Providers.JsonRpc.csproj" />
+    <Project Path="src/Odachi.CodeModel.Providers.Validation/Odachi.CodeModel.Providers.Validation.csproj" />
+    <Project Path="src/Odachi.CodeModel/Odachi.CodeModel.csproj" />
+    <Project Path="src/Odachi.EntityFrameworkCore/Odachi.EntityFrameworkCore.csproj" />
+    <Project Path="src/Odachi.Extensions.Collections/Odachi.Extensions.Collections.csproj" />
+    <Project Path="src/Odachi.Extensions.Formatting/Odachi.Extensions.Formatting.csproj" />
+    <Project Path="src/Odachi.Extensions.Primitives/Odachi.Extensions.Primitives.csproj" />
+    <Project Path="src/Odachi.Extensions.Reflection/Odachi.Extensions.Reflection.csproj" />
+    <Project Path="src/Odachi.Gettext/Odachi.Gettext.csproj" />
+    <Project Path="src/Odachi.JsonRpc.Client.Http/Odachi.JsonRpc.Client.Http.csproj" />
+    <Project Path="src/Odachi.JsonRpc.Client/Odachi.JsonRpc.Client.csproj" />
+    <Project Path="src/Odachi.JsonRpc.Common/Odachi.JsonRpc.Common.csproj" />
+    <Project Path="src/Odachi.JsonRpc.Server/Odachi.JsonRpc.Server.csproj" />
+    <Project Path="src/Odachi.Security/Odachi.Security.csproj" />
+    <Project Path="src/Odachi.Storage.Azure/Odachi.Storage.Azure.csproj" />
+    <Project Path="src/Odachi.Storage.FileSystem/Odachi.Storage.FileSystem.csproj" />
+    <Project Path="src/Odachi.Testing.Scenarios.Data.MySql/Odachi.Testing.Scenarios.Data.MySql.csproj" />
+    <Project Path="src/Odachi.Testing.Scenarios.Data.Oracle/Odachi.Testing.Scenarios.Data.Oracle.csproj" />
+    <Project Path="src/Odachi.Testing.Scenarios.Data.PostgreSQL/Odachi.Testing.Scenarios.Data.PostgreSQL.csproj" />
+    <Project Path="src/Odachi.Testing.Scenarios.Data.SqlServer/Odachi.Testing.Scenarios.Data.SqlServer.csproj" />
+    <Project Path="src/Odachi.Testing.Scenarios.Data/Odachi.Testing.Scenarios.Data.csproj" />
+    <Project Path="src/Odachi.Testing.Scenarios.Xunit/Odachi.Testing.Scenarios.Xunit.csproj" />
+    <Project Path="src/Odachi.Testing.Scenarios/Odachi.Testing.Scenarios.csproj" />
+    <Project Path="src/Odachi.Validation/Odachi.Validation.csproj" />
+  </Folder>
+
+  <Folder Name="/test/">
+    <File Path="test/Directory.Build.props" />
+    <Project Path="test/Odachi.Build.OptionsFileGenerator.Tests/Odachi.Build.OptionsFileGenerator.Tests.csproj" />
+    <Project Path="test/Odachi.CodeGen.Tests/Odachi.CodeGen.Tests.csproj" />
+    <Project Path="test/Odachi.CodeGen.TypeScript.StackinoDue.Tests/Odachi.CodeGen.TypeScript.StackinoDue.Tests.csproj" />
+    <Project Path="test/Odachi.CodeGen.TypeScript.StackinoUno.Tests/Odachi.CodeGen.TypeScript.StackinoUno.Tests.csproj" />
+    <Project Path="test/Odachi.CodeGen.TypeScript.Tests/Odachi.CodeGen.TypeScript.Tests.csproj" />
+    <Project Path="test/Odachi.CodeModel.Providers.FluentValidation.Tests/Odachi.CodeModel.Providers.FluentValidation.Tests.csproj" />
+    <Project Path="test/Odachi.CodeModel.Providers.JsonRpc.Tests/Odachi.CodeModel.Providers.JsonRpc.Tests.csproj" />
+    <Project Path="test/Odachi.CodeModel.Tests/Odachi.CodeModel.Tests.csproj" />
+    <Project Path="test/Odachi.EntityFrameworkCore.Tests/Odachi.EntityFrameworkCore.Tests.csproj" />
+    <Project Path="test/Odachi.Extensions.Formatting.Tests/Odachi.Extensions.Formatting.Tests.csproj" />
+    <Project Path="test/Odachi.Extensions.Primitives.Tests/Odachi.Extensions.Primitives.Tests.csproj" />
+    <Project Path="test/Odachi.Extensions.Reflection.Tests/Odachi.Extensions.Reflection.Tests.csproj" />
+    <Project Path="test/Odachi.Gettext.Tests/Odachi.Gettext.Tests.csproj" />
+    <Project Path="test/Odachi.JsonRpc.Server.Tests/Odachi.JsonRpc.Server.Tests.csproj" />
+    <Project Path="test/Odachi.Security.Tests/Odachi.Security.Tests.csproj" />
+    <Project Path="test/Odachi.Storage.FileSystem.Tests/Odachi.Storage.FileSystem.Tests.csproj" />
+    <Project Path="test/Odachi.Validation.Tests/Odachi.Validation.Tests.csproj" />
+  </Folder>
+
+</Solution>
