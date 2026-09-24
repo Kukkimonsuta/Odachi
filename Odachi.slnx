@@ -9,6 +9,7 @@
   <Folder Name="/extras/">
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
     <File Path="Directory.Packages.props" />
     <File Path="global.json" />
     <File Path="LICENSE" />
@@ -66,6 +67,8 @@
     <Project Path="src/Odachi.Testing.Scenarios.Data.SqlServer/Odachi.Testing.Scenarios.Data.SqlServer.csproj" />
     <Project Path="src/Odachi.Testing.Scenarios.Data/Odachi.Testing.Scenarios.Data.csproj" />
     <Project Path="src/Odachi.Testing.Scenarios.Xunit/Odachi.Testing.Scenarios.Xunit.csproj" />
+    <Project Path="src/Odachi.Testing.Scenarios.XunitV3.Generators/Odachi.Testing.Scenarios.XunitV3.Generators.csproj" />
+    <Project Path="src/Odachi.Testing.Scenarios.XunitV3/Odachi.Testing.Scenarios.XunitV3.csproj" />
     <Project Path="src/Odachi.Testing.Scenarios/Odachi.Testing.Scenarios.csproj" />
     <Project Path="src/Odachi.Validation/Odachi.Validation.csproj" />
   </Folder>
@@ -88,6 +91,7 @@
     <Project Path="test/Odachi.JsonRpc.Server.Tests/Odachi.JsonRpc.Server.Tests.csproj" />
     <Project Path="test/Odachi.Security.Tests/Odachi.Security.Tests.csproj" />
     <Project Path="test/Odachi.Storage.FileSystem.Tests/Odachi.Storage.FileSystem.Tests.csproj" />
+    <Project Path="test/Odachi.Testing.Scenarios.XunitV3.Tests/Odachi.Testing.Scenarios.XunitV3.Tests.csproj" />
     <Project Path="test/Odachi.Validation.Tests/Odachi.Validation.Tests.csproj" />
   </Folder>
 

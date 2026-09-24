@@ -1,0 +1,12 @@
+﻿<Project>
+
+	<!-- The Odachi.Testing.Scenarios.XunitV3 nuget package ships its generator in the analyzer directory, but
+	     a project reference doesn't flow analyzers. Add the generator to every project referencing the library
+	     so that referencing the library is all a project in this repository has to do as well. -->
+	<ItemGroup Condition="'@(ProjectReference->WithMetadataValue('Filename', 'Odachi.Testing.Scenarios.XunitV3'))' != ''">
+		<ProjectReference Include="$(MSBuildThisFileDirectory)src\Odachi.Testing.Scenarios.XunitV3.Generators\Odachi.Testing.Scenarios.XunitV3.Generators.csproj"
+		                  ReferenceOutputAssembly="false"
+		                  OutputItemType="Analyzer" />
+	</ItemGroup>
+
+</Project>

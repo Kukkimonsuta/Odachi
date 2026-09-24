@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>xUnit V3 support for scenario testing.</Description>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <PackageTags>odachi</PackageTags>
+
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3.extensibility.core" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Odachi.Testing.Scenarios\Odachi.Testing.Scenarios.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Build the generator alongside this project. It is shipped as part of this package, so that
+         referencing the library is all a test project has to do. -->
+    <ProjectReference Include="..\Odachi.Testing.Scenarios.XunitV3.Generators\Odachi.Testing.Scenarios.XunitV3.Generators.csproj"
+                      ReferenceOutputAssembly="false"
+                      OutputItemType="Analyzer"
+                      PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Package the generator in the analyzer directory of the nuget package -->
+    <None Include="..\Odachi.Testing.Scenarios.XunitV3.Generators\bin\$(Configuration)\netstandard2.0\Odachi.Testing.Scenarios.XunitV3.Generators.dll"
+          Pack="true"
+          PackagePath="analyzers/dotnet/cs"
+          Visible="false" />
+  </ItemGroup>
+
+</Project>
